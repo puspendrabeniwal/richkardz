@@ -1,6 +1,6 @@
-
 import { connectMongodb } from "@/libs/connection";
-import login from "@/models/auth";
+import userProfileModel from "@/models/userProfile";
+
 export default async function handler(req, res){
     if(req.method !== "POST"){
         res.status(405).send({
@@ -9,11 +9,10 @@ export default async function handler(req, res){
         return
     } 
 
-    const {loginRequest} = req.body
-
+    console.log(req.body, "req.body")
     try{
         await connectMongodb()
-        login.findOne({email : "admin@gmail.com"}).then((data)=>{
+        userProfileModel.updateOne({email : "admin@gmail.com"},{first_name : req.body.first_name}).then((data)=>{
             res.status(201).send(data)
         })
     }catch(err){

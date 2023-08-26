@@ -1,4 +1,4 @@
-"user server";
+
 import mongoose from "mongoose";
 const loginSchema = new mongoose.Schema({
     email : {
