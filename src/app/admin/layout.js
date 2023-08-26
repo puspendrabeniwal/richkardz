@@ -1,9 +1,15 @@
+"use client"
+import Script from "next/script";
+import { useRouter, usePathname } from 'next/navigation'
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import Breadcrumbs from './components/Breadcrumbs';
 
 export default function adminLayout({ children }) {
+  const pathname  = usePathname();
+  const router  = useRouter();
+  if(pathname === "/admin") router.push('/admin/signin', { scroll: false })
   return (
     <>
       <link rel="shortcut icon" href="/admin/assets/media/logos/favicon.ico" />
@@ -14,18 +20,28 @@ export default function adminLayout({ children }) {
       <link href="/admin/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
       <link href="/admin/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
       <body id="kt_body" className="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style={{"--kt-toolbar-height":"55px","--kt-toolbar-height-tablet-and-mobile":"55px"}}>
-  		<div className="d-flex flex-column flex-root">
-        <div className="page d-flex flex-row flex-column-fluid">
-          <Sidebar />
-          <div className="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-            <Header />
-            <Breadcrumbs />
-              {children}
-              <Footer />  
+        {(pathname !== "/admin/signin") ? <div className="d-flex flex-column flex-root">
+          <div className="page d-flex flex-row flex-column-fluid">
+            <Sidebar />
+            <div className="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+              <Header />
+              <Breadcrumbs />
+                {children}
+                <Footer />  
+            </div>
           </div>
-        </div>
-      </div>
-
+        </div>:children}
+        {/* <script>var hostUrl = "/assets/";</script> */}
+        <script src="/admin/assets/plugins/global/plugins.bundle.js"></script>
+        <script src="/admin/assets/js/scripts.bundle.js"></script>
+        <script src="/admin/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
+        <script src="/admin/assets/plugins/custom/datatables/datatables.bundle.js"></script>
+        <script src="/admin/assets/js/widgets.bundle.js"></script>
+        <script src="/admin/assets/js/custom/widgets.js"></script>
+        <script src="/admin/assets/js/custom/apps/chat/chat.js"></script>
+        <script src="/admin/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
+        <script src="/admin/assets/js/custom/utilities/modals/create-app.js"></script>
+        <script src="/admin/assets/js/custom/utilities/modals/users-search.js"></script>
       </body>
     </>
   )

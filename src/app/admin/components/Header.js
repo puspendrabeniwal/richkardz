@@ -295,7 +295,7 @@ const Header = () => {
                             </div>
 
                             <div className="menu-item px-5">
-                                <Link href="/admin/login" className="menu-link px-5">Sign Out</Link>
+                                <Link href="/admin/signin" className="menu-link px-5">Sign Out</Link>
                             </div>
 
                             {/* <div className="separator my-2"></div> */}
