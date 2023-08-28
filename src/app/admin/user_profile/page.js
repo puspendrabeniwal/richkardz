@@ -1,57 +1,69 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef} from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { Toast } from "primereact/toast";
 import instance from "../axiosInterceptor";
 
 const  UserProfile = ()=> {
     const [userDetail, setUserDetail] = useState({});
-
+    const toast = useRef(null);
     useEffect(() => {
-        let formData = new FormData();    //formdata object
-        formData.append("email", "admin@gmail.com");   //append the values with key, value pair
-
-        instance.post("getUserProfile", formData)
-        .then(response => {
-            let userProfile = (response.data) ? response.data : {};
-            setUserDetail(userProfile);
-            console.log("This is called", userProfile)
-        })
-        .catch(error => {
-            console.log(error);
-        });
+        getUserDetail()
     },[])
 
 
+    const getUserDetail = ()=>{
+        let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+        let formData = new FormData();    //formdata object
+        formData.append("user_id", loginUser._id);   //append the values with key, value pair
+
+        instance.post("getUserDetail", formData)
+            .then(response => {
+                let userProfile = (response.result) ? response.result : {};
+                setUserDetail(userProfile);
+            })
+            .catch(error => {
+                showMessage();
+                console.log(error);
+            });
+    }
+    const showMessage = (data) => {
+        toast.current.show({
+          severity: (data.status) ? "success" : "error",
+          summary: (data.status) ? "Success" : "Error",
+          detail: data.message,
+          life: 3000,
+        });
+    };
+
+
     const validationSchema = Yup.object({
-        first_name: Yup.string().required('Name is required'),
-        last_name: Yup.string().required('Name is required'),
-        phone: Yup.string().required('Phone is required'),
+        full_name: Yup.string().required('Name is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
         // Define more validation rules for other fields
     });
 
 
     const initialValues = {
-        first_name: (userDetail.first_name) ? userDetail.first_name : '',
-        last_name: (userDetail.last_name) ? userDetail.last_name : '',
+        full_name: (userDetail.full_name) ? userDetail.full_name : '',
         email: (userDetail.email) ? userDetail.email : '',
-        phone: (userDetail.phone) ? userDetail.phone : '',
         // Add more fields with their initial values
     };
 
-
+   
     const onSubmit = async(values, { setSubmitting, resetForm }) => {
         setSubmitting(false)
         let formData = new FormData();    //formdata object
-        formData.append("first_name", values.first_name);   //append the values with key, value pair
-        formData.append("last_name", values.last_name);   //append the values with key, value pair
+        let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+        formData.append("user_id", loginUser._id);   //append the values with key, value pair
+        formData.append("full_name", values.full_name);   //append the values with key, value pair
         formData.append("email", values.email);   //append the values with key, value pair
-        formData.append("phone", values.phone);   //append the values with key, value pair
 
-        instance.post("userProfile", formData)
+        instance.post("updateUserProfile", formData)
         .then(response => {
-            console.log(response.data);
+            showMessage(response);
+            getUserDetail();
             resetForm()
         })
         .catch(error => {
@@ -67,8 +79,10 @@ const  UserProfile = ()=> {
                 <h3 className="fw-bold m-0">Profile Details</h3>
             </div>
         </div>
+        <Toast ref={toast} />
         <div id="kt_account_settings_profile_details" className="collapse show">
             <Formik
+                enableReinitialize={true}
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={onSubmit}
@@ -96,27 +110,14 @@ const  UserProfile = ()=> {
 
                         <div className="row mb-6">
                             <label className="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
-                            <div className="col-lg-8">
-                                <div className="row">
-                                    <div className="col-lg-6 fv-row">
-                                        <Field  
-                                            type="text" 
-                                            name="first_name"
-                                            className="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
-                                            placeholder="First name" 
-                                        />
-                                        <ErrorMessage name="first_name" className="errorMessage" component="div" />
-                                    </div>
-                                    <div className="col-lg-6 fv-row">
-                                        <Field  
-                                            type="text" 
-                                            name="last_name" 
-                                            className="form-control form-control-lg form-control-solid" 
-                                            placeholder="Last name" 
-                                        />
-                                        <ErrorMessage name="last_name" className="errorMessage" component="div" />
-                                    </div>
-                                </div>
+                            <div className="col-lg-8 fv-row">
+                                <Field  
+                                    type="text" 
+                                    name="full_name" 
+                                    className="form-control form-control-lg form-control-solid" 
+                                    placeholder="Full Name" 
+                                />
+                                <ErrorMessage name="full_name" className="errorMessage" component="div" />
                             </div>
                         </div>
                         <div className="row mb-6">
@@ -129,27 +130,6 @@ const  UserProfile = ()=> {
                                     placeholder="Email Address" 
                                 />
                                 <ErrorMessage name="email" className="errorMessage" component="div" />
-                            </div>
-                        </div>
-                        <div className="row mb-6">
-                            <label className="col-lg-4 col-form-label fw-semibold fs-6">
-                                <span className="required"> Phone</span>
-                                <span className="ms-1"  data-bs-toggle="tooltip" title="Phone number must be active" >
-                                    <i className="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                        <span className="path1"></span>
-                                        <span className="path2"></span>
-                                        <span className="path3"></span>
-                                    </i>
-                                </span>                    
-                            </label>
-                            <div className="col-lg-8 fv-row">
-                                <Field  
-                                    type="tel" 
-                                    name="phone" 
-                                    className="form-control form-control-lg form-control-solid" 
-                                    placeholder="Phone number" 
-                                />
-                                <ErrorMessage name="phone" className="errorMessage" component="div" />
                             </div>
                         </div>
                     </div>

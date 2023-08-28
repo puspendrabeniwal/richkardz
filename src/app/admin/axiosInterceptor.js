@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of Axios with default configuration
 const instance = axios.create({
-  baseURL: 'http://localhost:3000/api/',
+  baseURL: 'http://localhost:8005/api/',
 });
 
 // Add a request interceptor
@@ -28,8 +28,9 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
   function (response) {
+    console.log(response, "response")
     // Modify the response data here
-    return response;
+    return response.data;
   },
   function (error) {
     // Handle response error
