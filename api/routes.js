@@ -46,6 +46,10 @@ module.exports = {
 		
 		/** Include API Middleware **/
 		require(WEBSITE_MODULES_PATH+"auth/routes");
+		require(WEBSITE_MODULES_PATH+"cms/routes");
+		require(WEBSITE_MODULES_PATH+"block/routes");
+		require(WEBSITE_MODULES_PATH+"testimonials/routes");
+		require(WEBSITE_MODULES_PATH+"products/routes");
 		
 	}
 };
