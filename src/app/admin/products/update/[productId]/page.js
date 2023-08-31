@@ -13,7 +13,7 @@ const UpdateProduct = ({ params }) => {
   const getProductDetails = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();    //formdata object
-    formData.append("user_id", loginUser._id);   //append the values with key, value pair
+    formData.append("user_id", (Object.keys(loginUser).length>0) ? loginUser?._id : "");   //append the values with key, value pair
     formData.append("id", params.productId);   //append the values with key, value pair
 
     instance.post("product/view/"+params.productId, formData)

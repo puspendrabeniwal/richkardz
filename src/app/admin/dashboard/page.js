@@ -1,9 +1,10 @@
 'use client'
+import withAuth from "@/hoc/withAuth";
 export const  Dashboard = ()=> {
   return (
-	<>
+	  <>
     </>
   )
 }
 
-export default Dashboard;
+export default withAuth(Dashboard);

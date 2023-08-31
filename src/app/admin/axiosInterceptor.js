@@ -8,7 +8,7 @@ const instance = axios.create({
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
-    config.headers['content-type'] = 'multipart/mixed; boundary=gc0p4Jq0M2Yt08jU534c0p';
+    config.headers['content-type'] = 'application/json';
 
     // Modify the request configuration here
     // For example, add authorization header

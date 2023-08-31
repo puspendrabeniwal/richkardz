@@ -6,7 +6,7 @@ import { Tag } from 'primereact/tag';
 import React, { useEffect, useState , useRef} from "react";
 
 import instance from "../axiosInterceptor";
-
+import withAuth from "@/hoc/withAuth";
 export const  Products = ()=> {
     const [products, setProducts] = useState([]);
 
@@ -15,7 +15,7 @@ export const  Products = ()=> {
         let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
         let formData = new FormData();    //formdata object
-        formData.append("user_id", loginUser._id);   //append the values with key, value pair
+        formData.append("user_id", loginUser?._id);
         formData.append("skip", 10);   //append the values with key, value pair
         formData.append("limit", 10);   //append the values with key, value pair
 
@@ -178,4 +178,4 @@ export const  Products = ()=> {
   )
 }
 
-export default Products;
+export default withAuth(Products);

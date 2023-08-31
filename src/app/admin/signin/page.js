@@ -14,7 +14,7 @@ const Signin = () => {
       const response = await instance.post(`auth`, values);
       let user = (response.result) ? response.result :{} ;
       let token = (response.token) ? response.token :"" ;
-      if (token) {
+      if (token && Object.keys(user).length>0) {
         localStorage.setItem("loginInfo", JSON.stringify(user));
         window.location.replace("/admin/dashboard");
       }

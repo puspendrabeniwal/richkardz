@@ -1,5 +1,10 @@
 import Link from "next/link";
 const Header = () => {
+
+    const logout =()=>{
+        localStorage.removeItem("loginInfo")
+        window.location.replace('/admin/signin')
+    }
     return (
         <div id="kt_header"  className="header align-items-stretch">
         <div className="container-fluid d-flex align-items-stretch justify-content-between">
@@ -295,7 +300,7 @@ const Header = () => {
                             </div>
 
                             <div className="menu-item px-5">
-                                <Link href="/admin/signin" className="menu-link px-5">Sign Out</Link>
+                                <Link href="#" onClick={logout} className="menu-link px-5">Sign Out</Link>
                             </div>
 
                             {/* <div className="separator my-2"></div> */}

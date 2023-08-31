@@ -9,12 +9,14 @@ export default function withAuth(Component) {
     if (typeof window !== "undefined") {
       user = JSON.parse(localStorage.getItem("loginInfo"));
     }
+
     let userIsAuthenticated = user !== null;
 
     useEffect(() => {
       if (!userIsAuthenticated) {
-        router.push("/admin");
+        router.push("/admin/signin");
       }
+
     }, [userIsAuthenticated, router]);
 
     return <Component {...props} />;

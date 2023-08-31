@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Toast } from "primereact/toast";
 import instance from "../axiosInterceptor";
-
+import withAuth from "@/hoc/withAuth";
 const  UserProfile = ()=> {
     const [userDetail, setUserDetail] = useState({});
     const toast = useRef(null);
@@ -144,4 +144,4 @@ const  UserProfile = ()=> {
   )
 }
 
-export default UserProfile;
+export default withAuth(UserProfile);
