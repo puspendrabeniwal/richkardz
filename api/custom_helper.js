@@ -7,7 +7,7 @@ const { ObjectId } = require("mongodb");
 const { generate } = require("randomstring");
 const asyncEach = require("async/each");
 const asyncParallel = require("async/parallel");
-
+const slug = require("slug");
 /**
  * Function for parse validation
  *
@@ -774,7 +774,7 @@ isUserLogin = (req, res) => {
     );
   });
 };
-const slug = require("slug");
+
 /**
  * Function to get data base slug
  *
@@ -790,42 +790,6 @@ getDatabaseSlug = (options) => {
     let title = options && options.title ? options.title : "";
     let slugField = options && options.slug_field ? options.slug_field : "";
 
-<<<<<<< HEAD
-/**
- * Function to get data base slug
- *
- * @param tableName AS Table Name
- * @param title AS Title
- * @param slugField AS Slug Field Name in database
- *
- * @return string
- */
-getDatabaseSlug = (options)=>{
-	return new Promise(resolve=>{
-		let tableName 	= (options && options.table_name)	?	options.table_name	:"";
-		let title		= (options && options.title)		?	options.title		:"";
-		let slugField	= (options && options.slug_field)	?	options.slug_field	:"";
-
-		if(title=='' || tableName == "") return resolve({title : "", options	: options});
-
-		let convertTitleIntoSlug 	=	slug(title).toLowerCase();
-		let collectionName  		= 	db.collection(String(tableName));
-
-		/** Set conditions **/
-		let conditions 			= 	{};
-		conditions[slugField] 	=  	{$regex : new RegExp(convertTitleIntoSlug, "i")};
-
-		/** Get count from table **/
-		collectionName.countDocuments(conditions,(err,count)=>{
-			/** Send response **/
-			resolve({
-				title 	: (count > 0) ? convertTitleIntoSlug+'-'+count :convertTitleIntoSlug
-			});
-		});
-
-	});
-};//end getDatabaseSlug();
-=======
     if (title == "" || tableName == "")
       return resolve({ title: "", options: options });
 
@@ -846,4 +810,3 @@ getDatabaseSlug = (options)=>{
     });
   });
 }; //end getDatabaseSlug();
->>>>>>> 2191f3a7697f39d46714dbd6ac8bbd4c785b635d
