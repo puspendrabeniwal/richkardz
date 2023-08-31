@@ -60,6 +60,8 @@ function Products() {
             let collection     = db.collection("products");
             /** Sanitize Data */
 			req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
+
+            console.log(req.body,"req.body")
 			/** Check validation */
 			req.checkBody({
 				'product_name': {

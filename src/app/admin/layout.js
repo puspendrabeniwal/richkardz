@@ -25,7 +25,7 @@ export default function adminLayout({ children }) {
             <Sidebar />
             <div className="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
               <Header />
-              <Breadcrumbs />
+              <Breadcrumbs data={pathname}/>
                 {children}
                 <Footer />  
             </div>

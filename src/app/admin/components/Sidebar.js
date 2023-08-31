@@ -149,7 +149,7 @@ const Sidebar = () => {
               </Link>
             </div>
             <div className="menu-item">
-              <Link className="menu-link active" href="/admin/testingMonials">
+              <Link className="menu-link active" href="/admin/testimonials">
                 <span className="menu-icon">
                   <span className="svg-icon svg-icon-2">
                     <svg
@@ -175,7 +175,7 @@ const Sidebar = () => {
                     </svg>
                   </span>
                 </span>
-                <span className="menu-title">Testing Monials</span>
+                <span className="menu-title">Testimonials</span>
               </Link>
             </div>
             <div className="menu-item">

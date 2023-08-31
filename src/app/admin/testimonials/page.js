@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-export const  Products = ()=> {
+export const  Testimonials = ()=> {
   return (
     <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
         <div className=" d-flex flex-column-fluid" id="kt_post">
@@ -11,21 +11,21 @@ export const  Products = ()=> {
 
                             <div className="d-flex align-items-center position-relative my-1">
                                 
-                               Product Management
+                              Testimonials
                             </div>
                         </div>
                         <div className="card-toolbar">
                             <div className="d-flex justify-content-end" data-kt-user-table-toolbar="base">
 
 
-                                <Link href="/admin/products/add" type="button" className="btn btn-primary">
+                                <Link href="/admin/testimonials/add" type="button" className="btn btn-primary">
                                 <span className="svg-icon svg-icon-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="currentColor" />
                                         <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
                                     </svg>
                                 </span>
-                                Add Product</Link>
+                                Add Testimonial</Link>
                             </div>
                             <div className="d-flex justify-content-end align-items-center d-none" data-kt-user-table-toolbar="selected">
                                 <div className="fw-bolder me-5">
@@ -98,4 +98,4 @@ export const  Products = ()=> {
   )
 }
 
-export default Products;
+export default Testimonials;
