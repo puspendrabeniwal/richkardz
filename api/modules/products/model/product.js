@@ -16,10 +16,9 @@ function Products() {
             let skip = (req.body.start) ? parseInt(req.body.start) : DEFAULT_SKIP;
             let collection     = db.collection("products");
             collection.find({
-                // is_active : ACTIVE,
+                status : 1,
                 // is_deleted : NOT_DELETED
             }).skip(skip).limit(limit).toArray((err,result)=>{
-
                 if(!err){
                     return res.send({
                         "status"      : API_STATUS_SUCCESS,
@@ -59,10 +58,60 @@ function Products() {
     this.addProduct = (req, res)=>{
         if(isPost(req)){
             let collection     = db.collection("products");
-            collection.insetOne({
+            /** Sanitize Data */
+			req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
+			/** Check validation */
+			req.checkBody({
+				'product_name': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter product name")
+				},
+				'price': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter price")
+				},
+                'discount': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter discount")
+				},
+                'card_type': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter card type")
+				},
+                'product_desc': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter product description")
+				},
+                
+			})
+            /** parse Validation array  */
+			let errors = parseValidation(req.validationErrors(), req);
+
+			
+			if (errors) {
+				/** Send error response */
+				return res.send({
+					status: STATUS_ERROR,
+					message: errors,
+				});
+			}
+          
+
+
+            collection.insertOne({
                 /** add all product fields */
-                is_active : ACTIVE,
-                is_deleted : NOT_DELETED
+                product_name	:	(req.body.product_name)?req.body.product_name:"",
+                price	:	(req.body.price)?req.body.price:"",
+                discount	:	(req.body.discount)?req.body.discount:"",
+                profession	:	(req.body.profession)?req.body.profession:"",
+                card_type	:	(req.body.card_type)?req.body.card_type:"",
+                product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
+                status : 1,
+                is_feature : (req.body.is_feature)?req.body.is_feature:"",
+                is_new_release : (req.body.is_new_release)?req.body.is_new_release:"",
+                created_at 			:	getUtcDate(),
+                updated_at			: 	getUtcDate(),
+                // is_deleted : NOT_DELETED
             },(err,result)=>{
     
                 if(!err){
@@ -92,6 +141,112 @@ function Products() {
         }
 
     }
+    this.addProductBack = (req, res)=>{
+        if(isPost(req)){
+            let collection     = db.collection("products");
+            /** Sanitize Data */
+			req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
+			/** Check validation */
+			req.checkBody({
+				'product_name': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter product name")
+				},
+				'price': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter price")
+				},
+                'discount': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter discount")
+				},
+                'card_type': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter card type")
+				},
+                'product_desc': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter product description")
+				},
+                
+			})
+            /** parse Validation array  */
+			let errors = parseValidation(req.validationErrors(), req);
+
+			if (!req.files || !req.files.image) {
+				if (!errors) errors = [];
+				errors.push({ 'param': 'image', 'msg': res.__("Please select product image") });
+			}
+			if (errors) {
+				/** Send error response */
+				return res.send({
+					status: STATUS_ERROR,
+					message: errors,
+				});
+			}
+            let productImage = (req.files && req.files.image) ? req.files.image : {};
+			let imageOptions = {
+				'image': productImage,
+				'filePath': PRODUCT_FILE_PATH
+			};
+
+
+			/** Upload testimonials image **/
+			moveUploadedFile(req, res, imageOptions).then(imageResponse => {
+
+				if (imageResponse.status == STATUS_ERROR) {
+					/** Send error response **/
+					return res.send({
+						status: STATUS_ERROR,
+						message: [{ 'param': 'image', 'msg': imageResponse.message }],
+					});
+				}
+
+            collection.insertOne({
+                /** add all product fields */
+                product_name	:	(req.body.product_name)?req.body.product_name:"",
+                price	:	(req.body.price)?req.body.price:"",
+                discount	:	(req.body.discount)?req.body.discount:"",
+                profession	:	(req.body.profession)?req.body.profession:"",
+                card_type	:	(req.body.card_type)?req.body.card_type:"",
+                product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
+                status : 1,
+                is_feature : (req.body.is_feature)?req.body.is_feature:"",
+                is_new_release : (req.body.is_new_release)?req.body.is_new_release:"",
+                product_image: imageResponse.fileName ? imageResponse.fileName : "",
+                created_at 			:	getUtcDate(),
+                updated_at			: 	getUtcDate(),
+                // is_deleted : NOT_DELETED
+            },(err,result)=>{
+    
+                if(!err){
+                   
+                    return res.send({
+                        "status"      : API_STATUS_SUCCESS,
+                        "message"     : 'Product has been added successfully',
+                        "error"       : [],
+                        "result"      : {}
+                    });
+                }else{
+                    return res.send({
+                        "status"      : API_STATUS_ERROR,
+                        "message"     : res.__("front.system.something_went_wrong"),
+                        "error"       : [],
+                        "result" : []
+                    });
+                }
+            })
+        }).catch(next);
+        }else{
+            return res.send({
+                "status"      : API_STATUS_ERROR,
+                "message"     : "invalid request",
+                "error"       : [],
+                "result" : []
+            });
+        }
+
+    }
 
     /**
      * Function for edit product
@@ -105,14 +260,60 @@ function Products() {
     this.editProduct = (req, res)=>{
         if(isPost(req)){
             let productId = (req.params.id) ? req.params.id : '';
+            console.log("productId DDDDD"+productId);
             let collection     = db.collection("products");
+            /** Sanitize Data */
+			req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
+			/** Check validation */
+			req.checkBody({
+				'product_name': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter product name")
+				},
+				'price': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter price")
+				},
+                'discount': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter discount")
+				},
+                'card_type': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter card type")
+				},
+                'product_desc': {
+					notEmpty: true,
+					errorMessage: res.__("Please enter product description")
+				},
+                
+			})
+
+               /** parse Validation array  */
+			let errors = parseValidation(req.validationErrors(), req);
+            if (errors) {
+				/** Send error response */
+				return res.send({
+					status: STATUS_ERROR,
+					message: errors,
+				});
+			}
             collection.updateOne({
                 /** add all product fields */
-                is_active : ACTIVE,
-                is_deleted : NOT_DELETED,
                 _id : ObjectId(productId)
             },{$set:{
                 /** Add all field list which you want update */
+                product_name	:	(req.body.product_name)?req.body.product_name:"",
+                price	:	(req.body.price)?req.body.price:"",
+                discount	:	(req.body.discount)?req.body.discount:"",
+                profession	:	(req.body.profession)?req.body.profession:"",
+                card_type	:	(req.body.card_type)?req.body.card_type:"",
+                product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
+                is_feature : (req.body.is_feature)?req.body.is_feature:"",
+                is_new_release : (req.body.is_new_release)?req.body.is_new_release:"",
+                // product_image: imageResponse.fileName ? imageResponse.fileName : "",
+                created_at 			:	getUtcDate(),
+                updated_at			: 	getUtcDate(),
                 modified_at : getUtcDate()
             }},(err,result)=>{
     
@@ -159,7 +360,6 @@ function Products() {
         let collection     = db.collection("products");
         collection.findOne({
             _id : ObjectId(productId),
-            is_active : ACTIVE
         },(err,result)=>{
             if(!err){
                 return res.send({

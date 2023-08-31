@@ -12,7 +12,7 @@ function Block() {
 	this.getBlockList = (req, res,next)=>{
 		if(isPost(req)){
 			let limit			= (req.body.length) ? parseInt(req.body.length)	: API_LISTING_LIMIT;
-			let skip			= (req.body.skip)	? parseInt(req.body.skip)	: DEFAULT_SKIP;
+			let skip			= (req.body.start)	? parseInt(req.body.start)	: DEFAULT_SKIP;
 			collection.find({
 				is_active : ACTIVE,
 				is_deleted : NOT_DELETED

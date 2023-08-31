@@ -8,11 +8,12 @@ function Auth(req, res) {
 
   /** Function is used to user login **/
   this.login = async(req, res)=> {
+
     req.body          = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
     let username      = (req.body.username) ? req.body.username : '';
     let password      = (req.body.password) ? req.body.password : '';
-    let loginType     = (req.body.loginType) ? req.body.loginType : '';
-    if(!loginType){
+    // let loginType     = (req.body.loginType) ? req.body.loginType : '';
+    if(!username){
       /** Check body */
       req.checkBody({	
         "username" :{
@@ -32,6 +33,7 @@ function Auth(req, res) {
     if(Object.keys(errors).length == 0){
       let searchCondition       = { };
       searchCondition['username']  = { $regex: new RegExp("^" + username, "i") };
+      searchCondition['role_id']  = 1;
 
       /** get user */
       let collection = db.collection('users');
