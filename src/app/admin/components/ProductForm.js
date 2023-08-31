@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
   price: Yup.number()
@@ -15,6 +16,7 @@ const validationSchema = Yup.object().shape({
   is_new_release: Yup.string().required("Is new feature is required"),
   product_desc: Yup.string().required("Product description is required"),
   status: Yup.string().required("Status is required"),
+<<<<<<< HEAD
   images: Yup.array()
     .min(1, "At least one image is required")
     .of(
@@ -53,6 +55,40 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     }
 
     await handleSubmitProduct(formData);
+=======
+  // fileUpload: Yup.array()
+  //   .min(1, "At least one image is required")
+  //   .of(
+  //     Yup.mixed().test("fileSize", "File is too large", (value) => {
+  //       if (!value) return false;
+  //       const maxSize = 5 * 1024 * 1024; // 5 MB
+  //       return value.size <= maxSize;
+  //     })
+  //   ),
+});
+const ProductForm = async ({
+  productValue,
+  handleSubmitProduct,
+  productId,
+}) => {
+  console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj", productId, productValue);
+  // const defaultValues = {
+  //   name: productValue ? productValue.productName : "",
+  //   price: productValue ? productValue.productPrice : "",
+  //   discountPrice: productValue ? productValue.discountPrice : "",
+  //   profession: productValue ? productValue.profession : "",
+  //   cardType: productValue ? productValue.cardType : "",
+  //   isFeature: productValue ? productValue.featured : "",
+  //   isNewFeature: productValue ? productValue.newFeatured : "",
+  //   productDescription: productValue ? productValue.productDescription : "",
+  //   status: productValue ? productValue.status : "",
+  //   fileUpload: [],
+  // };
+
+  const onSubmit = async (values) => {
+    console.log("values", values);
+    await handleSubmitProduct(values);
+>>>>>>> 2191f3a7697f39d46714dbd6ac8bbd4c785b635d
   };
 
 
@@ -66,7 +102,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card p-4">
               <Formik
-                initialValues={defaultValues}
+                // initialValues={defaultValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => await onSubmit(values)}
               >
@@ -303,7 +339,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                       </div>
                     </div>
                     <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
+                      {/* <div className="col-lg-4 col-md-4">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingUpload"
@@ -321,8 +357,13 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                             value={undefined}
                             onChange={(event) => {
                               const files = event.currentTarget.files;
+<<<<<<< HEAD
                               const imageFiles = Array.from(files);
                               setFieldValue("images", imageFiles);
+=======
+                              const images = Array.from(files);                             
+                              setFieldValue("fileUpload", images);
+>>>>>>> 2191f3a7697f39d46714dbd6ac8bbd4c785b635d
                             }}
                           />
                         </div>
@@ -331,7 +372,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           component="div"
                           className="text-danger"
                         />
-                      </div>
+                      </div> */}
                     </div>
 
                     <div>
