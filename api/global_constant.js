@@ -46,6 +46,12 @@ WEBSITE_JS_PLUGIN_PATH			= 	WEBSITE_FILES_URL + "plugins/";
 WEBSITE_MODULES_PATH		    = 	WEBSITE_ROOT_PATH + "modules/";
 /** Front layout root path */
 WEBSITE_LAYOUT_PATH				= 	WEBSITE_ROOT_PATH + "modules/"+FRONT_END_FOLDER_NAME+"/layouts/";
+/** Website upload directory root path */
+WEBSITE_UPLOADS_ROOT_PATH		= 	WEBSITE_ROOT_PATH + "public/uploads/";
+
+/** For product images file directory path and url*/
+PRODUCTS_FILE_PATH	=	WEBSITE_UPLOADS_ROOT_PATH+"products/";
+// PRODUCTS_URL		=	WEBSITE_PUBLIC_UPLOADS_PATH+"products/";
 
 /** Time Configurations */
 DAYS_IN_A_WEEK				= 	7;
@@ -178,7 +184,7 @@ JWT_CONFIG = {
 }
 
 API_URL		=	"/api/";
-API_LISTING_LIMIT = 10;
+API_LISTING_LIMIT = 20;
 
 USER_VERIFICATION_TYPE_EMAIL    = 'email';
 USER_VERIFICATION_TYPE_MOBILE   = 'phone';

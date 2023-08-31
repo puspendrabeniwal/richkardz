@@ -1,20 +1,21 @@
 "use client";
-import React from "react";
+import Link from "next/link";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
+  product_name: Yup.string().required("Name is required"),
   price: Yup.number()
     .typeError("Price must be a number")
     .required("Price is required"),
-  discountPrice: Yup.string().required("Discount price is required"),
+  discount: Yup.string().required("Discount price is required"),
   profession: Yup.string().required("Profession is required"),
-  cardType: Yup.string().required("Card Type is required"),
-  isFeature: Yup.string().required("Is Feature is required"),
-  isNewFeature: Yup.string().required("Is new feature is required"),
-  productDescription: Yup.string().required("Product description is required"),
+  card_type: Yup.string().required("Card Type is required"),
+  is_feature: Yup.string().required("Is Feature is required"),
+  is_new_release: Yup.string().required("Is new feature is required"),
+  product_desc: Yup.string().required("Product description is required"),
   status: Yup.string().required("Status is required"),
-  fileUpload: Yup.array()
+  images: Yup.array()
     .min(1, "At least one image is required")
     .of(
       Yup.mixed().test("fileSize", "File is too large", (value) => {
@@ -26,20 +27,35 @@ const validationSchema = Yup.object().shape({
 });
 const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
   const defaultValues = {
-    name: productValue ? productValue.productName : "",
-    price: productValue ? productValue.productPrice : "",
-    discountPrice: productValue ? productValue.discountPrice : "",
+    product_name: productValue ? productValue.product_name : "",
+    price: productValue ? productValue.price : "",
+    discount: productValue ? productValue.discount : "",
     profession: productValue ? productValue.profession : "",
-    cardType: productValue ? productValue.cardType : "",
-    isFeature: productValue ? productValue.featured : "",
-    isNewFeature: productValue ? productValue.newFeatured : "",
-    productDescription: productValue ? productValue.productDescription : "",
+    card_type: productValue ? productValue.card_type : "",
+    is_feature: productValue ? productValue.is_feature : "",
+    is_new_release: productValue ? productValue.is_new_release : "",
+    product_desc: productValue ? productValue.product_desc : "",
     status: productValue ? productValue.status : "",
-    fileUpload: [],
+    images : []
   };
+
   const onSubmit = async (values) => {
-    await handleSubmitProduct(values);
+
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    let formData = new FormData();
+    formData.append("user_id", loginUser._id);
+    Object.keys(values).forEach(function(key, index) {
+      formData.append(key, values[key]);
+    });
+
+    for (const image of values.images) {
+      formData.append("images", image);
+    }
+
+    await handleSubmitProduct(formData);
   };
+
+
   return (
     <>
       <div
@@ -58,17 +74,18 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                   <Form className="form-design">
                     <div className="d-flex justify-content-between align-items-center">
                       <div>
-                        <h3 className="font-weight-bold">Add Product</h3>
+                        <h3 className="font-weight-bold">{(productValue && Object.keys(productValue).length > 0) ? "Edit" : "Add"} Product</h3>
                       </div>
                       <div>
-                        <button
+                        <Link
+                          href="/admin/products"
                           type="button"
                           className="btn btn-light-primary me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
                         >
                           Back
-                        </button>
+                        </Link>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -82,13 +99,13 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
 
                         <Field
                           type="text"
-                          name="name"
+                          name="product_name"
                           className="form-control"
                           id="floatingname"
                         />
 
                         <ErrorMessage
-                          name="name"
+                          name="product_name"
                           component="div"
                           className="text-danger"
                         />
@@ -124,13 +141,13 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         <div className=" billingForm">
                           <Field
                             type="text"
-                            name="discountPrice"
+                            name="discount"
                             className="form-control"
                             id="floatingDescription"
                           />
                         </div>
                         <ErrorMessage
-                          name="discountPrice"
+                          name="discount"
                           component="div"
                           className="text-danger"
                         />
@@ -152,7 +169,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         >
                           <option value="">Select</option>
                           <option value="1">CA</option>
-                          <option value="2">Doctor</option>
+                          <option value="Entrepreneur">Doctor</option>
                           <option value="3">Lowyers</option>
                           <option value="4">agent</option>
                           <option value="5">Student</option>
@@ -173,20 +190,20 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         </label>
                         <Field
                           as="select"
-                          name="cardType"
+                          name="card_type"
                           className="form-control"
                           id="floatingtype"
                         >
                           <option value="">Select</option>
                           <option value="1">CA</option>
                           <option value="2">Doctor</option>
-                          <option value="3">Lowyers</option>
+                          <option value="PVC Glossy">Lowyers</option>
                           <option value="4">agent</option>
                           <option value="5">Student</option>
                         </Field>
 
                         <ErrorMessage
-                          name="cardType"
+                          name="card_type"
                           component="div"
                           className="text-danger"
                         />
@@ -200,7 +217,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         </label>
                         <Field
                           as="select"
-                          name="isFeature"
+                          name="is_feature"
                           className="form-control"
                           id="floatingFeature"
                         >
@@ -210,7 +227,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         </Field>
 
                         <ErrorMessage
-                          name="isFeature"
+                          name="is_feature"
                           component="div"
                           className="text-danger"
                         />
@@ -222,20 +239,20 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingNewFeature"
                         >
-                          Is New Feature
+                          Is New Release
                         </label>
                         <Field
                           as="select"
-                          name="isNewFeature"
+                          name="is_new_release"
                           className="form-control"
                           id="floatingNewFeature"
                         >
                           <option value="">Select</option>
                           <option value="1">Yes</option>
-                          <option value="2">No</option>
+                          <option value="0">No</option>
                         </Field>
                         <ErrorMessage
-                          name="isNewFeature"
+                          name="is_new_release"
                           component="div"
                           className="text-danger"
                         />
@@ -250,13 +267,13 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         <div className=" billingForm">
                           <Field
                             type="text"
-                            name="productDescription"
+                            name="product_desc"
                             className="form-control"
                             id="floatinDescription"
                           />
                         </div>
                         <ErrorMessage
-                          name="productDescription"
+                          name="product_desc"
                           component="div"
                           className="text-danger"
                         />
@@ -275,8 +292,8 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           id="floatingstatus"
                         >
                           <option value="">Select</option>
-                          <option value="2">Active</option>
-                          <option value="3">Inactive</option>
+                          <option value="1">Active</option>
+                          <option value="0">Inactive</option>
                         </Field>
                         <ErrorMessage
                           name="status"
@@ -296,7 +313,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         <div className=" billingForm">
                           <Field
                             type="file"
-                            name="fileUpload"
+                            name="images"
                             multiple
                             accept="image/*"
                             className="form-control"
@@ -304,16 +321,13 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                             value={undefined}
                             onChange={(event) => {
                               const files = event.currentTarget.files;
-                              const images = Array.from(files);
-                              console.log("filessss", images);
-                              // Manually set the field value to trigger Formik's handling
-                              // of array values.
-                              setFieldValue("fileUpload", images);
+                              const imageFiles = Array.from(files);
+                              setFieldValue("images", imageFiles);
                             }}
                           />
                         </div>
                         <ErrorMessage
-                          name="fileUpload"
+                          name="images"
                           component="div"
                           className="text-danger"
                         />

@@ -768,4 +768,37 @@ isUserLogin = (req, res)=>{
 	})
 }
 
+/**
+ * Function to get data base slug
+ *
+ * @param tableName AS Table Name
+ * @param title AS Title
+ * @param slugField AS Slug Field Name in database
+ *
+ * @return string
+ */
+getDatabaseSlug = (options)=>{
+	return new Promise(resolve=>{
+		let tableName 	= (options && options.table_name)	?	options.table_name	:"";
+		let title		= (options && options.title)		?	options.title		:"";
+		let slugField	= (options && options.slug_field)	?	options.slug_field	:"";
 
+		if(title=='' || tableName == "") return resolve({title : "", options	: options});
+
+		let convertTitleIntoSlug 	=	slug(title).toLowerCase();
+		let collectionName  		= 	db.collection(String(tableName));
+
+		/** Set conditions **/
+		let conditions 			= 	{};
+		conditions[slugField] 	=  	{$regex : new RegExp(convertTitleIntoSlug, "i")};
+
+		/** Get count from table **/
+		collectionName.countDocuments(conditions,(err,count)=>{
+			/** Send response **/
+			resolve({
+				title 	: (count > 0) ? convertTitleIntoSlug+'-'+count :convertTitleIntoSlug
+			});
+		});
+
+	});
+};//end getDatabaseSlug();

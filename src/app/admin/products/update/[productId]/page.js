@@ -1,38 +1,60 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef} from "react";
+import { Toast } from "primereact/toast";
+import instance from "../../../axiosInterceptor";
 import ProductForm from "../../../components/ProductForm";
 const UpdateProduct = ({ params }) => {
+  const toast = useRef(null);
   const [productData, setProductData] = useState(null);
-
-  const geetProductDetails = async () => {
-    // const response = await axios.get(
-    //   `https://getProductDetails/${params.productId}`
-    // );
-
-    setProductData({
-      productName: "xyz",
-      productPrice: "34",
-      discountPrice: "1",
-      profession: "1",
-      cardType: "2",
-      featured: "1",
-      newFeatured: "1",
-      productDescription: "asldfjalskdfjlaksdj",
-      status: "2",
-      fileUpload: [],
-    });
-  };
   useEffect(() => {
-    geetProductDetails();
+    getProductDetails()
+  },[])
+
+  const getProductDetails = async () => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    let formData = new FormData();    //formdata object
+    formData.append("user_id", loginUser._id);   //append the values with key, value pair
+    formData.append("id", params.productId);   //append the values with key, value pair
+
+    instance.post("product/view/"+params.productId, formData)
+        .then(response => {
+            let data = (response.result) ? response.result : {};
+            setProductData(data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+  };
+
+  useEffect(() => {
+    getProductDetails();
   }, []);
 
+
+
+
   const handleUpdateProduct = async (values) => {
-    //API call to submit data for update
-    console.log("Updated submit,data", values);
+    instance.post("product/edit/"+params.productId, values)
+    .then(response => {
+        showMessage(response)
+    })
+    .catch(error => {
+        console.log(error);
+    });
+  };
+
+  const showMessage = (data) => {
+    toast.current.show({
+      severity: (data.status) ? "success" : "error",
+      summary: (data.status) ? "Success" : "Error",
+      detail: data.message,
+      life: 3000,
+    });
   };
 
   return (
     <>
+      <Toast ref={toast} />
       {productData ? (
         <ProductForm
           productValue={productData}

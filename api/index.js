@@ -49,6 +49,13 @@ function haltOnTimedout (req, res, next) {
 const expressValidator = require('express-validator');
 app.use(expressValidator());
 
+
+const fileUpload = require('express-fileupload')
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(fileUpload())
+
 /** bodyParser for node js */
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({

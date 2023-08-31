@@ -1,3 +1,4 @@
+const { log } = require("async");
 const { ObjectId } = require("mongodb");
 
 function Products() {
@@ -61,7 +62,8 @@ function Products() {
             /** Sanitize Data */
 			req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
 
-            console.log(req.body,"req.body")
+            console.log(req.body);
+            console.log(req.files);
 			/** Check validation */
 			req.checkBody({
 				'product_name': {
@@ -99,40 +101,67 @@ function Products() {
 			}
           
 
+            let images = (req.files && req.files.images) ? req.files.images : {};
+			let imageOptions = {
+				'image': images,
+				'filePath': PRODUCTS_FILE_PATH
+			};
 
-            collection.insertOne({
-                /** add all product fields */
-                product_name	:	(req.body.product_name)?req.body.product_name:"",
-                price	        :	(req.body.price)?req.body.price:"",
-                discount	    :	(req.body.discount)?req.body.discount:"",
-                profession	    :	(req.body.profession)?req.body.profession:"",
-                card_type	    :	(req.body.card_type)?req.body.card_type:"",
-                product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
-                status          : 1,
-                is_feature      : (req.body.is_feature)?req.body.is_feature:"",
-                is_new_release  : (req.body.is_new_release)?req.body.is_new_release:"",
-                created_at 		:	getUtcDate(),
-                updated_at		: 	getUtcDate(),
-                // is_deleted : NOT_DELETED
-            },(err,result)=>{
-    
-                if(!err){
-                   
-                    return res.send({
-                        "status"      : API_STATUS_SUCCESS,
-                        "message"     : 'Product has been added successfully',
-                        "error"       : [],
-                        "result"      : {}
-                    });
-                }else{
-                    return res.send({
-                        "status"      : API_STATUS_ERROR,
-                        "message"     : res.__("front.system.something_went_wrong"),
-                        "error"       : [],
-                        "result" : []
-                    });
-                }
-            })
+            // console.log(PRODUCTS_FILE_PATH,"PRODUCTS_FILE_PATH");
+            // var multer  =   require('multer'); 
+            
+            // var storage =   multer.diskStorage({  
+            //     destination: function (req, file, callback) {  
+            //       callback(null, ".uploads/");  
+            //     },  
+            //     filename: function (req, file, callback) {  
+            //         console.log(file,"file");
+            //       callback(null, file.originalname);  
+            //     }  
+            //   });  
+
+            //   console.log(storage.getFilename());
+            //   var upload = multer(storage).single('images'); 
+            //   upload(req,res,function(err) {  
+            //     if(err) {  
+            //         console.log(err,"err");
+            //         return res.end("Error uploading file.");  
+            //     }  
+            //     res.end("File is uploaded successfully!");  
+            // });  
+                collection.insertOne({
+                    /** add all product fields */
+                    product_name	:	(req.body.product_name)?req.body.product_name:"",
+                    price	        :	(req.body.price)?req.body.price:"",
+                    discount	    :	(req.body.discount)?req.body.discount:"",
+                    profession	    :	(req.body.profession)?req.body.profession:"",
+                    card_type	    :	(req.body.card_type)?req.body.card_type:"",
+                    product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
+                    status          :   ACTIVE,
+                    is_feature      :   (req.body.is_feature)?req.body.is_feature:"",
+                    is_new_release  :   (req.body.is_new_release)?req.body.is_new_release:"",
+                    created_at 		:	getUtcDate(),
+                    updated_at		: 	getUtcDate(),
+                    // is_deleted : NOT_DELETED
+                },(err,result)=>{
+        
+                    if(!err){
+                    
+                        return res.send({
+                            "status"      : API_STATUS_SUCCESS,
+                            "message"     : 'Product has been added successfully',
+                            "error"       : [],
+                            "result"      : {}
+                        });
+                    }else{
+                        return res.send({
+                            "status"      : API_STATUS_ERROR,
+                            "message"     : res.__("front.system.something_went_wrong"),
+                            "error"       : [],
+                            "result" : []
+                        });
+                    }
+                })
         }else{
             return res.send({
                 "status"      : API_STATUS_ERROR,
