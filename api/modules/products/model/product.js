@@ -101,16 +101,16 @@ function Products() {
             collection.insertOne({
                 /** add all product fields */
                 product_name	:	(req.body.product_name)?req.body.product_name:"",
-                price	:	(req.body.price)?req.body.price:"",
-                discount	:	(req.body.discount)?req.body.discount:"",
-                profession	:	(req.body.profession)?req.body.profession:"",
-                card_type	:	(req.body.card_type)?req.body.card_type:"",
+                price	        :	(req.body.price)?req.body.price:"",
+                discount	    :	(req.body.discount)?req.body.discount:"",
+                profession	    :	(req.body.profession)?req.body.profession:"",
+                card_type	    :	(req.body.card_type)?req.body.card_type:"",
                 product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
-                status : 1,
-                is_feature : (req.body.is_feature)?req.body.is_feature:"",
-                is_new_release : (req.body.is_new_release)?req.body.is_new_release:"",
-                created_at 			:	getUtcDate(),
-                updated_at			: 	getUtcDate(),
+                status          : 1,
+                is_feature      : (req.body.is_feature)?req.body.is_feature:"",
+                is_new_release  : (req.body.is_new_release)?req.body.is_new_release:"",
+                created_at 		:	getUtcDate(),
+                updated_at		: 	getUtcDate(),
                 // is_deleted : NOT_DELETED
             },(err,result)=>{
     

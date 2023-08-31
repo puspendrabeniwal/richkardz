@@ -1,18 +1,8 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 
-export const Products = () => {
-  // const [productData, setProductData] = useState(null);
-
-  // useEffect(() => {
-  //   getProductDetails();
-  // }, []);
-  // const getProductDetails = async () => {
-  //   const response = await axios.get(`http://localhost:8005/api/products`);
-  //   console.log("product list", response);
-
-  //   // setProductData();
-  // };
+const TestingMonials = () => {
   return (
     <div
       className="content d-flex flex-column flex-column-fluid"
@@ -298,7 +288,7 @@ export const Products = () => {
                           href="../../demo1/dist/apps/user-management/users/view.html"
                           className="text-gray-800 text-hover-primary mb-1"
                         >
-                          Emma Smith
+                          Testing Monials
                         </a>
                         <span>smith@kpmg.com</span>
                       </div>
@@ -368,27 +358,4 @@ export const Products = () => {
   );
 };
 
-export default Products;
-
-// import Link from "next/link";
-// import React from "react";
-// //It is just an example for product listing route page in products folder(Home Page for product listing)
-// function ProductPage() {
-//   const arrayList = [
-//     { id: "234", name: "Neha" },
-//     { id: "34563456", name: "Pooja" },
-//   ];
-//   return (
-//     <div>
-//       {arrayList.map((item) => (
-//         <div>
-//           <Link href={`admin/products/update/${item.id}`}>
-//             <button>Update</button>
-//           </Link>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
-// export default ProductPage;
+export default TestingMonials;
