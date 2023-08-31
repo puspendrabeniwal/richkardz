@@ -1,16 +1,31 @@
 "use client";
 import React from "react";
 import BlockForm from "../../components/BlockForm";
+import axios from "axios";
 
 const AddBlocks = () => {
-  const handleAddProduct = async (data) => {
-    console.log("submit,data", data);
+  const addBlockAPI = async (data) => {
+    const postData = {
+      name: data.blockName,
+      title: data.title,
+      body: data.blockDescription,
+    };
+    console.log("dataa", data);
+    try {
+      const response = await axios.post(
+        `http://localhost:8005/api/blocks/add`,
+        postData
+      );
+      console.log("add Product data", response);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <BlockForm
       productValue={null}
-      handleSubmitProduct={handleAddProduct}
-      productId={null}
+      handleSubmitProduct={addBlockAPI}
+      blockId={null}
     />
   );
 };

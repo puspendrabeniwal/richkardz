@@ -2,18 +2,11 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import Link from "next/link";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  price: Yup.number()
-    .typeError("Price must be a number")
-    .required("Price is required"),
-  discountPrice: Yup.string().required("Discount price is required"),
-  profession: Yup.string().required("Profession is required"),
-  cardType: Yup.string().required("Card Type is required"),
-  isFeature: Yup.string().required("Is Feature is required"),
-  isNewFeature: Yup.string().required("Is new feature is required"),
-  productDescription: Yup.string().required("Product description is required"),
-  status: Yup.string().required("Status is required"),
+  rating: Yup.string().required("Reting is required"),
+  description: Yup.string().required("Description is required"),
   fileUpload: Yup.array()
     .min(1, "At least one image is required")
     .of(
@@ -28,14 +21,8 @@ const validationSchema = Yup.object().shape({
 const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
   const defaultValues = {
     name: productValue ? productValue.productName : "",
-    price: productValue ? productValue.productPrice : "",
-    discountPrice: productValue ? productValue.discountPrice : "",
-    profession: productValue ? productValue.profession : "",
-    cardType: productValue ? productValue.cardType : "",
-    isFeature: productValue ? productValue.featured : "",
-    isNewFeature: productValue ? productValue.newFeatured : "",
-    productDescription: productValue ? productValue.productDescription : "",
-    status: productValue ? productValue.status : "",
+    description: productValue ? productValue.description : "",
+    rating: productValue ? productValue.rating : "",
     fileUpload: [],
   };
   const onSubmit = async (values) => {
@@ -62,14 +49,13 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                         <h3 className="font-weight-bold">Add Product</h3>
                       </div>
                       <div>
-                        <button
+                        <Link
+                          href="/admin/testimonials"
                           type="button"
-                          className="btn btn-light-primary me-3"
-                          data-kt-menu-trigger="click"
-                          data-kt-menu-placement="bottom-end"
+                          className="btn btn-primary"
                         >
                           Back
-                        </button>
+                        </Link>
                       </div>
                     </div>
                     <div className="row mb-3">
@@ -78,7 +64,7 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingname"
                         >
-                          Product Name
+                          Name
                         </label>
 
                         <Field
@@ -97,70 +83,20 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                       <div className="col-lg-4 col-md-4">
                         <label
                           className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingPrice"
-                        >
-                          Price
-                        </label>
-                        <div className=" billingForm">
-                          <Field
-                            type="text"
-                            name="price"
-                            className="form-control"
-                            id="floatingPrice"
-                          />
-                        </div>
-                        <ErrorMessage
-                          name="price"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                      <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingDescription"
                         >
-                          Discount Price
+                          Description
                         </label>
                         <div className=" billingForm">
                           <Field
                             type="text"
-                            name="discountPrice"
+                            name="description"
                             className="form-control"
                             id="floatingDescription"
                           />
                         </div>
                         <ErrorMessage
-                          name="discountPrice"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingprofession"
-                        >
-                          Profession
-                        </label>
-                        <Field
-                          as="select"
-                          name="profession"
-                          className="form-control"
-                          id="floatingprofession"
-                        >
-                          <option value="">Select</option>
-                          <option value="1">CA</option>
-                          <option value="2">Doctor</option>
-                          <option value="3">Lowyers</option>
-                          <option value="4">agent</option>
-                          <option value="5">Student</option>
-                        </Field>
-
-                        <ErrorMessage
-                          name="profession"
+                          name="description"
                           component="div"
                           className="text-danger"
                         />
@@ -168,119 +104,20 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                       <div className="col-lg-4 col-md-4">
                         <label
                           className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingtype"
+                          htmlFor="floatingrating"
                         >
-                          Card Type
-                        </label>
-                        <Field
-                          as="select"
-                          name="cardType"
-                          className="form-control"
-                          id="floatingtype"
-                        >
-                          <option value="">Select</option>
-                          <option value="1">CA</option>
-                          <option value="2">Doctor</option>
-                          <option value="3">Lowyers</option>
-                          <option value="4">agent</option>
-                          <option value="5">Student</option>
-                        </Field>
-
-                        <ErrorMessage
-                          name="cardType"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                      <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingFeature"
-                        >
-                          Is Feature
-                        </label>
-                        <Field
-                          as="select"
-                          name="isFeature"
-                          className="form-control"
-                          id="floatingFeature"
-                        >
-                          <option value="">Select</option>
-                          <option value="1">Yes</option>
-                          <option value="2">No</option>
-                        </Field>
-
-                        <ErrorMessage
-                          name="isFeature"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingNewFeature"
-                        >
-                          Is New Feature
-                        </label>
-                        <Field
-                          as="select"
-                          name="isNewFeature"
-                          className="form-control"
-                          id="floatingNewFeature"
-                        >
-                          <option value="">Select</option>
-                          <option value="1">Yes</option>
-                          <option value="2">No</option>
-                        </Field>
-                        <ErrorMessage
-                          name="isNewFeature"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                      <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatinDescription"
-                        >
-                          Product Description
+                          Rating
                         </label>
                         <div className=" billingForm">
                           <Field
                             type="text"
-                            name="productDescription"
+                            name="rating"
                             className="form-control"
-                            id="floatinDescription"
+                            id="floatingrating"
                           />
                         </div>
                         <ErrorMessage
-                          name="productDescription"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                      <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingstatus"
-                        >
-                          Status
-                        </label>
-                        <Field
-                          as="select"
-                          name="status"
-                          className="form-control"
-                          id="floatingstatus"
-                        >
-                          <option value="">Select</option>
-                          <option value="2">Active</option>
-                          <option value="3">Inactive</option>
-                        </Field>
-                        <ErrorMessage
-                          name="status"
+                          name="rating"
                           component="div"
                           className="text-danger"
                         />

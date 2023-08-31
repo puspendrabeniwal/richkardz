@@ -2,6 +2,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   price: Yup.number()
@@ -14,30 +15,37 @@ const validationSchema = Yup.object().shape({
   isNewFeature: Yup.string().required("Is new feature is required"),
   productDescription: Yup.string().required("Product description is required"),
   status: Yup.string().required("Status is required"),
-  fileUpload: Yup.array()
-    .min(1, "At least one image is required")
-    .of(
-      Yup.mixed().test("fileSize", "File is too large", (value) => {
-        if (!value) return false;
-        const maxSize = 5 * 1024 * 1024; // 5 MB
-        return value.size <= maxSize;
-      })
-    ),
+  // fileUpload: Yup.array()
+  //   .min(1, "At least one image is required")
+  //   .of(
+  //     Yup.mixed().test("fileSize", "File is too large", (value) => {
+  //       if (!value) return false;
+  //       const maxSize = 5 * 1024 * 1024; // 5 MB
+  //       return value.size <= maxSize;
+  //     })
+  //   ),
 });
-const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
-  const defaultValues = {
-    name: productValue ? productValue.productName : "",
-    price: productValue ? productValue.productPrice : "",
-    discountPrice: productValue ? productValue.discountPrice : "",
-    profession: productValue ? productValue.profession : "",
-    cardType: productValue ? productValue.cardType : "",
-    isFeature: productValue ? productValue.featured : "",
-    isNewFeature: productValue ? productValue.newFeatured : "",
-    productDescription: productValue ? productValue.productDescription : "",
-    status: productValue ? productValue.status : "",
-    fileUpload: [],
-  };
+const ProductForm = async ({
+  productValue,
+  handleSubmitProduct,
+  productId,
+}) => {
+  console.log("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj", productId, productValue);
+  // const defaultValues = {
+  //   name: productValue ? productValue.productName : "",
+  //   price: productValue ? productValue.productPrice : "",
+  //   discountPrice: productValue ? productValue.discountPrice : "",
+  //   profession: productValue ? productValue.profession : "",
+  //   cardType: productValue ? productValue.cardType : "",
+  //   isFeature: productValue ? productValue.featured : "",
+  //   isNewFeature: productValue ? productValue.newFeatured : "",
+  //   productDescription: productValue ? productValue.productDescription : "",
+  //   status: productValue ? productValue.status : "",
+  //   fileUpload: [],
+  // };
+
   const onSubmit = async (values) => {
+    console.log("values", values);
     await handleSubmitProduct(values);
   };
   return (
@@ -50,7 +58,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card p-4">
               <Formik
-                initialValues={defaultValues}
+                // initialValues={defaultValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values) => await onSubmit(values)}
               >
@@ -286,7 +294,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                       </div>
                     </div>
                     <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
+                      {/* <div className="col-lg-4 col-md-4">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingUpload"
@@ -304,10 +312,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                             value={undefined}
                             onChange={(event) => {
                               const files = event.currentTarget.files;
-                              const images = Array.from(files);
-                              console.log("filessss", images);
-                              // Manually set the field value to trigger Formik's handling
-                              // of array values.
+                              const images = Array.from(files);                             
                               setFieldValue("fileUpload", images);
                             }}
                           />
@@ -317,7 +322,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           component="div"
                           className="text-danger"
                         />
-                      </div>
+                      </div> */}
                     </div>
 
                     <div>

@@ -3,42 +3,42 @@ import React, { useEffect, useState } from "react";
 import BlockForm from "@/app/admin/components/BlockForm";
 
 const UpdateBlock = ({ params }) => {
-  const [productData, setProductData] = useState(null);
-
-  const geetProductDetails = async () => {
-    // const response = await axios.get(
-    //   `https://getProductDetails/${params.productId}`
-    // );
-
-    setProductData({
-      productName: "xyz",
-      productPrice: "34",
-      discountPrice: "1",
-      profession: "1",
-      cardType: "2",
-      featured: "1",
-      newFeatured: "1",
-      productDescription: "asldfjalskdfjlaksdj",
-      status: "2",
-      fileUpload: [],
-    });
-  };
+  const [blockData, setBlockData] = useState(null);
+  console.log("blockData", blockData);
   useEffect(() => {
-    geetProductDetails();
+    getBlockAPI();
   }, []);
 
-  const handleUpdateProduct = async (values) => {
-    //API call to submit data for update
-    console.log("Updated submit,data", values);
+  const getBlockAPI = async () => {
+    const response = await axios.get(`http://localhost:8005/api/blocks`);
+    console.log("responseeeee block api", response);
+    setBlockData(response);
   };
 
+  const editBlockAPI = async (data) => {
+    const postData = {
+      name: data.blockName,
+      title: data.title,
+      body: data.blockDescription,
+    };
+    console.log("dataa", data);
+    try {
+      const response = await axios.post(
+        `http://localhost:8005/api/testimonials/edit/${params.blockId}`,
+        postData
+      );
+      console.log("add Product data", response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
-      {productData ? (
+      {blockData ? (
         <BlockForm
-          productValue={productData}
-          handleSubmitProduct={handleUpdateProduct}
-          productId={params.productId}
+          productValue={blockData}
+          handleSubmitProduct={editBlockAPI}
+          blockId={params.blockId}
         />
       ) : (
         <div>Loading...</div>
