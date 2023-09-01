@@ -5,29 +5,9 @@ import * as Yup from 'yup';
 import { Toast } from "primereact/toast";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
-const  UserProfile = ()=> {
-    const [userDetail, setUserDetail] = useState({});
+const  ChangePassword = ()=> {
     const toast = useRef(null);
-    useEffect(() => {
-        getUserDetail()
-    },[])
 
-
-    const getUserDetail = ()=>{
-        let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-        let formData = new FormData();    //formdata object
-        formData.append("user_id", loginUser._id);   //append the values with key, value pair
-
-        instance.post("getUserDetail", formData)
-            .then(response => {
-                let userProfile = (response.result) ? response.result : {};
-                setUserDetail(userProfile);
-            })
-            .catch(error => {
-                showMessage();
-                console.log(error);
-            });
-    }
     const showMessage = (data) => {
         toast.current.show({
           severity: (data.status) ? "success" : "error",
@@ -39,31 +19,41 @@ const  UserProfile = ()=> {
 
 
     const validationSchema = Yup.object({
-        full_name: Yup.string().required('Name is required'),
-        email: Yup.string().email('Invalid email address').required('Email is required'),
+        old_password: Yup.string()
+            .required('Password is required')
+            .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{6,20}$/,
+            'Must contain at least 6 Characters, 1 Uppercase, 1 Lowercase, 1 Special Character, and 1 Number'
+          ),
+        new_password: Yup.string()
+            .required('New password is required')
+            .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*[\]{}()?"\\,><':;|_~`=+-])[a-zA-Z\d!@#$%^&*[\]{}()?"\\,><':;|_~`=+-]{6,20}$/,
+            'Must contain at least 6 Characters, 1 Uppercase, 1 Lowercase, 1 Special Character, and 1 Number',
+            ),
+        confirm_password: Yup.string().required('Confirm password is required').oneOf([Yup.ref('new_password'), null], 'Confirm Password does not match with password'),
+
         // Define more validation rules for other fields
     });
 
 
     const initialValues = {
-        full_name: (userDetail.full_name) ? userDetail.full_name : '',
-        email: (userDetail.email) ? userDetail.email : '',
-        // Add more fields with their initial values
+        old_password: '',
+        new_password: '',
+        confirm_password: '',
     };
 
    
     const onSubmit = async(values, { setSubmitting, resetForm }) => {
         setSubmitting(false)
-        let formData = new FormData();    //formdata object
+        let formData = new FormData();
         let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-        formData.append("user_id", loginUser._id);   //append the values with key, value pair
-        formData.append("full_name", values.full_name);   //append the values with key, value pair
-        formData.append("email", values.email);   //append the values with key, value pair
+        formData.append("user_id", loginUser._id);
+        formData.append("old_password", values.old_password);
+        formData.append("new_password", values.new_password);
+        formData.append("confirm_password", values.confirm_password);
 
-        instance.post("updateUserProfile", formData)
+        instance.post("change_password", formData)
         .then(response => {
             showMessage(response);
-            getUserDetail();
             resetForm()
         })
         .catch(error => {
@@ -80,7 +70,7 @@ const  UserProfile = ()=> {
                 <div id="kt_toolbar_container" className="container-fluid d-flex flex-stack">
                     <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
                         <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                        <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">Edit Profile</span>
+                        <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">Change Password</span>
                         {/* <span className="text-muted fs-7 fw-bold mt-2">#XRS-45670</span> */}
                         </h1>
 
@@ -143,46 +133,39 @@ const  UserProfile = ()=> {
                         <Form >
                             <div className="card-body border-top p-9">
                                 <div className="row mb-6">
-                                    <label className="col-lg-4 col-form-label fw-semibold fs-6">Avatar</label>   
-                                    <div className="col-lg-8">
-                                        <div className="image-input image-input-outline" data-kt-image-input="true" style={{"backgroundImage": "url(/metronic8/demo1/assets/media/svg/avatars/blank.svg)"}}>
-                                            <div className="image-input-wrapper w-125px h-125px" style={{"backgroundImage": "url(/admin/assets/media/avatars/300-1.jpg)"}}></div>
-                                            <label className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-                                                <i className="ki-duotone ki-pencil fs-7"><span className="path1"></span><span className="path2"></span></i>
-                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg"/>
-                                                <input type="hidden" name="avatar_remove"/>
-                                            </label>
-                                            <span className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-                                                <i className="ki-duotone ki-cross fs-2"><span className="path1"></span><span className="path2"></span></i>                            </span>
-                                            <span className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-                                                <i className="ki-duotone ki-cross fs-2"><span className="path1"></span><span className="path2"></span></i>                            </span>
-                                        </div>
-                                        <div className="form-text">Allowed file types:  png, jpg, jpeg.</div>
-                                    </div>
-                                </div>
-
-                                <div className="row mb-6">
-                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
+                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">Old Pasword</label>
                                     <div className="col-lg-8 fv-row">
                                         <Field  
-                                            type="text" 
-                                            name="full_name" 
+                                            type="password" 
+                                            name="old_password" 
                                             className="form-control form-control-lg form-control-solid" 
-                                            placeholder="Full Name" 
+                                            placeholder="Old Password" 
                                         />
-                                        <ErrorMessage name="full_name" className="errorMessage" component="div" />
+                                        <ErrorMessage name="old_password" className="errorMessage" component="div" />
                                     </div>
                                 </div>
                                 <div className="row mb-6">
-                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">Email</label>
+                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">New Password</label>
                                     <div className="col-lg-8 fv-row">
                                         <Field  
-                                            type="text" 
-                                            name="email" 
+                                            type="password" 
+                                            name="new_password" 
                                             className="form-control form-control-lg form-control-solid" 
-                                            placeholder="Email Address" 
+                                            placeholder="New Password" 
                                         />
-                                        <ErrorMessage name="email" className="errorMessage" component="div" />
+                                        <ErrorMessage name="new_password" className="errorMessage" component="div" />
+                                    </div>
+                                </div>
+                                <div className="row mb-6">
+                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">Confirm Password</label>
+                                    <div className="col-lg-8 fv-row">
+                                        <Field  
+                                            type="password" 
+                                            name="confirm_password" 
+                                            className="form-control form-control-lg form-control-solid" 
+                                            placeholder="Confirm Pasword" 
+                                        />
+                                        <ErrorMessage name="confirm_password" className="errorMessage" component="div" />
                                     </div>
                                 </div>
                             </div>
@@ -201,4 +184,4 @@ const  UserProfile = ()=> {
   )
 }
 
-export default withAuth(UserProfile);
+export default withAuth(ChangePassword);

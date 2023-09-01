@@ -4,7 +4,6 @@ import { useRouter, usePathname } from 'next/navigation'
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
-import Breadcrumbs from './components/Breadcrumbs';
 
 export default function adminLayout({ children }) {
   const pathname  = usePathname();
@@ -27,7 +26,6 @@ export default function adminLayout({ children }) {
             <Sidebar />
             <div className="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
               <Header />
-              <Breadcrumbs data={pathname}/>
                 {children}
                 <Footer />  
             </div>

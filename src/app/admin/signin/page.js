@@ -39,7 +39,7 @@ const Signin = () => {
   };
   return (
     <>
-    {(!user) ?     <div className="d-flex flex-column flex-root" id="kt_app_root">
+    {(!user) ? <div className="d-flex flex-column flex-root" id="kt_app_root">
     
     <div className="d-flex flex-column flex-lg-row flex-column-fluid">
   

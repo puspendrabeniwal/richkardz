@@ -1,10 +1,18 @@
+"use client"
 import Link from "next/link";
+import React, { useEffect, useState} from "react";
 const Header = () => {
-
+    const [loginuser, setLoginUser] = useState({});
+    useEffect(() => {
+        setLoginUser(JSON.parse(localStorage.getItem("loginInfo")))
+    },[])
+    
     const logout =()=>{
         localStorage.removeItem("loginInfo")
         window.location.replace('/admin/signin')
     }
+    
+    console.log(loginuser, "loginUser")
     return (
         <div id="kt_header"  className="header align-items-stretch">
         <div className="container-fluid d-flex align-items-stretch justify-content-between">
@@ -194,9 +202,10 @@ const Header = () => {
                                         <img alt="Logo" src="../admin/assets/media/avatars/300-1.jpg" />
                                     </div>
                                     <div className="d-flex flex-column">
-                                        <div className="fw-bolder d-flex align-items-center fs-5">Max Smith
-                                        <span className="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Pro</span></div>
-                                        <a href="#" className="fw-bold text-muted text-hover-primary fs-7">max@kt.com</a>
+                                        <div className="fw-bolder d-flex align-items-center fs-5">{loginuser?.full_name}
+                                        {/* <span className="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Pro</span> */}
+                                        </div>
+                                        <a href="#" className="fw-bold text-muted text-hover-primary fs-7">{loginuser?.email}</a>
                                     </div>
                                 </div>
                             </div>
@@ -246,7 +255,7 @@ const Header = () => {
                                 <a href="../../demo1/dist/account/statements.html" className="menu-link px-5">My Statements</a>
                             </div> */}
 
-                            <div className="separator my-2"></div>
+                            
 
                             {/* <div className="menu-item px-5" data-kt-menu-trigger="hover" data-kt-menu-placement="left-start">
                                 <a href="#" className="menu-link px-5">
@@ -299,6 +308,10 @@ const Header = () => {
                                 <Link href="/admin/user_profile" className="menu-link px-5">Account Settings</Link>
                             </div>
 
+                            <div className="menu-item px-5 my-1">
+                                <Link href="/admin/change_password" className="menu-link px-5">Change Password</Link>
+                            </div>
+                            <div className="separator my-2"></div>
                             <div className="menu-item px-5">
                                 <Link href="#" onClick={logout} className="menu-link px-5">Sign Out</Link>
                             </div>

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+  import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 const validationSchema = Yup.object().shape({
@@ -26,6 +26,9 @@ const validationSchema = Yup.object().shape({
       })
     ),
 });
+
+
+
 const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
   const defaultValues = {
     product_name: productValue ? productValue.product_name : "",
@@ -73,22 +76,6 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
               >
                 {({ setFieldValue }) => (
                   <Form className="form-design">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h3 className="font-weight-bold">{(productValue && Object.keys(productValue).length > 0) ? "Edit" : "Add"} Product</h3>
-                      </div>
-                      <div>
-                        <Link
-                          href="/admin/products"
-                          type="button"
-                          className="btn btn-light-primary me-3"
-                          data-kt-menu-trigger="click"
-                          data-kt-menu-placement="bottom-end"
-                        >
-                          Back
-                        </Link>
-                      </div>
-                    </div>
                     <div className="row mb-3">
                       <div className="col-lg-4 col-md-4">
                         <label
@@ -258,27 +245,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                      <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatinDescription"
-                        >
-                          Product Description
-                        </label>
-                        <div className=" billingForm">
-                          <Field
-                            type="text"
-                            name="product_desc"
-                            className="form-control"
-                            id="floatinDescription"
-                          />
-                        </div>
-                        <ErrorMessage
-                          name="product_desc"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
+  
                       <div className="col-lg-4 col-md-4">
                         <label
                           className="col-form-label required fw-semibold fs-6"
@@ -302,8 +269,6 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                    </div>
-                    <div className="row mb-3">
                       <div className="col-lg-4 col-md-4">
                         <label
                           className="col-form-label required fw-semibold fs-6"
@@ -329,6 +294,31 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         </div>
                         <ErrorMessage
                           name="images"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                    </div>
+                    <div className="fv-row mb-3">
+                      <div className="col-lg-12 col-md-12">
+                        <label
+                          className="col-form-label required fw-semibold fs-6"
+                          htmlFor="floatinDescription"
+                        >
+                          Product Description
+                        </label>
+                        <div className=" billingForm">
+                        <Field 
+                          as="textarea" 
+                          name="product_desc" 
+                          className="form-control" 
+                          rows="4" 
+                          cols="40"
+                        >
+                        </Field>
+                        </div>
+                        <ErrorMessage
+                          name="product_desc"
                           component="div"
                           className="text-danger"
                         />

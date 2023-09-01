@@ -16,8 +16,8 @@ function Block() {
       let skip = req.body.start ? parseInt(req.body.start) : DEFAULT_SKIP;
       collection
         .find({
-          is_active: ACTIVE,
-          is_deleted: NOT_DELETED,
+          // is_active: ACTIVE,
+          // is_deleted: NOT_DELETED,
         })
         .skip(skip)
         .limit(limit)
@@ -328,5 +328,38 @@ function Block() {
       });
     }
   }; //End addBlock()
+
+  /**
+   * Function for get block detail
+   *
+   * @param req 	As	Request Data
+   * @param res 	As	Response Data
+   * @param next 	As 	Callback argument to the middleware function
+   *
+   * @return render/json
+   */
+  this.getBlock =(req, res, next)=>{
+    if (isPost(req)) {
+      /** Sanitize Data */
+      req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
+      getBlockDetails(req, res, next).then(
+        (response) => {
+          return res.send({
+            status: API_STATUS_SUCCESS,
+            message: "",
+            error: [],
+            result: response,
+          });
+        }
+      )
+    } else {
+      return res.send({
+        status: API_STATUS_ERROR,
+        message: res.__("front.system.something_went_wrong"),
+        error: [],
+        result: [],
+      });
+    }
+  }
 }
 module.exports = new Block();

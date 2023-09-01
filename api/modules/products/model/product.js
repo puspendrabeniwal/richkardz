@@ -15,11 +15,24 @@ function Products() {
         if (isPost(req)) {
             let limit = (req.body.length) ? parseInt(req.body.length) : API_LISTING_LIMIT;
             let skip = (req.body.start) ? parseInt(req.body.start) : DEFAULT_SKIP;
+            let productName = (req.body.product_name) ? req.body.product_name : "";
+            let profession = (req.body.profession) ? req.body.profession : "";
+            let cardType = (req.body.card_type) ? req.body.card_type : "";
+            let price = (req.body.price) ? Number(req.body.price) : "";
+            let discount = (req.body.discount) ? Number(req.body.discount) : "";
+
+            let searchCondition = {
+                status : 1
+            }
+
+            if(price) searchCondition['price'] = price;
+            if(discount) searchCondition['discount'] = discount;
+            if(profession) searchCondition['profession'] = profession;
+            if(cardType) searchCondition['card_type'] = cardType;
+            if(productName) searchCondition['product_name'] = new RegExp(productName, "i");
+
             let collection     = db.collection("products");
-            collection.find({
-                status : 1,
-                // is_deleted : NOT_DELETED
-            }).skip(skip).limit(limit).toArray((err,result)=>{
+            collection.find(searchCondition).sort({created_at: -1}).skip(skip).limit(limit).toArray((err,result)=>{
                 if(!err){
                     return res.send({
                         "status"      : API_STATUS_SUCCESS,
@@ -138,8 +151,8 @@ function Products() {
                     card_type	    :	(req.body.card_type)?req.body.card_type:"",
                     product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
                     status          :   ACTIVE,
-                    is_feature      :   (req.body.is_feature)?req.body.is_feature:"",
-                    is_new_release  :   (req.body.is_new_release)?req.body.is_new_release:"",
+                    is_feature      :   (req.body.is_feature)? Number(req.body.is_feature):0,
+                    is_new_release  :   (req.body.is_new_release)? Number(req.body.is_new_release) :0,
                     created_at 		:	getUtcDate(),
                     updated_at		: 	getUtcDate(),
                     // is_deleted : NOT_DELETED
@@ -241,9 +254,9 @@ function Products() {
                 profession	:	(req.body.profession)?req.body.profession:"",
                 card_type	:	(req.body.card_type)?req.body.card_type:"",
                 product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
-                status : 1,
-                is_feature : (req.body.is_feature)?req.body.is_feature:"",
-                is_new_release : (req.body.is_new_release)?req.body.is_new_release:"",
+                status : ACTIVE,
+                is_feature : (req.body.is_feature)? Number(req.body.is_feature):0,
+                is_new_release : (req.body.is_new_release)? Number(req.body.is_new_release):0,
                 product_image: imageResponse.fileName ? imageResponse.fileName : "",
                 created_at 			:	getUtcDate(),
                 updated_at			: 	getUtcDate(),

@@ -75,7 +75,7 @@ function Auth(req, res) {
                 let data      = {user_key : result._id, email : result.email}; 
                 let token     = generateJWT(data);
                 response['token']   = token;
-                response['result']  = {_id : result._id, role:result.role};
+                response['result']  = {_id : result._id, full_name : result.full_name, email: result.email, role:result.role};
               
               response['errors']   = {};
               return res.send(response);
@@ -556,171 +556,35 @@ function Auth(req, res) {
   }
 
 
-
-
-  /**
-   * Function for get country data list
-   *
-   * @param req  As Request Data
-   * @param res  As Response Data
-   * @param next As Next Data
-   *
-   * @return render/json
-  */
-  this.getCountryData = async(req, res,next)=>{
-      req.body        = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
-      const country  = db.collection("country");      
-      asyncParallel({
-            countryPhoneCodeList : (callback) => {
-              country.aggregate([
-              {$project:{
-                _id   : 0,
-                label : "$phonecode",
-                value : "$id",
-              }}
-              ]).toArray((err, result) => {
-                callback(err, result);
-              });
-            },
-            countryCurrencyList : (callback) => {
-              country.aggregate([
-              {$project:{
-                _id   : 0,
-                currency : "$currency",
-                currency_symbol : "$currency_symbol",
-                value : "$id",
-              }}
-              ]).toArray((err, result) => {
-                let newArray  = []
-              
-                asyncEach(result, async (records, childCallback) =>{
-                  newArray.push({
-                    label : records.currency+' ('+records.currency_symbol+')',
-                    value : records.value
-                  })
-                   return childCallback();
-                }, function() {
-                  callback(err, newArray)
-
-                });
-              });
-            },
-            countryCurrencyNameList : (callback) => {
-              country.aggregate([
-              {$project:{
-                _id   : 0,
-                currency : "$currency",
-                currency_symbol : "$currency_symbol",
-                value : "$id",
-              }}
-              ]).toArray((err, result) => {
-                let newArray  = []
-              
-                asyncEach(result, async (records, childCallback) =>{
-                  newArray.push({
-                    label : records.currency,
-                    value : records.value
-                  })
-                   return childCallback();
-                }, function() {
-                  callback(err, newArray)
-
-                });
-              });
-            },
-            countryList : (callback) => {
-              country.aggregate([
-              { $lookup:
-                 {
-                   from: "state",
-                   let: { countryId: "$id"},
-                   pipeline: [
-                        { $match:
-                            { $expr:
-                                { $and:
-                                    [
-                                       { $eq: ["$country_id", "$$countryId" ] }
-                                    ]
-                                }
-                            }
-                        },
-                        {$project:{
-                            _id   : 0,
-                            label : "$name",
-                            value : "$id",
-                        }},
-                        { $lookup:
-                             {
-                               from: "city",
-                               let: { stateId: "$value"},
-                               pipeline: [
-                                    { $match:
-                                        { $expr:
-                                            { $and:
-                                                [
-                                                   { $eq: ["$state_id", "$$stateId" ] }
-                                                ]
-                                            }
-                                        }
-                                    },
-                                    {$project:{
-                                        _id   : 0,
-                                        value : "$id",
-                                        label : "$name",
-                                    }},
-                                ],
-                                as: "children"
-                                }
-                         }
-                    ],
-                    as: "states"
-                    }
-              },
-              {$project:{
-                _id   : 0,
-                label : "$name",
-                value : "$id",
-                children:"$states"
-              }}
-              ]).toArray((err, result) => {
-                callback(err, result);
-              });
-            }
-        },(err,response) => {
-            if(err) return next(err);
-
-            /** send response **/
-            return res.send({
-                status        : API_STATUS_SUCCESS,
-                message       : '',
-                result                  : (response.countryList)   ? response.countryList : [],
-                countryCurrencyList     : (response.countryCurrencyList)   ? response.countryCurrencyList : [],
-                countryCurrencyNameList     : (response.countryCurrencyNameList)   ? response.countryCurrencyNameList : [],
-                countryPhoneCodeList    : (response.countryPhoneCodeList)       ? response.countryPhoneCodeList : []
-            })  
-        });
-
-
-  };//End getCountryData()
-
-
-
-  /** Function is used to reset password **/
-  this.resetPassword = async (req, res,next)=> {
+  /** Function is used to change password **/
+  this.changePassword = async (req, res,next)=> {
     req.body            = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
-    let validateString  = (req.body.validate_string)  ? req.body.validate_string : '';
-    let password        = (req.body.password)         ? req.body.password : '';
+    let userId          = (req.body.user_id)     ? req.body.user_id : '';
+    let oldPassword     = (req.body.old_password)     ? req.body.old_password : '';
+    let newPassword     = (req.body.new_password)     ? req.body.new_password : '';
     let confirmPassword = (req.body.confirm_password) ? req.body.confirm_password : '';
 
-    if(!validateString) return res.send({
+    if(!oldPassword) return res.send({
       status		:	API_STATUS_ERROR,
-      message		:	res.__("front.user.invalid_request"),
+      message		:	"Invalid Request",
       result    : {},
       error		  :	[],
     });
 
-    req.checkBody({	
-      "password":{
+    req.checkBody({
+      "old_password":{
+        isLength		:{
+          options    : {min : PASSWORD_MIN_LENGTH , max : PASSWORD_MAX_LENGTH},
+          errorMessage:res.__("admin.user.password_should_be_6_characters_long")
+        },
+        matches	 : {
+          options    	: PASSWORD_ALPHANUMERIC_REGEX,
+          errorMessage:res.__("admin.user.password.it_should_be_alphanumeric")
+        },
+        notEmpty		:true,
+        errorMessage	:res.__("admin.user.please_enter_password")
+      },
+      "new_password":{
         isLength		:{
           options    : {min : PASSWORD_MIN_LENGTH , max : PASSWORD_MAX_LENGTH},
           errorMessage:res.__("admin.user.password_should_be_6_characters_long")
@@ -747,44 +611,72 @@ function Auth(req, res) {
     });
 
     /** Match password with confirm password */
-    if (password && confirmPassword) {
-      req.checkBody("confirm_password", "admin.user.password_does_not_matched").equals(req.body.password);
+    if (newPassword && confirmPassword) {
+      req.checkBody("confirm_password", "admin.user.password_does_not_matched").equals(req.body.new_password);
     }
 
-    let encryptPassword 	= bcrypt.hashSync(password, BCRYPT_PASSWORD_SALT_ROUNDS);
+
+    let encryptNewPassword 	= bcrypt.hashSync(newPassword, BCRYPT_PASSWORD_SALT_ROUNDS);
     let errors  = parseValidationFront(req.validationErrors());
     errors      = (errors && Object.keys(errors).length>0) ? errors :  {};
-
     if(Object.keys(errors).length == 0){
-
-        /** search condition */
-      let conditionSearch = { 
-        is_deleted  : NOT_DELETED, 
-        is_active   : ACTIVE,
-        validate_string : validateString
-      };
-  
-      /** update condition */
-      let conditionUpdate = {password : encryptPassword};
-
+      /** get user */
       let collection = db.collection('users');
-      collection.updateOne(conditionSearch,{$set:conditionUpdate},(err, result)=>{
-        if(!err && result && result.modifiedCount > NOT){
-          return res.send({
-            status		:	API_STATUS_SUCCESS,
-            message		:	res.__("Password has been changed successfully."),
-            result    : {},
-            error		  :	[],
-          });
-        }else{
-          return res.send({
-            status		:	API_STATUS_ERROR,
-            message		:	res.__("Something went wrong please try again later")	,
-            result    : {},
-            error		  :	[],
-          });
-        }
-      });
+      collection.findOne({_id : ObjectId(userId)}, async (err, result)=>{
+       let userDetail = (result && Object.keys(result).length > NOT) ? result :{};
+         if(Object.keys(userDetail).length == NOT){
+           return res.send({
+             status		:	API_STATUS_ERROR,
+             message		:	"Invalid login credentials.",
+             result    : {},
+             errors		:	{},
+           });
+         }
+
+         const bcrypt = require("bcryptjs");
+          bcrypt.compare(oldPassword, result.password, async (err, isMatch) => {
+            if(result && Object.keys(result).length > NOT && isMatch){
+              /** search condition */
+              let conditionSearch = {
+                _id         : ObjectId(userId)
+              };
+          
+              /** update condition */
+              let conditionUpdate = {password : encryptNewPassword}
+              collection.updateOne(conditionSearch,{$set:conditionUpdate},(err, result)=>{
+                if(!err && result && result.modifiedCount > NOT){
+                  return res.send({
+                    status		:	API_STATUS_SUCCESS,
+                    message		:	"Password has been changed successfully.",
+                    result    : {},
+                    error		  :	[],
+                  });
+                }else{
+                  return res.send({
+                    status		:	API_STATUS_ERROR,
+                    message		:	"Something went wrong",
+                    result    : {},
+                    error		  :	[],
+                  });
+                }
+              });
+            }else{
+              return res.send({
+                status		:	API_STATUS_ERROR,
+                message		:	"Old Password does not match",
+                result    : {},
+                errors		:	{},
+              });
+            }
+          })
+      })
+
+
+
+
+    
+
+
     }else{
       return res.send({
         status		:	API_STATUS_ERROR,
