@@ -1,12 +1,16 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
+import { Editor } from "primereact/editor";
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   rating: Yup.string().required("Reting is required"),
-  description: Yup.string().required("Description is required"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(10, "Description is too short"),
   fileUpload: Yup.array()
     .min(1, "At least one image is required")
     .of(
@@ -18,15 +22,32 @@ const validationSchema = Yup.object().shape({
     ),
 });
 
-const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
+const MonialsForm = ({ monialValue, handleSubmitProduct, MonialId }) => {
+  const [editorValue, setEditorValue] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+
+  const handleEditorChange = (e) => {
+    const descriptionText = e.htmlValue; // Assuming e.htmlValue contains the HTML content
+    setEditorValue(e.htmlValue);
+    setDescriptionError(validateDescription(descriptionText));
+  };
+  // Your validation function
+  const validateDescription = (description) => {
+    if (!description || description.trim() === "") {
+      return "Description is required";
+    }
+    return "";
+  };
+
   const defaultValues = {
-    name: productValue ? productValue.productName : "",
-    description: productValue ? productValue.description : "",
-    rating: productValue ? productValue.rating : "",
+    name: monialValue ? monialValue.productName : "",
+    description: monialValue ? monialValue.description : "",
+    rating: monialValue ? monialValue.rating : "",
     fileUpload: [],
   };
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, { setSubmitting }) => {
     await handleSubmitProduct(values);
+    setSubmitting(false);
   };
   return (
     <>
@@ -42,11 +63,11 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                 validationSchema={validationSchema}
                 onSubmit={async (values) => await onSubmit(values)}
               >
-                {({ setFieldValue }) => (
+                {({ isSubmitting, setFieldValue }) => (
                   <Form className="form-design">
                     <div className="d-flex justify-content-between align-items-center">
                       <div>
-                        <h3 className="font-weight-bold">Add Product</h3>
+                        <h3 className="font-weight-bold">Testing Monial</h3>
                       </div>
                       <div>
                         <Link
@@ -59,7 +80,7 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                       </div>
                     </div>
                     <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingname"
@@ -80,28 +101,8 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                      <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingDescription"
-                        >
-                          Description
-                        </label>
-                        <div className=" billingForm">
-                          <Field
-                            type="text"
-                            name="description"
-                            className="form-control"
-                            id="floatingDescription"
-                          />
-                        </div>
-                        <ErrorMessage
-                          name="description"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                      <div className="col-lg-4 col-md-4">
+
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingrating"
@@ -124,7 +125,34 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                       </div>
                     </div>
                     <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
+                      <div className="col-lg-12 col-md-12">
+                        <label
+                          className="col-form-label required fw-semibold fs-6"
+                          htmlFor="floatinDescription"
+                        >
+                          Description
+                        </label>
+
+                        <div className=" billingForm">
+                          <Editor
+                            style={{ height: "320px" }}
+                            id="description"
+                            name="description"
+                            filter={false}
+                            onTextChange={(e) => {
+                              setFieldValue("description", e.textValue);
+                            }}
+                          />
+                        </div>
+                        <ErrorMessage
+                          name="description"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-lg-12 col-md-12">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingUpload"
@@ -164,8 +192,9 @@ const MonialsForm = ({ productValue, handleSubmitProduct, productId }) => {
                         className="btn btn btn-success me-3"
                         data-kt-menu-trigger="click"
                         data-kt-menu-placement="bottom-end"
+                        disabled={isSubmitting}
                       >
-                        {productId ? "Update" : "Add Product"}
+                        {MonialId ? "Update" : "Add"}
                       </button>
                     </div>
                   </Form>

@@ -7,7 +7,7 @@ const UpdateCms = () => {
 
   const geetProductDetails = async ({ params }) => {
     // const response = await axios.get(
-    //   `https://getProductDetails/${params.productId}`
+    //   `https://getProductDetails/${params.cmsId}`
     // );
 
     setProductData({
@@ -37,7 +37,7 @@ const UpdateCms = () => {
         <CmsForm
           productValue={productData}
           handleSubmitProduct={handleUpdateProduct}
-          productId={params.productId}
+          cmsId={params.cmsId}
         />
       ) : (
         <div>Loading...</div>

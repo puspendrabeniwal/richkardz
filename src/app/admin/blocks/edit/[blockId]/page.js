@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import BlockForm from "@/app/admin/components/BlockForm";
+import axios from "axios";
 
 const UpdateBlock = ({ params }) => {
   const [blockData, setBlockData] = useState(null);
@@ -19,12 +20,12 @@ const UpdateBlock = ({ params }) => {
     const postData = {
       name: data.blockName,
       title: data.title,
-      body: data.blockDescription,
+      body: data.description,
     };
     console.log("dataa", data);
     try {
       const response = await axios.post(
-        `http://localhost:8005/api/testimonials/edit/${params.blockId}`,
+        `http://localhost:8005/api/blocks/edit/${params.blockId}`,
         postData
       );
       console.log("add Product data", response);

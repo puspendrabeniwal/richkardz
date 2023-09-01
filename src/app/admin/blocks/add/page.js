@@ -8,7 +8,7 @@ const AddBlocks = () => {
     const postData = {
       name: data.blockName,
       title: data.title,
-      body: data.blockDescription,
+      body: data.description,
     };
     console.log("dataa", data);
     try {

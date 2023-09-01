@@ -1,6 +1,47 @@
 "use client";
 import Link from "next/link";
-const Blocks = () => {
+import { Button } from "primereact/button";
+import { Column } from "primereact/column";
+import { DataTable } from "primereact/datatable";
+import { Tooltip } from "primereact/tooltip";
+import { FaEdit } from "react-icons/fa";
+
+const Blocks = ({ params }) => {
+  const values = [
+    {
+      name: "Sony",
+      title: "Software",
+      description: "Lorem Ipsum is simply dummy text of the printing and",
+    },
+    {
+      name: "Sony",
+      title: "Software",
+      description: "Lorem Ipsum is simply dummy text of the printing and",
+    },
+    {
+      name: "Sony",
+      title: "Software",
+      description: "Lorem Ipsum is simply dummy text of the printing and",
+    },
+  ];
+  // ============Edit button for update form===========//
+  const getActionuttons = (rowdata) => {
+    return (
+      <Link
+        href={`/admin/blocks/edit/${params.blockId}`}
+        type="button"
+        className=""
+      >
+        <Tooltip
+          target=".icon"
+          content="Edit"
+          placement="right"
+          // tooltipClassName="custom-tooltip"
+        />
+        <FaEdit id="icon" className="act-btn " style={{ color: "#6777ef" }} />
+      </Link>
+    );
+  };
   return (
     <div
       className="content d-flex flex-column flex-column-fluid"
@@ -8,76 +49,61 @@ const Blocks = () => {
     >
       <div className=" d-flex flex-column-fluid" id="kt_post">
         <div id="kt_content_container" className="container-xxl">
-          <div className="card p-4">
-            <div className="card-header border-0 pt-6">
-              <div className="card-title">
-                <div className="d-flex align-items-center position-relative my-1">
-                  Blocks
-                </div>
+          <div className="card card-header border-0 pt-4 ">
+            <div className=" d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <h3>Blocks</h3>
               </div>
-              <div className="card-toolbar">
-                <div
-                  className="d-flex justify-content-end"
-                  data-kt-user-table-toolbar="base"
-                >
-                  <Link
-                    href="/admin/blocks/add"
-                    type="button"
+              <div>
+                <Link href="/admin/blocks/add" type="button">
+                  <Button
+                    label="Add Block"
                     className="btn btn-primary"
-                  >
-                    <span className="svg-icon svg-icon-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <rect
-                          opacity="0.5"
-                          x="11.364"
-                          y="20.364"
-                          width="16"
-                          height="2"
-                          rx="1"
-                          transform="rotate(-90 11.364 20.364)"
-                          fill="currentColor"
-                        />
-                        <rect
-                          x="4.36396"
-                          y="11.364"
-                          width="16"
-                          height="2"
-                          rx="1"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    Add Block
-                  </Link>
-                </div>
-                <div
-                  className="d-flex justify-content-end align-items-center d-none"
-                  data-kt-user-table-toolbar="selected"
-                >
-                  <div className="fw-bolder me-5">
-                    <span
-                      className="me-2"
-                      data-kt-user-table-select="selected_count"
-                    ></span>
-                    Selected
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    data-kt-user-table-select="delete_selected"
-                  >
-                    Delete Selected
-                  </button>
-                </div>
+                    icon="pi pi-plus"
+                  />
+                </Link>
               </div>
             </div>
-            <div className="card-body py-4">
+            <DataTable
+              value={values}
+              responsiveLayout="scroll"
+              className="p-datatable-customers "
+              showGridlines={false}
+              rows={10}
+              stripedRows
+              dataKey="id"
+              filterDisplay="menu"
+              emptyMessage="No customers found."
+            >
+              <Column
+                header="Name"
+                field="name"
+                sortable
+                style={{ cursor: "pointer" }}
+              ></Column>
+              <Column
+                field="title"
+                header="Title"
+                style={{ cursor: "pointer" }}
+                sortable
+              ></Column>
+              <Column
+                field="description"
+                header="Description"
+                style={{ cursor: "pointer" }}
+                sortable
+              ></Column>
+              <Column field="" header="Actions" body={getActionuttons}></Column>
+
+              {/* <Column
+                field="status"
+                header="Status"
+                style={{ cursor: "pointer" }}
+                // body={getStatus}
+                sortable
+              ></Column> */}
+            </DataTable>
+            {/* <div className="card-body py-4">
               <table
                 className="table align-middle table-row-dashed fs-6 gy-5"
                 id="kt_table_users"
@@ -93,17 +119,7 @@ const Blocks = () => {
                 <tbody className="text-gray-600 fw-bold">
                   <tr>
                     <td className="d-flex align-items-center">
-                      {/* <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                        <a href="../../demo1/dist/apps/user-management/users/view.html">
-                          <div className="symbol-label">
-                            <img
-                              src="assets/media/avatars/300-6.jpg"
-                              alt="Emma Smith"
-                              className="w-100"
-                            />
-                          </div>
-                        </a>
-                      </div> */}
+                     
                       <div className="d-flex flex-column">
                         <a
                           href="../../demo1/dist/apps/user-management/users/view.html"
@@ -171,7 +187,7 @@ const Blocks = () => {
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

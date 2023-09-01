@@ -3,18 +3,23 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
+import { Editor } from "primereact/editor";
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
-  description: Yup.string().required("Description is required"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(10, "Description is too short"),
 });
 
-const CmsForm = ({ productValue, handleSubmitProduct, productId }) => {
+const CmsForm = ({ productValue, handleSubmitProduct, cmsId }) => {
   const defaultValues = {
     name: productValue ? productValue.productName : "",
     description: productValue ? productValue.description : "",
   };
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, { setSubmitting }) => {
     await handleSubmitProduct(values);
+    setSubmitting(false);
   };
   return (
     <>
@@ -28,9 +33,10 @@ const CmsForm = ({ productValue, handleSubmitProduct, productId }) => {
               <Formik
                 initialValues={defaultValues}
                 validationSchema={validationSchema}
-                onSubmit={async (values) => await onSubmit(values)}
+                // onSubmit={async (values) => await onSubmit(values)}
+                onSubmit={onSubmit}
               >
-                {({ setFieldValue }) => (
+                {({ isSubmitting, setFieldValue }) => (
                   <Form className="form-design">
                     <div className="d-flex justify-content-between align-items-center">
                       <div>
@@ -76,11 +82,14 @@ const CmsForm = ({ productValue, handleSubmitProduct, productId }) => {
                           Description
                         </label>
                         <div className=" billingForm">
-                          <Field
-                            type="text"
+                          <Editor
+                            style={{ height: "320px" }}
+                            id="description"
                             name="description"
-                            className="form-control"
-                            id="floatingDesc"
+                            filter={false}
+                            onTextChange={(e) => {
+                              setFieldValue("description", e.textValue);
+                            }}
                           />
                         </div>
                         <ErrorMessage
@@ -97,8 +106,9 @@ const CmsForm = ({ productValue, handleSubmitProduct, productId }) => {
                         className="btn btn btn-success me-3"
                         data-kt-menu-trigger="click"
                         data-kt-menu-placement="bottom-end"
+                        disabled={isSubmitting}
                       >
-                        {productId ? "Update" : "Add"}
+                        {cmsId ? "Update" : "Add"}
                       </button>
                     </div>
                   </Form>

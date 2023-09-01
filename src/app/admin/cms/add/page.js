@@ -9,9 +9,9 @@ const AddCms = () => {
   return (
     <>
       <CmsForm
-        productValue={null}
+        blockValue={null}
         handleSubmitProduct={handleAddProduct}
-        productId={null}
+        cmsId={null}
       />
     </>
   );

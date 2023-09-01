@@ -16,8 +16,8 @@ function Block() {
       let skip = req.body.start ? parseInt(req.body.start) : DEFAULT_SKIP;
       collection
         .find({
-          is_active: ACTIVE,
-          is_deleted: NOT_DELETED,
+          // is_active: ACTIVE,
+          // is_deleted: NOT_DELETED,
         })
         .skip(skip)
         .limit(limit)
