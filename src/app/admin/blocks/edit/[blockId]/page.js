@@ -1,20 +1,29 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import BlockForm from "@/app/admin/components/BlockForm";
-import axios from "axios";
+import instance from "@/app/admin/axiosInterceptor";
 
 const UpdateBlock = ({ params }) => {
   const [blockData, setBlockData] = useState(null);
-  console.log("blockData", blockData);
-  useEffect(() => {
-    getBlockAPI();
-  }, []);
-
-  const getBlockAPI = async () => {
-    const response = await axios.get(`http://localhost:8005/api/blocks`);
-    console.log("responseeeee block api", response);
-    setBlockData(response);
+  const getBlockData = async () => {
+    const postData = {
+      userId: "dghgdhg",
+    };
+    try {
+      const response = await instance.post(
+        `blocks/view/${params.blockId}`,
+        postData
+      );
+      const getData = response.result;
+      console.log("Edit Data of Block", getData);
+      setBlockData(getData);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  useEffect(() => {
+    getBlockData();
+  }, []);
 
   const editBlockAPI = async (data) => {
     const postData = {
@@ -22,13 +31,13 @@ const UpdateBlock = ({ params }) => {
       title: data.title,
       body: data.description,
     };
-    console.log("dataa", data);
     try {
-      const response = await axios.post(
-        `http://localhost:8005/api/blocks/edit/${params.blockId}`,
+      const response = await instance.post(
+        `blocks/edit/${params.blockId}`,
         postData
       );
-      console.log("add Product data", response);
+      // console.log("Edit Data of Block", response);
+      setBlockData(response);
     } catch (error) {
       console.log(error);
     }
@@ -37,8 +46,8 @@ const UpdateBlock = ({ params }) => {
     <>
       {blockData ? (
         <BlockForm
-          productValue={blockData}
-          handleSubmitProduct={editBlockAPI}
+          blockValue={blockData}
+          handleSubmitBlock={editBlockAPI}
           blockId={params.blockId}
         />
       ) : (

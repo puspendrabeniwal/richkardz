@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import BlockForm from "../../components/BlockForm";
-import axios from "axios";
+import instance from "../../axiosInterceptor";
 
 const AddBlocks = () => {
   const addBlockAPI = async (data) => {
@@ -10,13 +10,8 @@ const AddBlocks = () => {
       title: data.title,
       body: data.description,
     };
-    console.log("dataa", data);
     try {
-      const response = await axios.post(
-        `http://localhost:8005/api/blocks/add`,
-        postData
-      );
-      console.log("add Product data", response);
+      const response = await instance.post(`blocks/add`, postData);
     } catch (error) {
       console.log(error);
     }

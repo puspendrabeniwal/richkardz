@@ -12,15 +12,15 @@ const validationSchema = Yup.object().shape({
     .min(10, "Description is too short"),
 });
 
-const BlockForm = ({ blockValue, handleSubmitProduct, blockId }) => {
+const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
   const defaultValues = {
     blockName: blockValue ? blockValue.name : "",
     title: blockValue ? blockValue.title : "",
     description: blockValue ? blockValue.body : "",
   };
-
+  console.log("asssssssss", blockValue);
   const onSubmit = async (values, { setSubmitting }) => {
-    await handleSubmitProduct(values);
+    await handleSubmitBlock(values);
     setSubmitting(false);
   };
   return (
