@@ -22,7 +22,7 @@ const validationSchema = Yup.object().shape({
     ),
 });
 
-const MonialsForm = ({ monialValue, handleSubmitProduct, MonialId }) => {
+const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
   const [editorValue, setEditorValue] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
 
@@ -46,7 +46,7 @@ const MonialsForm = ({ monialValue, handleSubmitProduct, MonialId }) => {
     fileUpload: [],
   };
   const onSubmit = async (values, { setSubmitting }) => {
-    await handleSubmitProduct(values);
+    await handleSubmitMonial(values);
     setSubmitting(false);
   };
   return (

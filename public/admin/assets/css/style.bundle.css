@@ -8640,6 +8640,7 @@ fieldset:disabled .btn {
 }
 .p-4 {
   padding: 1rem !important;
+  border-radius: inherit;
 }
 .p-5 {
   padding: 1.25rem !important;
@@ -46457,7 +46458,7 @@ body {
 }
 @media (min-width: 992px) {
   .content {
-    padding: 30px 0;
+    padding: 15px 0;
   }
   .toolbar-enabled:not(.toolbar-fixed) .content {
     padding-top: 0;
@@ -46512,7 +46513,7 @@ body {
   .container-sm,
   .container-xl,
   .container-xxl {
-    padding: 0 30px;
+    padding: 0 15px;
   }
   .docs-wrapper {
     padding-left: 265px;
@@ -48035,4 +48036,11 @@ body {
   color: #333;
   border: 1px solid #ccc;
   font-size: 14px;
+}
+div#kt_content {
+  background: whitesmoke;
+}
+.card.p-4 {
+  background: white;
+  box-shadow: 2px 8px 12px gray;
 }

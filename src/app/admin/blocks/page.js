@@ -193,9 +193,9 @@ const Blocks = () => {
               </div>
               <Link
                 href="/admin/blocks/add"
-                className="btn btn-sm btn-info btn btn-primary"
+                className="btn btn-sm btn btn-success"
               >
-                Add Block
+                {blockData ? "Add Block" : "Back"}
                 {/* <Button
                       label="Add Block"
                       className="btn btn-primary"
