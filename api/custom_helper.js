@@ -7,7 +7,7 @@ const { ObjectId } = require("mongodb");
 const { generate } = require("randomstring");
 const asyncEach = require("async/each");
 const asyncParallel = require("async/parallel");
-
+const slug = require("slug");
 /**
  * Function for parse validation
  *
@@ -774,7 +774,7 @@ isUserLogin = (req, res) => {
     );
   });
 };
-const slug = require("slug");
+
 /**
  * Function to get data base slug
  *

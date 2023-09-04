@@ -4,7 +4,6 @@ import { useRouter, usePathname } from 'next/navigation'
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
-import Breadcrumbs from './components/Breadcrumbs';
 
 export default function adminLayout({ children }) {
   const pathname  = usePathname();
@@ -19,33 +18,24 @@ export default function adminLayout({ children }) {
       <link href="/admin/assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
       <link href="/admin/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
       <link href="/admin/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-      <body id="kt_body" className="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style={{"--kt-toolbar-height":"55px","--kt-toolbar-height-tablet-and-mobile":"55px"}}>
-        {(pathname !== "/admin/signin") ? <div className="d-flex flex-column flex-root">
+      
+        {(pathname !== "/admin/signin" && pathname !== "/admin") ? 
+        <body id="kt_body" className="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style={{"--kt-toolbar-height":"55px","--kt-toolbar-height-tablet-and-mobile":"55px"}}>
+          <div className="d-flex flex-column flex-root">
           <div className="page d-flex flex-row flex-column-fluid">
             <Sidebar />
             <div className="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
               <Header />
-              <Breadcrumbs data={pathname}/>
                 {children}
                 <Footer />  
             </div>
           </div>
-        </div>:children}
-        {/* <script>var hostUrl = "/assets/";</script> */}
+        </div>
         <script src="/admin/assets/plugins/global/plugins.bundle.js"></script>
         <script src="/admin/assets/js/scripts.bundle.js"></script>
-        <script src="/admin/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
-        <script src="/admin/assets/plugins/custom/datatables/datatables.bundle.js"></script>
         <script src="/admin/assets/js/widgets.bundle.js"></script>
         <script src="/admin/assets/js/custom/widgets.js"></script>
-        <script src="/admin/assets/js/custom/apps/chat/chat.js"></script>
-        <script src="/admin/assets/js/custom/apps/user-management/users/list/table.js"></script>
-        <script src="/admin/assets/js/custom/apps/user-management/users/list/export-users.js"></script>
-        <script src="/admin/assets/js/custom/apps/user-management/users/list/add.js"></script>
-        <script src="/admin/assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-        <script src="/admin/assets/js/custom/utilities/modals/create-app.js"></script>
-        <script src="/admin/assets/js/custom/utilities/modals/users-search.js"></script>
-      </body>
+        </body>:children}
     </>
   )
 }

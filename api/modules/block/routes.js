@@ -17,6 +17,10 @@ routes.all(API_URL + "blocks/edit/:id", (req, res, next) => {
   adminBlock.editBlock(req, res, next);
 });
 
+/** Routing is used to edit  **/
 routes.all(API_URL + "blocks/view/:id", (req, res, next) => {
   adminBlock.getBlock(req, res, next);
 });
+// routes.all(API_URL+"blocks/view/:id",(req,res,next) => {
+//     adminBlock.getBlock(req,res,next);
+// });

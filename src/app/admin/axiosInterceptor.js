@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an instance of Axios with default configuration
 const instance = axios.create({
-  baseURL: "http://localhost:8005/api/",
+  baseURL: "https://mern.richkardz.com/api/",
 });
 
 // Add a request interceptor
