@@ -1,6 +1,7 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
 import CmsForm from "@/app/admin/components/CmsForm";
+import Link from "next/link";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -73,22 +74,22 @@ const UpdateCms = ({ params }) => {
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
                 <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
-                  Edit CMS
+                  CMS
                 </span>
+                <span className="text-muted fs-7 fw-bold mt-2">edit cms</span>
               </h1>
+            </div>
 
-              {/* <div className="d-flex justify-content-between align-items-center">
-                <div>
-                  <h3 className="font-weight-bold">Edit CMS</h3>
-                </div>
-                <Link
-                  href="/admin/cms"
-                  type="button"
-                  className="btn btn-primary"
-                >
-                  Back
-                </Link>
-              </div> */}
+            <div className="d-flex align-items-center gap-2 gap-lg-3">
+              <div className="m-0"></div>
+              <Link href="/admin/cms" className="btn btn-sm btn btn-success">
+                Back
+                {/* <Button
+                      label="Add Block"
+                      className="btn btn-primary"
+                      icon="pi pi-plus"
+                    /> */}
+              </Link>
             </div>
           </div>
         </div>

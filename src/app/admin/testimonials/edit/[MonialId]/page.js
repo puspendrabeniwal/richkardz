@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import MonialsForm from "@/app/admin/components/MonialsForm";
 import { Toast } from "primereact/toast";
 import instance from "@/app/admin/axiosInterceptor";
+import Link from "next/link";
 
 const UpdateMonials = ({ params }) => {
   const toast = useRef(null);
@@ -74,22 +75,24 @@ const UpdateMonials = ({ params }) => {
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
                 <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
-                  Edit Monial Data
+                  Test Monial
+                </span>
+                <span className="text-muted fs-7 fw-bold mt-2">
+                  edit monial
                 </span>
               </h1>
+            </div>
 
-              {/* <div className="d-flex justify-content-between align-items-center">
-                <div>
-                  <h3 className="font-weight-bold">Edit Monial</h3>
-                </div>
-                <Link
-                  href="/admin/testimonials"
-                  type="button"
-                  className="btn btn-primary"
-                >
-                  Back
-                </Link>
-              </div> */}
+            <div className="d-flex align-items-center gap-2 gap-lg-3">
+              <div className="m-0"></div>
+              <Link href="/admin/blocks" className="btn btn-sm btn btn-success">
+                Back
+                {/* <Button
+                      label="Add Block"
+                      className="btn btn-primary"
+                      icon="pi pi-plus"
+                    /> */}
+              </Link>
             </div>
           </div>
         </div>

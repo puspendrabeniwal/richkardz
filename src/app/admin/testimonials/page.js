@@ -215,7 +215,7 @@ export const Testimonials = () => {
               </div>
               <Link
                 href="/admin/testimonials/add"
-                className="btn btn-sm btn-info btn btn-primary"
+                className="btn btn-sm btn-success"
               >
                 Add Monial
                 {/* <Button

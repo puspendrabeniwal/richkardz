@@ -179,10 +179,7 @@ const CMS = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/cms/add"
-                className="btn btn-sm btn-info btn btn-primary"
-              >
+              <Link href="/admin/cms/add" className="btn btn-sm btn-success">
                 Add CMS
                 {/* <Button
                       label="Add Block"
@@ -239,7 +236,7 @@ const CMS = () => {
                   style={{ cursor: "pointer" }}
                 ></Column>
 
-                <Column
+                {/* <Column
                   header="Description"
                   field="content"
                   body={(data) => {
@@ -255,7 +252,7 @@ const CMS = () => {
                   }}
                   style={{ cursor: "pointer" }}
                   sortable
-                ></Column>
+                ></Column> */}
                 <Column
                   field=""
                   header="Actions"

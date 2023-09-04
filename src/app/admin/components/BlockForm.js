@@ -45,18 +45,6 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
               >
                 {({ isSubmitting, setFieldValue }) => (
                   <Form className="form-design">
-                    {/* <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h3 className="font-weight-bold">Add Product</h3>
-                      </div>
-                      <Link
-                        href="/admin/blocks"
-                        type="button"
-                        className="btn btn-primary"
-                      >
-                        Back
-                      </Link>
-                    </div> */}
                     <div className="row mb-3">
                       <div className="col-lg-6 col-md-6">
                         <label

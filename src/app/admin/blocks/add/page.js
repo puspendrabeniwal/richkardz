@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import BlockForm from "../../components/BlockForm";
 import instance from "../../axiosInterceptor";
 import { Toast } from "primereact/toast";
+import Link from "next/link";
 
 const AddBlocks = () => {
   const toast = useRef(null);
@@ -46,8 +47,20 @@ const AddBlocks = () => {
                 <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
                   Block
                 </span>
-                <span className="text-muted fs-7 fw-bold mt-2">Add Block</span>
+                <span className="text-muted fs-7 fw-bold mt-2">add block</span>
               </h1>
+            </div>
+
+            <div className="d-flex align-items-center gap-2 gap-lg-3">
+              <div className="m-0"></div>
+              <Link href="/admin/blocks" className="btn btn-sm btn btn-success">
+                Back
+                {/* <Button
+                      label="Add Block"
+                      className="btn btn-primary"
+                      icon="pi pi-plus"
+                    /> */}
+              </Link>
             </div>
           </div>
         </div>

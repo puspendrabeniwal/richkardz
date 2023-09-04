@@ -195,7 +195,7 @@ const Blocks = () => {
                 href="/admin/blocks/add"
                 className="btn btn-sm btn btn-success"
               >
-                {blockData ? "Add Block" : "Back"}
+                Add Block
                 {/* <Button
                       label="Add Block"
                       className="btn btn-primary"

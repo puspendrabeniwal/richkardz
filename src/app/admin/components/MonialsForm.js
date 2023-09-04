@@ -23,22 +23,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
-  const [editorValue, setEditorValue] = useState("");
-  const [descriptionError, setDescriptionError] = useState("");
-
-  const handleEditorChange = (e) => {
-    const descriptionText = e.htmlValue; // Assuming e.htmlValue contains the HTML content
-    setEditorValue(e.htmlValue);
-    setDescriptionError(validateDescription(descriptionText));
-  };
-  // Your validation function
-  const validateDescription = (description) => {
-    if (!description || description.trim() === "") {
-      return "Description is required";
-    }
-    return "";
-  };
-
   const defaultValues = {
     name: monialValue ? monialValue.productName : "",
     description: monialValue ? monialValue.description : "",
@@ -46,6 +30,12 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
     fileUpload: [],
   };
   const onSubmit = async (values, { setSubmitting }) => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    let formData = new FormData();
+    formData.append("user_id", loginUser._id);
+    Object.keys(values).forEach(function (key, index) {
+      formData.append(key, values[key]);
+    });
     await handleSubmitMonial(values);
     setSubmitting(false);
   };
@@ -61,24 +51,11 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
               <Formik
                 initialValues={defaultValues}
                 validationSchema={validationSchema}
-                onSubmit={async (values) => await onSubmit(values)}
+                // onSubmit={async (values) => await onSubmit(values)}
+                onSubmit={onSubmit}
               >
                 {({ isSubmitting, setFieldValue }) => (
                   <Form className="form-design">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h3 className="font-weight-bold">Testing Monial</h3>
-                      </div>
-                      <div>
-                        <Link
-                          href="/admin/testimonials"
-                          type="button"
-                          className="btn btn-primary"
-                        >
-                          Back
-                        </Link>
-                      </div>
-                    </div>
                     <div className="row mb-3">
                       <div className="col-lg-6 col-md-6">
                         <label

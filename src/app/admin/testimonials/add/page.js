@@ -2,15 +2,17 @@
 import React, { useRef } from "react";
 import MonialsForm from "../../components/MonialsForm";
 import { Toast } from "primereact/toast";
+import instance from "../../axiosInterceptor";
+import Link from "next/link";
 
 const AddMonials = () => {
   const toast = useRef(null);
   const addMonialAPI = async (data) => {
     const postData = {
       name: data.name,
-      title: data.rating,
-      body: data.description,
-      imageUpload: data.fileUpload,
+      rating: data.rating,
+      description: data.description,
+      image: data.fileUpload,
     };
     try {
       const response = await instance.post(`testimonials/add`, postData);
@@ -46,8 +48,23 @@ const AddMonials = () => {
                 <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
                   Test Monial
                 </span>
-                <span className="text-muted fs-7 fw-bold mt-2">Add Monial</span>
+                <span className="text-muted fs-7 fw-bold mt-2">add monial</span>
               </h1>
+            </div>
+
+            <div className="d-flex align-items-center gap-2 gap-lg-3">
+              <div className="m-0"></div>
+              <Link
+                href="/admin/testimonials"
+                className="btn btn-sm btn btn-success"
+              >
+                Back
+                {/* <Button
+                      label="Add Block"
+                      className="btn btn-primary"
+                      icon="pi pi-plus"
+                    /> */}
+              </Link>
             </div>
           </div>
         </div>
