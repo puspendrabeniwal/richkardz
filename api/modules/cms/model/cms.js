@@ -14,8 +14,7 @@ function Cms() {
 			let limit			= (req.body.length) ? parseInt(req.body.length)	: API_LISTING_LIMIT;
 			let skip			= (req.body.start)	? parseInt(req.body.start)	: DEFAULT_SKIP;
 			collection.find({
-				is_active : ACTIVE,
-				is_deleted : NOT_DELETED
+				status : ACTIVE
 			}).skip(skip).limit(limit).toArray((err,result)=>{
 	
 				if(!err){
@@ -53,37 +52,30 @@ function Cms() {
 	 *
 	 * @return json
 	 */
-	let getCmsDetails = (req,res,next)=>{
-		return new Promise(resolve=>{
-			let cmsId = (req.params.id) ? req.params.id : "";
-			/** Get Cms details **/
-			const pages = db.collection('pages');
-			pages.findOne({
-					_id : ObjectId(cmsId)
-				},
-				{projection: {
-					_id:1,name:1,body:1,modified:1,
-				}},(err, result)=>{
-					if(err) return next(err);
-					if(!result){
-						/** Send error response **/
-						let response = {
-							status	: STATUS_ERROR,
-							message	: res.__("admin.system.invalid_access")
-						};
-						return resolve(response);
-					}
-
-					/** Send success response **/
-					let response = {
-						status	: STATUS_SUCCESS,
-						result	: result
-					};
-					resolve(response);
-				}
-			);
-		});
-	};// End getCmsDetails().
+	this.getCmsDetails = (req, res)=>{
+        let pageId = (req.params.id) ? req.params.id : "";
+        let collection     = db.collection("pages");
+        collection.findOne({
+            _id : ObjectId(pageId),
+        },(err,result)=>{
+            if(!err){
+                return res.send({
+                    "status"      : API_STATUS_SUCCESS,
+                    "message"     : '',
+                    "error"       : [],
+                    "result"      : result
+                });
+            }else{
+                return res.send({
+                    "status"      : API_STATUS_ERROR,
+                    "message"     : res.__("front.system.something_went_wrong"),
+                    "error"       : [],
+                    "result"      : {}
+                });
+            }
+        })
+    }
+	// End getCmsDetails().
 
 	/**
 	 * Function to update cms's detail
@@ -109,22 +101,22 @@ function Cms() {
 			}
 
 
-			let pageBody	= (req.body.body)	? req.body.body	: "";
+			let pageBody	= (req.body.content)	? req.body.content	: "";
 
 			/** Check validation **/
 			req.checkBody({
-				'name': {
+				'title': {
 					notEmpty: true,
 					errorMessage: res.__("admin.cms.please_enter_page_name")
 				},
-				'body': {
+				'content': {
 					notEmpty: true,
 					errorMessage: res.__("admin.cms.please_enter_page_description")
 				},
 			});
 
 			if(pageBody!= ""){
-				req.body.body =  pageBody.replace(new RegExp(/&nbsp;|<br \/\>|<p>|<\/p>/g),' ').trim();
+				req.body.content =  pageBody.replace(new RegExp(/&nbsp;|<br \/\>|<p>|<\/p>/g),' ').trim();
 			}
 
 			/** parse Validation array  **/
@@ -143,8 +135,8 @@ function Cms() {
 					_id : ObjectId(id)
 				},
 				{$set: {
-					body				: 	pageBody,
-					name				: 	(req.body.name)	?	req.body.name	:"",
+					content				: 	pageBody,
+					title				: 	(req.body.title)	?	req.body.title	:"",
 					modified 			:	getUtcDate()
 				}},(err,result)=>{
 					if(err) return next(err);
@@ -174,16 +166,16 @@ function Cms() {
 			/** Sanitize Data */
 			req.body = 	sanitizeData(req.body,NOT_ALLOWED_TAGS_XSS);
 
-			let pageBody	= 	(req.body.body)	?	req.body.body	:"";
-			let pageName	= 	(req.body.name) ? 	req.body.name 	:"";
+			let pageBody	= 	(req.body.content)	?	req.body.content	:"";
+			let pageName	= 	(req.body.title) ? 	req.body.title 	:"";
 
 			/** Check validation */
 			req.checkBody({
-				'name': {
+				'title': {
 					notEmpty: true,
 					errorMessage: res.__("admin.cms.please_enter_page_name")
 				},
-				'body': {
+				'content': {
 					notEmpty: true,
 					errorMessage: res.__("admin.cms.please_enter_page_description")
 				},
@@ -207,7 +199,7 @@ function Cms() {
 			let options = {
 				title 		:	pageName,
 				table_name 	: 	"pages",
-				slug_field 	: 	"slug"
+				slug_field 	: 	"type"
 			};
 
 			/** Make Slug */
@@ -215,9 +207,9 @@ function Cms() {
 				/** Save Cms details */
 				const pages = db.collection('pages');
 				pages.insertOne({
-					name				:	pageName,
-					body				: 	pageBody,
-					slug				: 	(response && response.title)	?	response.title	:"",
+					title				:	pageName,
+					content				: 	pageBody,
+					type				: 	(response && response.title)	?	response.title	:"",
 					created 			: 	getUtcDate(),
 					modified 			: 	getUtcDate()
 				},(err,result)=>{

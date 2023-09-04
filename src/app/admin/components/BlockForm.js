@@ -18,7 +18,6 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
     title: blockValue ? blockValue.title : "",
     description: blockValue ? blockValue.body : "",
   };
-  console.log("asssssssss", blockValue);
   const onSubmit = async (values, { setSubmitting }) => {
     await handleSubmitBlock(values);
     setSubmitting(false);

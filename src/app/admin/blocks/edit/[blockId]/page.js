@@ -15,7 +15,6 @@ const UpdateBlock = ({ params }) => {
         postData
       );
       const getData = response.result;
-      console.log("Edit Data of Block", getData);
       setBlockData(getData);
     } catch (error) {
       console.log(error);
@@ -36,7 +35,6 @@ const UpdateBlock = ({ params }) => {
         `blocks/edit/${params.blockId}`,
         postData
       );
-      // console.log("Edit Data of Block", response);
       setBlockData(response);
     } catch (error) {
       console.log(error);

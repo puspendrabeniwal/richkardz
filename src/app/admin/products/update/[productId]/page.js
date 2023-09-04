@@ -28,7 +28,6 @@ const UpdateProduct = ({ params }) => {
 
   const handleUpdateProduct = async (values) => {
     //API call to submit data for update
-    console.log("Updated submit,data", values);
   };
 
   return (

@@ -171,7 +171,6 @@ const MonialsForm = ({ monialValue, handleSubmitProduct, MonialId }) => {
                             onChange={(event) => {
                               const files = event.currentTarget.files;
                               const images = Array.from(files);
-                              console.log("filessss", images);
                               // Manually set the field value to trigger Formik's handling
                               // of array values.
                               setFieldValue("fileUpload", images);
