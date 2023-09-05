@@ -131,37 +131,37 @@ export const Products = () => {
 
 
 
-    const accept = (id, status) => {
-        let newFormData = new FormData();
-        newFormData.append('product_id', id)
-        newFormData.append('status', status)
-        instance.post("product_status", newFormData)
-        .then(response => {
-            getProducts()
-            let data = (response) ? response : {};
-            toast.current.show({ severity: 'info', summary: 'Confirmed', detail: data.message, life: 3000 });
-        })
-        .catch(error => {
-            console.log(error);
-        });
-        
-    };
+  const accept = (id, status) => {
+      let newFormData = new FormData();
+      newFormData.append('product_id', id)
+      newFormData.append('status', status)
+      instance.post("product_status", newFormData)
+      .then(response => {
+          getProducts()
+          let data = (response) ? response : {};
+          toast.current.show({ severity: 'info', summary: 'Confirmed', detail: data.message, life: 3000 });
+      })
+      .catch(error => {
+          console.log(error);
+      });
+      
+  };
 
-    const reject = () => {
-        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
-    };
+  const reject = () => {
+      toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+  };
 
 
-    const confirm = (id, status) => {
-        confirmDialog({
-            message: 'Are you sure you want to proceed?',
-            header: 'Confirmation',
-            icon: 'pi pi-exclamation-triangle',
-            accept : () => accept(id, status),
-            reject
-        });
-    };
- 
+  const confirm = (id, status) => {
+      confirmDialog({
+          message: 'Are you sure you want to proceed?',
+          header: 'Confirmation',
+          icon: 'pi pi-exclamation-triangle',
+          accept : () => accept(id, status),
+          reject
+      });
+  };
+  const toast = useRef(null);
   return (
     <>
         <div className="d-flex flex-column flex-column-fluid" id="kt_content">
@@ -179,7 +179,7 @@ export const Products = () => {
                             <li className="breadcrumb-item">
                                 <span className="bullet bg-gray-300 w-5px h-2px"></span>
                             </li>
-                            <li class="breadcrumb-item text-mute">Product Management</li>
+                            <li className="breadcrumb-item text-mute">Product Management</li>
                         </ul>
                     </div>
                     <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -287,27 +287,6 @@ export const Products = () => {
                                                 </div>
                                                 <div className="separator border-gray-200 mb-10"></div>
                                                 <div className="px-7 py-5">
-
-                                                    {/* <div className="mb-10">
-                                                        <label className="form-label fw-bold">Member Type:</label>
-                                                        <div className="d-flex">
-                                                            <label className="form-check form-check-sm form-check-custom form-check-solid me-5">
-                                                                <input className="form-check-input" type="checkbox" value="1" />
-                                                                <span className="form-check-label">Author</span>
-                                                            </label>
-                                                            <label className="form-check form-check-sm form-check-custom form-check-solid">
-                                                                <input className="form-check-input" type="checkbox" value="2" checked="checked" />
-                                                                <span className="form-check-label">Customer</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div className="mb-10">
-                                                        <label className="form-label fw-bold">Notifications:</label>
-                                                        <div className="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                                            <input className="form-check-input" type="checkbox" value="" name="notifications" checked="checked" />
-                                                            <label className="form-check-label">Enabled</label>
-                                                        </div>
-                                                    </div> */}
                                                     <div className="d-flex justify-content-end">
                                                         <button type="reset" className="btn btn-sm btn-warning me-2" data-kt-menu-dismiss="true">Reset</button>
                                                         <button type="submit" className="btn btn-sm btn-success me-2" data-kt-menu-dismiss="true">Apply</button>
@@ -335,6 +314,8 @@ export const Products = () => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card p-4">
               <div className="card-body py-4">
+                <Toast ref={toast} />
+                <ConfirmDialog />
                 <DataTable
                   value={products}
                   paginator

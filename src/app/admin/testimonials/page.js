@@ -4,7 +4,6 @@ import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Tooltip } from "primereact/tooltip";
-import { FaEdit } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";

@@ -5,7 +5,6 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Tooltip } from "primereact/tooltip";
 import { useEffect, useRef, useState } from "react";
-import { FaEdit } from "react-icons/fa";
 import instance from "../axiosInterceptor";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
