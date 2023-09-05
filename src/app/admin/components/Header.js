@@ -47,7 +47,7 @@ const Header = () => {
                 data-kt-menu-attach="parent"
                 data-kt-menu-placement="bottom-end"
               >
-                <img src="../admin/assets/media/avatars/300-1.jpg" alt="user" />
+                <img src={user?.full_image_path} alt="user" />
               </div>
               <div
                 className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
@@ -58,7 +58,7 @@ const Header = () => {
                     <div className="symbol symbol-50px me-5">
                       <img
                         alt="Logo"
-                        src="../admin/assets/media/avatars/300-1.jpg"
+                        src={user?.full_image_path}
                       />
                     </div>
                     <div className="d-flex flex-column">

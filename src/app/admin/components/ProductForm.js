@@ -1,9 +1,9 @@
 "use client";
-import Link from "next/link";
 import React, { useState } from "react";
-  import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
+import { FileUpload } from 'primereact/fileupload';
+
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
   price: Yup.number()
@@ -269,7 +269,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                      <div className="col-lg-4 col-md-4">
+                      {/* <div className="col-lg-4 col-md-4">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingUpload"
@@ -297,7 +297,39 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           component="div"
                           className="text-danger"
                         />
+                      </div> */}
+                    </div>
+                    <div className="fv-row mb-3">
+                      <div className="col-lg-12 col-md-12">
+                        <label
+                          className="col-form-label required fw-semibold fs-6"
+                          htmlFor="floatinDescription"
+                        >
+                          Product Images
+                        </label>
+                        <div className=" billingForm">
+                        <FileUpload 
+                          name="image" 
+                          accept="image/*" 
+                          auto
+                          multiple
+                          customUpload
+                          maxFileSize={1000000}
+                          onSelect={(event) => {
+                              const files = event.files;
+                              setFieldValue("images", files);
+                              }}
+                          emptyTemplate={
+                              <></>
+                          } 
+                        />
+                        </div>
                       </div>
+                      <ErrorMessage
+                          name="images"
+                          component="div"
+                          className="text-danger"
+                        />
                     </div>
                     <div className="fv-row mb-3">
                       <div className="col-lg-12 col-md-12">
