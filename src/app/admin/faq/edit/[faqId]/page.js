@@ -1,37 +1,36 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import MonialsForm from "@/app/admin/components/MonialsForm";
-import { Toast } from "primereact/toast";
 import instance from "@/app/admin/axiosInterceptor";
+import FaqForm from "@/app/admin/components/FAQForm";
 import Link from "next/link";
+import { Toast } from "primereact/toast";
+import React, { useEffect, useRef, useState } from "react";
 
-const UpdateMonials = ({ params }) => {
+const UpdateFAQ = ({ params }) => {
   const toast = useRef(null);
-  const [monialData, setMonialData] = useState(null);
-  useEffect(() => {
-    getMonialData();
-  }, []);
+  const [faqData, setFaqData] = useState(null);
 
-  const getMonialData = async () => {
+  useEffect(() => {
+    getFAQAPI();
+  }, []);
+  const getFAQAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData(); //formdata object
     formData.append(
       "user_id",
       Object.keys(loginUser).length > 0 ? loginUser?._id : ""
     ); //append the values with key, value pair
-    formData.append("id", params.MonialId); //append the values with key, value pair
-
-    instance
-      .post("testimonials/view/" + params.MonialId, formData)
-      .then((response) => {
-        let data = response.result ? response.result : {};
-        setMonialData(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    formData.append("id", params.faqId); //append the values with key, value pair
+    try {
+      const response = await instance.post(
+        `faqs/view/${params.faqId}`,
+        formData
+      );
+      const getData = response.result ? response.result : {};
+      setFaqData(getData);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   const showMessage = (data) => {
     toast.current.show({
       severity: data.status ? "success" : "error",
@@ -41,17 +40,22 @@ const UpdateMonials = ({ params }) => {
     });
   };
 
-  const editMonialAPI = async (data) => {
-    instance
-      .post(`testimonials/edit/${params.MonialId}`, data)
-      .then((response) => {
-        showMessage(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const editFAQAPI = async (data) => {
+    const postData = {
+      answer: data.answer,
+      question: data.question,
+    };
+    try {
+      const response = await instance.post(
+        `faqs/edit/${params.faqId}`,
+        postData
+      );
+      setFaqData(response);
+      showMessage(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
   return (
     <>
       <Toast ref={toast} />
@@ -68,7 +72,7 @@ const UpdateMonials = ({ params }) => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                Edit Testimonial
+                Edit FAQ
               </h1>
               <span className="h-20px border-gray-300 border-start mx-4"></span>
               <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
@@ -85,10 +89,10 @@ const UpdateMonials = ({ params }) => {
                 </li>
                 <li className="breadcrumb-item text-dark">
                   <Link
-                    href="/admin/testimonials"
+                    href="/admin/faq"
                     className="text-muted text-hover-primary"
                   >
-                    Testimonial
+                    FAQ
                   </Link>
                 </li>
                 <li className="breadcrumb-item">
@@ -100,21 +104,18 @@ const UpdateMonials = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link
-                href="/admin/testimonials"
-                className="btn btn-sm btn btn-success"
-              >
+              <Link href="/admin/faq" className="btn btn-sm btn btn-success">
                 Back
               </Link>
             </div>
           </div>
         </div>
       </div>
-      {monialData ? (
-        <MonialsForm
-          monialValue={monialData}
-          handleSubmitMonial={editMonialAPI}
-          MonialId={params.MonialId}
+      {faqData ? (
+        <FaqForm
+          faqValue={faqData}
+          handleSubmitFaq={editFAQAPI}
+          faqId={params.faqId}
         />
       ) : (
         <div>Loading...</div>
@@ -123,4 +124,4 @@ const UpdateMonials = ({ params }) => {
   );
 };
 
-export default UpdateMonials;
+export default UpdateFAQ;
