@@ -14,6 +14,7 @@ const Header = () => {
     localStorage.removeItem("loginInfo");
     window.location.replace("/admin/signin");
   };
+  console.log(user, "dsfsdfsdf");
   return (
     <div id="kt_header" className="header align-items-stretch">
       <div className="container-fluid d-flex align-items-stretch justify-content-between">
@@ -56,9 +57,7 @@ const Header = () => {
           </a>
         </div>
         <div className="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
-          <div className="d-flex align-items-stretch" id="kt_header_nav">
-            
-          </div>
+          <div className="d-flex align-items-stretch" id="kt_header_nav"></div>
           <div className="d-flex align-items-stretch flex-shrink-0">
             <div
               className="d-flex align-items-center ms-1 ms-lg-3"

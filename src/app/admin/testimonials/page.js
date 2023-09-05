@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { Tooltip } from "primereact/tooltip";
 import { useEffect, useRef, useState } from "react";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
@@ -138,7 +139,7 @@ export const Testimonials = () => {
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
-                    {({ setFieldValue }) => (
+                    {({ setFieldValue, resetForm }) => (
                       <Form className="form-design">
                         <div className="row ">
                           <div className="col-lg-12 col-md-12">
@@ -173,7 +174,11 @@ export const Testimonials = () => {
                             </button>
                             <button
                               type="button"
-                              onClick={removeFilter}
+                              onClick={async (e) => {
+                                resetForm();
+                                await getMonialAPI();
+                                op.current.toggle(e);
+                              }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
                             >
