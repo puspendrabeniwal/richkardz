@@ -14,6 +14,7 @@ const Header = () => {
     localStorage.removeItem("loginInfo");
     window.location.replace("/admin/signin");
   };
+  console.log(user, "dsfsdfsdf");
   return (
     <div id="kt_header" className="header align-items-stretch">
       <div className="container-fluid d-flex align-items-stretch justify-content-between">
@@ -56,164 +57,7 @@ const Header = () => {
           </a>
         </div>
         <div className="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
-          <div className="d-flex align-items-stretch" id="kt_header_nav">
-            {/* <div className="header-menu align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
-                        <div className="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
-                            <div data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" className="menu-item here show menu-lg-down-accordion me-lg-1">
-                                <span className="menu-link py-3">
-                                    <span className="menu-title">Dashboards</span>
-                                    <span className="menu-arrow d-lg-none"></span>
-                                </span>
-                                <div className="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">
-                                    <div className="menu-item">
-                                        <a className="menu-link active py-3" href="../../demo1/dist/index.html">
-                                            <span className="menu-bullet">
-                                                <span className="bullet bullet-dot"></span>
-                                            </span>
-                                            <span className="menu-title">Multipurpose</span>
-                                        </a>
-                                    </div>
-                                    <div className="menu-item">
-                                        <a className="menu-link py-3" href="../../demo1/dist/dashboards/ecommerce.html">
-                                            <span className="menu-bullet">
-                                                <span className="bullet bullet-dot"></span>
-                                            </span>
-                                            <span className="menu-title">eCommerce</span>
-                                        </a>
-                                    </div>
-                                    <div className="menu-item">
-                                        <a className="menu-link py-3" href="../../demo1/dist/dashboards/projects.html">
-                                            <span className="menu-bullet">
-                                                <span className="bullet bullet-dot"></span>
-                                            </span>
-                                            <span className="menu-title">Projects</span>
-                                        </a>
-                                    </div>
-                                    <div className="menu-item">
-                                        <a className="menu-link py-3" href="../../demo1/dist/dashboards/online-courses.html">
-                                            <span className="menu-bullet">
-                                                <span className="bullet bullet-dot"></span>
-                                            </span>
-                                            <span className="menu-title">Online Courses</span>
-                                        </a>
-                                    </div>
-                                    <div className="menu-item">
-                                        <a className="menu-link py-3" href="../../demo1/dist/dashboards/marketing.html">
-                                            <span className="menu-bullet">
-                                                <span className="bullet bullet-dot"></span>
-                                            </span>
-                                            <span className="menu-title">Marketing</span>
-                                        </a>
-                                    </div>
-                                    <div className="menu-item">
-                                        <a className="menu-link py-3" href="../../demo1/dist/dashboards/bidding.html">
-                                            <span className="menu-bullet">
-                                                <span className="bullet bullet-dot"></span>
-                                            </span>
-                                            <span className="menu-title">Bidding</span>
-                                        </a>
-                                    </div>
-                                    <div className="menu-inner flex-column collapse" id="kt_aside_menu_collapse_2">
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/logistics.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Logistics</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/delivery.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Delivery</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/website-analytics.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Website Analytics</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/finance-performance.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Finance Performance</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/store-analytics.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Store Analytics</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/social.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Social</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/crypto.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Crypto</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/school.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">School</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/dashboards/podcast.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Podcast</span>
-                                            </a>
-                                        </div>
-                                        <div className="menu-item">
-                                            <a className="menu-link py-3" href="../../demo1/dist/landing.html">
-                                                <span className="menu-bullet">
-                                                    <span className="bullet bullet-dot"></span>
-                                                </span>
-                                                <span className="menu-title">Landing</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div className="menu-item">
-                                        <div className="menu-content">
-                                            <a className="btn btn-flex btn-color-success fs-base p-0 ms-2 mb-2 collapsible collapsed rotate" data-bs-toggle="collapse" href="#kt_aside_menu_collapse_2" data-kt-toggle-text="Show Less">
-                                                <span data-kt-toggle-text-target="true">Show 10 More</span>
-                                            
-                                                <span className="svg-icon ms-2 svg-icon-3 rotate-180">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                        <path opacity="0.5" d="M12.5657 9.63427L16.75 5.44995C17.1642 5.03574 17.8358 5.03574 18.25 5.44995C18.6642 5.86416 18.6642 6.53574 18.25 6.94995L12.7071 12.4928C12.3166 12.8834 11.6834 12.8834 11.2929 12.4928L5.75 6.94995C5.33579 6.53574 5.33579 5.86416 5.75 5.44995C6.16421 5.03574 6.83579 5.03574 7.25 5.44995L11.4343 9.63427C11.7467 9.94669 12.2533 9.94668 12.5657 9.63427Z" fill="currentColor" />
-                                                        <path d="M12.5657 15.6343L16.75 11.45C17.1642 11.0357 17.8358 11.0357 18.25 11.45C18.6642 11.8642 18.6642 12.5357 18.25 12.95L12.7071 18.4928C12.3166 18.8834 11.6834 18.8834 11.2929 18.4928L5.75 12.95C5.33579 12.5357 5.33579 11.8642 5.75 11.45C6.16421 11.0357 6.83579 11.0357 7.25 11.45L11.4343 15.6343C11.7467 15.9467 12.2533 15.9467 12.5657 15.6343Z" fill="currentColor" />
-                                                    </svg>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-          </div>
+          <div className="d-flex align-items-stretch" id="kt_header_nav"></div>
           <div className="d-flex align-items-stretch flex-shrink-0">
             <div
               className="d-flex align-items-center ms-1 ms-lg-3"
@@ -254,98 +98,6 @@ const Header = () => {
                   </div>
                 </div>
                 <div className="separator my-2"></div>
-                {/* <div className="menu-item px-5">
-                                <a href="../../demo1/dist/account/overview.html" className="menu-link px-5">My Profile</a>
-                            </div>
-                            <div className="menu-item px-5">
-                                <a href="../../demo1/dist/apps/projects/list.html" className="menu-link px-5">
-                                    <span className="menu-text">My Projects</span>
-                                    <span className="menu-badge">
-                                        <span className="badge badge-light-danger badge-circle fw-bolder fs-7">3</span>
-                                    </span>
-                                </a>
-                            </div>
-                            <div className="menu-item px-5" data-kt-menu-trigger="hover" data-kt-menu-placement="left-start">
-                                <a href="#" className="menu-link px-5">
-                                    <span className="menu-title">My Subscription</span>
-                                    <span className="menu-arrow"></span>
-                                </a>
-                                <div className="menu-sub menu-sub-dropdown w-175px py-4">
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/referrals.html" className="menu-link px-5">Referrals</a>
-                                    </div>
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/billing.html" className="menu-link px-5">Billing</a>
-                                    </div>
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/statements.html" className="menu-link px-5">Payments</a>
-                                    </div>
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/statements.html" className="menu-link d-flex flex-stack px-5">Statements
-                                        <i className="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="View your statements"></i></a>
-                                    </div>
-                                    <div className="separator my-2"></div>
-                                    <div className="menu-item px-3">
-                                        <div className="menu-content px-3">
-                                            <label className="form-check form-switch form-check-custom form-check-solid">
-                                                <input className="form-check-input w-30px h-20px" type="checkbox" value="1" checked="checked" name="notifications" />
-                                                <span className="form-check-label text-muted fs-7">Notifications</span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-                {/* <div className="menu-item px-5">
-                                <a href="../../demo1/dist/account/statements.html" className="menu-link px-5">My Statements</a>
-                            </div> */}
-
-                {/* <div className="menu-item px-5" data-kt-menu-trigger="hover" data-kt-menu-placement="left-start">
-                                <a href="#" className="menu-link px-5">
-                                    <span className="menu-title position-relative">Language
-                                    <span className="fs-8 rounded bg-light px-3 py-2 position-absolute translate-middle-y top-50 end-0">English
-                                    <img className="w-15px h-15px rounded-1 ms-2" src="assets/media/flags/united-states.svg" alt="" /></span></span>
-                                </a>
-                                <div className="menu-sub menu-sub-dropdown w-175px py-4">
-
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/settings.html" className="menu-link d-flex px-5 active">
-                                        <span className="symbol symbol-20px me-4">
-                                            <img className="rounded-1" src="assets/media/flags/united-states.svg" alt="" />
-                                        </span>English</a>
-                                    </div>
-
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/settings.html" className="menu-link d-flex px-5">
-                                        <span className="symbol symbol-20px me-4">
-                                            <img className="rounded-1" src="assets/media/flags/spain.svg" alt="" />
-                                        </span>Spanish</a>
-                                    </div>
-
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/settings.html" className="menu-link d-flex px-5">
-                                        <span className="symbol symbol-20px me-4">
-                                            <img className="rounded-1" src="assets/media/flags/germany.svg" alt="" />
-                                        </span>German</a>
-                                    </div>
-
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/settings.html" className="menu-link d-flex px-5">
-                                        <span className="symbol symbol-20px me-4">
-                                            <img className="rounded-1" src="assets/media/flags/japan.svg" alt="" />
-                                        </span>Japanese</a>
-                                    </div>
-
-                                    <div className="menu-item px-3">
-                                        <a href="../../demo1/dist/account/settings.html" className="menu-link d-flex px-5">
-                                        <span className="symbol symbol-20px me-4">
-                                            <img className="rounded-1" src="assets/media/flags/france.svg" alt="" />
-                                        </span>French</a>
-                                    </div>
-
-                                </div>
-
-                            </div> */}
-
                 <div className="menu-item px-5 my-1">
                   <Link href="/admin/user_profile" className="menu-link px-5">
                     Account Settings
@@ -366,18 +118,6 @@ const Header = () => {
                     Sign Out
                   </Link>
                 </div>
-
-                {/* <div className="separator my-2"></div> */}
-
-                {/* <div className="menu-item px-5">
-                                <div className="menu-content px-5">
-                                    <label className="form-check form-switch form-check-custom form-check-solid pulse pulse-success" for="kt_user_menu_dark_mode_toggle">
-                                        <input className="form-check-input w-30px h-20px" type="checkbox" value="1" name="mode" id="kt_user_menu_dark_mode_toggle" data-kt-url="../../demo1/dist/index.html" />
-                                        <span className="pulse-ring ms-n1"></span>
-                                        <span className="form-check-label text-gray-600 fs-7">Dark Mode</span>
-                                    </label>
-                                </div>
-                            </div> */}
               </div>
             </div>
             <div

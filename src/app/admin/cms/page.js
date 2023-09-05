@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Tag } from "primereact/tag";
+import { Tooltip } from "primereact/tooltip";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";

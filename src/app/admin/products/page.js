@@ -167,7 +167,7 @@ export const Products = () => {
       reject,
     });
   };
-
+  const toast = useRef(null);
   return (
     <>
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
@@ -198,7 +198,9 @@ export const Products = () => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-mute">Product Management</li>
+                <li className="breadcrumb-item text-mute">
+                  Product Management
+                </li>
               </ul>
             </div>
             <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -381,6 +383,8 @@ export const Products = () => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card p-4">
               <div className="card-body py-4">
+                <Toast ref={toast} />
+                <ConfirmDialog />
                 <DataTable
                   value={products}
                   paginator
