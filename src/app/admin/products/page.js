@@ -248,7 +248,7 @@ export const Products = () => {
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
-                    {({ setFieldValue }) => (
+                    {({ setFieldValue, resetForm }) => (
                       <Form className="form-design">
                         <div className="row ">
                           <div className="col-lg-6 col-md-6">
@@ -331,26 +331,6 @@ export const Products = () => {
                         </div>
                         <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
-                          {/* <div className="mb-10">
-                                                        <label className="form-label fw-bold">Member Type:</label>
-                                                        <div className="d-flex">
-                                                            <label className="form-check form-check-sm form-check-custom form-check-solid me-5">
-                                                                <input className="form-check-input" type="checkbox" value="1" />
-                                                                <span className="form-check-label">Author</span>
-                                                            </label>
-                                                            <label className="form-check form-check-sm form-check-custom form-check-solid">
-                                                                <input className="form-check-input" type="checkbox" value="2" checked="checked" />
-                                                                <span className="form-check-label">Customer</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div className="mb-10">
-                                                        <label className="form-label fw-bold">Notifications:</label>
-                                                        <div className="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                                            <input className="form-check-input" type="checkbox" value="" name="notifications" checked="checked" />
-                                                            <label className="form-check-label">Enabled</label>
-                                                        </div>
-                                                    </div> */}
                           <div className="d-flex justify-content-end">
                             <button
                               type="reset"
@@ -368,7 +348,11 @@ export const Products = () => {
                             </button>
                             <button
                               type="button"
-                              onClick={removeFilter}
+                              onClick={async (e) => {
+                                resetForm();
+                                await getProducts();
+                                op.current.toggle(e);
+                              }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
                             >

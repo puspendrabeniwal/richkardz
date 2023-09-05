@@ -128,7 +128,7 @@ const CMS = () => {
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
-                    {({ setFieldValue }) => (
+                    {({ setFieldValue, resetForm }) => (
                       <Form className="form-design">
                         <div className="row ">
                           <div className="col-lg-12 col-md-12">
@@ -163,7 +163,11 @@ const CMS = () => {
                             </button>
                             <button
                               type="button"
-                              onClick={removeFilter}
+                              onClick={async (e) => {
+                                resetForm();
+                                await getCmsAPI();
+                                op.current.toggle(e);
+                              }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
                             >

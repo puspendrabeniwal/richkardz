@@ -196,6 +196,14 @@ const Sidebar = () => {
                       <span className="menu-title">Testimonial</span>
                     </Link>
                   </span>
+                  <span className="menu-link">
+                    <span className="menu-bullet">
+                      <span className="bullet bullet-dot"></span>
+                    </span>
+                    <Link href="/admin/faq">
+                      <span className="menu-title">FAQ</span>
+                    </Link>
+                  </span>
                 </div>
               </div>
             </div>

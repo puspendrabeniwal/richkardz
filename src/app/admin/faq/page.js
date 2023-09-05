@@ -2,32 +2,33 @@
 import Link from "next/link";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { useEffect, useRef, useState } from "react";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
+import { useEffect, useRef, useState } from "react";
 import instance from "../axiosInterceptor";
-export const Testimonials = () => {
-  const [monialData, setMonialData] = useState([]);
+const CMS = () => {
+  const [faqData, setFaqData] = useState([]);
   const op = useRef(null);
   let formData = new FormData();
   useEffect(() => {
-    getMonialAPI();
+    getFAQAPI();
   }, []);
   const removeFilter = () => {
     formData = new FormData();
-    getMonialAPI();
+    getFAQAPI();
   };
-  //  ==============get Monial API Data ====================//
-  const getMonialAPI = async () => {
+  //  ==============get Block API Data ====================//
+  const getFAQAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser?._id);
     formData.append("skip", 10); //append the values with key, value pair
     formData.append("limit", 10); //append the values with key, value pair
+
     try {
-      const response = await instance.post(`testimonials`, formData);
+      const response = await instance.post(`faqs`, formData);
       const newData = response.result;
-      setMonialData(newData);
+      setFaqData(newData);
     } catch (error) {
       console.log(error);
     }
@@ -37,19 +38,17 @@ export const Testimonials = () => {
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
-    getMonialAPI();
+    formData.append("question", values?.question);
+    getFAQAPI();
   };
+
   // ============Edit button for update form===========//
   const getActionuttons = (rowdata) => {
     return (
-      <Link href={`/admin/testimonials/edit/${rowdata._id}`}>
+      <Link href={`/admin/faq/edit/${rowdata._id}`}>
         <Tag value="Update" severity="warning"></Tag>
       </Link>
     );
-  };
-  const imageBodyTemplate = (data) => {
-    console.log("data", data);
   };
   return (
     <>
@@ -67,7 +66,7 @@ export const Testimonials = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                Testimonial List
+                FAQ List
               </h1>
               <span className="h-20px border-gray-300 border-start mx-4"></span>
               <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
@@ -82,7 +81,7 @@ export const Testimonials = () => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-mute">Testimonial</li>
+                <li class="breadcrumb-item text-mute">FAQ</li>
               </ul>
             </div>
 
@@ -126,11 +125,10 @@ export const Testimonials = () => {
                   <Formik
                     initialValues={{
                       name: "",
-                      title: "",
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
-                    {({ setFieldValue }) => (
+                    {({ setFieldValue, resetForm }) => (
                       <Form className="form-design">
                         <div className="row ">
                           <div className="col-lg-12 col-md-12">
@@ -139,7 +137,7 @@ export const Testimonials = () => {
                               <div>
                                 <Field
                                   type="text"
-                                  name="name"
+                                  name="question"
                                   className="form-control"
                                 ></Field>
                               </div>
@@ -165,7 +163,11 @@ export const Testimonials = () => {
                             </button>
                             <button
                               type="button"
-                              onClick={removeFilter}
+                              onClick={async (e) => {
+                                resetForm();
+                                await getFAQAPI();
+                                op.current.toggle(e);
+                              }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
                             >
@@ -178,11 +180,8 @@ export const Testimonials = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/testimonials/add"
-                className="btn btn-sm btn-success"
-              >
-                Add Testimonial
+              <Link href="/admin/faq/add" className="btn btn-sm btn-success">
+                Add FAQ
               </Link>
             </div>
           </div>
@@ -198,39 +197,36 @@ export const Testimonials = () => {
             <div className="card p-4">
               <div className="card-body py-4">
                 <DataTable
-                  value={monialData}
-                  showGridlines
+                  value={faqData}
                   rows={10}
                   stripedRows
+                  paginator
+                  showGridlines
                   totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
-                  paginator
                 >
                   <Column
                     header="#"
                     body={(data, props) => props.rowIndex + 1}
                   ></Column>
                   <Column
-                    header="Name"
-                    field="name"
+                    header="Question"
+                    field="question"
                     sortable
                     style={{ cursor: "pointer" }}
                   ></Column>
                   <Column
-                    header="Image"
-                    className="w-6rem shadow-2 border-round"
-                    // body={(data) => {
-                    //   <>{data.image}</>;
-                    // }}
-                    body={imageBodyTemplate}
-                  ></Column>
-                  <Column
-                    field="rating"
-                    header="Rating"
-                    style={{ cursor: "pointer" }}
+                    header="Answer"
                     sortable
+                    body={(data) => (
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: data.answer,
+                        }}
+                      ></p>
+                    )}
+                    style={{ cursor: "pointer" }}
                   ></Column>
-
                   <Column
                     field=""
                     header="Actions"
@@ -246,4 +242,4 @@ export const Testimonials = () => {
   );
 };
 
-export default Testimonials;
+export default CMS;

@@ -89,7 +89,10 @@ const Blocks = () => {
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0">
                 <button
-                  onClick={(e) => op.current.toggle(e)}
+                  onClick={(e) => {
+                    op.current.toggle(e);
+                    console.log("eeeeeeeeeeeeeeeeee", e);
+                  }}
                   aria-haspopup
                   aria-controls="overlay_panel"
                   className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
@@ -130,7 +133,7 @@ const Blocks = () => {
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
-                    {({ setFieldValue }) => (
+                    {({ setFieldValue, resetForm }) => (
                       <Form className="form-design">
                         <div className="row ">
                           <div className="col-lg-6 col-md-6">
@@ -179,7 +182,11 @@ const Blocks = () => {
                             </button>
                             <button
                               type="button"
-                              onClick={removeFilter}
+                              onClick={async (e) => {
+                                resetForm();
+                                await getBlockAPI();
+                                op.current.toggle(e);
+                              }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
                             >
