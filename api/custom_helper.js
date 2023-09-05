@@ -1,13 +1,14 @@
 /** Load All required Modules */
 const { createTransport } = require("nodemailer");
 const { renderFile } = require("ejs");
-const moment = require("moment");
+const {unlink,stat,existsSync,mkdirSync} = require("fs");
 const { ObjectId } = require("mongodb");
 //const dateFormat	= require("dateformat");
 const { generate } = require("randomstring");
 const asyncEach = require("async/each");
 const asyncParallel = require("async/parallel");
 const slug = require("slug");
+const clone			= require("clone");
 /**
  * Function for parse validation
  *
@@ -810,3 +811,221 @@ getDatabaseSlug = (options) => {
     });
   });
 }; //end getDatabaseSlug();
+
+/**
+ * Function to upload image
+ *
+ * @param options	As data in Object
+ *
+ * @return json
+ */
+moveUploadedFile = (req,res,options)=>{
+	return new Promise(resolve=>{
+		let image 				=	(options && options.image)				?	options.image				:"";
+		let filePath 			=	(options && options.filePath)			?	options.filePath			:"";
+		let oldPath 			=	(options && options.oldPath)			?	options.oldPath				:"";
+		let allowedExtensions 	=	(options && options.allowedExtensions)	?	options.allowedExtensions	:ALLOWED_IMAGE_EXTENSIONS;
+		let allowedImageError 	=	(options && options.allowedImageError)	?	options.allowedImageError	:ALLOWED_IMAGE_ERROR_MESSAGE;
+		let allowedMimeTypes 	=	(options && options.allowedMimeTypes)	?	options.allowedMimeTypes	:ALLOWED_IMAGE_MIME_EXTENSIONS;
+		let allowedMimeError 	=	(options && options.allowedMimeError)	?	options.allowedMimeError	:ALLOWED_IMAGE_MIME_ERROR_MESSAGE;
+
+		
+		/** Send success response **/
+		if(image == '') return resolve({status : STATUS_SUCCESS, fileName : oldPath});
+
+		let fileData	= (image.name)	? 	image.name.split('.') 			:[];
+		let imageName	= (image.name)	? 	image.name 						:'';
+
+		let extension	= (fileData)	?	fileData.pop().toLowerCase()	:'';
+
+		/** Send error response **/
+		if (allowedExtensions.indexOf(extension) == -1) return resolve({status : STATUS_ERROR, message : allowedImageError});
+
+		/** Create new folder of this month **/
+		let newFolder	= 	(newDate("","mmm")+ newDate("","yyyy")).toUpperCase()+'/';
+		//createFolder(filePath+newFolder);
+
+		let newFileName 	= Date.now()+changeFileName(imageName);
+		let uploadedFile	= filePath+newFileName;
+
+
+		/** move image to folder*/
+		image.mv(uploadedFile,(err)=>{
+			if(err){
+				/** Send error response **/
+				return resolve({
+					status	: 	STATUS_ERROR,
+					message	:	res.__("admin.system.something_going_wrong_please_try_again")
+				});
+			}
+					/** Send success response **/
+					resolve({status : STATUS_SUCCESS, fileName:	newFileName});
+			/** check mime type*/
+			// exec('file --mime-type -b '+uploadedFile,(err, out, code)=>{
+			// 	if (allowedMimeTypes.indexOf(out.trim()) == -1){
+			// 		unlink(uploadedFile,(err)=>{
+			// 			if (err){
+			// 				/** Send error response **/
+			// 				return resolve({
+			// 					status	: 	STATUS_ERROR,
+			// 					message	:	res.__("admin.system.something_going_wrong_please_try_again")
+			// 				});
+			// 			}
+
+			// 			/** Send error response **/
+			// 			resolve({
+			// 				status	: 	STATUS_ERROR,
+			// 				message	:	allowedMimeError
+			// 			});
+			// 		});
+			// 	}else{
+			// 		/** Send success response **/
+			// 		resolve({status : STATUS_SUCCESS, fileName:	newFileName});
+			// 	}
+			// });
+		});
+	});
+};//End moveUploadedFile()
+
+
+/**
+ * Function for change file name
+ *
+ * @param fileName AS File Name
+ *
+ * @return filename
+ */
+changeFileName = (fileName)=>{
+	let fileData		=	(fileName) ? fileName.split('.') : [];
+	let extension		=	(fileData) ? fileData.pop() : '';
+	fileName			=	fileName.replace('.'+extension,'');
+	fileName			= 	fileName.replace(RegExp('[^0-9a-zA-Z\.]+','g'),'');
+	fileName			= 	fileName.replace('.','');
+	return fileName+'.'+extension;
+};//end changeFileName();
+
+
+/**
+ * Function for remove file from root path
+ *
+ * @param options As data in file root path
+ *
+ * @return json
+ */
+removeFile = (options)=>{
+	return new Promise(resolve=>{
+		var filePath	=	(options.file_path)	?	options.file_path	:"";
+		let response = {
+			status	: 	STATUS_SUCCESS
+		};
+
+		if(filePath !=""){
+			/** remove file **/
+			unlink(filePath,(err)=>{
+				if(!err){
+					/** Send success response **/
+					resolve(response);
+				}else{
+					/** Send error response **/
+					response.status = STATUS_ERROR;
+					resolve(response);
+				}
+			});
+		}else{
+			/** Send error response **/
+			response.status = STATUS_ERROR;
+			resolve(response);
+		}
+	})
+};//end removeFile()
+
+/**
+ * Function to Make full image path and check file is exist or not
+ *
+ * @param options As data in Object format (like :-  file url,file path,result,database field name)
+ *
+ * @return json
+ */
+appendFileExistData = (options)=>{
+	return new Promise(resolve=>{
+		var fileUrl 			= 	(options.file_url)			?	options.file_url			:"";
+		var filePath 			= 	(options.file_path)			?	options.file_path			:"";
+		var result 				= 	(options.result)			?	clone(options.result)		:"";
+		var databaseField 		= 	(options.database_field)	?	options.database_field		:"";
+		var image_placeholder 	= 	(options.image_placeholder)	?	options.image_placeholder	:IMAGE_FIELD_NAME;
+		var noImageAvailable	=	(options.no_image_available)?	options.no_image_available	:NO_IMAGE_AVAILABLE;
+		var multitoSingleImg	=	(options.multi_single_img)  ?	options.multi_single_img	:"";
+		if(result.length > 0){
+			let index = 0;
+			result.forEach((record,recordIndex)=>{
+				var file = (record[databaseField] != '' && record[databaseField]!=undefined) ? filePath+record[databaseField] : '';
+				result[recordIndex][image_placeholder] = noImageAvailable;
+				/** Set check file data **/
+				let checkFileData = {
+					"file" 					: 	file,
+					"file_url" 				: 	fileUrl,
+					"image_name" 			: 	record[databaseField],
+					"record_index" 			: 	recordIndex,
+					"no_image_available" 	: 	noImageAvailable
+				}
+
+				checkFileExist(checkFileData).then((fileResponse)=>{
+					let recordIndexResponse = 	(typeof fileResponse.record_index !== typeof undefined)	?	fileResponse.record_index	:"";
+					let imageResponse		=	(fileResponse.file_url)		?	fileResponse.file_url		:"";
+					result[recordIndexResponse][image_placeholder] = imageResponse;
+
+					if(result.length-1 == index){
+						/** Send response **/
+						let response = {
+							result	: 	result
+						};
+						resolve(response);
+					}
+					index++;
+				});
+			});
+		}else{
+			if(multitoSingleImg) result.push({ image:'no-image.jpg',_id:"",full_image_path: noImageAvailable });
+			/** Send response **/
+			let response = {
+				result	: 	result
+			};
+			resolve(response);
+		}
+	});
+};//End appendFileExistData()
+
+/**
+ * Function to check a file is exist in folder or not
+ *
+ * @param options As data in Object format (like :-  file,file url,image name,index)
+ *
+ * @return  json
+ */
+checkFileExist = (options)=>{
+	return new Promise(resolve=>{
+		var file 				= 	(options.file) ?	options.file :"";
+		var fileUrl 			=	(options.file_url) ? options.file_url :"";
+		var imageName 			= 	(options.image_name) ?	options.image_name	:"";
+		var recordIndex			= 	(typeof options.record_index !== typeof undefined)	?	options.record_index :"";
+		var noImageAvailable 	= 	(options.no_image_available) ? options.no_image_available :"";
+
+		stat(file,(err, stat)=>{
+			if(!err) {
+				/** Send response **/
+				let response = {
+					file_url		: 	fileUrl+imageName,
+					record_index	:	recordIndex
+				};
+				resolve(response);
+			}else{
+				/** Send response **/
+				let response = {
+					file_url		: 	(noImageAvailable) ? noImageAvailable : NO_IMAGE_AVAILABLE,
+					record_index	:	recordIndex
+				};
+				resolve(response);
+			}
+		});
+	});
+};//end checkFileExist()

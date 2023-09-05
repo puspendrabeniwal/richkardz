@@ -22,3 +22,8 @@ routes.all(API_URL+"product/view/:id",(req, res)=>{
     products.viewProduct(req, res);
 });
 
+/** Routing is used to update product status*/
+routes.all(API_URL+"product_status",(req, res)=>{
+    products.updateProductStatus(req, res);
+});
+

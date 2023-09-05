@@ -1,12 +1,9 @@
 'use client'
 
-export const  Sign = ()=> {
+ const  Sign = ()=> {
   return (
-
-<></>
-  
-)
- 
+    <></> 
+  )
 }
 
 export default Sign;

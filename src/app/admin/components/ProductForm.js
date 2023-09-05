@@ -276,7 +276,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         >
                           Image Upload
                         </label>
-                        <div className=" billingForm">
+                        <div className="billingForm">
                           <Field
                             type="file"
                             name="images"
@@ -332,7 +332,15 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         data-kt-menu-trigger="click"
                         data-kt-menu-placement="bottom-end"
                       >
-                        {productId ? "Update" : "Add Product"}
+                      Submit
+                      </button>
+                      <button
+                        type="reset"
+                        className="btn btn btn-warning me-3"
+                        data-kt-menu-trigger="click"
+                        data-kt-menu-placement="bottom-end"
+                      >
+                      Cancel
                       </button>
                     </div>
                   </Form>

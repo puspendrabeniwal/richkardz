@@ -71,7 +71,10 @@ app.use(cookieParser());
 
 
 /** Set publically accessable folder */
-app.use(express.static(__dirname + '/public'));
+// inside public directory.
+app.use(express.static('public'));
+app.use('/uploads', express.static('uploads'));
+
 
 /**  including .env file */
 require('dotenv').config();

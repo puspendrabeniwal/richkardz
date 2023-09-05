@@ -1,12 +1,22 @@
 'use client'
-import React, { useEffect, useState , useRef} from "react";
+import React, { useEffect, useState ,useContext, useRef} from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Toast } from "primereact/toast";
+import { Image } from 'primereact/image';
+import { FileUpload } from 'primereact/fileupload';
+
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { AuthContext } from "../AuthContext";
+
 const  UserProfile = ()=> {
+    const { user, setUser } = useContext(AuthContext);
     const [userDetail, setUserDetail] = useState({});
+
+
+    const [imageUrl, setImageUrl] = useState("https://mern.richkardz.com/uploads/user/1693837872188widget9.jpg");
+
     const toast = useRef(null);
     useEffect(() => {
         getUserDetail()
@@ -21,7 +31,9 @@ const  UserProfile = ()=> {
         instance.post("getUserDetail", formData)
             .then(response => {
                 let userProfile = (response.result) ? response.result : {};
+                setUser(userProfile)
                 setUserDetail(userProfile);
+                setImageUrl(userProfile?.full_image_path)
             })
             .catch(error => {
                 showMessage();
@@ -59,6 +71,7 @@ const  UserProfile = ()=> {
         formData.append("user_id", loginUser._id);   //append the values with key, value pair
         formData.append("full_name", values.full_name);   //append the values with key, value pair
         formData.append("email", values.email);   //append the values with key, value pair
+        formData.append("image", values.image);   //append the values with key, value pair
 
         instance.post("updateUserProfile", formData)
         .then(response => {
@@ -71,7 +84,7 @@ const  UserProfile = ()=> {
         });
     };
 
-
+    console.log(user, "user")
   return (
     <>
         <Toast ref={toast} />
@@ -140,63 +153,75 @@ const  UserProfile = ()=> {
                         validationSchema={validationSchema}
                         onSubmit={onSubmit}
                     >                               
-                        <Form >
-                            <div className="card-body border-top p-9">
-                                <div className="row mb-6">
-                                    <label className="col-lg-4 col-form-label fw-semibold fs-6">Avatar</label>   
-                                    <div className="col-lg-8">
-                                        <div className="image-input image-input-outline" data-kt-image-input="true" style={{"backgroundImage": "url(/metronic8/demo1/assets/media/svg/avatars/blank.svg)"}}>
-                                            <div className="image-input-wrapper w-125px h-125px" style={{"backgroundImage": "url(/admin/assets/media/avatars/300-1.jpg)"}}></div>
-                                            <label className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-                                                <i className="ki-duotone ki-pencil fs-7"><span className="path1"></span><span className="path2"></span></i>
-                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg"/>
-                                                <input type="hidden" name="avatar_remove"/>
-                                            </label>
-                                            <span className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-                                                <i className="ki-duotone ki-cross fs-2"><span className="path1"></span><span className="path2"></span></i>                            </span>
-                                            <span className="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-                                                <i className="ki-duotone ki-cross fs-2"><span className="path1"></span><span className="path2"></span></i>                            </span>
-                                        </div>
-                                        <div className="form-text">Allowed file types:  png, jpg, jpeg.</div>
+                         {({ setFieldValue }) => (
+                            <Form >
+                                <div className="card-body border-top p-9">
+                                    <div className="row mb-6">
+                                        <label className="col-lg-4 col-form-label fw-semibold fs-6">Image</label>   
+                                        <FileUpload 
+                                            name="image" 
+                                            accept="image/*" 
+                                            maxFileSize={1000000}
+                                            onSelect={(event) => {
+                                                const files = event.files[0];
+                                                setFieldValue("image", files);
+                                                }}
+                                            emptyTemplate={
+                                                <>
+                                            <p className="m-0">Drag and drop files to here to upload.</p>
+                                            <img crossorigin  src={imageUrl} height="50px" width="50px" alt="Image" />
+                                            </>
+                                        } 
+                                        />
+                                        {/* <Field
+                                                        type="file"
+                                                        name="image"
+                                                        accept="image/*"
+                                                        value={undefined}
+                                                       
+                                                    /> */}
                                     </div>
-                                </div>
 
-                                <div className="row mb-6">
-                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
-                                    <div className="col-lg-8 fv-row">
-                                        <Field  
-                                            type="text" 
-                                            name="full_name" 
-                                            className="form-control form-control-lg form-control-solid" 
-                                            placeholder="Full Name" 
-                                        />
-                                        <ErrorMessage name="full_name" className="errorMessage" component="div" />
+                                    <div className="row mb-6">
+                                        <label className="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
+                                        <div className="col-lg-8 fv-row">
+                                            <Field  
+                                                type="text" 
+                                                name="full_name" 
+                                                className="form-control form-control-lg form-control-solid" 
+                                                placeholder="Full Name" 
+                                            />
+                                            <ErrorMessage name="full_name" className="errorMessage" component="div" />
+                                        </div>
+                                    </div>
+                                    <div className="row mb-6">
+                                        <label className="col-lg-4 col-form-label required fw-semibold fs-6">Email</label>
+                                        <div className="col-lg-8 fv-row">
+                                            <Field  
+                                                type="text" 
+                                                name="email" 
+                                                className="form-control form-control-lg form-control-solid" 
+                                                placeholder="Email Address" 
+                                            />
+                                            <ErrorMessage name="email" className="errorMessage" component="div" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="row mb-6">
-                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">Email</label>
-                                    <div className="col-lg-8 fv-row">
-                                        <Field  
-                                            type="text" 
-                                            name="email" 
-                                            className="form-control form-control-lg form-control-solid" 
-                                            placeholder="Email Address" 
-                                        />
-                                        <ErrorMessage name="email" className="errorMessage" component="div" />
-                                    </div>
+                                <div className="card-footer d-flex justify-content-end py-6 px-9">
+                                    <button type="reset" className="btn btn-warning me-2">Discard</button>
+                                    <button type="submit" className="btn btn-info">Save Changes</button>
                                 </div>
-                            </div>
-                            <div className="card-footer d-flex justify-content-end py-6 px-9">
-                                <button type="reset" className="btn btn-warning me-2">Discard</button>
-                                <button type="submit" className="btn btn-info">Save Changes</button>
-                            </div>
-                        </Form>
+                            </Form>
+                        )}
                     </Formik>
                     </div>
                 </div>
             </div>
         </div>
-
+        <script src="/admin/assets/plugins/global/plugins.bundle.js"></script>
+        <script src="/admin/assets/js/scripts.bundle.js"></script>
+        <script src="/admin/assets/js/widgets.bundle.js"></script>
+        <script src="/admin/assets/js/custom/widgets.js"></script>                                             
     </>
   )
 }

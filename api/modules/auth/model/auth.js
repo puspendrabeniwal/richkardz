@@ -3,6 +3,7 @@ const { ObjectId }    = require("mongodb");
 const asyncForEachOf  = require("async/forEachOf");
 const asyncParallel   = require("async/parallel");
 const asyncEach       = require("async/each");
+const { log } = require("async");
 
 function Auth(req, res) {
 
@@ -53,7 +54,21 @@ function Auth(req, res) {
           const bcrypt = require("bcryptjs");
           bcrypt.compare(password, result.password, async (err, isMatch) => {
             if(result && Object.keys(result).length > NOT && isMatch){
+              
+               /** Set options for append image full path **/
+               let options = {
+                "file_url"          :   USERS_URL,
+                "file_path"         :   USERS_FILE_PATH,
+                "result"            :   [result],
+                "database_field"    :   "image"
+            };
 
+            
+
+            /** Append image with full path **/
+            appendFileExistData(options).then(fileResponse=>{
+              
+              let imageResponse =  (fileResponse && fileResponse.result && fileResponse.result[0])   ?   fileResponse.result[0]  :{}
               let response= {
                 status          : API_STATUS_SUCCESS,
                 message         : "Logged In",
@@ -75,10 +90,12 @@ function Auth(req, res) {
                 let data      = {user_key : result._id, email : result.email}; 
                 let token     = generateJWT(data);
                 response['token']   = token;
-                response['result']  = {_id : result._id, full_name : result.full_name, email: result.email, role:result.role};
+                response['result']  = {_id : result._id, full_name : result.full_name, email: result.email, role:result.role, full_image_path : imageResponse.full_image_path};
               
-              response['errors']   = {};
-              return res.send(response);
+              response['errors']   = {}
+              console.log(response.result, "imageResponse")
+                return res.send(response);
+            });
             }else{
               return res.send({
                 status		:	API_STATUS_ERROR,
@@ -702,12 +719,30 @@ function Auth(req, res) {
       let userId      = (req.body.user_id) ? req.body.user_id : '';
       users.findOne({ "_id" : ObjectId(userId)},async (err, result)=>{
           if(!err){
+              /** Set options for append image full path **/
+              let options = {
+                "file_url"          :   USERS_URL,
+                "file_path"         :   USERS_FILE_PATH,
+                "result"            :   [result],
+                "database_field"    :   "image"
+            };
+
+            /** Append image with full path **/
+            appendFileExistData(options).then(fileResponse=>{
+              let response = {
+                  status  : API_STATUS_SUCCESS,
+                  result  : (fileResponse && fileResponse.result && fileResponse.result[0])   ?   fileResponse.result[0]  :{}
+              };
+
+              console.log(response, "response");
               /**Render edit profile page*/
               return res.send({
                 status    : API_STATUS_SUCCESS,
                 message   : '',
-                result    : result,
+                result    : response.result,
               });
+          });
+
           }else{
               /** Send error response **/
               return res.send({
@@ -755,8 +790,6 @@ function Auth(req, res) {
       }
     });
 
-
-
     let errors  = parseValidationFront(req.validationErrors());
     errors      = (errors && Object.keys(errors).length>0) ? errors :  {};
 
@@ -774,33 +807,27 @@ function Auth(req, res) {
         email        : (req.body.email) ? req.body.email : '',
       };
 
-      /** File uploading on s3 AWS */
+      /** File uploading */
       if(req.files){
-        /** Read content from the file */
-        let brandLogo=  (req.files.brand_logo) ? req.files.brand_logo : {};
+        /** Read content from the file */ 
+        let image   =   (req.files && req.files.image)  ?   req.files.image :{};
+				let imgaeOptions =   {
+					'image'     :   image,
+					'filePath'  :   USERS_FILE_PATH
+				};
+				moveUploadedFile(req, res,imgaeOptions).then(imgaeResponse=>{
 
-        /** AWS server configuration */
-        const AWS = require('aws-sdk');
-        const s3 = new AWS.S3({
-          accessKeyId: AWS_S3_ID,
-          secretAccessKey: AWS_S3_SECRET
-        });
-
-        /**  Setting up S3 upload parameters */
-        const params = {
-            Bucket: 'quibblerm-assets',
-            Key: ''+userId+''+brandLogo.name, // File name you want to save as in S3
-            Body: brandLogo.data,
-            ACL : 'public-read'
-        };
-    
-        /**  Uploading files to the bucket*/
-        s3.upload(params, function(err, data) {
-            if (err) throw err;
-            if(data.Location) conditionUpdate['brand_logo'] = data.Location;
+					if(imgaeResponse.status == STATUS_ERROR){
+						/** Send error response **/
+						return res.send({
+							status  : STATUS_ERROR,
+							message : [{'param':'image','msg':imgaeResponse.message}],
+						});
+					}else{
+            conditionUpdate['image'] = imgaeResponse.fileName;
             editProfile(req, res, conditionSearch, conditionUpdate)
-            //console.log(`File uploaded successfully. ${data.Location}`);
-        });
+          }
+        })
       }else{
         editProfile(req, res, conditionSearch, conditionUpdate)
       }

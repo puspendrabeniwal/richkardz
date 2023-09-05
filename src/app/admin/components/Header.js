@@ -1,18 +1,20 @@
 "use client"
 import Link from "next/link";
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useContext, useState, use} from "react";
+import { AuthContext } from "../AuthContext";
 const Header = () => {
-    const [loginuser, setLoginUser] = useState({});
+    const { user, setUser } = useContext(AuthContext);
     useEffect(() => {
-        setLoginUser(JSON.parse(localStorage.getItem("loginInfo")))
+        if(user && Object.keys(user).length===0){
+            setUser(JSON.parse(localStorage.getItem("loginInfo")))
+        }  
     },[])
     
     const logout =()=>{
         localStorage.removeItem("loginInfo")
         window.location.replace('/admin/signin')
     }
-    
-    console.log(loginuser, "loginUser")
+    console.log(user, "dsfsdfsdf");
     return (
         <div id="kt_header"  className="header align-items-stretch">
         <div className="container-fluid d-flex align-items-stretch justify-content-between">
@@ -193,19 +195,19 @@ const Header = () => {
                 <div className="d-flex align-items-stretch flex-shrink-0">
                     <div className="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
                         <div className="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                            <img src="../admin/assets/media/avatars/300-1.jpg" alt="user" />
+                            <img src="https://mern.richkardz.com/uploads/user/1693837872188widget9.jpg" alt="user" />
                         </div>
                         <div className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px" data-kt-menu="true">
                             <div className="menu-item px-3">
                                 <div className="menu-content d-flex align-items-center px-3">
                                     <div className="symbol symbol-50px me-5">
-                                        <img alt="Logo" src="../admin/assets/media/avatars/300-1.jpg" />
+                                        <img alt="Logo" src={user?.full_image_path} />
                                     </div>
                                     <div className="d-flex flex-column">
-                                        <div className="fw-bolder d-flex align-items-center fs-5">{loginuser?.full_name}
+                                        <div className="fw-bolder d-flex align-items-center fs-5">{user?.full_name}
                                         {/* <span className="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Pro</span> */}
                                         </div>
-                                        <a href="#" className="fw-bold text-muted text-hover-primary fs-7">{loginuser?.email}</a>
+                                        <a href="#" className="fw-bold text-muted text-hover-primary fs-7">{user?.email}</a>
                                     </div>
                                 </div>
                             </div>

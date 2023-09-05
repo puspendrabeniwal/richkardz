@@ -48,10 +48,31 @@ WEBSITE_MODULES_PATH		    = 	WEBSITE_ROOT_PATH + "modules/";
 WEBSITE_LAYOUT_PATH				= 	WEBSITE_ROOT_PATH + "modules/"+FRONT_END_FOLDER_NAME+"/layouts/";
 /** Website upload directory root path */
 WEBSITE_UPLOADS_ROOT_PATH		= 	WEBSITE_ROOT_PATH + "public/uploads/";
+/** Website public uploads directory path */
+WEBSITE_PUBLIC_UPLOADS_PATH 	=	WEBSITE_PUBLIC_PATH +"uploads/";
 
 /** For product images file directory path and url*/
 PRODUCTS_FILE_PATH	=	WEBSITE_UPLOADS_ROOT_PATH+"products/";
-// PRODUCTS_URL		=	WEBSITE_PUBLIC_UPLOADS_PATH+"products/";
+PRODUCTS_URL		=	WEBSITE_PUBLIC_UPLOADS_PATH+"products/";
+
+/** For User images file directory path and url*/
+USERS_FILE_PATH		=	WEBSITE_UPLOADS_ROOT_PATH+"user/";
+USERS_URL			=	WEBSITE_URL+"uploads/user/";
+
+
+
+/** Upload image configurations*/
+ALLOWED_IMAGE_EXTENSIONS 			=	["jpg","jpeg","png"];
+ALLOWED_IMAGE_ERROR_MESSAGE			= 	"Please select valid file, Valid file extensions are "+ALLOWED_IMAGE_EXTENSIONS.join(", ")+".";
+
+ALLOWED_IMAGE_MIME_EXTENSIONS 		= 	["image/jpg","image/jpeg","image/png","application/pdf"];
+ALLOWED_IMAGE_MIME_ERROR_MESSAGE	= 	"Please select valid mime type, Valid mime types are "+ALLOWED_IMAGE_MIME_EXTENSIONS.join(", ")+".";
+IMAGE_RESOLUTION		 			=	"1202*424";
+
+/** Urls of commonly used images */
+NO_IMAGE_AVAILABLE		=	WEBSITE_PUBLIC_UPLOADS_PATH + "no-image.png";
+ADD_PROFILE_IMAGE_ICON	= 	WEBSITE_PUBLIC_UPLOADS_PATH + "no-image.png";
+IMAGE_FIELD_NAME 		= 	"full_image_path";
 
 /** Time Configurations */
 DAYS_IN_A_WEEK				= 	7;

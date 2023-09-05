@@ -21,9 +21,7 @@ function Products() {
             let price = (req.body.price) ? Number(req.body.price) : "";
             let discount = (req.body.discount) ? Number(req.body.discount) : "";
 
-            let searchCondition = {
-                status : 1
-            }
+            let searchCondition = {}
 
             if(price) searchCondition['price'] = price;
             if(discount) searchCondition['discount'] = discount;
@@ -304,7 +302,7 @@ function Products() {
     this.editProduct = (req, res)=>{
         if(isPost(req)){
             let productId = (req.params.id) ? req.params.id : '';
-            console.log("productId DDDDD"+productId);
+
             let collection     = db.collection("products");
             /** Sanitize Data */
 			req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
@@ -348,13 +346,13 @@ function Products() {
             },{$set:{
                 /** Add all field list which you want update */
                 product_name	:	(req.body.product_name)?req.body.product_name:"",
-                price	:	(req.body.price)?req.body.price:"",
-                discount	:	(req.body.discount)?req.body.discount:"",
+                price	:	(req.body.price)? Number(req.body.price):"",
+                discount	:	(req.body.discount)? Number(req.body.discount):"",
                 profession	:	(req.body.profession)?req.body.profession:"",
                 card_type	:	(req.body.card_type)?req.body.card_type:"",
                 product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
-                is_feature : (req.body.is_feature)?req.body.is_feature:"",
-                is_new_release : (req.body.is_new_release)?req.body.is_new_release:"",
+                is_feature : (req.body.is_feature)? Number(req.body.is_feature):0,
+                is_new_release : (req.body.is_new_release)?Number(req.body.is_new_release):0,
                 // product_image: imageResponse.fileName ? imageResponse.fileName : "",
                 created_at 			:	getUtcDate(),
                 updated_at			: 	getUtcDate(),
@@ -421,6 +419,49 @@ function Products() {
                 });
             }
         })
-    }      
+    } 
+
+    	/**
+	 * Function for update product status
+	 *
+	 * @param req 	As 	Request Data
+     * @param res 	As 	Response Data
+     * @param next 	As 	Callback argument to the middleware function
+	 *
+	 * @return render/json
+	 */
+	this.updateProductStatus = (req,res)=>{
+        if(isPost(req)){
+            console.log(req.body);
+            let productId		=	(req.body.product_id) ?	req.body.product_id	: "";
+            let status	=	(Number(req.body.status) === ACTIVE) ? 	DEACTIVE 				: ACTIVE;
+                
+            /** Update slider status **/
+            const products = db.collection("products");
+            products.updateOne({
+                _id : ObjectId(productId)
+            },
+            {$set : {
+                status		: 	status,
+                modified	:	getUtcDate()			
+            }},(err, result)=>{
+                //if(err) return next(err);
+                /** Send success response **/
+                return res.send({
+                    "status"      : API_STATUS_SUCCESS,
+                    "message"     : 'Status has been updated successfully',
+                    "error"       : [],
+                    "result"      : []
+                });
+            });
+        }else{
+            return res.send({
+                "status"      : API_STATUS_ERROR,
+                "message"     : "invalid request",
+                "error"       : [],
+                "result" : []
+            });
+        }
+	};// end updateProductStatus()
 }
 module.exports = new Products();

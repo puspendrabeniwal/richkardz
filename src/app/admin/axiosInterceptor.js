@@ -2,13 +2,13 @@ import axios from 'axios';
 
 // Create an instance of Axios with default configuration
 const instance = axios.create({
-  baseURL: 'http://localhost:8005/api/',
+  baseURL: 'https://mern.richkardz.com/api/',
 });
 
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
-    config.headers['content-type'] = 'application/json';
+    //config.headers['content-type'] = 'application/json';
 
     // Modify the request configuration here
     // For example, add authorization header
