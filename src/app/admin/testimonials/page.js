@@ -49,7 +49,15 @@ export const Testimonials = () => {
     );
   };
   const imageBodyTemplate = (data) => {
-    console.log("data", data);
+    console.log("image", data.full_image_path);
+    return (
+      <img
+        src={`${data.full_image_path}`}
+        alt={data.image}
+        className="w-6rem shadow-2 border-round"
+        height={25}
+      ></img>
+    );
   };
   return (
     <>
@@ -219,9 +227,6 @@ export const Testimonials = () => {
                   <Column
                     header="Image"
                     className="w-6rem shadow-2 border-round"
-                    // body={(data) => {
-                    //   <>{data.image}</>;
-                    // }}
                     body={imageBodyTemplate}
                   ></Column>
                   <Column
@@ -230,7 +235,6 @@ export const Testimonials = () => {
                     style={{ cursor: "pointer" }}
                     sortable
                   ></Column>
-
                   <Column
                     field=""
                     header="Actions"

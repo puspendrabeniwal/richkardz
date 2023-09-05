@@ -38,6 +38,7 @@ const CMS = () => {
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
+    console.log("faq question", values);
     formData.append("question", values?.question);
     getFAQAPI();
   };
@@ -124,7 +125,7 @@ const CMS = () => {
                   <div className="separator border-gray-200 mb-10"></div>
                   <Formik
                     initialValues={{
-                      name: "",
+                      question: "",
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
@@ -133,7 +134,9 @@ const CMS = () => {
                         <div className="row ">
                           <div className="col-lg-12 col-md-12">
                             <div className="mb-10">
-                              <label className="form-label fw-bold">Name</label>
+                              <label className="form-label fw-bold">
+                                Question
+                              </label>
                               <div>
                                 <Field
                                   type="text"

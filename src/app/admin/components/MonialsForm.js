@@ -26,7 +26,7 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
     descripiton: monialValue ? monialValue.descripiton : "",
     rating: monialValue ? monialValue.rating : "",
     image: monialValue ? monialValue.image : "",
-    full_image_path: monialValue ? monialValue.image : "",
+    // full_image_path: monialValue ? monialValue.image : "",
   };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
