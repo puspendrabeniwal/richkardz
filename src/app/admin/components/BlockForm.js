@@ -1,23 +1,32 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
+import { Editor } from "primereact/editor";
 const validationSchema = Yup.object().shape({
   blockName: Yup.string().required("Name is required"),
   title: Yup.string().required("Title is required"),
-  blockDescription: Yup.string().required("Description is required"),
+  description: Yup.string()
+    .required("Description is required")
+    .min(10, "Description is too short"),
 });
 
-const BlockForm = ({ productValue, handleSubmitProduct, blockId }) => {
+const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
   const defaultValues = {
-    blockName: productValue ? productValue.name : "",
-    title: productValue ? productValue.title : "",
-    blockDescription: productValue ? productValue.body : "",
+    blockName: blockValue ? blockValue.name : "",
+    title: blockValue ? blockValue.title : "",
+    description: blockValue ? blockValue.body : "",
   };
-  const onSubmit = async (values) => {
-    console.log("valuesssss", values);
-    await handleSubmitProduct(values);
+  const onSubmit = async (values, { setSubmitting }) => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    let formData = new FormData();
+    formData.append("user_id", loginUser._id);
+    Object.keys(values).forEach(function (key, index) {
+      formData.append(key, values[key]);
+    });
+    await handleSubmitBlock(values);
+    setSubmitting(false);
   };
   return (
     <>
@@ -31,102 +40,97 @@ const BlockForm = ({ productValue, handleSubmitProduct, blockId }) => {
               <Formik
                 initialValues={defaultValues}
                 validationSchema={validationSchema}
-                onSubmit={async (values) => await onSubmit(values)}
+                // onSubmit={async (values) => await onSubmit(values)}
+                onSubmit={onSubmit}
               >
-                <Form className="form-design">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <h3 className="font-weight-bold">Add Product</h3>
-                    </div>
-                    <Link
-                      href="/admin/blocks"
-                      type="button"
-                      className="btn btn-primary"
-                    >
-                      Back
-                    </Link>
-                  </div>
-                  <div className="row mb-3">
-                    <div className="col-lg-6 col-md-6">
-                      <label
-                        className="col-form-label required fw-semibold fs-6"
-                        htmlFor="floatingname"
-                      >
-                        Block Name
-                      </label>
+                {({ isSubmitting, setFieldValue }) => (
+                  <Form className="form-design">
+                    <div className="row mb-3">
+                      <div className="col-lg-6 col-md-6">
+                        <label
+                          className="col-form-label required fw-semibold fs-6"
+                          htmlFor="floatingname"
+                        >
+                          Block Name
+                        </label>
 
-                      <Field
-                        type="text"
-                        name="blockName"
-                        className="form-control"
-                        id="floatingname"
-                      />
-
-                      <ErrorMessage
-                        name="blockName"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </div>
-                    <div className="col-lg-6 col-md-6">
-                      <label
-                        className="col-form-label required fw-semibold fs-6"
-                        htmlFor="floatingTitle"
-                      >
-                        Title
-                      </label>
-                      <div className=" billingForm">
                         <Field
                           type="text"
+                          name="blockName"
+                          className="form-control"
+                          id="floatingname"
+                        />
+
+                        <ErrorMessage
+                          name="blockName"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="col-lg-6 col-md-6">
+                        <label
+                          className="col-form-label required fw-semibold fs-6"
+                          htmlFor="floatingTitle"
+                        >
+                          Title
+                        </label>
+                        <div className=" billingForm">
+                          <Field
+                            type="text"
+                            name="title"
+                            className="form-control"
+                            id="floatingTitle"
+                          />
+                        </div>
+                        <ErrorMessage
                           name="title"
-                          className="form-control"
-                          id="floatingTitle"
+                          component="div"
+                          className="text-danger"
                         />
                       </div>
-                      <ErrorMessage
-                        name="title"
-                        component="div"
-                        className="text-danger"
-                      />
                     </div>
-                  </div>
 
-                  <div className="row mb-3">
-                    <div className="col-lg-12 col-md-12">
-                      <label
-                        className="col-form-label required fw-semibold fs-6"
-                        htmlFor="floatinDescription"
+                    <div className="row mb-3">
+                      <div className="col-lg-12 col-md-12">
+                        <label
+                          className="col-form-label required fw-semibold fs-6"
+                          htmlFor="floatinDescription"
+                        >
+                          Description
+                        </label>
+
+                        <div className=" billingForm">
+                          <Editor
+                            style={{ height: "320px" }}
+                            id="description"
+                            name="description"
+                            filter={false}
+                            onTextChange={(e) => {
+                              setFieldValue("description", e.textValue);
+                            }}
+                          />
+                        </div>
+                        <ErrorMessage
+                          name="description"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <button
+                        type="submit"
+                        className="btn btn btn-success me-3"
+                        data-kt-menu-trigger="click"
+                        data-kt-menu-placement="bottom-end"
+                        disabled={isSubmitting}
                       >
-                        Description
-                      </label>
-
-                      <div className=" billingForm">
-                        <Field
-                          type="text"
-                          name="blockDescription"
-                          className="form-control"
-                          id="floatinDescription"
-                        />
-                      </div>
-                      <ErrorMessage
-                        name="blockDescription"
-                        component="div"
-                        className="text-danger"
-                      />
+                        {blockId ? "Update" : "Add"}
+                      </button>
                     </div>
-                  </div>
-
-                  <div>
-                    <button
-                      type="submit"
-                      className="btn btn btn-success me-3"
-                      data-kt-menu-trigger="click"
-                      data-kt-menu-placement="bottom-end"
-                    >
-                      {blockId ? "Update" : "Add"}
-                    </button>
-                  </div>
-                </Form>
+                  </Form>
+                )}
               </Formik>
             </div>
           </div>

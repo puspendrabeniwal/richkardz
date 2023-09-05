@@ -73,6 +73,7 @@ function Block() {
             title: 1,
             name: 1,
             description: 1,
+            body: 1,
             modified: 1,
           },
         },
@@ -97,6 +98,37 @@ function Block() {
       );
     });
   }; // End getBlockdetails().
+
+  /**
+   * Function for get block detail
+   *
+   * @param req 	As	Request Data
+   * @param res 	As	Response Data
+   * @param next 	As 	Callback argument to the middleware function
+   *
+   * @return render/json
+   */
+  this.getBlock = (req, res, next) => {
+    if (isPost(req)) {
+      /** Sanitize Data */
+      req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
+      getBlockDetails(req, res, next).then((response) => {
+        return res.send({
+          status: API_STATUS_SUCCESS,
+          message: "",
+          error: [],
+          result: response.result,
+        });
+      });
+    } else {
+      return res.send({
+        status: API_STATUS_ERROR,
+        message: res.__("front.system.something_went_wrong"),
+        error: [],
+        result: [],
+      });
+    }
+  };
 
   /**
    * Function to update block's detail
@@ -328,38 +360,5 @@ function Block() {
       });
     }
   }; //End addBlock()
-
-  /**
-   * Function for get block detail
-   *
-   * @param req 	As	Request Data
-   * @param res 	As	Response Data
-   * @param next 	As 	Callback argument to the middleware function
-   *
-   * @return render/json
-   */
-  this.getBlock =(req, res, next)=>{
-    if (isPost(req)) {
-      /** Sanitize Data */
-      req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
-      getBlockDetails(req, res, next).then(
-        (response) => {
-          return res.send({
-            status: API_STATUS_SUCCESS,
-            message: "",
-            error: [],
-            result: response,
-          });
-        }
-      )
-    } else {
-      return res.send({
-        status: API_STATUS_ERROR,
-        message: res.__("front.system.something_went_wrong"),
-        error: [],
-        result: [],
-      });
-    }
-  }
 }
 module.exports = new Block();

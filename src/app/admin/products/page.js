@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -11,106 +11,124 @@ import React, { useEffect, useState , useRef} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
-export const  Products = ()=> {
-    const [visible, setVisible] = useState(false);
-    const [products, setProducts] = useState([]);
-    const op = useRef(null);
-    let formData = new FormData();    //formdata object
-    const getProducts=()=>{
-        let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+export const Products = () => {
+  const [visible, setVisible] = useState(false);
+  const [products, setProducts] = useState([]);
+  const op = useRef(null);
+  let formData = new FormData(); //formdata object
+  const getProducts = () => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
-        formData.append("user_id", loginUser?._id);
-        formData.append("skip", 10);   //append the values with key, value pair
-        formData.append("limit", 10);   //append the values with key, value pair
+    formData.append("user_id", loginUser?._id);
+    formData.append("skip", 10); //append the values with key, value pair
+    formData.append("limit", 10); //append the values with key, value pair
 
-        instance.post("products", formData)
-        .then(response => {
-            let data = (response.result) ? response.result : {};
-            setProducts(data);
-        })
-        .catch(error => {
-            console.log(error);
-        });
+    instance
+      .post("products", formData)
+      .then((response) => {
+        let data = response.result ? response.result : {};
+        setProducts(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <Tag
+        value={getValue(rowData.status)}
+        severity={getSeverity(rowData.status)}
+        onClick={() => confirm(rowData._id, rowData.status)}
+      ></Tag>
+    );
+  };
+
+  const featureBodyTemplate = (rowData) => {
+    return (
+      <Tag
+        value={changeLevel(rowData.is_feature)}
+        severity={getSeverity(rowData.is_feature)}
+      ></Tag>
+    );
+  };
+
+  const releaseBodyTemplate = (rowData) => {
+    return (
+      <Tag
+        value={changeLevel(rowData.is_new_release)}
+        severity={getSeverity(rowData.is_new_release)}
+      ></Tag>
+    );
+  };
+  const getSeverity = (value) => {
+    switch (value) {
+      case 1:
+        return "success";
+
+      case 0:
+        return "warning";
+
+      default:
+        return null;
     }
+  };
 
-    useEffect(() => {
-        getProducts()
-    },[])
+  const changeLevel = (value) => {
+    switch (value) {
+      case 1:
+        return "Yes";
 
+      case 0:
+        return "No";
 
-    const toast = useRef(null);
-
-    const statusBodyTemplate = (rowData) => {
-        return  <Tag value={getValue(rowData.status)} onClick={() => confirm(rowData._id, rowData.status)} severity={getSeverity(rowData.status)}></Tag>
-    };
-
-    const featureBodyTemplate = (rowData) => {
-        return <Tag value={changeLevel(rowData.is_feature)} severity={getSeverity(rowData.is_feature)}></Tag>;
-    };
-
-    const releaseBodyTemplate = (rowData) => {
-        return <Tag value={changeLevel(rowData.is_new_release)} severity={getSeverity(rowData.is_new_release)}></Tag>;
-    };
-    const getSeverity = (value) => {
-        switch (value) {
-            case 1:
-                return 'success';
-
-            case 0:
-                return 'warning';
-
-            default:
-                return null;
-        }
-    };
-
-    const changeLevel = (value) => {
-        switch (value) {
-            case 1:
-                return 'Yes';
-
-            case 0:
-                return 'No';
-
-            default:
-                return null;
-        }
-    };
-
-    const getValue = (value) => {
-        switch (value) {
-            case 1:
-                return 'Active';
-
-            case 0:
-                return 'Inacitve';
-
-            default:
-                return null;
-        }
-    };
-
-    const UpdateButtonLink = (rowData)=>{
-        
-        return <Link href={`/admin/products/update/${rowData._id}`}><Tag value="Update" severity="warning"></Tag></Link>
+      default:
+        return null;
     }
+  };
 
+  const getValue = (value) => {
+    switch (value) {
+      case 1:
+        return "Active";
 
-    const onSubmit = async (values) => {
-        let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-        formData.append("user_id", loginUser._id);
-        formData.append("product_name", values?.product_name);
-        formData.append("price", values?.price);
-        formData.append("discount", values?.discount);
-        formData.append("card_type", values?.card_type);
-        formData.append("profession", values?.profession);
-        getProducts()
+      case 0:
+        return "Inacitve";
+
+      default:
+        return null;
     }
+  };
 
-    const removeFilter = ()=>{
-        formData = new FormData();  
-        getProducts()
-    }
+  const UpdateButtonLink = (rowData) => {
+    return (
+      <Link href={`/admin/products/update/${rowData._id}`}>
+        <Tag value="Update" severity="warning"></Tag>
+      </Link>
+    );
+  };
+
+  const onSubmit = async (values) => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    formData.append("user_id", loginUser._id);
+    formData.append("product_name", values?.product_name);
+    formData.append("price", values?.price);
+    formData.append("discount", values?.discount);
+    formData.append("card_type", values?.card_type);
+    formData.append("profession", values?.profession);
+    getProducts();
+  };
+
+  const removeFilter = () => {
+    formData = new FormData();
+    getProducts();
+  };
+
+
 
 
     const accept = (id, status) => {
@@ -309,43 +327,67 @@ export const  Products = ()=> {
             </div>
         </div>
 
-        <div className="content d-flex flex-column flex-column-fluid" id="kt_content">
-            <div className=" d-flex flex-column-fluid" id="kt_post">
-                <div id="kt_content_container" className="container-xxl">
-                    <div className="card p-4" >
-                        <div className="card-body py-4">
-                            <Toast ref={toast} />
-                            <ConfirmDialog />
-                            <DataTable  
-                                value={products}  
-                                paginator
-                                showGridlines 
-                                rows={10} 
-                                totalRecords={50}   
-                                tableStyle={{ minWidth: '75rem' }}
-                            >
-                                <Column header="#" body={(data, props) => 
-                                    props.rowIndex+1
-                                }>                
-                                </Column>
-                                <Column field="product_name" sortable  header="Name"></Column>
-                                <Column field="discount" sortable  header="Discount" ></Column>
-                                <Column field="price" sortable  header="Price"></Column>
-                                <Column field="profession" sortable  header="Profession"></Column>
-                                <Column field="card_type" sortable  header="Card Type"></Column>
-                                <Column field="is_feature" header="Is Feature"  body={featureBodyTemplate}></Column>
-                                <Column field="is_new_release" header="New Release" body={releaseBodyTemplate}></Column>
-                                <Column field="status" header="Status" body={statusBodyTemplate}></Column>
-                                <Column field="" header="Action" body={UpdateButtonLink}></Column>
-                            </DataTable>
-                        </div>
-                    </div>
-                </div>
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card p-4">
+              <div className="card-body py-4">
+                <DataTable
+                  value={products}
+                  paginator
+                  showGridlines
+                  rows={10}
+                  totalRecords={50}
+                  tableStyle={{ minWidth: "75rem" }}
+                >
+                  <Column
+                    header="#"
+                    body={(data, props) => props.rowIndex + 1}
+                  ></Column>
+                  <Column field="product_name" sortable header="Name"></Column>
+                  <Column field="discount" sortable header="Discount"></Column>
+                  <Column field="price" sortable header="Price"></Column>
+                  <Column
+                    field="profession"
+                    sortable
+                    header="Profession"
+                  ></Column>
+                  <Column
+                    field="card_type"
+                    sortable
+                    header="Card Type"
+                  ></Column>
+                  <Column
+                    field="is_feature"
+                    header="Is Feature"
+                    body={featureBodyTemplate}
+                  ></Column>
+                  <Column
+                    field="is_new_release"
+                    header="New Release"
+                    body={releaseBodyTemplate}
+                  ></Column>
+                  <Column
+                    field="status"
+                    header="Status"
+                    body={statusBodyTemplate}
+                  ></Column>
+                  <Column
+                    field=""
+                    header="Action"
+                    body={UpdateButtonLink}
+                  ></Column>
+                </DataTable>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </>
-
-  )
-}
+  );
+};
 
 export default withAuth(Products);

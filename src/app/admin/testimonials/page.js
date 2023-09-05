@@ -1,179 +1,294 @@
 "use client";
 import Link from "next/link";
+import { Button } from "primereact/button";
+import { Column } from "primereact/column";
+import { DataTable } from "primereact/datatable";
+import { Tooltip } from "primereact/tooltip";
+import { FaEdit } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import { Tag } from "primereact/tag";
+import { OverlayPanel } from "primereact/overlaypanel";
+import { Field, Form, Formik } from "formik";
+import instance from "../axiosInterceptor";
 export const Testimonials = () => {
-  return (
-    <div
-      className="content d-flex flex-column flex-column-fluid"
-      id="kt_content"
-    >
-      <div className=" d-flex flex-column-fluid" id="kt_post">
-        <div id="kt_content_container" className="container-xxl">
-          <div className="card p-4">
-            <div className="card-header border-0 pt-6">
-              <div className="card-title">
-                <div className="d-flex align-items-center position-relative my-1">
-                  Testimonials
-                </div>
-              </div>
-              <div className="card-toolbar">
-                <div
-                  className="d-flex justify-content-end"
-                  data-kt-user-table-toolbar="base"
-                >
-                  <Link
-                    href="/admin/testimonials/add"
-                    type="button"
-                    className="btn btn-primary"
-                  >
-                    <span className="svg-icon svg-icon-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <rect
-                          opacity="0.5"
-                          x="11.364"
-                          y="20.364"
-                          width="16"
-                          height="2"
-                          rx="1"
-                          transform="rotate(-90 11.364 20.364)"
-                          fill="currentColor"
-                        />
-                        <rect
-                          x="4.36396"
-                          y="11.364"
-                          width="16"
-                          height="2"
-                          rx="1"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    Add Testimonial
-                  </Link>
-                </div>
-                <div
-                  className="d-flex justify-content-end align-items-center d-none"
-                  data-kt-user-table-toolbar="selected"
-                >
-                  <div className="fw-bolder me-5">
-                    <span
-                      className="me-2"
-                      data-kt-user-table-select="selected_count"
-                    ></span>
-                    Selected
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    data-kt-user-table-select="delete_selected"
-                  >
-                    Delete Selected
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="card-body py-4">
-              <table
-                className="table align-middle table-row-dashed fs-6 gy-5"
-                id="kt_table_users"
-              >
-                <thead>
-                  <tr className="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                    <th className="min-w-125px">Name</th>
-                    <th className="min-w-125px">Rating</th>
-                    <th className="min-w-125px">Description</th>
-                    <th className="text-end min-w-100px">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-600 fw-bold">
-                  <tr>
-                    <td className="d-flex align-items-center">
-                      <div className="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                        <a href="../../demo1/dist/apps/user-management/users/view.html">
-                          <div className="symbol-label">
-                            <img
-                              src="assets/media/avatars/300-6.jpg"
-                              alt="Emma Smith"
-                              className="w-100"
-                            />
-                          </div>
-                        </a>
-                      </div>
-                      <div className="d-flex flex-column">
-                        <a
-                          href="../../demo1/dist/apps/user-management/users/view.html"
-                          className="text-gray-800 text-hover-primary mb-1"
-                        >
-                          Emma Smith
-                        </a>
-                        <span>smith@kpmg.com</span>
-                      </div>
-                    </td>
-                    <td>*****</td>
+  const values = [
+    {
+      name: "Sony",
+      title: "Software",
+      description: "Lorem Ipsum is simply dummy text of the printing and",
+    },
+    {
+      name: "Sony",
+      title: "Software",
+      description: "Lorem Ipsum is simply dummy text of the printing and",
+    },
+    {
+      name: "Sony",
+      title: "Software",
+      description: "Lorem Ipsum is simply dummy text of the printing and",
+    },
+  ];
 
-                    <td>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry.
-                    </td>
-                    <td className="text-end">
-                      <a
-                        href="#"
-                        className="btn btn-light btn-active-light-primary btn-sm"
-                        data-kt-menu-trigger="click"
-                        data-kt-menu-placement="bottom-end"
-                      >
-                        Actions
-                        <span className="svg-icon svg-icon-5 m-0">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                          >
-                            <path
-                              d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                        </span>
-                      </a>
-                      <div
-                        className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
-                        data-kt-menu="true"
-                      >
-                        <div className="menu-item px-3">
-                          <a
-                            href="../../demo1/dist/apps/user-management/users/view.html"
-                            className="menu-link px-3"
-                          >
-                            Edit
-                          </a>
+  const [monialData, setMonialData] = useState({});
+  const op = useRef(null);
+  let formData = new FormData();
+  useEffect(() => {
+    getMonialAPI();
+  }, []);
+  const removeFilter = () => {
+    formData = new FormData();
+    getMonialAPI();
+  };
+  //  ==============get Monial API Data ====================//
+  const getMonialAPI = async () => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    formData.append("user_id", loginUser?._id);
+    formData.append("skip", 10); //append the values with key, value pair
+    formData.append("limit", 10); //append the values with key, value pair
+
+    try {
+      const response = await instance.post(`testimonials`, formData);
+      console.log("testmonial response", response);
+      const newData = response.result;
+      setMonialData(newData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //  ==============on Submit for Search Fields====================//
+  const onSubmit = async (values) => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    formData.append("user_id", loginUser._id);
+    formData.append("name", values?.name);
+    formData.append("title", values?.title);
+    getMonialAPI();
+  };
+  // ============Edit button for update form===========//
+  const getActionuttons = (rowdata) => {
+    return (
+      // <Link
+      //   href={`/admin/testimonials/edit/${params.MonialId}`}
+      //   type="button"
+      //   className=""
+      // >
+      //   <Tooltip
+      //     target=".icon"
+      //     content="Edit"
+      //     placement="right"
+      //     // tooltipClassName="custom-tooltip"
+      //   />
+      //   <FaEdit id="icon" className="act-btn " style={{ color: "#6777ef" }} />
+      // </Link>
+      <Link href={`/admin/testimonials/edit/$${rowdata._id}`}>
+        <Tag value="Update" severity="warning"></Tag>
+      </Link>
+    );
+  };
+  return (
+    <>
+      {/* ==================================Search Fields=========================================== */}
+      <div className="d-flex flex-column flex-column-fluid" id="kt_content">
+        <div className="toolbar" id="kt_toolbar">
+          <div
+            id="kt_toolbar_container"
+            className="container-fluid d-flex flex-stack"
+          >
+            <div
+              data-kt-swapper="true"
+              data-kt-swapper-mode="prepend"
+              data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+              className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
+            >
+              <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
+                <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
+                  Test Monial
+                </span>
+              </h1>
+            </div>
+
+            <div className="d-flex align-items-center gap-2 gap-lg-3">
+              <div className="m-0">
+                <button
+                  onClick={(e) => op.current.toggle(e)}
+                  aria-haspopup
+                  aria-controls="overlay_panel"
+                  className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
+                >
+                  <span className="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M19.0759 3H4.72777C3.95892 3 3.47768 3.83148 3.86067 4.49814L8.56967 12.6949C9.17923 13.7559 9.5 14.9582 9.5 16.1819V19.5072C9.5 20.2189 10.2223 20.7028 10.8805 20.432L13.8805 19.1977C14.2553 19.0435 14.5 18.6783 14.5 18.273V13.8372C14.5 12.8089 14.8171 11.8056 15.408 10.964L19.8943 4.57465C20.3596 3.912 19.8856 3 19.0759 3Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                  Filter
+                </button>
+                <OverlayPanel
+                  ref={op}
+                  showCloseIcon
+                  id="overlay_panel"
+                  style={{ width: "450px" }}
+                  className="overlaypanel-demo"
+                >
+                  <div className="px-7 py-5">
+                    <div className="fs-5 text-dark fw-bolder">
+                      Filter Options
+                    </div>
+                  </div>
+                  <div className="separator border-gray-200 mb-10"></div>
+                  <Formik
+                    initialValues={{
+                      name: "",
+                      title: "",
+                    }}
+                    onSubmit={async (values) => await onSubmit(values)}
+                  >
+                    {({ setFieldValue }) => (
+                      <Form className="form-design">
+                        <div className="row ">
+                          <div className="col-lg-6 col-md-6">
+                            <div className="mb-10">
+                              <label className="form-label fw-bold">Name</label>
+                              <div>
+                                <Field
+                                  type="text"
+                                  name="name"
+                                  className="form-control"
+                                ></Field>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-lg-6 col-md-6 mb-10">
+                            <div className="">
+                              <label className="form-label fw-bold">
+                                Title
+                              </label>
+                              <div>
+                                <Field
+                                  type="text"
+                                  name="title"
+                                  className="form-control"
+                                ></Field>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="menu-item px-3">
-                          <a
-                            href="#"
-                            className="menu-link px-3"
-                            data-kt-users-table-filter="delete_row"
-                          >
-                            Delete
-                          </a>
+                        {/* <div className="separator border-gray-200 mb-10"></div> */}
+                        <div className="px-7 py-5">
+                          <div className="d-flex justify-content-end">
+                            <button
+                              type="reset"
+                              className="btn btn-sm btn-warning me-2"
+                              data-kt-menu-dismiss="true"
+                            >
+                              Reset
+                            </button>
+                            <button
+                              type="submit"
+                              className="btn btn-sm btn-success me-2"
+                              data-kt-menu-dismiss="true"
+                            >
+                              Apply
+                            </button>
+                            <button
+                              type="button"
+                              onClick={removeFilter}
+                              className="btn btn-sm btn-danger"
+                              data-kt-menu-dismiss="true"
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                      </Form>
+                    )}
+                  </Formik>
+                </OverlayPanel>
+              </div>
+              <Link
+                href="/admin/testimonials/add"
+                className="btn btn-sm btn-success"
+              >
+                Add Monial
+                {/* <Button
+                      label="Add Monial"
+                      className="btn btn-primary"
+                      icon="pi pi-plus"
+                    /> */}
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      {/*  ============================================Table Work=================================== */}
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card card-header border-0 pt-4 ">
+              {/* <div className=" d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <h3>Monial</h3>
+                </div>
+                <div>
+                  <Link href="/admin/testimonials/add" type="button">
+                    <Button
+                      label="Add Monial"
+                      className="btn btn-primary"
+                      icon="pi pi-plus"
+                    />
+                  </Link>
+                </div>
+              </div> */}
+              <DataTable
+                value={values}
+                className="p-datatable-customers "
+                showGridlines={false}
+                rows={10}
+                stripedRows
+                dataKey="id"
+                filterDisplay="menu"
+                emptyMessage="No customers found."
+              >
+                <Column
+                  header="Name"
+                  field="name"
+                  sortable
+                  style={{ cursor: "pointer" }}
+                ></Column>
+                <Column
+                  field="title"
+                  header="Rating"
+                  style={{ cursor: "pointer" }}
+                  sortable
+                ></Column>
+                <Column
+                  field="description"
+                  header="Description"
+                  style={{ cursor: "pointer" }}
+                  sortable
+                ></Column>
+                <Column
+                  field=""
+                  header="Actions"
+                  body={getActionuttons}
+                ></Column>
+              </DataTable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
