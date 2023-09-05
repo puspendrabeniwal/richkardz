@@ -18,7 +18,7 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
     title: blockValue ? blockValue.title : "",
     description: blockValue ? blockValue.body : "",
   };
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
@@ -26,7 +26,6 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
       formData.append(key, values[key]);
     });
     await handleSubmitBlock(values);
-    setSubmitting(false);
   };
   return (
     <>
@@ -40,10 +39,12 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
               <Formik
                 initialValues={defaultValues}
                 validationSchema={validationSchema}
-                // onSubmit={async (values) => await onSubmit(values)}
-                onSubmit={onSubmit}
+                onSubmit={async (values, { resetForm }) => {
+                  await onSubmit(values);
+                  resetForm();
+                }}
               >
-                {({ isSubmitting, setFieldValue }) => (
+                {({ isSubmitting, setFieldValue, values }) => (
                   <Form className="form-design">
                     <div className="row mb-3">
                       <div className="col-lg-6 col-md-6">
@@ -105,8 +106,9 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
                             id="description"
                             name="description"
                             filter={false}
+                            value={values.description}
                             onTextChange={(e) => {
-                              setFieldValue("description", e.textValue);
+                              setFieldValue("description", e.htmlValue);
                             }}
                           />
                         </div>

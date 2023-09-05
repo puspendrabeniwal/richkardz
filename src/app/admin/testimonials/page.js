@@ -1,35 +1,14 @@
 "use client";
 import Link from "next/link";
-import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { Tooltip } from "primereact/tooltip";
-import { FaEdit } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import instance from "../axiosInterceptor";
 export const Testimonials = () => {
-  const values = [
-    {
-      name: "Sony",
-      title: "Software",
-      description: "Lorem Ipsum is simply dummy text of the printing and",
-    },
-    {
-      name: "Sony",
-      title: "Software",
-      description: "Lorem Ipsum is simply dummy text of the printing and",
-    },
-    {
-      name: "Sony",
-      title: "Software",
-      description: "Lorem Ipsum is simply dummy text of the printing and",
-    },
-  ];
-
-  const [monialData, setMonialData] = useState({});
+  const [monialData, setMonialData] = useState([]);
   const op = useRef(null);
   let formData = new FormData();
   useEffect(() => {
@@ -45,10 +24,8 @@ export const Testimonials = () => {
     formData.append("user_id", loginUser?._id);
     formData.append("skip", 10); //append the values with key, value pair
     formData.append("limit", 10); //append the values with key, value pair
-
     try {
       const response = await instance.post(`testimonials`, formData);
-      console.log("testmonial response", response);
       const newData = response.result;
       setMonialData(newData);
     } catch (error) {
@@ -61,26 +38,12 @@ export const Testimonials = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
     formData.append("name", values?.name);
-    formData.append("title", values?.title);
     getMonialAPI();
   };
   // ============Edit button for update form===========//
   const getActionuttons = (rowdata) => {
     return (
-      // <Link
-      //   href={`/admin/testimonials/edit/${params.MonialId}`}
-      //   type="button"
-      //   className=""
-      // >
-      //   <Tooltip
-      //     target=".icon"
-      //     content="Edit"
-      //     placement="right"
-      //     // tooltipClassName="custom-tooltip"
-      //   />
-      //   <FaEdit id="icon" className="act-btn " style={{ color: "#6777ef" }} />
-      // </Link>
-      <Link href={`/admin/testimonials/edit/$${rowdata._id}`}>
+      <Link href={`/admin/testimonials/edit/${rowdata._id}`}>
         <Tag value="Update" severity="warning"></Tag>
       </Link>
     );
@@ -101,10 +64,23 @@ export const Testimonials = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
-                  Test Monial
-                </span>
+                Testimonial List
               </h1>
+              <span className="h-20px border-gray-300 border-start mx-4"></span>
+              <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                <li className="breadcrumb-item text-muted">
+                  <Link
+                    href="/admin/dashboard"
+                    className="text-muted text-hover-primary"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <span className="bullet bg-gray-300 w-5px h-2px"></span>
+                </li>
+                <li class="breadcrumb-item text-mute">Testimonial</li>
+              </ul>
             </div>
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -154,27 +130,13 @@ export const Testimonials = () => {
                     {({ setFieldValue }) => (
                       <Form className="form-design">
                         <div className="row ">
-                          <div className="col-lg-6 col-md-6">
+                          <div className="col-lg-12 col-md-12">
                             <div className="mb-10">
                               <label className="form-label fw-bold">Name</label>
                               <div>
                                 <Field
                                   type="text"
                                   name="name"
-                                  className="form-control"
-                                ></Field>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-6 col-md-6 mb-10">
-                            <div className="">
-                              <label className="form-label fw-bold">
-                                Title
-                              </label>
-                              <div>
-                                <Field
-                                  type="text"
-                                  name="title"
                                   className="form-control"
                                 ></Field>
                               </div>
@@ -217,12 +179,7 @@ export const Testimonials = () => {
                 href="/admin/testimonials/add"
                 className="btn btn-sm btn-success"
               >
-                Add Monial
-                {/* <Button
-                      label="Add Monial"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+                Add Testimonial
               </Link>
             </div>
           </div>
@@ -235,55 +192,41 @@ export const Testimonials = () => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card card-header border-0 pt-4 ">
-              {/* <div className=" d-flex justify-content-between align-items-center mb-3">
-                <div>
-                  <h3>Monial</h3>
-                </div>
-                <div>
-                  <Link href="/admin/testimonials/add" type="button">
-                    <Button
-                      label="Add Monial"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    />
-                  </Link>
-                </div>
-              </div> */}
-              <DataTable
-                value={values}
-                className="p-datatable-customers "
-                showGridlines={false}
-                rows={10}
-                stripedRows
-                dataKey="id"
-                filterDisplay="menu"
-                emptyMessage="No customers found."
-              >
-                <Column
-                  header="Name"
-                  field="name"
-                  sortable
-                  style={{ cursor: "pointer" }}
-                ></Column>
-                <Column
-                  field="title"
-                  header="Rating"
-                  style={{ cursor: "pointer" }}
-                  sortable
-                ></Column>
-                <Column
-                  field="description"
-                  header="Description"
-                  style={{ cursor: "pointer" }}
-                  sortable
-                ></Column>
-                <Column
-                  field=""
-                  header="Actions"
-                  body={getActionuttons}
-                ></Column>
-              </DataTable>
+            <div className="card p-4">
+              <div className="card-body py-4">
+                <DataTable
+                  value={monialData}
+                  showGridlines
+                  rows={10}
+                  stripedRows
+                  totalRecords={50}
+                  tableStyle={{ minWidth: "75rem" }}
+                  paginator
+                >
+                  <Column
+                    header="#"
+                    body={(data, props) => props.rowIndex + 1}
+                  ></Column>
+                  <Column
+                    header="Name"
+                    field="name"
+                    sortable
+                    style={{ cursor: "pointer" }}
+                  ></Column>
+                  <Column
+                    field="rating"
+                    header="Rating"
+                    style={{ cursor: "pointer" }}
+                    sortable
+                  ></Column>
+
+                  <Column
+                    field=""
+                    header="Actions"
+                    body={getActionuttons}
+                  ></Column>
+                </DataTable>
+              </div>
             </div>
           </div>
         </div>

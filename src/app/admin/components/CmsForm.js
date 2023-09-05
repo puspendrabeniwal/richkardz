@@ -19,6 +19,7 @@ const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
     title: cmsValue ? cmsValue.title : "",
     description: cmsValue ? cmsValue.content : "",
   };
+
   const onSubmit = async (values, { setSubmitting }) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
@@ -44,7 +45,7 @@ const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
                 // onSubmit={async (values) => await onSubmit(values)}
                 onSubmit={onSubmit}
               >
-                {({ isSubmitting, setFieldValue }) => (
+                {({ isSubmitting, setFieldValue, values }) => (
                   <Form className="form-design">
                     {/* <div className="d-flex justify-content-between align-items-center">
                       <div>
@@ -116,9 +117,10 @@ const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
                           style={{ height: "320px" }}
                           id="description"
                           name="description"
+                          value={values.description}
                           filter={false}
                           onTextChange={(e) => {
-                            setFieldValue("description", e.textValue);
+                            setFieldValue("description", e.htmlValue);
                           }}
                         />
                       </div>

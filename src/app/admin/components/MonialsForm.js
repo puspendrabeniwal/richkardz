@@ -8,36 +8,37 @@ import { Editor } from "primereact/editor";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   rating: Yup.string().required("Reting is required"),
-  description: Yup.string()
+  descripiton: Yup.string()
     .required("Description is required")
     .min(10, "Description is too short"),
-  fileUpload: Yup.array()
-    .min(1, "At least one image is required")
-    .of(
-      Yup.mixed().test("fileSize", "File is too large", (value) => {
-        if (!value) return false;
-        const maxSize = 5 * 1024 * 1024; // 5 MB
-        return value.size <= maxSize;
-      })
-    ),
+  // image: Yup.min(1, "At least one image is required").of(
+  //   Yup.mixed().test("fileSize", "File is too large", (value) => {
+  //     if (!value) return false;
+  //     const maxSize = 5 * 1024 * 1024; // 5 MB
+  //     return value.size <= maxSize;
+  //   })
+  // ),
 });
 
 const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
   const defaultValues = {
-    name: monialValue ? monialValue.productName : "",
-    description: monialValue ? monialValue.description : "",
+    name: monialValue ? monialValue.name : "",
+    descripiton: monialValue ? monialValue.descripiton : "",
     rating: monialValue ? monialValue.rating : "",
-    fileUpload: [],
+    image: monialValue ? monialValue.image : "",
+    full_image_path: monialValue ? monialValue.image : "",
   };
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
-    Object.keys(values).forEach(function (key, index) {
-      formData.append(key, values[key]);
-    });
-    await handleSubmitMonial(values);
-    setSubmitting(false);
+    formData.append("name", values.name);
+    formData.append("rating", values.rating);
+    formData.append("descripiton", values.descripiton);
+    formData.append("image", values.image);
+    formData.append("old_image", values.full_image_path);
+
+    await handleSubmitMonial(formData);
   };
   return (
     <>
@@ -51,10 +52,12 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
               <Formik
                 initialValues={defaultValues}
                 validationSchema={validationSchema}
-                // onSubmit={async (values) => await onSubmit(values)}
-                onSubmit={onSubmit}
+                onSubmit={async (values, { resetForm }) => {
+                  await onSubmit(values);
+                  resetForm();
+                }}
               >
-                {({ isSubmitting, setFieldValue }) => (
+                {({ isSubmitting, setFieldValue, values }) => (
                   <Form className="form-design">
                     <div className="row mb-3">
                       <div className="col-lg-6 col-md-6">
@@ -113,16 +116,17 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
                         <div className=" billingForm">
                           <Editor
                             style={{ height: "320px" }}
-                            id="description"
-                            name="description"
+                            id="descripiton"
+                            name="descripiton"
                             filter={false}
+                            value={values.descripiton}
                             onTextChange={(e) => {
-                              setFieldValue("description", e.textValue);
+                              setFieldValue("descripiton", e.htmlValue);
                             }}
                           />
                         </div>
                         <ErrorMessage
-                          name="description"
+                          name="descripiton"
                           component="div"
                           className="text-danger"
                         />
@@ -139,23 +143,20 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
                         <div className=" billingForm">
                           <Field
                             type="file"
-                            name="fileUpload"
-                            multiple
+                            name="image"
+                            // multiple
                             accept="image/*"
                             className="form-control"
                             id="floatingUpload"
                             value={undefined}
                             onChange={(event) => {
-                              const files = event.currentTarget.files;
-                              const images = Array.from(files);
-                              // Manually set the field value to trigger Formik's handling
-                              // of array values.
-                              setFieldValue("fileUpload", images);
+                              const files = event.currentTarget.files[0];
+                              setFieldValue("image", files);
                             }}
                           />
                         </div>
                         <ErrorMessage
-                          name="fileUpload"
+                          name="image"
                           component="div"
                           className="text-danger"
                         />

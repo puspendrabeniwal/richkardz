@@ -1,18 +1,15 @@
 "use client";
 import Link from "next/link";
-import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { Tooltip } from "primereact/tooltip";
 import { useEffect, useRef, useState } from "react";
-import { FaEdit } from "react-icons/fa";
 import instance from "../axiosInterceptor";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 
 const Blocks = () => {
-  const [blockData, setBlockData] = useState({});
+  const [blockData, setBlockData] = useState([]);
   const op = useRef(null);
   let formData = new FormData();
   useEffect(() => {
@@ -52,15 +49,6 @@ const Blocks = () => {
       <Link href={`/admin/blocks/edit/${rowdata._id}`}>
         <Tag value="Update" severity="warning"></Tag>
       </Link>
-      // <Link href={`/admin/blocks/edit/${rowdata._id}`} type="button">
-      //   <Tooltip
-      //     target=".icon"
-      //     content="Edit"
-      //     placement="right"
-      //     // tooltipClassName="custom-tooltip"
-      //   />
-      //   <FaEdit id="icon" className="act-btn " style={{ color: "#6777ef" }} />
-      // </Link>
     );
   };
   return (
@@ -79,10 +67,23 @@ const Blocks = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
-                  Block
-                </span>
+                Block List
               </h1>
+              <span className="h-20px border-gray-300 border-start mx-4"></span>
+              <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                <li className="breadcrumb-item text-muted">
+                  <Link
+                    href="/admin/dashboard"
+                    className="text-muted text-hover-primary"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <span className="bullet bg-gray-300 w-5px h-2px"></span>
+                </li>
+                <li class="breadcrumb-item text-mute">Block</li>
+              </ul>
             </div>
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -213,42 +214,46 @@ const Blocks = () => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card card-header border-0 pt-4 ">
-              <DataTable
-                value={blockData}
-                responsiveLayout="scroll"
-                className="p-datatable-customers "
-                showGridlines={false}
-                rows={10}
-                stripedRows
-                dataKey="id"
-                filterDisplay="menu"
-                emptyMessage="No customers found."
-              >
-                <Column
-                  header="Name"
-                  field="name"
-                  sortable
-                  style={{ cursor: "pointer" }}
-                ></Column>
-                <Column
-                  field="title"
-                  header="Title"
-                  style={{ cursor: "pointer" }}
-                  sortable
-                ></Column>
-                <Column
+            <div className="card p-4">
+              <div className="card-body py-4">
+                <DataTable
+                  value={blockData}
+                  paginator
+                  showGridlines
+                  rows={10}
+                  stripedRows
+                  totalRecords={50}
+                  tableStyle={{ minWidth: "75rem" }}
+                >
+                  <Column
+                    header="#"
+                    body={(data, props) => props.rowIndex + 1}
+                  ></Column>
+                  <Column
+                    header="Name"
+                    field="name"
+                    sortable
+                    style={{ cursor: "pointer" }}
+                  ></Column>
+                  <Column
+                    field="title"
+                    header="Title"
+                    style={{ cursor: "pointer" }}
+                    sortable
+                  ></Column>
+                  {/* <Column
                   field="body"
                   header="Description"
                   style={{ cursor: "pointer" }}
                   sortable
-                ></Column>
-                <Column
-                  field=""
-                  header="Actions"
-                  body={getActionButton}
-                ></Column>
-              </DataTable>
+                ></Column> */}
+                  <Column
+                    field=""
+                    header="Actions"
+                    body={getActionButton}
+                  ></Column>
+                </DataTable>
+              </div>
             </div>
           </div>
         </div>

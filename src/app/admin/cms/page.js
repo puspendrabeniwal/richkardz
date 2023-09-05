@@ -1,17 +1,14 @@
 "use client";
 import Link from "next/link";
-import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Tag } from "primereact/tag";
-import { Tooltip } from "primereact/tooltip";
-import { FaEdit } from "react-icons/fa";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";
 import instance from "../axiosInterceptor";
 const CMS = () => {
-  const [cmsData, setCmsData] = useState({});
+  const [cmsData, setCmsData] = useState([]);
   const op = useRef(null);
   let formData = new FormData();
   useEffect(() => {
@@ -41,26 +38,13 @@ const CMS = () => {
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
+    formData.append("title", values?.title);
     getCmsAPI();
   };
 
   // ============Edit button for update form===========//
   const getActionuttons = (rowdata) => {
     return (
-      // <Link
-      //   href={`/admin/cms/edit/${params.cmsId}`}
-      //   type="button"
-      //   className=""
-      // >
-      //   <Tooltip
-      //     target=".icon"
-      //     content="Edit"
-      //     placement="right"
-      //     // tooltipClassName="custom-tooltip"
-      //   />
-      //   <FaEdit id="icon" className="act-btn " style={{ color: "#6777ef" }} />
-      // </Link>
       <Link href={`/admin/cms/edit/${rowdata._id}`}>
         <Tag value="Update" severity="warning"></Tag>
       </Link>
@@ -82,10 +66,23 @@ const CMS = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
-                  CMS
-                </span>
+                CMS List
               </h1>
+              <span className="h-20px border-gray-300 border-start mx-4"></span>
+              <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                <li className="breadcrumb-item text-muted">
+                  <Link
+                    href="/admin/dashboard"
+                    className="text-muted text-hover-primary"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <span className="bullet bg-gray-300 w-5px h-2px"></span>
+                </li>
+                <li class="breadcrumb-item text-mute">CMS</li>
+              </ul>
             </div>
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -140,7 +137,7 @@ const CMS = () => {
                               <div>
                                 <Field
                                   type="text"
-                                  name="name"
+                                  name="title"
                                   className="form-control"
                                 ></Field>
                               </div>
@@ -198,45 +195,35 @@ const CMS = () => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card card-header border-0 pt-4 ">
-              {/* <div className=" d-flex justify-content-between align-items-center mb-3">
-              <div>
-                <h3>Blocks</h3>
-              </div>
-              <div>
-                <Link href="/admin/cms/add" type="button">
-                  <Button
-                    label="Add CMS"
-                    className="btn btn-primary"
-                    icon="pi pi-plus"
-                  />
-                </Link>
-              </div>
-            </div> */}
-              <DataTable
-                value={cmsData}
-                className="p-datatable-customers "
-                showGridlines={false}
-                rows={10}
-                stripedRows
-                dataKey="id"
-                filterDisplay="menu"
-                emptyMessage="No customers found."
-              >
-                <Column
-                  header="Type"
-                  field="type"
-                  sortable
-                  style={{ cursor: "pointer" }}
-                ></Column>
-                <Column
-                  header="Title"
-                  field="title"
-                  sortable
-                  style={{ cursor: "pointer" }}
-                ></Column>
+            <div className="card p-4">
+              <div className="card-body py-4">
+                <DataTable
+                  value={cmsData}
+                  rows={10}
+                  stripedRows
+                  paginator
+                  showGridlines
+                  totalRecords={50}
+                  tableStyle={{ minWidth: "75rem" }}
+                >
+                  <Column
+                    header="#"
+                    body={(data, props) => props.rowIndex + 1}
+                  ></Column>
+                  <Column
+                    header="Type"
+                    field="type"
+                    sortable
+                    style={{ cursor: "pointer" }}
+                  ></Column>
+                  <Column
+                    header="Title"
+                    field="title"
+                    sortable
+                    style={{ cursor: "pointer" }}
+                  ></Column>
 
-                {/* <Column
+                  {/* <Column
                   header="Description"
                   field="content"
                   body={(data) => {
@@ -253,12 +240,13 @@ const CMS = () => {
                   style={{ cursor: "pointer" }}
                   sortable
                 ></Column> */}
-                <Column
-                  field=""
-                  header="Actions"
-                  body={getActionuttons}
-                ></Column>
-              </DataTable>
+                  <Column
+                    field=""
+                    header="Actions"
+                    body={getActionuttons}
+                  ></Column>
+                </DataTable>
+              </div>
             </div>
           </div>
         </div>

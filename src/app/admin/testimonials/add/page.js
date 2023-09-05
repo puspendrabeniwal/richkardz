@@ -8,18 +8,14 @@ import Link from "next/link";
 const AddMonials = () => {
   const toast = useRef(null);
   const addMonialAPI = async (data) => {
-    const postData = {
-      name: data.name,
-      rating: data.rating,
-      description: data.description,
-      image: data.fileUpload,
-    };
-    try {
-      const response = await instance.post(`testimonials/add`, postData);
-      showMessage(response);
-    } catch (error) {
-      console.log(error);
-    }
+    instance
+      .post("testimonials/add", data)
+      .then((response) => {
+        showMessage(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const showMessage = (data) => {
     toast.current.show({
@@ -45,11 +41,34 @@ const AddMonials = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                <span className="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1">
-                  Test Monial
-                </span>
-                <span className="text-muted fs-7 fw-bold mt-2">add monial</span>
+                Add Testimonial
               </h1>
+              <span className="h-20px border-gray-300 border-start mx-4"></span>
+              <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                <li className="breadcrumb-item text-dark">
+                  <Link
+                    href="/admin/dashboard"
+                    className="text-muted text-hover-primary"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <span className="bullet bg-gray-300 w-5px h-2px"></span>
+                </li>
+                <li className="breadcrumb-item text-dark">
+                  <Link
+                    href="/admin/testimonials"
+                    className="text-muted text-hover-primary"
+                  >
+                    Testimonial
+                  </Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <span className="bullet bg-gray-300 w-5px h-2px"></span>
+                </li>
+                <li class="breadcrumb-item text-mute">Add</li>
+              </ul>
             </div>
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -59,11 +78,6 @@ const AddMonials = () => {
                 className="btn btn-sm btn btn-success"
               >
                 Back
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
               </Link>
             </div>
           </div>

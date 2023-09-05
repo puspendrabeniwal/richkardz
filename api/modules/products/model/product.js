@@ -23,13 +23,9 @@ function Products() {
       let price = req.body.price ? Number(req.body.price) : "";
       let discount = req.body.discount ? Number(req.body.discount) : "";
 
-<<<<<<< HEAD
-            let searchCondition = {}
-=======
       let searchCondition = {
         status: 1,
       };
->>>>>>> 0bf2a10cb53111990c2fd07daa4e10490406ebf2
 
       if (price) searchCondition["price"] = price;
       if (discount) searchCondition["discount"] = discount;
@@ -176,101 +172,7 @@ function Products() {
               error: [],
               result: {},
             });
-<<<<<<< HEAD
-        }
-
-    }
-
-    /**
-     * Function for edit product
-     *
-     * @param req   As  Request Data
-     * @param res   As  Response Data
-     * @param next  As  Callback argument to the middleware function
-     *
-     * @return render/json
-     */
-    this.editProduct = (req, res)=>{
-        if(isPost(req)){
-            let productId = (req.params.id) ? req.params.id : '';
-
-            let collection     = db.collection("products");
-            /** Sanitize Data */
-			req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
-			/** Check validation */
-			req.checkBody({
-				'product_name': {
-					notEmpty: true,
-					errorMessage: res.__("Please enter product name")
-				},
-				'price': {
-					notEmpty: true,
-					errorMessage: res.__("Please enter price")
-				},
-                'discount': {
-					notEmpty: true,
-					errorMessage: res.__("Please enter discount")
-				},
-                'card_type': {
-					notEmpty: true,
-					errorMessage: res.__("Please enter card type")
-				},
-                'product_desc': {
-					notEmpty: true,
-					errorMessage: res.__("Please enter product description")
-				},
-                
-			})
-
-               /** parse Validation array  */
-			let errors = parseValidation(req.validationErrors(), req);
-            if (errors) {
-				/** Send error response */
-				return res.send({
-					status: STATUS_ERROR,
-					message: errors,
-				});
-			}
-            collection.updateOne({
-                /** add all product fields */
-                _id : ObjectId(productId)
-            },{$set:{
-                /** Add all field list which you want update */
-                product_name	:	(req.body.product_name)?req.body.product_name:"",
-                price	:	(req.body.price)? Number(req.body.price):"",
-                discount	:	(req.body.discount)? Number(req.body.discount):"",
-                profession	:	(req.body.profession)?req.body.profession:"",
-                card_type	:	(req.body.card_type)?req.body.card_type:"",
-                product_desc	:	(req.body.product_desc)?req.body.product_desc:"",
-                is_feature : (req.body.is_feature)? Number(req.body.is_feature):0,
-                is_new_release : (req.body.is_new_release)?Number(req.body.is_new_release):0,
-                // product_image: imageResponse.fileName ? imageResponse.fileName : "",
-                created_at 			:	getUtcDate(),
-                updated_at			: 	getUtcDate(),
-                modified_at : getUtcDate()
-            }},(err,result)=>{
-    
-                if(!err){
-                    
-                    return res.send({
-                        "status"      : API_STATUS_SUCCESS,
-                        "message"     : 'Product has been updated successfully',
-                        "error"       : [],
-                        "result"      : {}
-                    });
-                }else{
-                    return res.send({
-                        "status"      : API_STATUS_ERROR,
-                        "message"     : res.__("front.system.something_went_wrong"),
-                        "error"       : [],
-                        "result" : []
-                    });
-                }
-            })
-        }else{
-=======
           } else {
->>>>>>> 0bf2a10cb53111990c2fd07daa4e10490406ebf2
             return res.send({
               status: API_STATUS_ERROR,
               message: res.__("front.system.something_went_wrong"),
@@ -391,52 +293,6 @@ function Products() {
             }
           );
         })
-<<<<<<< HEAD
-    } 
-
-    	/**
-	 * Function for update product status
-	 *
-	 * @param req 	As 	Request Data
-     * @param res 	As 	Response Data
-     * @param next 	As 	Callback argument to the middleware function
-	 *
-	 * @return render/json
-	 */
-	this.updateProductStatus = (req,res)=>{
-        if(isPost(req)){
-            console.log(req.body);
-            let productId		=	(req.body.product_id) ?	req.body.product_id	: "";
-            let status	=	(Number(req.body.status) === ACTIVE) ? 	DEACTIVE 				: ACTIVE;
-                
-            /** Update slider status **/
-            const products = db.collection("products");
-            products.updateOne({
-                _id : ObjectId(productId)
-            },
-            {$set : {
-                status		: 	status,
-                modified	:	getUtcDate()			
-            }},(err, result)=>{
-                //if(err) return next(err);
-                /** Send success response **/
-                return res.send({
-                    "status"      : API_STATUS_SUCCESS,
-                    "message"     : 'Status has been updated successfully',
-                    "error"       : [],
-                    "result"      : []
-                });
-            });
-        }else{
-            return res.send({
-                "status"      : API_STATUS_ERROR,
-                "message"     : "invalid request",
-                "error"       : [],
-                "result" : []
-            });
-        }
-	};// end updateProductStatus()
-=======
         .catch(next);
     } else {
       return res.send({
@@ -583,6 +439,5 @@ function Products() {
       }
     );
   };
->>>>>>> 0bf2a10cb53111990c2fd07daa4e10490406ebf2
 }
 module.exports = new Products();
