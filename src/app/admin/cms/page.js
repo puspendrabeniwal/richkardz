@@ -7,7 +7,11 @@ import { Tooltip } from "primereact/tooltip";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";
+import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
+import { confirmDialog } from "primereact/confirmdialog";
 import instance from "../axiosInterceptor";
+import { useRouter } from "next/navigation";
+import { SplitButton } from "primereact/splitbutton";
 const CMS = () => {
   const [cmsData, setCmsData] = useState([]);
   const op = useRef(null);
@@ -53,6 +57,39 @@ const CMS = () => {
       ></Tag>
     );
   };
+  const getValue = (value) => {
+    switch (value) {
+      case 1:
+        return "Active";
+
+      case 0:
+        return "Inacitve";
+
+      default:
+        return null;
+    }
+  };
+  const getSeverity = (value) => {
+    switch (value) {
+      case 1:
+        return "success";
+
+      case 0:
+        return "warning";
+
+      default:
+        return null;
+    }
+  };
+  const confirm = (id, status) => {
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => accept(id, status),
+      reject,
+    });
+  };
 
   const accept = (id, status) => {
     let newFormData = new FormData();
@@ -84,26 +121,36 @@ const CMS = () => {
     });
   };
 
-  const confirm = (id, status) => {
-    confirmDialog({
-      message: "Are you sure you want to proceed?",
-      header: "Confirmation",
-      icon: "pi pi-exclamation-triangle",
-      accept: () => accept(id, status),
-      reject,
-    });
-  };
-
+  const router = useRouter();
   // ============Edit button for update form===========//
-  const getActionuttons = (rowdata) => {
+  const getActionButton = (rowData) => {
+    const items = [
+      {
+        label: "Edit",
+        icon: "pi pi-refresh",
+        command: () => {
+          router.push(`/admin/cms/edit/${rowData._id}`);
+        },
+      },
+      {
+        label: "View",
+        icon: "pi pi-times",
+        command: () => {
+          router.push(`/admin/cms/view/${rowData._id}`);
+        },
+      },
+    ];
     return (
       <>
-        <Link href={`/admin/cms/edit/${rowdata._id}`}>
-          <Tag value="Update" severity="warning" className="mx-3"></Tag>
-        </Link>
-        <Link href={`/admin/cms/view/${rowdata._id}`}>
-          <Tag value="View" severity="warning"></Tag>
-        </Link>
+        <SplitButton
+          label="Action"
+          icon="pi pi-plus"
+          small
+          raised
+          text
+          severity="secondary"
+          model={items}
+        />
       </>
     );
   };
@@ -258,6 +305,7 @@ const CMS = () => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card p-4">
               <div className="card-body py-4">
+                <ConfirmDialog />
                 <DataTable
                   value={cmsData}
                   rows={10}
@@ -291,7 +339,7 @@ const CMS = () => {
                   <Column
                     field=""
                     header="Actions"
-                    body={getActionuttons}
+                    body={getActionButton}
                   ></Column>
                 </DataTable>
               </div>

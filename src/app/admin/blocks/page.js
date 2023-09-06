@@ -7,6 +7,8 @@ import instance from "../axiosInterceptor";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
+import { SplitButton } from "primereact/splitbutton";
+import { useRouter } from "next/navigation";
 
 const Blocks = () => {
   const [blockData, setBlockData] = useState([]);
@@ -43,16 +45,36 @@ const Blocks = () => {
     formData.append("title", values?.title);
     getBlockAPI();
   };
+  const router = useRouter();
   // ============Edit button for update form===========//
-  const getActionButton = (rowdata) => {
+  const getActionButton = (rowData) => {
+    const items = [
+      {
+        label: "Edit",
+        icon: "pi pi-refresh",
+        command: () => {
+          router.push(`/admin/blocks/edit/${rowData._id}`);
+        },
+      },
+      {
+        label: "View",
+        icon: "pi pi-times",
+        command: () => {
+          router.push(`/admin/blocks/view/${rowData._id}`);
+        },
+      },
+    ];
     return (
       <>
-        <Link href={`/admin/blocks/edit/${rowdata._id}`}>
-          <Tag value="Update" severity="warning" className="mx-3"></Tag>
-        </Link>
-        <Link href={`/admin/blocks/view/${rowdata._id}`}>
-          <Tag value="View" severity="warning"></Tag>
-        </Link>
+        <SplitButton
+          label="Action"
+          icon="pi pi-plus"
+          small
+          raised
+          text
+          severity="secondary"
+          model={items}
+        />
       </>
     );
   };

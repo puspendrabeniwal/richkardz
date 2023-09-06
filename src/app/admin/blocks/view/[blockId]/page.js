@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import BlockForm from "@/app/admin/components/BlockForm";
 import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
+import BlockDetailsPage from "@/app/admin/components/BlockDetailsPage";
 
 const ViewBlock = ({ params }) => {
   const toast = useRef(null);
@@ -117,7 +117,7 @@ const ViewBlock = ({ params }) => {
         </div>
       </div>
       {blockData ? (
-        <BlockForm
+        <BlockDetailsPage
           blockValue={blockData}
           handleSubmitBlock={editBlockAPI}
           blockId={params.blockId}

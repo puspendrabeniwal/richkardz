@@ -1,6 +1,6 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
-import FaqForm from "@/app/admin/components/FAQForm";
+import FAQDetailsPage from "@/app/admin/components/FAQDetailPage";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
@@ -112,7 +112,7 @@ const ViewFAQ = ({ params }) => {
         </div>
       </div>
       {faqData ? (
-        <FaqForm
+        <FAQDetailsPage
           faqValue={faqData}
           handleSubmitFaq={editFAQAPI}
           faqId={params.faqId}

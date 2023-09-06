@@ -1,6 +1,6 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
-import EmailTempForm from "@/app/admin/components/EmailTempForm";
+import EmailDetailsPage from "@/app/admin/components/EmailDetailPage";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
@@ -112,7 +112,7 @@ const ViewEmail = ({ params }) => {
         </div>
       </div>
       {emailData ? (
-        <EmailTempForm
+        <EmailDetailsPage
           emailValue={emailData}
           handleSubmitEmail={editEmailAPI}
           emailId={params.emailId}

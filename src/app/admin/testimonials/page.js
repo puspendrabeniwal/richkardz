@@ -8,6 +8,8 @@ import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import instance from "../axiosInterceptor";
+import { useRouter } from "next/navigation";
+import { SplitButton } from "primereact/splitbutton";
 export const Testimonials = () => {
   const [monialData, setMonialData] = useState([]);
   const op = useRef(null);
@@ -41,16 +43,37 @@ export const Testimonials = () => {
     formData.append("name", values?.name);
     getMonialAPI();
   };
+
+  const router = useRouter();
   // ============Edit button for update form===========//
-  const getActionuttons = (rowdata) => {
+  const getActionuttons = (rowData) => {
+    const items = [
+      {
+        label: "Edit",
+        icon: "pi pi-refresh",
+        command: () => {
+          router.push(`/admin/testimonials/edit/${rowData._id}`);
+        },
+      },
+      {
+        label: "View",
+        icon: "pi pi-times",
+        command: () => {
+          router.push(`/admin/testimonials/view/${rowData._id}`);
+        },
+      },
+    ];
     return (
       <>
-        <Link href={`/admin/testimonials/edit/${rowdata._id}`}>
-          <Tag value="Update" severity="warning" className="mx-3"></Tag>
-        </Link>
-        <Link href={`/admin/testimonials/view/${rowdata._id}`}>
-          <Tag value="View" severity="warning"></Tag>
-        </Link>
+        <SplitButton
+          label="Action"
+          icon="pi pi-plus"
+          small
+          raised
+          text
+          severity="secondary"
+          model={items}
+        />
       </>
     );
   };

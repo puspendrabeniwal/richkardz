@@ -1,6 +1,6 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
-import CmsForm from "@/app/admin/components/CmsForm";
+import CMSDetailsPage from "@/app/admin/components/CMSDetailPage";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
@@ -118,7 +118,7 @@ const ViewCms = ({ params }) => {
         </div>
       </div>
       {cmsData ? (
-        <CmsForm
+        <CMSDetailsPage
           cmsValue={cmsData}
           handleSubmitCMS={editCmsAPI}
           cmsId={params.cmsId}

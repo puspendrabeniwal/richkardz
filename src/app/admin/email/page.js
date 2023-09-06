@@ -7,6 +7,8 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";
 import instance from "../axiosInterceptor";
+import { useRouter } from "next/navigation";
+import { SplitButton } from "primereact/splitbutton";
 const EmailTemplate = () => {
   const [emailData, setEmailData] = useState([]);
   const op = useRef(null);
@@ -43,16 +45,36 @@ const EmailTemplate = () => {
     getEmailAPI();
   };
 
+  const router = useRouter();
   // ============Edit button for update form===========//
-  const getActionuttons = (rowdata) => {
+  const getActionButton = (rowData) => {
+    const items = [
+      {
+        label: "Edit",
+        icon: "pi pi-refresh",
+        command: () => {
+          router.push(`/admin/email/edit/${rowData._id}`);
+        },
+      },
+      {
+        label: "View",
+        icon: "pi pi-times",
+        command: () => {
+          router.push(`/admin/email/view/${rowData._id}`);
+        },
+      },
+    ];
     return (
       <>
-        <Link href={`/admin/email/edit/${rowdata._id}`}>
-          <Tag value="Update" severity="warning" className="mx-3"></Tag>
-        </Link>
-        <Link href={`/admin/email/view/${rowdata._id}`}>
-          <Tag value="View" severity="warning"></Tag>
-        </Link>
+        <SplitButton
+          label="Action"
+          icon="pi pi-plus"
+          small
+          raised
+          text
+          severity="secondary"
+          model={items}
+        />
       </>
     );
   };
@@ -239,7 +261,7 @@ const EmailTemplate = () => {
                     field=""
                     header="Actions"
                     style={{ width: "150px" }}
-                    body={getActionuttons}
+                    body={getActionButton}
                   ></Column>
                 </DataTable>
               </div>

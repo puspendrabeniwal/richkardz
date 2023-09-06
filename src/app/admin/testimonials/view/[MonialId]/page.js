@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import MonialsForm from "@/app/admin/components/MonialsForm";
 import { Toast } from "primereact/toast";
 import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
+import MonialDetailsPage from "@/app/admin/components/MonialDetailPage";
 
 const ViewMonials = ({ params }) => {
   const toast = useRef(null);
@@ -111,7 +111,7 @@ const ViewMonials = ({ params }) => {
         </div>
       </div>
       {monialData ? (
-        <MonialsForm
+        <MonialDetailsPage
           monialValue={monialData}
           handleSubmitMonial={editMonialAPI}
           MonialId={params.MonialId}
