@@ -204,6 +204,14 @@ const Sidebar = () => {
                       <span className="menu-title">FAQ</span>
                     </Link>
                   </span>
+                  <span className="menu-link">
+                    <span className="menu-bullet">
+                      <span className="bullet bullet-dot"></span>
+                    </span>
+                    <Link href="/admin/email">
+                      <span className="menu-title">Email Template</span>
+                    </Link>
+                  </span>
                 </div>
               </div>
             </div>

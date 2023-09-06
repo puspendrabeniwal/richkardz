@@ -3,33 +3,32 @@ import Link from "next/link";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Tag } from "primereact/tag";
-import { Tooltip } from "primereact/tooltip";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useRef, useState } from "react";
 import instance from "../axiosInterceptor";
-const CMS = () => {
-  const [cmsData, setCmsData] = useState([]);
+const EmailTemplate = () => {
+  const [emailData, setEmailData] = useState([]);
   const op = useRef(null);
   let formData = new FormData();
   useEffect(() => {
-    getCmsAPI();
+    getEmailAPI();
   }, []);
   const removeFilter = () => {
     formData = new FormData();
-    getCmsAPI();
+    getEmailAPI();
   };
   //  ==============get Block API Data ====================//
-  const getCmsAPI = async () => {
+  const getEmailAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser?._id);
     formData.append("skip", 10); //append the values with key, value pair
     formData.append("limit", 10); //append the values with key, value pair
 
     try {
-      const response = await instance.post(`cms`, formData);
+      const response = await instance.post(`email_template`, formData);
       const newData = response.result;
-      setCmsData(newData);
+      setEmailData(newData);
     } catch (error) {
       console.log(error);
     }
@@ -39,14 +38,15 @@ const CMS = () => {
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
+    console.log("Email title", values);
     formData.append("title", values?.title);
-    getCmsAPI();
+    getEmailAPI();
   };
 
   // ============Edit button for update form===========//
   const getActionuttons = (rowdata) => {
     return (
-      <Link href={`/admin/cms/edit/${rowdata._id}`}>
+      <Link href={`/admin/email/edit/${rowdata._id}`}>
         <Tag value="Update" severity="warning"></Tag>
       </Link>
     );
@@ -67,7 +67,7 @@ const CMS = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                CMS List
+                Email List
               </h1>
               <span className="h-20px border-gray-300 border-start mx-4"></span>
               <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
@@ -82,7 +82,7 @@ const CMS = () => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-mute">CMS</li>
+                <li class="breadcrumb-item text-mute">Email</li>
               </ul>
             </div>
 
@@ -125,7 +125,7 @@ const CMS = () => {
                   <div className="separator border-gray-200 mb-10"></div>
                   <Formik
                     initialValues={{
-                      name: "",
+                      title: "",
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
@@ -134,7 +134,9 @@ const CMS = () => {
                         <div className="row ">
                           <div className="col-lg-12 col-md-12">
                             <div className="mb-10">
-                              <label className="form-label fw-bold">Name</label>
+                              <label className="form-label fw-bold">
+                                Title
+                              </label>
                               <div>
                                 <Field
                                   type="text"
@@ -166,7 +168,7 @@ const CMS = () => {
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
-                                await getCmsAPI();
+                                await getEmailAPI();
                                 op.current.toggle(e);
                               }}
                               className="btn btn-sm btn-danger"
@@ -181,13 +183,8 @@ const CMS = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/cms/add" className="btn btn-sm btn-success">
-                Add CMS
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+              <Link href="/admin/email/add" className="btn btn-sm btn-success">
+                Add Email
               </Link>
             </div>
           </div>
@@ -203,7 +200,7 @@ const CMS = () => {
             <div className="card p-4">
               <div className="card-body py-4">
                 <DataTable
-                  value={cmsData}
+                  value={emailData}
                   rows={10}
                   stripedRows
                   paginator
@@ -216,15 +213,21 @@ const CMS = () => {
                     body={(data, props) => props.rowIndex + 1}
                   ></Column>
                   <Column
-                    header="Type"
-                    field="type"
+                    header="Title"
+                    field="title"
                     sortable
                     style={{ cursor: "pointer" }}
                   ></Column>
                   <Column
-                    header="Title"
-                    field="title"
+                    header="Content"
                     sortable
+                    body={(data) => (
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: data.content,
+                        }}
+                      ></p>
+                    )}
                     style={{ cursor: "pointer" }}
                   ></Column>
                   <Column
@@ -242,4 +245,4 @@ const CMS = () => {
   );
 };
 
-export default CMS;
+export default EmailTemplate;
