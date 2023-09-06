@@ -132,7 +132,7 @@ const UpdateProduct = ({ params }) => {
                                     {
 
                                         (productData?.images && productData.images.map((records, index)=>{
-                                            return  <div class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Product Image">
+                                            return  <div key={index} class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Product Image">
                                                         <img alt="Pic" src={(productData?.images) ? productData?.image_url+productData?.images[index] :""}/>
                                                     </div>
                                         }))
