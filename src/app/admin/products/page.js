@@ -448,6 +448,7 @@ export const Products = () => {
                   <Column
                     field=""
                     header="Action"
+                    style={{ width: "130px" }}
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
