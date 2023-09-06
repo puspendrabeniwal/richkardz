@@ -11,13 +11,10 @@ import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
-import { SplitButton } from "primereact/splitbutton";
-import { useRouter } from "next/navigation";
 export const Products = () => {
   const [visible, setVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const op = useRef(null);
-  const router = useRouter();
   let formData = new FormData(); //formdata object
   const getProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -107,47 +104,15 @@ export const Products = () => {
     }
   };
 
-  // const UpdateButtonLink = (rowData) => {
-  //   return (
-  //     <>
-  //       <Link href={`/admin/products/edit/${rowData._id}`}>
-  //         <Tag value="Update" severity="warning" className="mx-3"></Tag>
-  //       </Link>
-  //       <Link href={`/admin/products/view/${rowData._id}`}>
-  //         <Tag value="View" severity="warning"></Tag>
-  //       </Link>
-  //     </>
-  //   );
-  // };
-
   const UpdateButtonLink = (rowData) => {
-    const items = [
-      {
-        label: "Edit",
-        icon: "pi pi-refresh",
-        command: () => {
-          router.push(`/admin/products/update/${rowData._id}`);
-        },
-      },
-      {
-        label: "View",
-        icon: "pi pi-times",
-        command: () => {
-          router.push(`/admin/products/view/${rowData._id}`);
-        },
-      },
-    ];
     return (
       <>
-        <SplitButton
-          label="Action"
-          icon="pi pi-plus"
-          small
-          raised
-          text
-          severity="secondary"
-          model={items}
-        />
+        <Link href={`/admin/products/edit/${rowData._id}`}>
+          <Tag value="Update" severity="warning" className="mx-3"></Tag>
+        </Link>
+        <Link href={`/admin/products/view/${rowData._id}`}>
+          <Tag value="View" severity="warning"></Tag>
+        </Link>
       </>
     );
   };
