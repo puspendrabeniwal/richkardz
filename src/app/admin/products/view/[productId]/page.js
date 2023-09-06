@@ -74,7 +74,7 @@ const UpdateProduct = ({ params }) => {
         >
             <div className=" d-flex flex-column-fluid" id="kt_post">
                 <div id="kt_content_container" className="container-xxl">
-                    <div className="card p-4">
+                    <div className="card">
                         <div className="card mb-6 mb-xl-9">
                             <div className="card-body pt-9 pb-0">
                                 <div className="d-flex flex-wrap flex-sm-nowrap mb-6">

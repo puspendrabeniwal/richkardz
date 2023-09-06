@@ -401,7 +401,7 @@ export const Products = () => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
+            <div className="card">
               <div className="card-body py-4">
                 <Toast ref={toast} />
                 <ConfirmDialog />

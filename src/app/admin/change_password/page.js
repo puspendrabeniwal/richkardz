@@ -91,7 +91,7 @@ const  ChangePassword = ()=> {
         <div style={{height:"700px"}} className="content d-flex flex-column flex-column-fluid">
             <div className=" d-flex flex-column-fluid" id="kt_post">
                 <div className="container-xxl">
-                    <div className="card p-4" >
+                    <div className="card" >
                     <Formik
                         enableReinitialize={true}
                         initialValues={initialValues}

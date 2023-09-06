@@ -86,7 +86,8 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
+            <div className="card">
+            <div className="card-body py-4">
               <Formik
                 initialValues={defaultValues}
                 validationSchema={(productId ?  validationSchemaEdit : validationSchema)}
@@ -396,6 +397,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                   </Form>
                 )}
               </Formik>
+              </div>
             </div>
           </div>
         </div>
