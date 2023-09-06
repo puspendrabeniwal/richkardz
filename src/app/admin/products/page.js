@@ -106,9 +106,14 @@ export const Products = () => {
 
   const UpdateButtonLink = (rowData) => {
     return (
-      <Link href={`/admin/products/update/${rowData._id}`}>
-        <Tag value="Update" severity="warning"></Tag>
-      </Link>
+      <>
+        <Link href={`/admin/products/edit/${rowData._id}`}>
+          <Tag value="Update" severity="warning" className="mx-3"></Tag>
+        </Link>
+        <Link href={`/admin/products/view/${rowData._id}`}>
+          <Tag value="View" severity="warning"></Tag>
+        </Link>
+      </>
     );
   };
 
@@ -428,6 +433,7 @@ export const Products = () => {
                   <Column
                     field=""
                     header="Action"
+                    style={{ width: "130px" }}
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>

@@ -43,12 +43,68 @@ const CMS = () => {
     getCmsAPI();
   };
 
+  //  ============== Status Confirmation ====================//
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <Tag
+        value={getValue(rowData.status)}
+        severity={getSeverity(rowData.status)}
+        onClick={() => confirm(rowData._id, rowData.status)}
+      ></Tag>
+    );
+  };
+
+  const accept = (id, status) => {
+    let newFormData = new FormData();
+    newFormData.append("product_id", id);
+    newFormData.append("status", status);
+    instance
+      .post("product_status", newFormData)
+      .then((response) => {
+        getProducts();
+        let data = response ? response : {};
+        toast.current.show({
+          severity: "info",
+          summary: "Confirmed",
+          detail: data.message,
+          life: 3000,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const reject = () => {
+    toast.current.show({
+      severity: "warn",
+      summary: "Rejected",
+      detail: "You have rejected",
+      life: 3000,
+    });
+  };
+
+  const confirm = (id, status) => {
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => accept(id, status),
+      reject,
+    });
+  };
+
   // ============Edit button for update form===========//
   const getActionuttons = (rowdata) => {
     return (
-      <Link href={`/admin/cms/edit/${rowdata._id}`}>
-        <Tag value="Update" severity="warning"></Tag>
-      </Link>
+      <>
+        <Link href={`/admin/cms/edit/${rowdata._id}`}>
+          <Tag value="Update" severity="warning" className="mx-3"></Tag>
+        </Link>
+        <Link href={`/admin/cms/view/${rowdata._id}`}>
+          <Tag value="View" severity="warning"></Tag>
+        </Link>
+      </>
     );
   };
   return (
@@ -226,6 +282,11 @@ const CMS = () => {
                     field="title"
                     sortable
                     style={{ cursor: "pointer" }}
+                  ></Column>
+                  <Column
+                    field="status"
+                    header="Status"
+                    body={statusBodyTemplate}
                   ></Column>
                   <Column
                     field=""

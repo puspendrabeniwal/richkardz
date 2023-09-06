@@ -44,9 +44,14 @@ export const Testimonials = () => {
   // ============Edit button for update form===========//
   const getActionuttons = (rowdata) => {
     return (
-      <Link href={`/admin/testimonials/edit/${rowdata._id}`}>
-        <Tag value="Update" severity="warning"></Tag>
-      </Link>
+      <>
+        <Link href={`/admin/testimonials/edit/${rowdata._id}`}>
+          <Tag value="Update" severity="warning" className="mx-3"></Tag>
+        </Link>
+        <Link href={`/admin/testimonials/view/${rowdata._id}`}>
+          <Tag value="View" severity="warning"></Tag>
+        </Link>
+      </>
     );
   };
   const imageBodyTemplate = (data) => {
@@ -241,6 +246,7 @@ export const Testimonials = () => {
                     sortable
                   ></Column>
                   <Column
+                    style={{ width: "130px" }}
                     field=""
                     header="Actions"
                     body={getActionuttons}

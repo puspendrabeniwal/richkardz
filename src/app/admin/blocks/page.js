@@ -46,9 +46,14 @@ const Blocks = () => {
   // ============Edit button for update form===========//
   const getActionButton = (rowdata) => {
     return (
-      <Link href={`/admin/blocks/edit/${rowdata._id}`}>
-        <Tag value="Update" severity="warning"></Tag>
-      </Link>
+      <>
+        <Link href={`/admin/blocks/edit/${rowdata._id}`}>
+          <Tag value="Update" severity="warning" className="mx-3"></Tag>
+        </Link>
+        <Link href={`/admin/blocks/view/${rowdata._id}`}>
+          <Tag value="View" severity="warning"></Tag>
+        </Link>
+      </>
     );
   };
   return (

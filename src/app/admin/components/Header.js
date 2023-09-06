@@ -14,7 +14,6 @@ const Header = () => {
     localStorage.removeItem("loginInfo");
     window.location.replace("/admin/signin");
   };
-  console.log(user, "dsfsdfsdf");
   return (
     <div id="kt_header" className="header align-items-stretch">
       <div className="container-fluid d-flex align-items-stretch justify-content-between">

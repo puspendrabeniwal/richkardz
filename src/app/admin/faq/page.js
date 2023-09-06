@@ -46,9 +46,14 @@ const CMS = () => {
   // ============Edit button for update form===========//
   const getActionuttons = (rowdata) => {
     return (
-      <Link href={`/admin/faq/edit/${rowdata._id}`}>
-        <Tag value="Update" severity="warning"></Tag>
-      </Link>
+      <>
+        <Link href={`/admin/faq/edit/${rowdata._id}`}>
+          <Tag value="Update" severity="warning" className="mx-3"></Tag>
+        </Link>
+        <Link href={`/admin/faq/view/${rowdata._id}`}>
+          <Tag value="View" severity="warning"></Tag>
+        </Link>
+      </>
     );
   };
   return (

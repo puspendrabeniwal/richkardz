@@ -1,20 +1,32 @@
 "use client";
-import React, { useRef } from "react";
-import { Toast } from "primereact/toast";
-import instance from "../../axiosInterceptor";
+import instance from "@/app/admin/axiosInterceptor";
+import EmailTempForm from "@/app/admin/components/EmailTempForm";
 import Link from "next/link";
-import EmailTempForm from "../../components/EmailTempForm";
+import { Toast } from "primereact/toast";
+import React, { useEffect, useRef, useState } from "react";
 
-const ViewEmail = () => {
+const ViewEmail = ({ params }) => {
   const toast = useRef(null);
-  const addEmailAPI = async (data) => {
-    const postData = {
-      title: data.title,
-      content: data.content,
-    };
+  const [emailData, setEmailData] = useState(null);
+
+  useEffect(() => {
+    getEmailAPI();
+  }, []);
+  const getEmailAPI = async () => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    let formData = new FormData(); //formdata object
+    formData.append(
+      "user_id",
+      Object.keys(loginUser).length > 0 ? loginUser?._id : ""
+    ); //append the values with key, value pair
+    formData.append("id", params.emailId); //append the values with key, value pair
     try {
-      const response = await instance.post(`email_template/add`, postData);
-      showMessage(response);
+      const response = await instance.post(
+        `email_template/view/${params.emailId}`,
+        formData
+      );
+      const getData = response.result ? response.result : {};
+      setEmailData(getData);
     } catch (error) {
       console.log(error);
     }
@@ -28,6 +40,22 @@ const ViewEmail = () => {
     });
   };
 
+  const editEmailAPI = async (data) => {
+    const postData = {
+      title: data.title,
+      content: data.content,
+    };
+    try {
+      const response = await instance.post(
+        `email_template/edit/${params.emailId}`,
+        postData
+      );
+      setEmailData(response);
+      showMessage(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <Toast ref={toast} />
@@ -44,7 +72,7 @@ const ViewEmail = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                Add Email
+                View Email
               </h1>
               <span className="h-20px border-gray-300 border-start mx-4"></span>
               <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
@@ -70,7 +98,7 @@ const ViewEmail = () => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-mute">Add</li>
+                <li class="breadcrumb-item text-mute">View</li>
               </ul>
             </div>
 
@@ -83,11 +111,15 @@ const ViewEmail = () => {
           </div>
         </div>
       </div>
-      <EmailTempForm
-        emailValue={null}
-        handleSubmitEmail={addEmailAPI}
-        emailId={null}
-      />
+      {emailData ? (
+        <EmailTempForm
+          emailValue={emailData}
+          handleSubmitEmail={editEmailAPI}
+          emailId={params.emailId}
+        />
+      ) : (
+        <div>Loading...</div>
+      )}
     </>
   );
 };
