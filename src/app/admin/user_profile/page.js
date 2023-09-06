@@ -12,7 +12,7 @@ import withAuth from "@/hoc/withAuth";
 import { AuthContext } from "../AuthContext";
 
 const  UserProfile = ()=> {
-    const { user, setUser } = useContext(AuthContext);
+    const { setUser } = useContext(AuthContext);
     const [userDetail, setUserDetail] = useState({});
 
     const toast = useRef(null);
@@ -23,8 +23,8 @@ const  UserProfile = ()=> {
 
     const getUserDetail = ()=>{
         let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-        let formData = new FormData();    //formdata object
-        formData.append("user_id", loginUser._id);   //append the values with key, value pair
+        let formData = new FormData();
+        formData.append("user_id", loginUser._id);
 
         instance.post("getUserDetail", formData)
             .then(response => {
@@ -37,6 +37,7 @@ const  UserProfile = ()=> {
                 console.log(error);
             });
     }
+
     const showMessage = (data) => {
         toast.current.show({
           severity: (data.status) ? "success" : "error",
@@ -50,26 +51,23 @@ const  UserProfile = ()=> {
     const validationSchema = Yup.object({
         full_name: Yup.string().required('Name is required'),
         email: Yup.string().email('Invalid email address').required('Email is required'),
-        // Define more validation rules for other fields
     });
 
 
     const initialValues = {
         full_name: (userDetail.full_name) ? userDetail.full_name : '',
-        email: (userDetail.email) ? userDetail.email : '',
-        // Add more fields with their initial values
+        email: (userDetail.email) ? userDetail.email : ''
     };
 
    
     const onSubmit = async(values, { setSubmitting, resetForm }) => {
         setSubmitting(false)
-        let formData = new FormData();    //formdata object
+        let formData = new FormData();
         let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-        formData.append("user_id", loginUser._id);   //append the values with key, value pair
-        formData.append("full_name", values.full_name);   //append the values with key, value pair
-        formData.append("email", values.email);   //append the values with key, value pair
-        formData.append("image", values.image);   //append the values with key, value pair
-
+        formData.append("user_id", loginUser._id);
+        formData.append("full_name", values.full_name);
+        formData.append("email", values.email);
+        formData.append("image", values.image);
         instance.post("updateUserProfile", formData)
         .then(response => {
             showMessage(response);
@@ -80,8 +78,6 @@ const  UserProfile = ()=> {
             console.log(error);
         });
     };
-
-    console.log(user, "user")
   return (
     <>
         <Toast ref={toast} />
@@ -106,7 +102,6 @@ const  UserProfile = ()=> {
                 </div>
             </div>
         </div>
-
         <div className="content d-flex flex-column flex-column-fluid">
             <div className=" d-flex flex-column-fluid" id="kt_post">
                 <div className="container-xxl">
@@ -136,13 +131,6 @@ const  UserProfile = ()=> {
                                             <Image src={userDetail?.full_image_path} height="70px" width="100px" alt="Image" />
                                         } 
                                         />
-                                        {/* <Field
-                                                        type="file"
-                                                        name="image"
-                                                        accept="image/*"
-                                                        value={undefined}
-                                                       
-                                                    /> */}
                                     </div>
 
                                     <div className="row mb-6">

@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
+import { useRouter, usePathname } from 'next/navigation'
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Toast } from "primereact/toast";
+import { SplitButton } from 'primereact/splitbutton';
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
 import React, { useEffect, useState, useRef } from "react";
@@ -12,6 +14,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 export const Products = () => {
+  const router  = useRouter();
   const [visible, setVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const op = useRef(null);
@@ -105,10 +108,27 @@ export const Products = () => {
   };
 
   const UpdateButtonLink = (rowData) => {
+    const items = [
+      {
+          label: 'Edit',
+          icon: 'pi pi-refresh',
+          command: () => {
+            router.push(`/admin/products/update/${rowData._id}`)
+          }
+      },
+      {
+          label: 'View',
+          icon: 'pi pi-times',
+          command: () => {
+            router.push(`/admin/products/view/${rowData._id}`)
+          }
+      },
+
+    ];
     return (
-      <Link href={`/admin/products/update/${rowData._id}`}>
-        <Tag value="Update" severity="warning"></Tag>
-      </Link>
+      <>
+        <SplitButton label="Action" icon="pi pi-plus" small raised text severity="secondary" model={items}/>
+      </>
     );
   };
 

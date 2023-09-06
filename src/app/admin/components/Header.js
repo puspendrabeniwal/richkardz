@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useContext, useState, use } from "react";
+import { Image } from 'primereact/image';
+import React, { useEffect, useContext} from "react";
 import { AuthContext } from "../AuthContext";
 const Header = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -69,7 +70,12 @@ const Header = () => {
                 data-kt-menu-attach="parent"
                 data-kt-menu-placement="bottom-end"
               >
-                <img src={user?.full_image_path} alt="user" />
+                <Image 
+                  src={user?.full_image_path}             
+                  height={40}
+                  width={40}
+                  alt="user" 
+                />
               </div>
               <div
                 className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
@@ -78,9 +84,11 @@ const Header = () => {
                 <div className="menu-item px-3">
                   <div className="menu-content d-flex align-items-center px-3">
                     <div className="symbol symbol-50px me-5">
-                      <img
+                      <Image
                         alt="Logo"
                         src={user?.full_image_path}
+                        height={40}
+                        width={40}
                       />
                     </div>
                     <div className="d-flex flex-column">

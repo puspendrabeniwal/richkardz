@@ -23,13 +23,7 @@ function Products() {
       let price = req.body.price ? Number(req.body.price) : "";
       let discount = req.body.discount ? Number(req.body.discount) : "";
 
-<<<<<<< HEAD
             let searchCondition = {}
-=======
-      let searchCondition = {
-        status: 1,
-      };
->>>>>>> f6cd78e9352d4edd25140c627e9ce37a2e392ff1
 
       if (price) searchCondition["price"] = price;
       if (discount) searchCondition["discount"] = discount;
