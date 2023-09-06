@@ -23,9 +23,13 @@ function Products() {
       let price = req.body.price ? Number(req.body.price) : "";
       let discount = req.body.discount ? Number(req.body.discount) : "";
 
+<<<<<<< HEAD
+            let searchCondition = {}
+=======
       let searchCondition = {
         status: 1,
       };
+>>>>>>> f6cd78e9352d4edd25140c627e9ce37a2e392ff1
 
       if (price) searchCondition["price"] = price;
       if (discount) searchCondition["discount"] = discount;
@@ -77,6 +81,23 @@ function Products() {
    * @return render/json
    */
   this.addProduct = (req, res) => {
+<<<<<<< HEAD
+
+    }
+
+    /**
+     * Function for edit product
+     *
+     * @param req   As  Request Data
+     * @param res   As  Response Data
+     * @param next  As  Callback argument to the middleware function
+     *
+     * @return render/json
+     */
+    this.editProduct = (req, res)=>{
+
+    };
+=======
     if (isPost(req)) {
       let collection = db.collection("products");
       /** Sanitize Data */
@@ -191,37 +212,25 @@ function Products() {
       });
     }
   };
+>>>>>>> f6cd78e9352d4edd25140c627e9ce37a2e392ff1
   this.addProductBack = (req, res) => {
-    if (isPost(req)) {
-      let collection = db.collection("products");
-      /** Sanitize Data */
-      req.body = sanitizeData(req.body, NOT_ALLOWED_TAGS_XSS);
-      /** Check validation */
-      req.checkBody({
-        product_name: {
-          notEmpty: true,
-          errorMessage: res.__("Please enter product name"),
-        },
-        price: {
-          notEmpty: true,
-          errorMessage: res.__("Please enter price"),
-        },
-        discount: {
-          notEmpty: true,
-          errorMessage: res.__("Please enter discount"),
-        },
-        card_type: {
-          notEmpty: true,
-          errorMessage: res.__("Please enter card type"),
-        },
-        product_desc: {
-          notEmpty: true,
-          errorMessage: res.__("Please enter product description"),
-        },
-      });
-      /** parse Validation array  */
-      let errors = parseValidation(req.validationErrors(), req);
 
+<<<<<<< HEAD
+    } 
+
+    	/**
+	 * Function for update product status
+	 *
+	 * @param req 	As 	Request Data
+     * @param res 	As 	Response Data
+     * @param next 	As 	Callback argument to the middleware function
+	 *
+	 * @return render/json
+	 */
+	this.updateProductStatus = (req,res)=>{
+
+	};// end updateProductStatus()
+=======
       if (!req.files || !req.files.image) {
         if (!errors) errors = [];
         errors.push({
@@ -439,5 +448,6 @@ function Products() {
       }
     );
   };
+>>>>>>> f6cd78e9352d4edd25140c627e9ce37a2e392ff1
 }
 module.exports = new Products();

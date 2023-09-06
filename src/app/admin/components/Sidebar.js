@@ -16,7 +16,7 @@ const Sidebar = () => {
         <Link href="/admin/dashboard">
           <img
             alt="Logo"
-            src="../admin/assets/media/logos/logo-1-dark.png"
+            src="/admin/assets/media/logos/logo-1-dark.png"
             className="h-50px logo"
           />
         </Link>

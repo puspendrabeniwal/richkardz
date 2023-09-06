@@ -7,7 +7,7 @@ import Footer from './components/Footer';
 import Sidebar from './components/Sidebar';
 import { AuthContext } from './AuthContext';
 
-export default function adminLayout({ children }) {
+export default function AdminLayout({ children }) {
   const [user, setUser] = useState({});
   const pathname  = usePathname();
   const router  = useRouter();

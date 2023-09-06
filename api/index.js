@@ -21,8 +21,8 @@ app.use(i18n.init);
 app.disable('x-powered-by');
 
 /** required for Helmet (Secure Web) */
-const helmet = require('helmet');
-app.use(helmet());
+// const helmet = require('helmet');
+// app.use(helmet());
 
 /** required for Compression */
 const compression = require('compression')
@@ -92,12 +92,7 @@ const allowedOrigin = [
 ];
 
 app.use(
-	cors({
-	  origin: allowedOrigin, //Fix for the cors origin errors
-	  // header: { "X-Requested-With": "XMLHttpRequest"},
-	  optionsSuccessStatus: 200,
-	  credentials: true,
-	})
+	cors()
 );
   
 /** Function to get unhandled errors and prevent to stop nodejs server **/
