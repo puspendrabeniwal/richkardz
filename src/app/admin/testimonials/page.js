@@ -10,7 +10,7 @@ import { Field, Form, Formik } from "formik";
 import instance from "../axiosInterceptor";
 import { useRouter } from "next/navigation";
 import { SplitButton } from "primereact/splitbutton";
-export const Testimonials = () => {
+const Testimonials = () => {
   const [monialData, setMonialData] = useState([]);
   const op = useRef(null);
   let formData = new FormData();
@@ -119,7 +119,7 @@ export const Testimonials = () => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-mute">Testimonial</li>
+                <li className="breadcrumb-item text-mute">Testimonial</li>
               </ul>
             </div>
 

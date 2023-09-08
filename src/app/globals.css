@@ -119,3 +119,8 @@ a {
 .errorMessage{
   color: #ff0000;
 }
+
+.p-splitbutton{
+  height: 28px !important;
+ /* width: 100px !important; */
+}

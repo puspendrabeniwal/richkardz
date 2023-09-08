@@ -14,7 +14,7 @@ export default function AdminLayout({ children }) {
   if(pathname === "/admin") router.push('/admin/signin', { scroll: false })
   return (
     <>
-      <link rel="shortcut icon" href="/admin/assets/media/logos/favicon.ico" />
+      <link rel="shortcut icon" href="/admin/assets/media/logos/favicon.png" />
 
       <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet"/>
       <link href="/admin/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
@@ -36,6 +36,7 @@ export default function AdminLayout({ children }) {
               </AuthContext.Provider>
           </div>
         </div>
+        
         <script src="/admin/assets/plugins/global/plugins.bundle.js"></script>
         <script src="/admin/assets/js/scripts.bundle.js"></script>
         <script src="/admin/assets/js/widgets.bundle.js"></script>

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import ProductForm from "../../components/ProductForm";
+import withAuth from "@/hoc/withAuth";
+
 const AddProduct = () => {
   const toast = useRef(null);
   const handleAddProduct = async (data) => {
@@ -69,4 +71,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default withAuth(AddProduct);

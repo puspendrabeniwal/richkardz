@@ -106,7 +106,6 @@ const  UserProfile = ()=> {
             <div className="d-flex flex-column-fluid" id="kt_post">
                 <div className="container-xxl">
                     <div className="card" >
-                       
                         <Formik
                             enableReinitialize={true}
                             initialValues={initialValues}
@@ -166,7 +165,6 @@ const  UserProfile = ()=> {
                                 </Form>
                             )}
                         </Formik>
-                   
                     </div>
                 </div>
             </div>

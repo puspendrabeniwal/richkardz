@@ -1,9 +1,8 @@
-'use client'
 
- const  Sign = ()=> {
+export default function Signin() {
   return (
-    <></> 
+    <main>
+
+    </main>
   )
 }
-
-export default Sign;

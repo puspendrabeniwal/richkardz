@@ -4,6 +4,7 @@ import { Image } from 'primereact/image';
 import React, { useEffect, useContext} from "react";
 import { AuthContext } from "../AuthContext";
 const Header = () => {
+
   const { user, setUser } = useContext(AuthContext);
   useEffect(() => {
     if (user && Object.keys(user).length === 0) {

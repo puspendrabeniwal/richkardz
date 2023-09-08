@@ -1,8 +1,10 @@
 'use client'
 import withAuth from "@/hoc/withAuth";
 export const  Dashboard = ()=> {
+
   return (
 	  <>
+
       <div className="d-flex flex-column flex-column-fluid mb-10" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
             <div id="kt_toolbar_container" className="container-fluid d-flex flex-stack">
@@ -18,7 +20,7 @@ export const  Dashboard = ()=> {
       </div>
       <div className="post d-flex flex-column-fluid" id="kt_post">
         <div id="kt_content_container" className="container-xxl">
-        <div className="row g-5 g-xl-8">
+        {/* <div className="row g-5 g-xl-8">
               <div className="col-xl-4">
                   <a href="#" className="card bg-body hoverable card-xl-stretch mb-xl-8">
                       <div className="card-body">
@@ -57,7 +59,7 @@ export const  Dashboard = ()=> {
                           </div>
 
                           <div className="fw-semibold text-white">
-                          Milestone Reached        </div>
+                          Milestone Reached </div>
                       </div>
                   </a>
               </div>
@@ -78,7 +80,7 @@ export const  Dashboard = ()=> {
                         </div>
 
                         <div className="progress h-7px bg-success bg-opacity-50 mt-7">
-                            <div className="progress-bar bg-success" role="progressbar" style={{width: "50%"}} ariaValuenow="50" ariaValuemin="0" ariaValuemax="100"></div>
+                            <div className="progress-bar bg-success" role="progressbar" style={{width: "50%"}} ariaValuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
 
@@ -99,7 +101,7 @@ export const  Dashboard = ()=> {
                         </div>
 
                         <div className="progress h-7px bg-warning bg-opacity-50 mt-7">
-                            <div className="progress-bar bg-warning" role="progressbar" style={{width: "50%"}} ariaValuenow="50" ariaValuemin="0" ariaValuemax="100"></div>
+                            <div className="progress-bar bg-warning" role="progressbar" style={{width: "50%"}} ariaValuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
 
@@ -120,14 +122,14 @@ export const  Dashboard = ()=> {
                         </div>
 
                         <div className="progress h-7px bg-info bg-opacity-50 mt-7">
-                            <div className="progress-bar bg-info" role="progressbar" style={{width: "50%"}} ariaValuenow="50" ariaValuemin="0" ariaValuemax="100"></div>
+                            <div className="progress-bar bg-info" role="progressbar" style={{width: "50%"}} ariaValuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                     </div>
 
                 </div>
 
             </div>
-          </div>
+          </div> */}
 
           <div className="row gy-5 g-xl-10">
             <div className="col-sm-6 col-xl-3 mb-xl-10">

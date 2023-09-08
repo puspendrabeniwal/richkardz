@@ -13,11 +13,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+
+
 export const Products = () => {
   const router  = useRouter();
-  const [visible, setVisible] = useState(false);
   const [products, setProducts] = useState([]);
-  const op = useRef(null);
+  const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
   const getProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -44,9 +45,10 @@ export const Products = () => {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
+        style={{cursor:"pointer"}}
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
-        onClick={() => confirm(rowData._id, rowData.status)}
+        onClick={() => confirm(rowData._id, rowData.status, "status")}
       ></Tag>
     );
   };
@@ -54,8 +56,10 @@ export const Products = () => {
   const featureBodyTemplate = (rowData) => {
     return (
       <Tag
+        style={{cursor:"pointer"}}
         value={changeLevel(rowData.is_feature)}
         severity={getSeverity(rowData.is_feature)}
+        onClick={() => confirm(rowData._id, rowData.is_feature, "feature")}
       ></Tag>
     );
   };
@@ -148,10 +152,11 @@ export const Products = () => {
     getProducts();
   };
 
-  const accept = (id, status) => {
+  const accept = (id, status, type) => {
     let newFormData = new FormData();
     newFormData.append("product_id", id);
     newFormData.append("status", status);
+    newFormData.append("type", type);
     instance
       .post("product_status", newFormData)
       .then((response) => {
@@ -178,12 +183,12 @@ export const Products = () => {
     });
   };
 
-  const confirm = (id, status) => {
+  const confirm = (id, status, type) => {
     confirmDialog({
       message: "Are you sure you want to proceed?",
       header: "Confirmation",
       icon: "pi pi-exclamation-triangle",
-      accept: () => accept(id, status),
+      accept: () => accept(id, status, type),
       reject,
     });
   };
@@ -226,7 +231,7 @@ export const Products = () => {
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0">
                 <button
-                  onClick={(e) => op.current.toggle(e)}
+                  onClick={(e) => filterOption.current.toggle(e)}
                   aria-haspopup
                   aria-controls="overlay_panel"
                   className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
@@ -248,7 +253,7 @@ export const Products = () => {
                   Filter
                 </button>
                 <OverlayPanel
-                  ref={op}
+                  ref={filterOption}
                   showCloseIcon
                   id="overlay_panel"
                   style={{ width: "450px" }}

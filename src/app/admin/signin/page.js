@@ -7,12 +7,16 @@ import withAuth from "@/hoc/withAuth";
 import instance from "../axiosInterceptor";
 const Signin = () => {
   let user;
+  const navigate = useRouter();
+  const toast = useRef(null);
+
+
   useEffect(() => {
     user = localStorage.getItem("loginInfo");
     if(user)  window.location.replace("/admin/dashboard");
   },[])
-  const navigate = useRouter();
-  const toast = useRef(null);
+  
+
   async function handleSubmit(values) {
     // setSubmitting(true);
     try {
@@ -29,6 +33,8 @@ const Signin = () => {
       console.log(error);
     }
   }
+
+
   const showMessage = (data) => {
     toast.current.show({
       severity: (data.status) ? "success" : "error",
@@ -37,6 +43,8 @@ const Signin = () => {
       life: 3000,
     });
   };
+
+  
   return (
     <>
     {(!user) ? <div className="d-flex flex-column flex-root" id="kt_app_root">

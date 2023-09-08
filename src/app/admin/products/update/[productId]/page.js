@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
 import ProductForm from "../../../components/ProductForm";
+import withAuth from "@/hoc/withAuth";
+
 const UpdateProduct = ({ params }) => {
   const toast = useRef(null);
   const [productData, setProductData] = useState(null);
@@ -100,4 +102,4 @@ const UpdateProduct = ({ params }) => {
   );
 };
 
-export default UpdateProduct;
+export default withAuth(UpdateProduct);

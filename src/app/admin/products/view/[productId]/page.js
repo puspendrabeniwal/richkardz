@@ -5,6 +5,7 @@ import dateFormat, { masks } from "dateformat";
 import { Image } from 'primereact/image';
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
+import withAuth from "@/hoc/withAuth";
 
 const UpdateProduct = ({ params }) => {
   const toast = useRef(null);
@@ -124,7 +125,7 @@ const UpdateProduct = ({ params }) => {
                                         <div className="d-flex align-items-center mb-1">
                                             Featrued : <span className={`badge badge-light-${((productData?.is_feature === 1) ? "success" : "warning")} me-auto`}>{(productData?.is_feature === 1) ? "Yes" : "No"}</span>
                                             New Released : <span className={`badge badge-light-${((productData?.is_new_release === 1) ? "success" : "warning")} me-auto`}>{(productData?.is_new_release === 1) ? "Yes" : "No"}</span>
-                                            Status : <span className={`badge badge-light-${((productData?.status === 1) ? "success" : "warning")} me-auto`}>{(productData?.is_new_release === 1) ? "Active" : "Deactive"}</span>
+                                            Status : <span className={`badge badge-light-${((productData?.status === 1) ? "success" : "warning")} me-auto`}>{(productData?.status === 1) ? "Active" : "Inactive"}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -164,4 +165,4 @@ const UpdateProduct = ({ params }) => {
   );
 };
 
-export default UpdateProduct;
+export default withAuth(UpdateProduct);
