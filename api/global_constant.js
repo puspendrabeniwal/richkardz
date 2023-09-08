@@ -53,7 +53,7 @@ WEBSITE_PUBLIC_UPLOADS_PATH 	=	WEBSITE_PUBLIC_PATH +"uploads/";
 
 /** For product images file directory path and url*/
 PRODUCTS_FILE_PATH	=	WEBSITE_UPLOADS_ROOT_PATH+"products/";
-PRODUCTS_URL		=	WEBSITE_PUBLIC_UPLOADS_PATH+"products/";
+PRODUCTS_URL		=	WEBSITE_URL+"uploads/products/";
 
 /** For User images file directory path and url*/
 USERS_FILE_PATH		=	WEBSITE_UPLOADS_ROOT_PATH+"user/";

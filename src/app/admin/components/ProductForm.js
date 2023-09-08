@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FileUpload } from 'primereact/fileupload';
+import { Image } from 'primereact/image';
+import { Galleria } from 'primereact/galleria';
+
 
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
@@ -28,6 +31,21 @@ const validationSchema = Yup.object().shape({
 });
 
 
+const validationSchemaEdit = Yup.object().shape({
+  product_name: Yup.string().required("Name is required"),
+  price: Yup.number()
+    .typeError("Price must be a number")
+    .required("Price is required"),
+  discount: Yup.string().required("Discount price is required"),
+  profession: Yup.string().required("Profession is required"),
+  card_type: Yup.string().required("Card Type is required"),
+  is_feature: Yup.string().required("Is Feature is required"),
+  is_new_release: Yup.string().required("Is new Release is required"),
+  product_desc: Yup.string().required("Product description is required"),
+  status: Yup.string().required("Status is required"),
+});
+
+
 
 const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
   const defaultValues = {
@@ -40,7 +58,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     is_new_release: productValue ? productValue.is_new_release : "",
     product_desc: productValue ? productValue.product_desc : "",
     status: productValue ? productValue.status : "",
-    images : []
+    images : [],
   };
 
   const onSubmit = async (values) => {
@@ -68,10 +86,11 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
+            <div className="card">
+            <div className="card-body py-4">
               <Formik
                 initialValues={defaultValues}
-                validationSchema={validationSchema}
+                validationSchema={(productId ?  validationSchemaEdit : validationSchema)}
                 onSubmit={async (values) => await onSubmit(values)}
               >
                 {({ setFieldValue }) => (
@@ -302,7 +321,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                     <div className="fv-row mb-3">
                       <div className="col-lg-12 col-md-12">
                         <label
-                          className="col-form-label required fw-semibold fs-6"
+                          className="col-form-label fw-semibold fs-6"
                           htmlFor="floatinDescription"
                         >
                           Product Images
@@ -320,7 +339,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               setFieldValue("images", files);
                               }}
                           emptyTemplate={
-                              <></>
+                             <></>
                           } 
                         />
                         </div>
@@ -378,6 +397,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                   </Form>
                 )}
               </Formik>
+              </div>
             </div>
           </div>
         </div>

@@ -105,6 +105,7 @@ const ChangePassword = () => {
         </div>
       </div>
 
+<<<<<<< HEAD
       <div
         style={{ height: "700px" }}
         className="content d-flex flex-column flex-column-fluid"
@@ -137,6 +138,63 @@ const ChangePassword = () => {
                           component="div"
                         />
                       </div>
+=======
+        <div style={{height:"700px"}} className="content d-flex flex-column flex-column-fluid">
+            <div className=" d-flex flex-column-fluid" id="kt_post">
+                <div className="container-xxl">
+                    <div className="card" >
+                    <Formik
+                        enableReinitialize={true}
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={onSubmit}
+                    >                               
+                        <Form >
+                            <div className="card-body border-top p-9">
+                                <div className="row mb-6">
+                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">Old Pasword</label>
+                                    <div className="col-lg-8 fv-row">
+                                        <Field  
+                                            type="password" 
+                                            name="old_password" 
+                                            className="form-control form-control-lg form-control-solid" 
+                                            placeholder="Old Password" 
+                                        />
+                                        <ErrorMessage name="old_password" className="errorMessage" component="div" />
+                                    </div>
+                                </div>
+                                <div className="row mb-6">
+                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">New Password</label>
+                                    <div className="col-lg-8 fv-row">
+                                        <Field  
+                                            type="password" 
+                                            name="new_password" 
+                                            className="form-control form-control-lg form-control-solid" 
+                                            placeholder="New Password" 
+                                        />
+                                        <ErrorMessage name="new_password" className="errorMessage" component="div" />
+                                    </div>
+                                </div>
+                                <div className="row mb-6">
+                                    <label className="col-lg-4 col-form-label required fw-semibold fs-6">Confirm Password</label>
+                                    <div className="col-lg-8 fv-row">
+                                        <Field  
+                                            type="password" 
+                                            name="confirm_password" 
+                                            className="form-control form-control-lg form-control-solid" 
+                                            placeholder="Confirm Pasword" 
+                                        />
+                                        <ErrorMessage name="confirm_password" className="errorMessage" component="div" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="card-footer d-flex justify-content-end py-6 px-9">
+                                <button type="reset" className="btn btn-warning me-2">Discard</button>
+                                <button type="submit" className="btn btn-info">Save Changes</button>
+                            </div>
+                        </Form>
+                    </Formik>
+>>>>>>> master
                     </div>
                     <div className="row mb-6">
                       <label className="col-lg-4 col-form-label required fw-semibold fs-6">

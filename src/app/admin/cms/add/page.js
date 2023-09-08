@@ -4,6 +4,7 @@ import CmsForm from "../../components/CmsForm";
 import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import Link from "next/link";
+import withAuth from "@/hoc/withAuth";
 
 const AddCms = () => {
   const toast = useRef(null);
@@ -94,4 +95,4 @@ const AddCms = () => {
   );
 };
 
-export default AddCms;
+export default withAuth(AddCms);

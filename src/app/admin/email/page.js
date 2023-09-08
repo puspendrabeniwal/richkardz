@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import instance from "../axiosInterceptor";
 import { useRouter } from "next/navigation";
 import { SplitButton } from "primereact/splitbutton";
+import withAuth from "@/hoc/withAuth";
 const EmailTemplate = () => {
   const [emailData, setEmailData] = useState([]);
   const op = useRef(null);
@@ -245,18 +246,7 @@ const EmailTemplate = () => {
                     sortable
                     style={{ cursor: "pointer" }}
                   ></Column>
-                  <Column
-                    header="Content"
-                    sortable
-                    body={(data) => (
-                      <p
-                        dangerouslySetInnerHTML={{
-                          __html: data.content,
-                        }}
-                      ></p>
-                    )}
-                    style={{ cursor: "pointer" }}
-                  ></Column>
+
                   <Column
                     field=""
                     header="Actions"
@@ -273,4 +263,4 @@ const EmailTemplate = () => {
   );
 };
 
-export default EmailTemplate;
+export default withAuth(EmailTemplate);

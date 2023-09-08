@@ -9,17 +9,18 @@ import { useEffect, useRef, useState } from "react";
 import instance from "../axiosInterceptor";
 import { useRouter } from "next/navigation";
 import { SplitButton } from "primereact/splitbutton";
-const CMS = () => {
+import withAuth from "@/hoc/withAuth";
+import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
+import { confirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
+const FAQ = () => {
   const [faqData, setFaqData] = useState([]);
   const op = useRef(null);
+  const toast = useRef(null);
   let formData = new FormData();
   useEffect(() => {
     getFAQAPI();
   }, []);
-  const removeFilter = () => {
-    formData = new FormData();
-    getFAQAPI();
-  };
   //  ==============get Block API Data ====================//
   const getFAQAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -31,6 +32,7 @@ const CMS = () => {
       const response = await instance.post(`faqs`, formData);
       const newData = response.result;
       setFaqData(newData);
+      console.log("newData", newData);
     } catch (error) {
       console.log(error);
     }
@@ -43,6 +45,78 @@ const CMS = () => {
     console.log("faq question", values);
     formData.append("question", values?.question);
     getFAQAPI();
+  };
+  //  ============== Status Confirmation ====================//
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <Tag
+        style={{ cursor: "pointer" }}
+        value={getValue(rowData.status)}
+        severity={getSeverity(rowData.status)}
+        onClick={() => confirm(rowData._id, rowData.status, "status")}
+      ></Tag>
+    );
+  };
+  const getValue = (value) => {
+    switch (value) {
+      case 1:
+        return "Active";
+
+      case 0:
+        return "Inacitve";
+
+      default:
+        return null;
+    }
+  };
+  const getSeverity = (value) => {
+    switch (value) {
+      case 1:
+        return "success";
+
+      case 0:
+        return "warning";
+
+      default:
+        return null;
+    }
+  };
+  const confirm = (id, status) => {
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => accept(id, status),
+      reject,
+    });
+  };
+  const accept = (id, status) => {
+    let newFormData = new FormData();
+    newFormData.append("id", id);
+    newFormData.append("status", status);
+    instance
+      .post("faqs/status", newFormData)
+      .then((response) => {
+        getFAQAPI();
+        let data = response ? response : {};
+        toast.current.show({
+          severity: "info",
+          summary: "Confirmed",
+          detail: data.message,
+          life: 3000,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const reject = () => {
+    toast.current.show({
+      severity: "warn",
+      summary: "Rejected",
+      detail: "You have rejected",
+      life: 3000,
+    });
   };
 
   const router = useRouter();
@@ -80,6 +154,7 @@ const CMS = () => {
   };
   return (
     <>
+      <Toast ref={toast} />
       {/* ==================================Search Fields=========================================== */}
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
@@ -226,6 +301,7 @@ const CMS = () => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card p-4">
               <div className="card-body py-4">
+                <ConfirmDialog />
                 <DataTable
                   value={faqData}
                   rows={10}
@@ -258,6 +334,11 @@ const CMS = () => {
                     style={{ cursor: "pointer" }}
                   ></Column>
                   <Column
+                    field="status"
+                    header="Status"
+                    body={statusBodyTemplate}
+                  ></Column>
+                  <Column
                     field=""
                     header="Actions"
                     body={getActionButton}
@@ -272,4 +353,4 @@ const CMS = () => {
   );
 };
 
-export default CMS;
+export default withAuth(FAQ);

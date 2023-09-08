@@ -4,6 +4,7 @@ import { Toast } from "primereact/toast";
 import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import MonialDetailsPage from "@/app/admin/components/MonialDetailPage";
+import withAuth from "@/hoc/withAuth";
 
 const ViewMonials = ({ params }) => {
   const toast = useRef(null);
@@ -123,4 +124,4 @@ const ViewMonials = ({ params }) => {
   );
 };
 
-export default ViewMonials;
+export default withAuth(ViewMonials);

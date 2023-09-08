@@ -4,6 +4,7 @@ import BlockForm from "@/app/admin/components/BlockForm";
 import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
+import withAuth from "@/hoc/withAuth";
 
 const UpdateBlock = ({ params }) => {
   const toast = useRef(null);
@@ -129,4 +130,4 @@ const UpdateBlock = ({ params }) => {
   );
 };
 
-export default UpdateBlock;
+export default withAuth(UpdateBlock);

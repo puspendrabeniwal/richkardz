@@ -11,20 +11,30 @@ const FAQDetailsPage = ({ faqValue, handleSubmitProduct, productId }) => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
+            <div className="card">
               <div className="card-body py-4">
-                <div>
-                  <div className="mb-3">
-                    <h2>{faqValue.question}</h2>
-                  </div>
+            <table
+                  className="table-border-padding w-100"
+                  //   style={{ border: " 1px solid gray" }}
+                >
+                  <tr className="table-border-padding">
+                    <th className="table-border-padding">Question</th>
+                    <td className="table-border-padding">
+                      {faqValue.question}
+                    </td>
+                  </tr>
 
-                  <span
-                    className="text-gray"
-                    dangerouslySetInnerHTML={{
-                      __html: faqValue.answer,
-                    }}
-                  ></span>
-                </div>
+                  <tr className="table-border-padding">
+                    <th className="table-border-padding">Answer</th>
+                    <td className="table-border-padding">
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: faqValue.answer,
+                        }}
+                      ></span>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
