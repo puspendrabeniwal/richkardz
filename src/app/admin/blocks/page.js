@@ -9,6 +9,8 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import { SplitButton } from "primereact/splitbutton";
 import { useRouter } from "next/navigation";
+import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
+import { confirmDialog } from "primereact/confirmdialog";
 import withAuth from "@/hoc/withAuth";
 import { Toast } from "primereact/toast";
 
@@ -158,7 +160,7 @@ const Blocks = () => {
     <>
       <Toast ref={toast} />
       {/* ==================================Search Fields=========================================== */}
-      <div className="d-flex flex-column flex-column-fluid" id="kt_content">
+      <div className="" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
           <div
             id="kt_toolbar_container"
@@ -327,6 +329,7 @@ const Blocks = () => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card p-4">
               <div className="card-body py-4">
+                <ConfirmDialog />
                 <DataTable
                   value={blockData}
                   paginator
@@ -352,12 +355,11 @@ const Blocks = () => {
                     style={{ cursor: "pointer" }}
                     sortable
                   ></Column>
-                  {/* <Column
-                  field="body"
-                  header="Description"
-                  style={{ cursor: "pointer" }}
-                  sortable
-                ></Column> */}
+                  <Column
+                    field="status"
+                    header="Status"
+                    body={statusBodyTemplate}
+                  ></Column>
                   <Column
                     field=""
                     header="Actions"
