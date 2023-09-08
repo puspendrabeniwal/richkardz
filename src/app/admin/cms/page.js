@@ -12,17 +12,17 @@ import { confirmDialog } from "primereact/confirmdialog";
 import instance from "../axiosInterceptor";
 import { useRouter } from "next/navigation";
 import { SplitButton } from "primereact/splitbutton";
+import { Toast } from "primereact/toast";
+import withAuth from "@/hoc/withAuth";
 const CMS = () => {
   const [cmsData, setCmsData] = useState([]);
   const op = useRef(null);
   let formData = new FormData();
+  const toast = useRef(null);
   useEffect(() => {
     getCmsAPI();
   }, []);
-  const removeFilter = () => {
-    formData = new FormData();
-    getCmsAPI();
-  };
+
   //  ==============get Block API Data ====================//
   const getCmsAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -51,9 +51,10 @@ const CMS = () => {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
+        style={{ cursor: "pointer" }}
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
-        onClick={() => confirm(rowData._id, rowData.status)}
+        onClick={() => confirm(rowData._id, rowData.status, "status")}
       ></Tag>
     );
   };
@@ -90,15 +91,14 @@ const CMS = () => {
       reject,
     });
   };
-
   const accept = (id, status) => {
     let newFormData = new FormData();
-    newFormData.append("product_id", id);
+    newFormData.append("id", id);
     newFormData.append("status", status);
     instance
-      .post("product_status", newFormData)
+      .post("cms/status", newFormData)
       .then((response) => {
-        getProducts();
+        getCmsAPI();
         let data = response ? response : {};
         toast.current.show({
           severity: "info",
@@ -111,7 +111,6 @@ const CMS = () => {
         console.log(error);
       });
   };
-
   const reject = () => {
     toast.current.show({
       severity: "warn",
@@ -156,6 +155,7 @@ const CMS = () => {
   };
   return (
     <>
+      <Toast ref={toast} />
       {/* ==================================Search Fields=========================================== */}
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
@@ -351,4 +351,4 @@ const CMS = () => {
   );
 };
 
-export default CMS;
+export default withAuth(CMS);

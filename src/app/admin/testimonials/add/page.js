@@ -4,6 +4,7 @@ import MonialsForm from "../../components/MonialsForm";
 import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import Link from "next/link";
+import withAuth from "@/hoc/withAuth";
 
 const AddMonials = () => {
   const toast = useRef(null);
@@ -92,4 +93,4 @@ const AddMonials = () => {
   );
 };
 
-export default AddMonials;
+export default withAuth(AddMonials);

@@ -1,6 +1,7 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
 import CmsForm from "@/app/admin/components/CmsForm";
+import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
@@ -130,4 +131,4 @@ const UpdateCms = ({ params }) => {
   );
 };
 
-export default UpdateCms;
+export default withAuth(UpdateCms);

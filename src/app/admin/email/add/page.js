@@ -4,6 +4,7 @@ import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import Link from "next/link";
 import EmailTempForm from "../../components/EmailTempForm";
+import withAuth from "@/hoc/withAuth";
 
 const ViewEmail = () => {
   const toast = useRef(null);
@@ -92,4 +93,4 @@ const ViewEmail = () => {
   );
 };
 
-export default ViewEmail;
+export default withAuth(ViewEmail);

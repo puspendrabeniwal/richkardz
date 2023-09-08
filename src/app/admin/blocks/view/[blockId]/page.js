@@ -4,6 +4,7 @@ import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import BlockDetailsPage from "@/app/admin/components/BlockDetailsPage";
+import withAuth from "@/hoc/withAuth";
 
 const ViewBlock = ({ params }) => {
   const toast = useRef(null);
@@ -129,4 +130,4 @@ const ViewBlock = ({ params }) => {
   );
 };
 
-export default ViewBlock;
+export default withAuth(ViewBlock);
