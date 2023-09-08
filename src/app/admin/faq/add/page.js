@@ -4,6 +4,7 @@ import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import Link from "next/link";
 import FaqForm from "../../components/FAQForm";
+import withAuth from "@/hoc/withAuth";
 
 const AddFAQ = () => {
   const toast = useRef(null);
@@ -88,4 +89,4 @@ const AddFAQ = () => {
   );
 };
 
-export default AddFAQ;
+export default withAuth(AddFAQ);

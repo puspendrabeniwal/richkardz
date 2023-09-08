@@ -1,6 +1,7 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
 import EmailTempForm from "@/app/admin/components/EmailTempForm";
+import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
@@ -124,4 +125,4 @@ const UpdateEmail = ({ params }) => {
   );
 };
 
-export default UpdateEmail;
+export default withAuth(UpdateEmail);

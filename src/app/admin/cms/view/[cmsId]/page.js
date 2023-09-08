@@ -4,7 +4,7 @@ import CMSDetailsPage from "@/app/admin/components/CMSDetailPage";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
-
+import withAuth from "@/hoc/withAuth";
 const ViewCms = ({ params }) => {
   const toast = useRef(null);
   const [cmsData, setCmsData] = useState(null);
@@ -130,4 +130,4 @@ const ViewCms = ({ params }) => {
   );
 };
 
-export default ViewCms;
+export default withAuth(ViewCms);

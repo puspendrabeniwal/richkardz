@@ -9,6 +9,7 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { Field, Form, Formik } from "formik";
 import { SplitButton } from "primereact/splitbutton";
 import { useRouter } from "next/navigation";
+import withAuth from "@/hoc/withAuth";
 
 const Blocks = () => {
   const [blockData, setBlockData] = useState([]);
@@ -44,6 +45,79 @@ const Blocks = () => {
     formData.append("name", values?.name);
     formData.append("title", values?.title);
     getBlockAPI();
+  };
+
+  //  ============== Status Confirmation ====================//
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <Tag
+        style={{ cursor: "pointer" }}
+        value={getValue(rowData.status)}
+        severity={getSeverity(rowData.status)}
+        onClick={() => confirm(rowData._id, rowData.status, "status")}
+      ></Tag>
+    );
+  };
+  const getValue = (value) => {
+    switch (value) {
+      case 1:
+        return "Active";
+
+      case 0:
+        return "Inacitve";
+
+      default:
+        return null;
+    }
+  };
+  const getSeverity = (value) => {
+    switch (value) {
+      case 1:
+        return "success";
+
+      case 0:
+        return "warning";
+
+      default:
+        return null;
+    }
+  };
+  const confirm = (id, status) => {
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => accept(id, status),
+      reject,
+    });
+  };
+  const accept = (id, status) => {
+    let newFormData = new FormData();
+    newFormData.append("id", id);
+    newFormData.append("status", status);
+    instance
+      .post("blocks/status", newFormData)
+      .then((response) => {
+        getBlockAPI();
+        let data = response ? response : {};
+        toast.current.show({
+          severity: "info",
+          summary: "Confirmed",
+          detail: data.message,
+          life: 3000,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const reject = () => {
+    toast.current.show({
+      severity: "warn",
+      summary: "Rejected",
+      detail: "You have rejected",
+      life: 3000,
+    });
   };
   const router = useRouter();
   // ============Edit button for update form===========//
@@ -296,4 +370,4 @@ const Blocks = () => {
   );
 };
 
-export default Blocks;
+export default withAuth(Blocks);
