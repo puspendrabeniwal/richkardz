@@ -14,7 +14,7 @@ const EmailDetailsPage = ({ emailValue, handleSubmitProduct, productId }) => {
             <div className="card p-4">
               <div className="card-body py-4">
                 <table
-                  className="table-border-padding"
+                  className="table-border-padding w-100"
                   //   style={{ border: " 1px solid gray" }}
                 >
                   <tr className="table-border-padding">
