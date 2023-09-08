@@ -10,10 +10,12 @@ import { Field, Form, Formik } from "formik";
 import { SplitButton } from "primereact/splitbutton";
 import { useRouter } from "next/navigation";
 import withAuth from "@/hoc/withAuth";
+import { Toast } from "primereact/toast";
 
 const Blocks = () => {
   const [blockData, setBlockData] = useState([]);
   const op = useRef(null);
+  const toast = useRef(null);
   let formData = new FormData();
   useEffect(() => {
     getBlockAPI();
@@ -154,6 +156,7 @@ const Blocks = () => {
   };
   return (
     <>
+      <Toast ref={toast} />
       {/* ==================================Search Fields=========================================== */}
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
