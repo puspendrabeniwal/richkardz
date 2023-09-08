@@ -53,6 +53,7 @@ export const Testimonials = () => {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
+        style={{cursor:"pointer"}}
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
         onClick={() => confirm(rowData._id, rowData.status)}
