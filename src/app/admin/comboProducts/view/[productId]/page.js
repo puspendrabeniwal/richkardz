@@ -19,14 +19,17 @@ const UpdateProduct = ({ params }) => {
       .get(`combo-products/get-product/${comboType}`)
       .then((response) => {
         let data = response.result ? response.result : {};
-        const ndt = data.filter((item) => {
-          const productObj = prodIds.find((val) => val == item._id);
-          if (productObj) {
-            return productObj.product_name;
-          }
-        });
-        console.log("prduct names", ndt);
-        setCardsList(ndt);
+        if (prodIds && prodIds.length > 0) {
+          const prodIdsJoin = prodIds.split(",");
+          const ndt = data.filter((val) => {
+            const prodObj = prodIdsJoin.find((item) => val._id === item);
+            if (prodObj) {
+              return true;
+            }
+          });
+          const productArray = ndt.map((product) => product.product_name);
+          setCardsList(productArray);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -167,8 +170,9 @@ const UpdateProduct = ({ params }) => {
                     <tr className="table-border-padding">
                       <th className="table-border-padding">Choose Product</th>
                       <td className="table-border-padding">
-                        {cardsList.length > 0 && cardsList.join(", ")}
-                        {/* {productData.product_ids} */}
+                        <span className={`badge badge-light me-auto`}>
+                          {cardsList.length > 0 && cardsList.join(", ")}
+                        </span>
                       </td>
                     </tr>
                     <tr className="table-border-padding">
