@@ -20,6 +20,20 @@ const Sidebar = () => {
       }
     },
     {
+      label: 'User Management',
+      icon: 'pi pi-fw pi-user',
+      command: () => {
+        router.push(`/admin/user`)
+      }
+    },
+    {
+      label: ' Bulk Orders',
+      icon: 'pi pi-fw pi-shield',
+      command: () => {
+        router.push(`/admin/bulk-orders`)
+      }
+    },
+    {
       label: 'Product Management',
       icon: 'pi pi-fw pi-shopping-bag',
       command: () => {
