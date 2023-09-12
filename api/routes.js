@@ -50,6 +50,7 @@ module.exports = {
 		require(WEBSITE_MODULES_PATH+"block/routes");
 		require(WEBSITE_MODULES_PATH+"testimonials/routes");
 		require(WEBSITE_MODULES_PATH+"products/routes");
+		require(WEBSITE_MODULES_PATH+"bulk_orders/routes");
 		
 	}
 };

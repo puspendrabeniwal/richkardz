@@ -27,7 +27,7 @@ const AddMonials = () => {
     });
   };
   return (
-    <>
+    <main>
       <Toast ref={toast} />
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
@@ -89,7 +89,7 @@ const AddMonials = () => {
         handleSubmitMonial={addMonialAPI}
         MonialId={null}
       />
-    </>
+    </main>
   );
 };
 

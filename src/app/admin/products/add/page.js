@@ -50,7 +50,7 @@ const AddProduct = () => {
                             <li className="breadcrumb-item">
                                 <span className="bullet bg-gray-300 w-5px h-2px"></span>
                             </li>
-                            <li class="breadcrumb-item text-mute">Add</li>
+                            <li className="breadcrumb-item text-mute">Add</li>
                         </ul>
                     </div>
 

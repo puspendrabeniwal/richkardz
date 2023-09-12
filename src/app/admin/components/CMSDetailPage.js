@@ -1,19 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-
 const CMSDetailsPage = ({ cmsValue, handleSubmitProduct, productId }) => {
-  console.log(cmsValue);
   return (
-    <>
+    <main>
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <div className="card-body py-4">
+            <div className="card">
+              <div className="card-body py-9">
                 <table
                   className="table-border-padding w-100"
                   //   style={{ border: " 1px solid gray" }}
@@ -42,7 +39,7 @@ const CMSDetailsPage = ({ cmsValue, handleSubmitProduct, productId }) => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

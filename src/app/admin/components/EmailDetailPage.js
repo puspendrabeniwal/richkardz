@@ -4,15 +4,15 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const EmailDetailsPage = ({ emailValue, handleSubmitProduct, productId }) => {
   return (
-    <>
+    <main>
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <div className="card-body py-4">
+            <div className="card">
+              <div className="card-body py-9">
                 <table
                   className="table-border-padding w-100"
                   //   style={{ border: " 1px solid gray" }}
@@ -38,7 +38,7 @@ const EmailDetailsPage = ({ emailValue, handleSubmitProduct, productId }) => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

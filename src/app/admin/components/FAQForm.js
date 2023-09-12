@@ -28,90 +28,92 @@ const FaqForm = ({ faqValue, handleSubmitFaq, faqId }) => {
     setSubmitting(false);
   };
   return (
-    <>
+    <main>
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <Formik
-                initialValues={defaultValues}
-                validationSchema={validationSchema}
-                // onSubmit={async (values) => await onSubmit(values)}
-                onSubmit={onSubmit}
-              >
-                {({ isSubmitting, setFieldValue, values }) => (
-                  <Form className="form-design">
-                    <div className="row mb-3">
-                      <div className="col-lg-12 col-md-12">
+            <div className="card">
+              <div className="card-body py-9">
+                <Formik
+                  initialValues={defaultValues}
+                  validationSchema={validationSchema}
+                  // onSubmit={async (values) => await onSubmit(values)}
+                  onSubmit={onSubmit}
+                >
+                  {({ isSubmitting, setFieldValue, values }) => (
+                    <Form className="form-design">
+                      <div className="row mb-3">
+                        <div className="col-lg-12 col-md-12">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatingname"
+                          >
+                            Question
+                          </label>
+
+                          <Field
+                            type="text"
+                            name="question"
+                            className="form-control"
+                            id="floatingname"
+                          />
+
+                          <ErrorMessage
+                            name="question"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+                      </div>
+                      <div className="row mb-3">
                         <label
                           className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingname"
+                          htmlFor="floatingDesc"
                         >
-                          Question
+                          Answer
                         </label>
-
-                        <Field
-                          type="text"
-                          name="question"
-                          className="form-control"
-                          id="floatingname"
-                        />
-
+                        <div className=" billingForm">
+                          <Editor
+                            style={{ height: "320px" }}
+                            id="answer"
+                            name="answer"
+                            value={values.answer}
+                            filter={false}
+                            onTextChange={(e) => {
+                              setFieldValue("answer", e.htmlValue);
+                            }}
+                          />
+                        </div>
                         <ErrorMessage
-                          name="question"
+                          name="answer"
                           component="div"
                           className="text-danger"
                         />
                       </div>
-                    </div>
-                    <div className="row mb-3">
-                      <label
-                        className="col-form-label required fw-semibold fs-6"
-                        htmlFor="floatingDesc"
-                      >
-                        Answer
-                      </label>
-                      <div className=" billingForm">
-                        <Editor
-                          style={{ height: "320px" }}
-                          id="answer"
-                          name="answer"
-                          value={values.answer}
-                          filter={false}
-                          onTextChange={(e) => {
-                            setFieldValue("answer", e.htmlValue);
-                          }}
-                        />
-                      </div>
-                      <ErrorMessage
-                        name="answer"
-                        component="div"
-                        className="text-danger"
-                      />
-                    </div>
 
-                    <div>
-                      <button
-                        type="submit"
-                        className="btn btn btn-success me-3"
-                        data-kt-menu-trigger="click"
-                        data-kt-menu-placement="bottom-end"
-                        disabled={isSubmitting}
-                      >
-                        {faqId ? "Update" : "Add"}
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
+                      <div>
+                        <button
+                          type="submit"
+                          className="btn btn btn-success me-3"
+                          data-kt-menu-trigger="click"
+                          data-kt-menu-placement="bottom-end"
+                          disabled={isSubmitting}
+                        >
+                          {faqId ? "Update" : "Add"}
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

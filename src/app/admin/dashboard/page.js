@@ -1,10 +1,8 @@
 'use client'
 import withAuth from "@/hoc/withAuth";
-export const  Dashboard = ()=> {
-
+const  Dashboard = ()=> {
   return (
-	  <>
-
+	  <main>
       <div className="d-flex flex-column flex-column-fluid mb-10" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
             <div id="kt_toolbar_container" className="container-fluid d-flex flex-stack">
@@ -247,7 +245,7 @@ export const  Dashboard = ()=> {
           </div>
         </div>
       </div>
-    </>
+    </main>
   )
 }
 

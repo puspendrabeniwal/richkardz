@@ -41,147 +41,149 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
     await handleSubmitMonial(formData);
   };
   return (
-    <>
+    <main>
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <Formik
-                initialValues={defaultValues}
-                validationSchema={validationSchema}
-                onSubmit={async (values, { resetForm }) => {
-                  await onSubmit(values);
-                  resetForm();
-                }}
-              >
-                {({ isSubmitting, setFieldValue, values }) => (
-                  <Form className="form-design">
-                    <div className="row mb-3">
-                      <div className="col-lg-6 col-md-6">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingname"
-                        >
-                          Name
-                        </label>
+            <div className="card">
+              <div className="card-body py-9">
+                <Formik
+                  initialValues={defaultValues}
+                  validationSchema={validationSchema}
+                  onSubmit={async (values, { resetForm }) => {
+                    await onSubmit(values);
+                    resetForm();
+                  }}
+                >
+                  {({ isSubmitting, setFieldValue, values }) => (
+                    <Form className="form-design">
+                      <div className="row mb-3">
+                        <div className="col-lg-6 col-md-6">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatingname"
+                          >
+                            Name
+                          </label>
 
-                        <Field
-                          type="text"
-                          name="name"
-                          className="form-control"
-                          id="floatingname"
-                        />
-
-                        <ErrorMessage
-                          name="name"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-
-                      <div className="col-lg-6 col-md-6">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingrating"
-                        >
-                          Rating
-                        </label>
-                        <div className=" billingForm">
                           <Field
                             type="text"
+                            name="name"
+                            className="form-control"
+                            id="floatingname"
+                          />
+
+                          <ErrorMessage
+                            name="name"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+
+                        <div className="col-lg-6 col-md-6">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatingrating"
+                          >
+                            Rating
+                          </label>
+                          <div className=" billingForm">
+                            <Field
+                              type="text"
+                              name="rating"
+                              className="form-control"
+                              id="floatingrating"
+                            />
+                          </div>
+                          <ErrorMessage
                             name="rating"
-                            className="form-control"
-                            id="floatingrating"
+                            component="div"
+                            className="text-danger"
                           />
                         </div>
-                        <ErrorMessage
-                          name="rating"
-                          component="div"
-                          className="text-danger"
-                        />
                       </div>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-lg-12 col-md-12">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatinDescription"
-                        >
-                          Description
-                        </label>
+                      <div className="row mb-3">
+                        <div className="col-lg-12 col-md-12">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatinDescription"
+                          >
+                            Description
+                          </label>
 
-                        <div className=" billingForm">
-                          <Editor
-                            style={{ height: "320px" }}
-                            id="descripiton"
+                          <div className=" billingForm">
+                            <Editor
+                              style={{ height: "320px" }}
+                              id="descripiton"
+                              name="descripiton"
+                              filter={false}
+                              value={values.descripiton}
+                              onTextChange={(e) => {
+                                setFieldValue("descripiton", e.htmlValue);
+                              }}
+                            />
+                          </div>
+                          <ErrorMessage
                             name="descripiton"
-                            filter={false}
-                            value={values.descripiton}
-                            onTextChange={(e) => {
-                              setFieldValue("descripiton", e.htmlValue);
-                            }}
+                            component="div"
+                            className="text-danger"
                           />
                         </div>
-                        <ErrorMessage
-                          name="descripiton"
-                          component="div"
-                          className="text-danger"
-                        />
                       </div>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-lg-12 col-md-12">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingUpload"
-                        >
-                          Image Upload
-                        </label>
-                        <div className=" billingForm">
-                          <Field
-                            type="file"
+                      <div className="row mb-3">
+                        <div className="col-lg-12 col-md-12">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatingUpload"
+                          >
+                            Image Upload
+                          </label>
+                          <div className=" billingForm">
+                            <Field
+                              type="file"
+                              name="image"
+                              // multiple
+                              accept="image/*"
+                              className="form-control"
+                              id="floatingUpload"
+                              value={undefined}
+                              onChange={(event) => {
+                                const files = event.currentTarget.files[0];
+                                setFieldValue("image", files);
+                              }}
+                            />
+                          </div>
+                          <ErrorMessage
                             name="image"
-                            // multiple
-                            accept="image/*"
-                            className="form-control"
-                            id="floatingUpload"
-                            value={undefined}
-                            onChange={(event) => {
-                              const files = event.currentTarget.files[0];
-                              setFieldValue("image", files);
-                            }}
+                            component="div"
+                            className="text-danger"
                           />
                         </div>
-                        <ErrorMessage
-                          name="image"
-                          component="div"
-                          className="text-danger"
-                        />
                       </div>
-                    </div>
 
-                    <div>
-                      <button
-                        type="submit"
-                        className="btn btn btn-success me-3"
-                        data-kt-menu-trigger="click"
-                        data-kt-menu-placement="bottom-end"
-                        disabled={isSubmitting}
-                      >
-                        {MonialId ? "Update" : "Add"}
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
+                      <div>
+                        <button
+                          type="submit"
+                          className="btn btn btn-success me-3"
+                          data-kt-menu-trigger="click"
+                          data-kt-menu-placement="bottom-end"
+                          disabled={isSubmitting}
+                        >
+                          {MonialId ? "Update" : "Add"}
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

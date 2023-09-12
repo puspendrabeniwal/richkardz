@@ -1,162 +1,78 @@
 "use client";
 import Link from "next/link";
-import { Column } from "primereact/column";
+import { useRouter, usePathname } from 'next/navigation'
 import { DataTable } from "primereact/datatable";
-import { Tag } from "primereact/tag";
-import { Tooltip } from "primereact/tooltip";
+import { Column } from "primereact/column";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { Field, Form, Formik } from "formik";
-import { useEffect, useRef, useState } from "react";
-import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
-import { confirmDialog } from "primereact/confirmdialog";
-import instance from "../axiosInterceptor";
-import { useRouter } from "next/navigation";
-import { SplitButton } from "primereact/splitbutton";
-import { Toast } from "primereact/toast";
-import withAuth from "@/hoc/withAuth";
-const CMS = () => {
-  const [cmsData, setCmsData] = useState([]);
-  const op = useRef(null);
-  let formData = new FormData();
-  const toast = useRef(null);
-  useEffect(() => {
-    getCmsAPI();
-  }, []);
+import { SplitButton } from 'primereact/splitbutton';
+import React, { useEffect, useState, useRef } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
-  //  ==============get Block API Data ====================//
-  const getCmsAPI = async () => {
+
+import instance from "../axiosInterceptor";
+import withAuth from "@/hoc/withAuth";
+
+
+const BulkOrders = () => {
+  const router  = useRouter();
+  const [list, setList] = useState([]);
+  const filterOption = useRef(null);
+  let formData = new FormData(); //formdata object
+
+
+  const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+
     formData.append("user_id", loginUser?._id);
     formData.append("skip", 10); //append the values with key, value pair
     formData.append("limit", 10); //append the values with key, value pair
 
-    try {
-      const response = await instance.post(`cms`, formData);
-      const newData = response.result;
-      setCmsData(newData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  //  ==============on Submit for Search Fields====================//
-  const onSubmit = async (values) => {
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("title", values?.title);
-    getCmsAPI();
-  };
-
-  //  ============== Status Confirmation ====================//
-  const statusBodyTemplate = (rowData) => {
-    return (
-      <Tag
-        style={{ cursor: "pointer" }}
-        value={getValue(rowData.status)}
-        severity={getSeverity(rowData.status)}
-        onClick={() => confirm(rowData._id, rowData.status, "status")}
-      ></Tag>
-    );
-  };
-  const getValue = (value) => {
-    switch (value) {
-      case 1:
-        return "Active";
-
-      case 0:
-        return "Inacitve";
-
-      default:
-        return null;
-    }
-  };
-  const getSeverity = (value) => {
-    switch (value) {
-      case 1:
-        return "success";
-
-      case 0:
-        return "warning";
-
-      default:
-        return null;
-    }
-  };
-  const confirm = (id, status) => {
-    confirmDialog({
-      message: "Are you sure you want to proceed?",
-      header: "Confirmation",
-      icon: "pi pi-exclamation-triangle",
-      accept: () => accept(id, status),
-      reject,
-    });
-  };
-  const accept = (id, status) => {
-    let newFormData = new FormData();
-    newFormData.append("id", id);
-    newFormData.append("status", status);
     instance
-      .post("cms/status", newFormData)
+      .post("bulk_orders", formData)
       .then((response) => {
-        getCmsAPI();
-        let data = response ? response : {};
-        toast.current.show({
-          severity: "info",
-          summary: "Confirmed",
-          detail: data.message,
-          life: 3000,
-        });
+        let data = response.result ? response.result : {};
+        setList(data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  const reject = () => {
-    toast.current.show({
-      severity: "warn",
-      summary: "Rejected",
-      detail: "You have rejected",
-      life: 3000,
-    });
-  };
 
-  const router = useRouter();
-  // ============Edit button for update form===========//
-  const getActionButton = (rowData) => {
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const UpdateButtonLink = (rowData) => {
     const items = [
       {
-        label: "Edit",
-        icon: "pi pi-refresh",
-        command: () => {
-          router.push(`/admin/cms/edit/${rowData._id}`);
-        },
+          label: 'View',
+          icon: 'pi pi-times',
+          command: () => {
+            router.push(`/admin/bulk-orders/view/${rowData._id}`)
+          }
       },
-      {
-        label: "View",
-        icon: "pi pi-times",
-        command: () => {
-          router.push(`/admin/cms/view/${rowData._id}`);
-        },
-      },
+
     ];
     return (
       <>
-        <SplitButton
-          label="Action"
-          icon="pi pi-plus"
-          small
-          raised
-          text
-          severity="secondary"
-          model={items}
-        />
+        <SplitButton label="Action" icon="pi pi-plus" small raised text severity="secondary" model={items}/>
       </>
     );
   };
+
+  const onSubmit = async (values) => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    formData.append("user_id", loginUser._id);
+    formData.append("name", values?.name);
+    formData.append("email", values?.email);
+    formData.append("phone_number", values?.phone_number);
+    formData.append("no_of_card_you_want", values?.no_of_card_you_want);
+    formData.append("company_name", values?.company_name);
+    getList();
+  };
+
   return (
-    <>
-      <Toast ref={toast} />
-      {/* ==================================Search Fields=========================================== */}
+    <main>
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
           <div
@@ -170,7 +86,7 @@ const CMS = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                CMS List
+                Bulk Orders
               </h1>
               <span className="h-20px border-gray-300 border-start mx-4"></span>
               <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
@@ -185,14 +101,15 @@ const CMS = () => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li class="breadcrumb-item text-mute">CMS</li>
+                <li className="breadcrumb-item text-mute">
+                  Bulk Orders
+                </li>
               </ul>
             </div>
-
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0">
                 <button
-                  onClick={(e) => op.current.toggle(e)}
+                  onClick={(e) => filterOption.current.toggle(e)}
                   aria-haspopup
                   aria-controls="overlay_panel"
                   className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
@@ -214,7 +131,7 @@ const CMS = () => {
                   Filter
                 </button>
                 <OverlayPanel
-                  ref={op}
+                  ref={filterOption}
                   showCloseIcon
                   id="overlay_panel"
                   style={{ width: "450px" }}
@@ -229,26 +146,84 @@ const CMS = () => {
                   <Formik
                     initialValues={{
                       name: "",
+                      email: "",
+                      phone_number: "",
+                      no_of_card_you_want: "",
+                      company_name: "",
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
                     {({ setFieldValue, resetForm }) => (
                       <Form className="form-design">
                         <div className="row ">
-                          <div className="col-lg-12 col-md-12">
+                          <div className="col-lg-6 col-md-6">
                             <div className="mb-10">
-                              <label className="form-label fw-bold">Name</label>
+                              <label className="form-label fw-bold">
+                                 Name
+                              </label>
                               <div>
                                 <Field
                                   type="text"
-                                  name="title"
+                                  name="name"
+                                  className="form-control"
+                                ></Field>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-lg-6 col-md-6 mb-10">
+                            <div className="">
+                              <label className="form-label fw-bold">
+                                Email
+                              </label>
+                              <div>
+                                <Field
+                                  type="text"
+                                  name="email"
                                   className="form-control"
                                 ></Field>
                               </div>
                             </div>
                           </div>
                         </div>
-                        {/* <div className="separator border-gray-200 mb-10"></div> */}
+                        <div className="row mb-10">
+                          <div className="col-lg-6 col-md-6">
+                            <div className="">
+                              <label className="form-label fw-bold">
+                                Phone Number
+                              </label>
+                              <div>
+                                <Field
+                                  type="text"
+                                  name="phone_number"
+                                  className="form-control"
+                                ></Field>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-lg-6 col-md-6">
+                            <label className="form-label fw-bold">
+                              No of card
+                            </label>
+                            <Field
+                              type="text"
+                              name="no_of_card_you_want"
+                              className="form-control"
+                            ></Field>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-lg-6 col-md-6">
+                            <label className="form-label fw-bold">
+                              Company Name
+                            </label>
+                            <Field
+                              type="text"
+                              name="company_name"
+                              className="form-control"
+                            ></Field>
+                          </div>
+                        </div>
+                        <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
                             <button
@@ -269,8 +244,8 @@ const CMS = () => {
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
-                                await getCmsAPI();
-                                op.current.toggle(e);
+                                await getProducts();
+                                //op.current.toggle(e);
                               }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
@@ -284,19 +259,11 @@ const CMS = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/cms/add" className="btn btn-sm btn-success">
-                Add CMS
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
-              </Link>
             </div>
           </div>
         </div>
       </div>
-      {/*  ============================================Table Work=================================== */}
+
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
@@ -305,13 +272,11 @@ const CMS = () => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card">
               <div className="card-body py-9">
-                <ConfirmDialog />
                 <DataTable
-                  value={cmsData}
-                  rows={10}
-                  stripedRows
+                  value={list}
                   paginator
                   showGridlines
+                  rows={10}
                   totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
@@ -319,27 +284,24 @@ const CMS = () => {
                     header="#"
                     body={(data, props) => props.rowIndex + 1}
                   ></Column>
+                  <Column field="name" sortable header="Name"></Column>
+                  <Column field="email" sortable header="Email"></Column>
+                  <Column field="phone_number" sortable header="Phone Number"></Column>
                   <Column
-                    header="Type"
-                    field="type"
+                    field="no_of_card_you_want"
                     sortable
-                    style={{ cursor: "pointer" }}
+                    header="No of card"
                   ></Column>
                   <Column
-                    header="Title"
-                    field="title"
+                    field="company_name"
                     sortable
-                    style={{ cursor: "pointer" }}
-                  ></Column>
-                  <Column
-                    field="status"
-                    header="Status"
-                    body={statusBodyTemplate}
+                    header="Company Name"
                   ></Column>
                   <Column
                     field=""
-                    header="Actions"
-                    body={getActionButton}
+                    header="Action"
+                    style={{ width: "130px" }}
+                    body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
               </div>
@@ -347,8 +309,8 @@ const CMS = () => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 
-export default withAuth(CMS);
+export default withAuth(BulkOrders);

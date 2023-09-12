@@ -151,9 +151,10 @@ p {
 }
 
 .table-border-padding {
-  border: 1px solid gray;
-  padding: 10px;
+  border: 1px solid gray !important;
+  padding: 10px !important;
 }
+
 abbr[data-bs-original-title],
 abbr[title] {
   text-decoration: underline dotted;

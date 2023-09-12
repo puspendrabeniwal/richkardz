@@ -28,117 +28,119 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
     await handleSubmitBlock(values);
   };
   return (
-    <>
+    <main>
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <Formik
-                initialValues={defaultValues}
-                validationSchema={validationSchema}
-                onSubmit={async (values, { resetForm }) => {
-                  await onSubmit(values);
-                  resetForm();
-                }}
-              >
-                {({ isSubmitting, setFieldValue, values }) => (
-                  <Form className="form-design">
-                    <div className="row mb-3">
-                      <div className="col-lg-6 col-md-6">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingname"
-                        >
-                          Block Name
-                        </label>
+            <div className="card">
+              <div className="card-body py-9">
+                <Formik
+                  initialValues={defaultValues}
+                  validationSchema={validationSchema}
+                  onSubmit={async (values, { resetForm }) => {
+                    await onSubmit(values);
+                    resetForm();
+                  }}
+                >
+                  {({ isSubmitting, setFieldValue, values }) => (
+                    <Form className="form-design">
+                      <div className="row mb-3">
+                        <div className="col-lg-6 col-md-6">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatingname"
+                          >
+                            Block Name
+                          </label>
 
-                        <Field
-                          type="text"
-                          name="blockName"
-                          className="form-control"
-                          id="floatingname"
-                        />
-
-                        <ErrorMessage
-                          name="blockName"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                      <div className="col-lg-6 col-md-6">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingTitle"
-                        >
-                          Title
-                        </label>
-                        <div className=" billingForm">
                           <Field
                             type="text"
-                            name="title"
+                            name="blockName"
                             className="form-control"
-                            id="floatingTitle"
+                            id="floatingname"
+                          />
+
+                          <ErrorMessage
+                            name="blockName"
+                            component="div"
+                            className="text-danger"
                           />
                         </div>
-                        <ErrorMessage
-                          name="title"
-                          component="div"
-                          className="text-danger"
-                        />
+                        <div className="col-lg-6 col-md-6">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatingTitle"
+                          >
+                            Title
+                          </label>
+                          <div className=" billingForm">
+                            <Field
+                              type="text"
+                              name="title"
+                              className="form-control"
+                              id="floatingTitle"
+                            />
+                          </div>
+                          <ErrorMessage
+                            name="title"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="row mb-3">
-                      <div className="col-lg-12 col-md-12">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatinDescription"
-                        >
-                          Description
-                        </label>
+                      <div className="row mb-3">
+                        <div className="col-lg-12 col-md-12">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatinDescription"
+                          >
+                            Description
+                          </label>
 
-                        <div className=" billingForm">
-                          <Editor
-                            style={{ height: "320px" }}
-                            id="description"
+                          <div className=" billingForm">
+                            <Editor
+                              style={{ height: "320px" }}
+                              id="description"
+                              name="description"
+                              filter={false}
+                              value={values.description}
+                              onTextChange={(e) => {
+                                setFieldValue("description", e.htmlValue);
+                              }}
+                            />
+                          </div>
+                          <ErrorMessage
                             name="description"
-                            filter={false}
-                            value={values.description}
-                            onTextChange={(e) => {
-                              setFieldValue("description", e.htmlValue);
-                            }}
+                            component="div"
+                            className="text-danger"
                           />
                         </div>
-                        <ErrorMessage
-                          name="description"
-                          component="div"
-                          className="text-danger"
-                        />
                       </div>
-                    </div>
 
-                    <div>
-                      <button
-                        type="submit"
-                        className="btn btn btn-success me-3"
-                        data-kt-menu-trigger="click"
-                        data-kt-menu-placement="bottom-end"
-                        disabled={isSubmitting}
-                      >
-                        {blockId ? "Update" : "Add"}
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
+                      <div>
+                        <button
+                          type="submit"
+                          className="btn btn btn-success me-3"
+                          data-kt-menu-trigger="click"
+                          data-kt-menu-placement="bottom-end"
+                          disabled={isSubmitting}
+                        >
+                          {blockId ? "Update" : "Add"}
+                        </button>
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

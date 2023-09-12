@@ -68,6 +68,7 @@ const  UserProfile = ()=> {
         formData.append("full_name", values.full_name);
         formData.append("email", values.email);
         formData.append("image", values.image);
+        console.log(values.image)
         instance.post("updateUserProfile", formData)
         .then(response => {
             showMessage(response);
@@ -79,7 +80,7 @@ const  UserProfile = ()=> {
         });
     };
   return (
-    <>
+    <main>
         <Toast ref={toast} />
         <div className="d-flex flex-column flex-column-fluid" id="kt_content">
             <div className="toolbar" id="kt_toolbar">
@@ -105,71 +106,73 @@ const  UserProfile = ()=> {
         <div className="content d-flex  flex-column-fluid">
             <div className="d-flex flex-column-fluid" id="kt_post">
                 <div className="container-xxl">
-                    <div className="card" >
-                        <Formik
-                            enableReinitialize={true}
-                            initialValues={initialValues}
-                            validationSchema={validationSchema}
-                            onSubmit={onSubmit}
-                        >                               
-                            {({ setFieldValue }) => (
-                                <Form >
-                                    <div className="card-body border-top p-9">
-                                        <div className="row mb-6">
-                                            <label className="col-lg-4 col-form-label fw-semibold fs-6">Image</label>   
-                                            <FileUpload 
-                                                name="image" 
-                                                accept="image/*" 
-                                                auto
-                                                customUpload
-                                                maxFileSize={1000000}
-                                                onSelect={(event) => {
-                                                    const files = event.files[0];
-                                                    setFieldValue("image", files);
-                                                    }}
-                                                emptyTemplate={
-                                                <Image src={userDetail?.full_image_path} height="70px" width="100px" alt="Image" />
-                                            } 
-                                            />
-                                        </div>
+                    <div className="card">
+                        <div className="card-body py-9">
+                            <Formik
+                                enableReinitialize={true}
+                                initialValues={initialValues}
+                                validationSchema={validationSchema}
+                                onSubmit={onSubmit}
+                            >                               
+                                {({ setFieldValue }) => (
+                                    <Form >
+                                        <div className="card-body border-top p-9">
+                                            <div className="row mb-6">
+                                                <label className="col-lg-4 col-form-label fw-semibold fs-6">Image</label>   
+                                                <FileUpload 
+                                                    name="image" 
+                                                    accept="image/*" 
+                                                    auto
+                                                    customUpload
+                                                    maxFileSize={1000000}
+                                                    onSelect={(event) => {
+                                                        const files = event.files[0];
+                                                        setFieldValue("image", files);
+                                                        }}
+                                                    emptyTemplate={
+                                                    <Image src={userDetail?.full_image_path} height="70px" width="100px" alt="Image" />
+                                                } 
+                                                />
+                                            </div>
 
-                                        <div className="row mb-6">
-                                            <label className="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
-                                            <div className="col-lg-8 fv-row">
-                                                <Field  
-                                                    type="text" 
-                                                    name="full_name" 
-                                                    className="form-control form-control-lg form-control-solid" 
-                                                    placeholder="Full Name" 
-                                                />
-                                                <ErrorMessage name="full_name" className="errorMessage" component="div" />
+                                            <div className="row mb-6">
+                                                <label className="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
+                                                <div className="col-lg-8 fv-row">
+                                                    <Field  
+                                                        type="text" 
+                                                        name="full_name" 
+                                                        className="form-control form-control-lg form-control-solid" 
+                                                        placeholder="Full Name" 
+                                                    />
+                                                    <ErrorMessage name="full_name" className="errorMessage" component="div" />
+                                                </div>
+                                            </div>
+                                            <div className="row mb-6">
+                                                <label className="col-lg-4 col-form-label required fw-semibold fs-6">Email</label>
+                                                <div className="col-lg-8 fv-row">
+                                                    <Field  
+                                                        type="text" 
+                                                        name="email" 
+                                                        className="form-control form-control-lg form-control-solid" 
+                                                        placeholder="Email Address" 
+                                                    />
+                                                    <ErrorMessage name="email" className="errorMessage" component="div" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="row mb-6">
-                                            <label className="col-lg-4 col-form-label required fw-semibold fs-6">Email</label>
-                                            <div className="col-lg-8 fv-row">
-                                                <Field  
-                                                    type="text" 
-                                                    name="email" 
-                                                    className="form-control form-control-lg form-control-solid" 
-                                                    placeholder="Email Address" 
-                                                />
-                                                <ErrorMessage name="email" className="errorMessage" component="div" />
-                                            </div>
+                                        <div className="card-footer d-flex justify-content-end py-6 px-9">
+                                            <button type="reset" className="btn btn-warning me-2">Discard</button>
+                                            <button type="submit" className="btn btn-info">Save Changes</button>
                                         </div>
-                                    </div>
-                                    <div className="card-footer d-flex justify-content-end py-6 px-9">
-                                        <button type="reset" className="btn btn-warning me-2">Discard</button>
-                                        <button type="submit" className="btn btn-info">Save Changes</button>
-                                    </div>
-                                </Form>
-                            )}
-                        </Formik>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>                                           
-    </>
+    </main>
   )
 }
 

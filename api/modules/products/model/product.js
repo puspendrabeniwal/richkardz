@@ -75,23 +75,6 @@ function Products() {
    * @return render/json
    */
   this.addProduct = (req, res) => {
-<<<<<<< HEAD
-
-    }
-
-    /**
-     * Function for edit product
-     *
-     * @param req   As  Request Data
-     * @param res   As  Response Data
-     * @param next  As  Callback argument to the middleware function
-     *
-     * @return render/json
-     */
-    this.editProduct = (req, res)=>{
-
-    };
-=======
     if (isPost(req)) {
       let collection = db.collection("products");
       /** Sanitize Data */
@@ -206,106 +189,7 @@ function Products() {
       });
     }
   };
->>>>>>> f6cd78e9352d4edd25140c627e9ce37a2e392ff1
-  this.addProductBack = (req, res) => {
 
-<<<<<<< HEAD
-    } 
-
-    	/**
-	 * Function for update product status
-	 *
-	 * @param req 	As 	Request Data
-     * @param res 	As 	Response Data
-     * @param next 	As 	Callback argument to the middleware function
-	 *
-	 * @return render/json
-	 */
-	this.updateProductStatus = (req,res)=>{
-
-	};// end updateProductStatus()
-=======
-      if (!req.files || !req.files.image) {
-        if (!errors) errors = [];
-        errors.push({
-          param: "image",
-          msg: res.__("Please select product image"),
-        });
-      }
-      if (errors) {
-        /** Send error response */
-        return res.send({
-          status: STATUS_ERROR,
-          message: errors,
-        });
-      }
-      let productImage = req.files && req.files.image ? req.files.image : {};
-      let imageOptions = {
-        image: productImage,
-        filePath: PRODUCT_FILE_PATH,
-      };
-
-      /** Upload testimonials image **/
-      moveUploadedFile(req, res, imageOptions)
-        .then((imageResponse) => {
-          if (imageResponse.status == STATUS_ERROR) {
-            /** Send error response **/
-            return res.send({
-              status: STATUS_ERROR,
-              message: [{ param: "image", msg: imageResponse.message }],
-            });
-          }
-
-          collection.insertOne(
-            {
-              /** add all product fields */
-              product_name: req.body.product_name ? req.body.product_name : "",
-              price: req.body.price ? req.body.price : "",
-              discount: req.body.discount ? req.body.discount : "",
-              profession: req.body.profession ? req.body.profession : "",
-              card_type: req.body.card_type ? req.body.card_type : "",
-              product_desc: req.body.product_desc ? req.body.product_desc : "",
-              status: ACTIVE,
-              is_feature: req.body.is_feature ? Number(req.body.is_feature) : 0,
-              is_new_release: req.body.is_new_release
-                ? Number(req.body.is_new_release)
-                : 0,
-              product_image: imageResponse.fileName
-                ? imageResponse.fileName
-                : "",
-              created_at: getUtcDate(),
-              updated_at: getUtcDate(),
-              // is_deleted : NOT_DELETED
-            },
-            (err, result) => {
-              if (!err) {
-                return res.send({
-                  status: API_STATUS_SUCCESS,
-                  message: "Product has been added successfully",
-                  error: [],
-                  result: {},
-                });
-              } else {
-                return res.send({
-                  status: API_STATUS_ERROR,
-                  message: res.__("front.system.something_went_wrong"),
-                  error: [],
-                  result: [],
-                });
-              }
-            }
-          );
-        })
-        .catch(next);
-    } else {
-      return res.send({
-        status: API_STATUS_ERROR,
-        message: "invalid request",
-        error: [],
-        result: [],
-      });
-    }
-  };
 
   /**
    * Function for edit product
@@ -442,6 +326,5 @@ function Products() {
       }
     );
   };
->>>>>>> f6cd78e9352d4edd25140c627e9ce37a2e392ff1
 }
 module.exports = new Products();

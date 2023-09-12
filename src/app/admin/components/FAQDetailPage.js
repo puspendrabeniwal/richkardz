@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const FAQDetailsPage = ({ faqValue, handleSubmitProduct, productId }) => {
   return (
-    <>
+    <main>
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
@@ -40,7 +40,7 @@ const FAQDetailsPage = ({ faqValue, handleSubmitProduct, productId }) => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

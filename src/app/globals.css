@@ -121,6 +121,15 @@ a {
 }
 
 .p-splitbutton{
-  height: 28px !important;
+  height: 30px !important;
  /* width: 100px !important; */
+}
+
+.table-border-padding {
+  border: 1px solid gray !important;
+  padding: 10px !important;
+}
+
+.cursor-pointer{
+  cursor: pointer !important;
 }

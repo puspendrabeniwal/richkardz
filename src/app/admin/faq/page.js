@@ -153,7 +153,7 @@ const FAQ = () => {
     );
   };
   return (
-    <>
+    <main>
       <Toast ref={toast} />
       {/* ==================================Search Fields=========================================== */}
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
@@ -299,8 +299,8 @@ const FAQ = () => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <div className="card-body py-4">
+            <div className="card">
+              <div className="card-body py-9">
                 <ConfirmDialog />
                 <DataTable
                   value={faqData}
@@ -349,7 +349,7 @@ const FAQ = () => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

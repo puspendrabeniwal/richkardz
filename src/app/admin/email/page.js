@@ -80,7 +80,7 @@ const EmailTemplate = () => {
     );
   };
   return (
-    <>
+    <main>
       {/* ==================================Search Fields=========================================== */}
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
@@ -225,8 +225,8 @@ const EmailTemplate = () => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <div className="card-body py-4">
+            <div className="card">
+              <div className="card-body py-9">
                 <DataTable
                   value={emailData}
                   rows={10}
@@ -259,7 +259,7 @@ const EmailTemplate = () => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

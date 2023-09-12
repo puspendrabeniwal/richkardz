@@ -58,7 +58,7 @@ const ViewEmail = ({ params }) => {
     }
   };
   return (
-    <>
+    <main>
       <Toast ref={toast} />
       <div className="" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
@@ -121,7 +121,7 @@ const ViewEmail = ({ params }) => {
       ) : (
         <div>Loading...</div>
       )}
-    </>
+    </main>
   );
 };
 

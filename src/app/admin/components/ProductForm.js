@@ -79,7 +79,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
 
 
   return (
-    <>
+    <main>
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
@@ -87,7 +87,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
             <div className="card">
-            <div className="card-body py-4">
+            <div className="card-body py-9">
               <Formik
                 initialValues={defaultValues}
                 validationSchema={(productId ?  validationSchemaEdit : validationSchema)}
@@ -96,7 +96,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                 {({ setFieldValue }) => (
                   <Form className="form-design">
                     <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingname"
@@ -110,14 +110,13 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="form-control"
                           id="floatingname"
                         />
-
                         <ErrorMessage
                           name="product_name"
                           component="div"
                           className="text-danger"
                         />
                       </div>
-                      <div className="col-lg-4 col-md-4">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingPrice"
@@ -138,7 +137,9 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                      <div className="col-lg-4 col-md-4">
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingDescription"
@@ -159,9 +160,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                    </div>
-                    <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingprofession"
@@ -188,7 +187,9 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                      <div className="col-lg-4 col-md-4">
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingtype"
@@ -215,7 +216,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                      <div className="col-lg-4 col-md-4">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingFeature"
@@ -241,7 +242,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                       </div>
                     </div>
                     <div className="row mb-3">
-                      <div className="col-lg-4 col-md-4">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingNewFeature"
@@ -265,7 +266,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         />
                       </div>
   
-                      <div className="col-lg-4 col-md-4">
+                      <div className="col-lg-6 col-md-6">
                         <label
                           className="col-form-label required fw-semibold fs-6"
                           htmlFor="floatingstatus"
@@ -288,35 +289,6 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                      {/* <div className="col-lg-4 col-md-4">
-                        <label
-                          className="col-form-label required fw-semibold fs-6"
-                          htmlFor="floatingUpload"
-                        >
-                          Image Upload
-                        </label>
-                        <div className="billingForm">
-                          <Field
-                            type="file"
-                            name="images"
-                            multiple
-                            accept="image/*"
-                            className="form-control"
-                            id="floatingUpload"
-                            value={undefined}
-                            onChange={(event) => {
-                              const files = event.currentTarget.files;
-                              const imageFiles = Array.from(files);
-                              setFieldValue("images", imageFiles);
-                            }}
-                          />
-                        </div>
-                        <ErrorMessage
-                          name="images"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div> */}
                     </div>
                     <div className="fv-row mb-3">
                       <div className="col-lg-12 col-md-12">
@@ -402,7 +374,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 

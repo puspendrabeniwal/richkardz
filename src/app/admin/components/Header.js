@@ -1,9 +1,70 @@
 "use client";
 import Link from "next/link";
 import { Image } from 'primereact/image';
-import React, { useEffect, useContext} from "react";
+import { Menu } from 'primereact/menu';
+import React, { useEffect, useContext, useRef} from "react";
 import { AuthContext } from "../AuthContext";
 const Header = () => {
+  const menuLeft = useRef(null);
+    const items = [
+    { 
+      template: (item, options) => {
+          return (
+            <div
+            className="menu menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
+            data-kt-menu="true"
+          >
+            <div className="menu-item px-3">
+              <div className="menu-content d-flex align-items-center px-3">
+                <div className="symbol symbol-50px me-5">
+                  <Image
+                    alt="Logo"
+                    src={user?.full_image_path}
+                    height={40}
+                    width={40}
+                  />
+                </div>
+                <div className="d-flex flex-column">
+                  <div className="fw-bolder d-flex align-items-center fs-5">
+                    {user?.full_name}
+                    {/* <span className="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Pro</span> */}
+                  </div>
+                  <a
+                    href="#"
+                    className="fw-bold text-muted text-hover-primary fs-7"
+                  >
+                    {user?.email}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="separator my-2"></div>
+            <div className="menu-item px-5 my-1">
+              <Link href="/admin/user_profile" className="menu-link px-5">
+                Account Settings
+              </Link>
+            </div>
+
+            <div className="menu-item px-5 my-1">
+              <Link
+                href="/admin/change_password"
+                className="menu-link px-5"
+              >
+                Change Password
+              </Link>
+            </div>
+            <div className="separator my-2"></div>
+            <div className="menu-item px-5">
+              <Link href="#" onClick={logout} className="menu-link px-5">
+                Sign Out
+              </Link>
+            </div>
+          </div>
+          )
+      }
+    }
+];
+
 
   const { user, setUser } = useContext(AuthContext);
   useEffect(() => {
@@ -66,9 +127,9 @@ const Header = () => {
             >
               <div
                 className="cursor-pointer symbol symbol-30px symbol-md-40px"
-                data-kt-menu-trigger="click"
-                data-kt-menu-attach="parent"
-                data-kt-menu-placement="bottom-end"
+                onClick={(event) => menuLeft.current.toggle(event)} 
+                aria-controls="popup_menu_left" 
+                aria-haspopup
               >
                 <Image 
                   src={user?.full_image_path}             
@@ -77,56 +138,8 @@ const Header = () => {
                   alt="user" 
                 />
               </div>
-              <div
-                className="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px"
-                data-kt-menu="true"
-              >
-                <div className="menu-item px-3">
-                  <div className="menu-content d-flex align-items-center px-3">
-                    <div className="symbol symbol-50px me-5">
-                      <Image
-                        alt="Logo"
-                        src={user?.full_image_path}
-                        height={40}
-                        width={40}
-                      />
-                    </div>
-                    <div className="d-flex flex-column">
-                      <div className="fw-bolder d-flex align-items-center fs-5">
-                        {user?.full_name}
-                        {/* <span className="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">Pro</span> */}
-                      </div>
-                      <a
-                        href="#"
-                        className="fw-bold text-muted text-hover-primary fs-7"
-                      >
-                        {user?.email}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="separator my-2"></div>
-                <div className="menu-item px-5 my-1">
-                  <Link href="/admin/user_profile" className="menu-link px-5">
-                    Account Settings
-                  </Link>
-                </div>
+              <Menu model={items} popup ref={menuLeft}  width="300" />
 
-                <div className="menu-item px-5 my-1">
-                  <Link
-                    href="/admin/change_password"
-                    className="menu-link px-5"
-                  >
-                    Change Password
-                  </Link>
-                </div>
-                <div className="separator my-2"></div>
-                <div className="menu-item px-5">
-                  <Link href="#" onClick={logout} className="menu-link px-5">
-                    Sign Out
-                  </Link>
-                </div>
-              </div>
             </div>
             <div
               className="d-flex align-items-center d-lg-none ms-2 me-n3"

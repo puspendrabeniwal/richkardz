@@ -54,7 +54,7 @@ const ViewMonials = ({ params }) => {
   };
 
   return (
-    <>
+    <main>
       <Toast ref={toast} />
       <div className="" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
@@ -120,7 +120,7 @@ const ViewMonials = ({ params }) => {
       ) : (
         <div>Loading...</div>
       )}
-    </>
+    </main>
   );
 };
 

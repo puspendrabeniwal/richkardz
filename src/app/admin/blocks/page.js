@@ -55,7 +55,7 @@ const Blocks = () => {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
-        style={{ cursor: "pointer" }}
+        className="cursor-pointer"
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
         onClick={() => confirm(rowData._id, rowData.status, "status")}
@@ -197,7 +197,6 @@ const Blocks = () => {
                 <button
                   onClick={(e) => {
                     op.current.toggle(e);
-                    console.log("eeeeeeeeeeeeeeeeee", e);
                   }}
                   aria-haspopup
                   aria-controls="overlay_panel"
@@ -327,8 +326,8 @@ const Blocks = () => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <div className="card-body py-4">
+            <div className="card">
+              <div className="card-body py-8">
                 <ConfirmDialog />
                 <DataTable
                   value={blockData}

@@ -54,7 +54,7 @@ const UpdateMonials = ({ params }) => {
   };
 
   return (
-    <>
+    <main>
       <Toast ref={toast} />
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
@@ -120,7 +120,7 @@ const UpdateMonials = ({ params }) => {
       ) : (
         <div>Loading...</div>
       )}
-    </>
+    </main>
   );
 };
 

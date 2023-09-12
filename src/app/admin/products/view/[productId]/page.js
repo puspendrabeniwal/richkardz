@@ -36,7 +36,7 @@ const UpdateProduct = ({ params }) => {
   };
 
   return (
-    <>
+    <main>
       <Toast ref={toast} />
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
             <div className="toolbar" id="kt_toolbar">
@@ -80,7 +80,7 @@ const UpdateProduct = ({ params }) => {
                             <div className="card-body pt-9 pb-0">
                                 <div className="d-flex flex-wrap flex-sm-nowrap mb-6">
                                     <div className="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-4">
-                                        <img className="mw-100px mw-lg-100px" src={(productData?.images) ? productData?.image_url+productData?.images[0] :"/admin/assets/media/logos/logo-1-dark.png"} alt="image" />
+                                        <img className="mw-100px mw-lg-100px" src={(productData?.images) ? productData?.image_url+productData?.images[0]["name"] :"/admin/assets/media/logos/logo-1-dark.png"} alt="image" />
                                     </div>
                                     <div className="flex-grow-1">
                                         <div className="d-flex justify-content-between align-items-start flex-wrap mb-2">
@@ -134,7 +134,7 @@ const UpdateProduct = ({ params }) => {
 
                                         (productData?.images && productData.images.map((records, index)=>{
                                             return  <div key={index} class="symbol symbol-35px symbol-circle" data-bs-toggle="tooltip" title="Product Image">
-                                                        <img alt="Pic" src={(productData?.images) ? productData?.image_url+productData?.images[index] :""}/>
+                                                        <img alt="Pic" src={(productData?.images) ? productData?.image_url+records?.name :""}/>
                                                     </div>
                                         }))
                                     }
@@ -142,7 +142,7 @@ const UpdateProduct = ({ params }) => {
                                 <div className="separator"></div>
                                 <div className="row">&nbsp;</div>
                                 <div className="row d-flex flex-wrap flex-sm-nowrap mb-6">
-                                <div className="flex-grow-1">
+                                    <div className="flex-grow-1">
                                         <div className="d-flex justify-content-between align-items-start flex-wrap mb-2">
                                             <div className="d-flex flex-column">
                                                 <div className="d-flex align-items-center mb-1">
@@ -161,7 +161,7 @@ const UpdateProduct = ({ params }) => {
                 </div>
             </div>
         </div>      
-    </>
+    </main>
   );
 };
 

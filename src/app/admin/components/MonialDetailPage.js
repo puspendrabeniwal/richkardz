@@ -12,17 +12,17 @@ const MonialDetailsPage = ({ monialValue, handleSubmitProduct, productId }) => {
   }
 
   const starString = convertRatingToStars(monialValue.rating);
-  console.log(starString); // Output: "*****"
+
   return (
-    <>
+    <main>
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <div className="card-body py-4">
+            <div className="card">
+              <div className="card-body py-9">
                 <div className=" d-flex align-items-center">
                   <table
                     className="table-border-padding w-100"
@@ -68,7 +68,7 @@ const MonialDetailsPage = ({ monialValue, handleSubmitProduct, productId }) => {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 };
 
