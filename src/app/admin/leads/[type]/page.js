@@ -2,29 +2,25 @@
 import Link from "next/link";
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Calendar } from 'primereact/calendar';
 import { OverlayPanel } from "primereact/overlaypanel";
-import { SplitButton } from 'primereact/splitbutton';
+import { SplitButton } from "primereact/splitbutton";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
-import download from "downloadjs";
 import dateFormat, { masks } from "dateformat";
-
 import instance from "../../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 
-
-const Leads = ({params}) => {
-  const router  = useRouter();
+const Leads = ({ params }) => {
+  const router = useRouter();
   const [list, setList] = useState([]);
   const [dates, setDates] = useState(null);
   const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
-
 
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -34,7 +30,7 @@ const Leads = ({params}) => {
     formData.append("limit", 10);
 
     instance
-      .post("leads/"+params.type, formData)
+      .post("leads/" + params.type, formData)
       .then((response) => {
         let data = response.result ? response.result : {};
         setList(data);
@@ -51,29 +47,38 @@ const Leads = ({params}) => {
   const UpdateButtonLink = (rowData) => {
     const items = [
       {
-          label: 'Delete',
-          icon: 'pi pi-times',
-          command: () => {
-            confirm(rowData._id, rowData?.type)
-          }
-      }
+        label: "Delete",
+        icon: "pi pi-times",
+        command: () => {
+          confirm(rowData._id, rowData?.type);
+        },
+      },
     ];
 
-    if(params.type === "contact-enquiries" || params.type === "design-queries"){
-      items.push(
-        {
-          label: 'View',
-          icon: 'pi pi-times',
-          command: () => {
-            router.push(`/admin/leads/view/${params.type}/${rowData._id}`)
-          }
-        }
-      )
+    if (
+      params.type === "contact-enquiries" ||
+      params.type === "design-queries"
+    ) {
+      items.push({
+        label: "View",
+        icon: "pi pi-times",
+        command: () => {
+          router.push(`/admin/leads/view/${params.type}/${rowData._id}`);
+        },
+      });
     }
 
     return (
       <>
-        <SplitButton label="Action" icon="pi pi-plus" small raised text severity="secondary" model={items}/>
+        <SplitButton
+          label="Action"
+          icon="pi pi-plus"
+          small
+          raised
+          text
+          severity="secondary"
+          model={items}
+        />
       </>
     );
   };
@@ -92,47 +97,44 @@ const Leads = ({params}) => {
     getList();
   };
 
-
   const downloadFile = ({ data, fileName, fileType }) => {
-    const blob = new Blob([data], { type: fileType })
-  
-    const a = document.createElement('a')
-    a.download = fileName
-    a.href = window.URL.createObjectURL(blob)
-    const clickEvt = new MouseEvent('click', {
+    const blob = new Blob([data], { type: fileType });
+
+    const a = document.createElement("a");
+    a.download = fileName;
+    a.href = window.URL.createObjectURL(blob);
+    const clickEvt = new MouseEvent("click", {
       view: window,
       bubbles: true,
       cancelable: true,
-    })
-    a.dispatchEvent(clickEvt)
-    a.remove()
-  }
+    });
+    a.dispatchEvent(clickEvt);
+    a.remove();
+  };
 
-
-
-  const leadDownload = ()=>{
+  const leadDownload = () => {
     // Headers for each column
-  let headers = ['Id,Name,Email']
+    let headers = ["Id,Name,Email"];
 
-  // Convert users data to a csv
-  let usersCsv = list.reduce((acc, user) => {
-    const { id, name, email } = user
-    acc.push([id, name, email].join(','))
-    return acc
-  }, [])
+    // Convert users data to a csv
+    let usersCsv = list.reduce((acc, user) => {
+      const { id, name, email } = user;
+      acc.push([id, name, email].join(","));
+      return acc;
+    }, []);
 
-  downloadFile({
-    data: [...headers, ...usersCsv].join('\n'),
-    fileName: 'users.csv',
-    fileType: 'text/csv',
-  })
-  }
+    downloadFile({
+      data: [...headers, ...usersCsv].join("\n"),
+      fileName: "users.csv",
+      fileType: "text/csv",
+    });
+  };
 
   const accept = (id) => {
     let newFormData = new FormData();
     newFormData.append("id", id);
     instance
-      .post("leads/delete/"+params.type+"/"+id, newFormData)
+      .post("leads/delete/" + params.type + "/" + id, newFormData)
       .then((response) => {
         getList();
         let data = response ? response : {};
@@ -209,9 +211,7 @@ const Leads = ({params}) => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li className="breadcrumb-item text-mute">
-                  Leads
-                </li>
+                <li className="breadcrumb-item text-mute">Leads</li>
               </ul>
             </div>
             <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -258,7 +258,7 @@ const Leads = ({params}) => {
                       phone_number: "",
                       created: "",
                       utm: "",
-                      business_type: ""
+                      business_type: "",
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
@@ -267,9 +267,7 @@ const Leads = ({params}) => {
                         <div className="row ">
                           <div className="col-lg-6 col-md-6">
                             <div className="mb-10">
-                              <label className="form-label fw-bold">
-                                 Name
-                              </label>
+                              <label className="form-label fw-bold">Name</label>
                               <div>
                                 <Field
                                   type="text"
@@ -318,9 +316,7 @@ const Leads = ({params}) => {
                         </div>
                         <div className="row">
                           <div className="col-lg-6 col-md-6">
-                            <label className="form-label fw-bold">
-                              Utm
-                            </label>
+                            <label className="form-label fw-bold">Utm</label>
                             <Field
                               type="text"
                               name="utm"
@@ -375,7 +371,11 @@ const Leads = ({params}) => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="#" onClick={leadDownload} className="btn btn-sm btn-info">
+              <Link
+                href="#"
+                onClick={leadDownload}
+                className="btn btn-sm btn-info"
+              >
                 Download
               </Link>
             </div>
@@ -405,9 +405,9 @@ const Leads = ({params}) => {
                     header="#"
                     body={(data, props) => props.rowIndex + 1}
                   ></Column>
-                  <Column 
-                    field="name" 
-                    sortable 
+                  <Column
+                    field="name"
+                    sortable
                     header="Name"
                     body={(data, props) => (params.type === "design-queries" || params.type === "get-in-touch") ? data.first_name+ " "+ data.first_name : (params.type === "brand-leads" || params.type === "email-leads") ? data.full_name :  (params.type === "cancel-request" || params.type === "refund-request") ? data.customer_name : data.name}
                   ></Column>
@@ -417,31 +417,28 @@ const Leads = ({params}) => {
                     field="created"
                     sortable
                     header="Created"
-                    body={(data, props) => dateFormat(data.created, "dddd, mmmm d, yyyy") }
+                    body={(data, props) =>
+                      dateFormat(data.created, "dddd, mmmm d, yyyy")
+                    }
                   ></Column>
-                  {(params.type === "contact-enquiries") ? 
+                  {params.type === "contact-enquiries" ? (
+                    <Column field="city" sortable header="City"></Column>
+                  ) : (
+                    <Column field="utm" sortable header="Utm"></Column>
+                  )}
+                  {params.type != "contact-enquiries" ? (
                     <Column
-                    field="city"
-                    sortable
-                    header="City"
-                  ></Column>
-                  :  <Column
-                  field="utm"
-                  sortable
-                  header="Utm"
-                ></Column>
-                }
-                  {(params.type != "contact-enquiries") ?
-                  <Column
-                    field="business_type"
-                    sortable
-                    header="Business Type"
-                  ></Column> : <Column
-                  field="pin_code"
-                  sortable
-                  header="Pin Code"
-                ></Column>
-              }
+                      field="business_type"
+                      sortable
+                      header="Business Type"
+                    ></Column>
+                  ) : (
+                    <Column
+                      field="pin_code"
+                      sortable
+                      header="Pin Code"
+                    ></Column>
+                  )}
                   <Column
                     field=""
                     header="Action"
