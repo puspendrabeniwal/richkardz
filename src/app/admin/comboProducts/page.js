@@ -209,7 +209,6 @@ export const ComboProducts = () => {
     formData.append("user_id", loginUser._id);
     formData.append("product_name", values?.product_name);
     formData.append("combo_type", values?.combo_type);
-    console.log("filter value", values);
     getComboProducts();
   };
 
@@ -217,8 +216,9 @@ export const ComboProducts = () => {
     let newFormData = new FormData();
     newFormData.append("product_id", id);
     newFormData.append("status", status);
+    newFormData.append("type", "status");
     instance
-      .post("product_status", newFormData)
+      .post("combo-products/status", newFormData)
       .then((response) => {
         getComboProducts();
         let data = response ? response : {};
@@ -418,7 +418,7 @@ export const ComboProducts = () => {
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
             <div className="card">
-              <div className="card-body py-4">
+              <div className="card-body py-9">
                 <Toast ref={toast} />
                 <ConfirmDialog />
                 <DataTable

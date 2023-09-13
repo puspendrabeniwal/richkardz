@@ -32,7 +32,6 @@ const ViewUser = ({ params }) => {
         console.log(error);
       });
   };
-  console.log("userData", userData);
   return (
     <>
       <Toast ref={toast} />
@@ -89,30 +88,203 @@ const ViewUser = ({ params }) => {
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
-        style={{ height: "750px" }}
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
             <div className="card">
-              <div className="card mb-6 mb-xl-9">
+              <div className="card-body py-9">
                 {userData ? (
                   <table className="table-border-padding w-100">
+                    <tr className="table-border-padding pl-3">
+                      <h3
+                        style={{ marginLeft: "10px", padding: "11px 2px 3px" }}
+                      >
+                        PERSONAL DETAILS
+                      </h3>
+                    </tr>
                     <tr className="table-border-padding">
-                      <th className="table-border-padding">Name</th>
+                      <th className="table-border-padding">Full Name</th>
                       <td className="table-border-padding">
                         {userData.full_name}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
-                      <th className="table-border-padding ">Phone</th>
+                      <th className="table-border-padding ">Contact Number</th>
                       <td className="table-border-padding">{userData.phone}</td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">
+                        Alternate Contact Number
+                      </th>
+                      <td className="table-border-padding">
+                        {userData.mobile}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Company Name</th>
+                      <td className="table-border-padding">
+                        {userData.company_name}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Designation</th>
+                      <td className="table-border-padding">
+                        {userData.designation}
+                      </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Email</th>
                       <td className="table-border-padding">{userData.email}</td>
                     </tr>
                     <tr className="table-border-padding">
-                      <th className="table-border-padding">Image</th>
+                      <th className="table-border-padding ">Website Link</th>
+                      <td className="table-border-padding">
+                        {userData.website_link}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">
+                        Are you want to make profile private?
+                      </th>
+                      <td className="table-border-padding">
+                        <span
+                          className={`badge badge-light-${
+                            userData?.profile_private === 1
+                              ? "success"
+                              : "warning"
+                          } me-auto`}
+                        >
+                          {userData?.profile_private === 1 ? "Yes" : "No"}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">About</th>
+                      <td className="table-border-padding">{userData.about}</td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Address</th>
+                      <td className="table-border-padding">
+                        {userData.address}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">
+                        Nature of Business
+                      </th>
+                      <td className="table-border-padding">
+                        {userData.nature_of_business}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Pin Code</th>
+                      <td className="table-border-padding">
+                        {userData.pincode}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Google map link</th>
+                      <td className="table-border-padding">
+                        {userData.google_link}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Profile Image</th>
+                      <td className="table-border-padding">
+                        <img
+                          src={`${userData.full_image_path}`}
+                          alt={userData.image}
+                          className="w-6rem shadow-2 border-round"
+                          height={45}
+                        ></img>
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Banner Image</th>
+                      <td className="table-border-padding">
+                        <img
+                          src={`${userData.full_image_path}`}
+                          alt={userData.image}
+                          className="w-6rem shadow-2 border-round"
+                          height={45}
+                        ></img>
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">
+                        UPI payment scanner
+                      </th>
+                      <td className="table-border-padding">
+                        <img
+                          src={`${userData.full_image_path}`}
+                          alt={userData.image}
+                          className="w-6rem shadow-2 border-round"
+                          height={45}
+                        ></img>
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding pl-3">
+                      <h3
+                        style={{ marginLeft: "10px", padding: "11px 2px 3px" }}
+                      >
+                        SOCIAL MEDIA DETAILS
+                      </h3>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Facebook</th>
+                      <td className="table-border-padding">
+                        {userData.facebook}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Instagram</th>
+                      <td className="table-border-padding">
+                        {userData.instagram}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Linkedin</th>
+                      <td className="table-border-padding">
+                        {userData.linkedin}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Twitter</th>
+                      <td className="table-border-padding">
+                        {userData.twitter}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Whatsapp</th>
+                      <td className="table-border-padding">
+                        {userData.whatsapp}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Youtube</th>
+                      <td className="table-border-padding">
+                        {userData.youtube}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Pinterest</th>
+                      <td className="table-border-padding">
+                        {userData.pinterest}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Catalogue</th>
+                      <td className="table-border-padding">
+                        <img
+                          src={`${userData.full_image_path}`}
+                          alt={userData.image}
+                          className="w-6rem shadow-2 border-round"
+                          height={45}
+                        ></img>
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Gallery</th>
                       <td className="table-border-padding">
                         <img
                           src={`${userData.full_image_path}`}

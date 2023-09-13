@@ -327,7 +327,7 @@ const Blocks = () => {
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
             <div className="card">
-              <div className="card-body py-8">
+              <div className="card-body py-9">
                 <ConfirmDialog />
                 <DataTable
                   value={blockData}

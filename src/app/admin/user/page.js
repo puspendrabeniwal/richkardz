@@ -32,7 +32,6 @@ const User = () => {
 
     try {
       const response = await instance.post(`users`, formData);
-      console.log("user response", response);
       const newData = response.result;
       setUserData(newData);
     } catch (error) {
@@ -45,7 +44,7 @@ const User = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
     formData.append("name", values?.name);
-    formData.append("title", values?.title);
+    formData.append("email", values?.email);
     getUserAPI();
   };
 
@@ -205,7 +204,6 @@ const User = () => {
                 <button
                   onClick={(e) => {
                     op.current.toggle(e);
-                    console.log("eeeeeeeeeeeeeeeeee", e);
                   }}
                   aria-haspopup
                   aria-controls="overlay_panel"
@@ -243,7 +241,7 @@ const User = () => {
                   <Formik
                     initialValues={{
                       name: "",
-                      title: "",
+                      email: "",
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
@@ -265,12 +263,12 @@ const User = () => {
                           <div className="col-lg-6 col-md-6 mb-10">
                             <div className="">
                               <label className="form-label fw-bold">
-                                Title
+                                Email
                               </label>
                               <div>
                                 <Field
                                   type="text"
-                                  name="title"
+                                  name="email"
                                   className="form-control"
                                 ></Field>
                               </div>
@@ -330,8 +328,8 @@ const User = () => {
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">
-            <div className="card p-4">
-              <div className="card-body py-4">
+            <div className="card">
+              <div className="card-body py-9">
                 <ConfirmDialog />
                 <DataTable
                   value={userData}

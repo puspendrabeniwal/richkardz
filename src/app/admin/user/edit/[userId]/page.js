@@ -42,7 +42,7 @@ const UpdateUser = ({ params }) => {
 
   const editUserAPI = async (values) => {
     instance
-      .post("users/edit/" + params.productId, values)
+      .post("users/edit/" + params.userId, values)
       .then((response) => {
         showMessage(response);
       })
