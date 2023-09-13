@@ -12,13 +12,7 @@ const Sidebar = () => {
         router.push(`/admin/dashboard`)
       }
     },
-    {
-      label: ' Bulk Orders',
-      icon: 'pi pi-fw pi-shield',
-      command: () => {
-        router.push(`/admin/bulk-orders`)
-      }
-    },
+
     {
       label: 'User Management',
       icon: 'pi pi-fw pi-user',
@@ -27,10 +21,10 @@ const Sidebar = () => {
       }
     },
     {
-      label: ' Bulk Orders',
+      label: 'Combo Product',
       icon: 'pi pi-fw pi-shield',
       command: () => {
-        router.push(`/admin/bulk-orders`)
+        router.push(`/admin/comboProducts`)
       }
     },
     {
@@ -40,6 +34,7 @@ const Sidebar = () => {
         router.push(`/admin/products`)
       }
     },
+
     {
       label: 'System Management',
       icon: 'pi pi-fw pi-server',
@@ -62,7 +57,7 @@ const Sidebar = () => {
             label: 'FAQs',
             icon: 'pi pi-fw pi-align-center',
             command: () => {
-              router.push(`/admin/faqs`)
+              router.push(`/admin/faq`)
             }
         },
         {
@@ -73,13 +68,20 @@ const Sidebar = () => {
             }
         },
         {
-          label: 'testimonials',
+          label: 'Testimonials',
           icon: 'pi pi-fw pi-align-justify',
           command: () => {
             router.push(`/admin/testimonials`)
           }
         },
       ]
+    },
+    {
+      label: ' Bulk Order Management',
+      icon: 'pi pi-fw pi-shield',
+      command: () => {
+        router.push(`/admin/bulk-orders`)
+      }
     },
     {
       label: 'All Leads',
@@ -163,8 +165,17 @@ const Sidebar = () => {
           }
         },
       ]
-    }
+    },
+  
   ];
+
+  const end = <div>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    &nbsp;<br/>
+    &nbsp;<br/>
+  </div>;
   return (
     <div
       id="kt_aside"
@@ -230,7 +241,7 @@ const Sidebar = () => {
           <div
             className="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500"
           >
-            <Menubar model={items} orientation="vertical" breakpoint="767px"/>
+            <Menubar model={items} orientation="horozontal" breakpoint="767px"/>
           </div>
         </div>
       </div>
