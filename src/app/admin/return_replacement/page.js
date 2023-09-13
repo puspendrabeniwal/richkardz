@@ -1,38 +1,42 @@
 "use client";
 import Link from "next/link";
+import React, { useEffect, useState, useRef } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRouter, usePathname } from 'next/navigation'
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { Toast } from "primereact/toast";
 import { SplitButton } from 'primereact/splitbutton';
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
-import React, { useEffect, useState, useRef } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import download from "downloadjs";
+import dateFormat, { masks } from "dateformat";
+
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 
 
-export const Products = () => {
-  let formData = new FormData(); //formdata object
+const ReturnReplacement = ({params}) => {
   const router  = useRouter();
-  const [products, setProducts] = useState([]);
+  const [list, setList] = useState([]);
   const filterOption = useRef(null);
+  let formData = new FormData(); //formdata object
 
-  const getProducts = () => {
+
+  const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData.append("skip", 10);
+    formData.append("limit", 10);
 
     instance
-      .post("products", formData)
+      .post("return_replacement", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
-        setProducts(data);
+        setList(data);
       })
       .catch((error) => {
         console.log(error);
@@ -40,128 +44,62 @@ export const Products = () => {
   };
 
   useEffect(() => {
-    getProducts();
+    getList();
   }, []);
-
-  const statusBodyTemplate = (rowData) => {
-    return (
-      <Tag
-        style={{cursor:"pointer"}}
-        value={getValue(rowData.status)}
-        severity={getSeverity(rowData.status)}
-        onClick={() => confirm(rowData._id, rowData.status, "status")}
-      ></Tag>
-    );
-  };
-
-  const featureBodyTemplate = (rowData) => {
-    return (
-      <Tag
-        style={{cursor:"pointer"}}
-        value={changeLevel(rowData.is_feature)}
-        severity={getSeverity(rowData.is_feature)}
-        onClick={() => confirm(rowData._id, rowData.is_feature, "feature")}
-      ></Tag>
-    );
-  };
-
-  const releaseBodyTemplate = (rowData) => {
-    return (
-      <Tag
-        value={changeLevel(rowData.is_new_release)}
-        severity={getSeverity(rowData.is_new_release)}
-      ></Tag>
-    );
-  };
-  const getSeverity = (value) => {
-    switch (value) {
-      case 1:
-        return "success";
-
-      case 0:
-        return "warning";
-
-      default:
-        return null;
-    }
-  };
-
-  const changeLevel = (value) => {
-    switch (value) {
-      case 1:
-        return "Yes";
-
-      case 0:
-        return "No";
-
-      default:
-        return null;
-    }
-  };
-
-  const getValue = (value) => {
-    switch (value) {
-      case 1:
-        return "Active";
-
-      case 0:
-        return "Inacitve";
-
-      default:
-        return null;
-    }
-  };
-
-  const UpdateButtonLink = (rowData) => {
-    const items = [
-      {
-          label: 'Edit',
-          icon: 'pi pi-refresh',
-          command: () => {
-            router.push(`/admin/products/update/${rowData._id}`)
-          }
-      },
-      {
-          label: 'View',
-          icon: 'pi pi-eye',
-          command: () => {
-            router.push(`/admin/products/view/${rowData._id}`)
-          }
-      },
-
-    ];
-    return (
-      <>
-        <SplitButton label="Action" icon="pi pi-plus" small raised text severity="secondary" model={items}/>
-      </>
-    );
-  };
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
-    formData.append("product_name", values?.product_name);
-    formData.append("price", values?.price);
-    formData.append("discount", values?.discount);
-    formData.append("card_type", values?.card_type);
-    formData.append("profession", values?.profession);
-    getProducts();
+    formData.append("name", values?.name);
+    formData.append("email", values?.email);
+    formData.append("phone_number", values?.phone_number);
+    formData.append("preferred_contact_method", values?.preferred_contact_method);
+    getList();
   };
 
-  const removeFilter = () => {
-    formData = new FormData();
-    getProducts();
-  };
 
-  const accept = (id, status, type) => {
+  const downloadFile = ({ data, fileName, fileType }) => {
+    const blob = new Blob([data], { type: fileType })
+  
+    const a = document.createElement('a')
+    a.download = fileName
+    a.href = window.URL.createObjectURL(blob)
+    const clickEvt = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    })
+    a.dispatchEvent(clickEvt)
+    a.remove()
+  }
+
+
+
+  const leadDownload = ()=>{
+  // Headers for each column
+  let headers = ['Name, Email, Phone, Preferred contact method, Issue with the card' ]
+
+  // Convert users data to a csv
+  let usersCsv = list.reduce((acc, user) => {
+    const { customer_name, email, phone_number, preferred_contact_method, issue_with_the_card } = user
+    acc.push([customer_name, email, phone_number, preferred_contact_method, issue_with_the_card].join(','))
+    return acc
+  }, [])
+
+  downloadFile({
+    data: [...headers, ...usersCsv].join('\n'),
+    fileName: 'return.csv',
+    fileType: 'text/csv',
+  })
+  }
+
+  const accept = (id) => {
     let newFormData = new FormData();
-    newFormData.append("product_id", id);
-    newFormData.append("status", status);
-    newFormData.append("type", type);
+    newFormData.append("request_id", id);
     instance
-      .post("product_status", newFormData)
+      .post("return_replacement_status", newFormData)
       .then((response) => {
-        getProducts();
+        getList();
         let data = response ? response : {};
         toast.current.show({
           severity: "info",
@@ -175,6 +113,7 @@ export const Products = () => {
       });
   };
 
+  const toast = useRef(null);
   const reject = () => {
     toast.current.show({
       severity: "warn",
@@ -184,17 +123,54 @@ export const Products = () => {
     });
   };
 
-  const confirm = (id, status, type) => {
+  const confirm = (id) => {
     confirmDialog({
       message: "Are you sure you want to proceed?",
       header: "Confirmation",
       icon: "pi pi-exclamation-triangle",
-      accept: () => accept(id, status, type),
+      accept: () => accept(id),
       reject,
     });
   };
 
-  const toast = useRef(null);
+  
+  const getSeverity = (value) => {
+    switch (value) {
+      case 1:
+        return "success";
+
+      case 0:
+        return "warning";
+
+      default:
+        return null;
+    }
+  };
+  
+  const getValue = (value) => {
+    switch (value) {
+      case 1:
+        return "Resolved";
+
+      case 0:
+        return "Mark Resolved";
+
+      default:
+        return null;
+    }
+  };
+
+  const statusBodyTemplate = (rowData) => {
+    return (
+      <Tag
+        style={{cursor:"pointer"}}
+        value={getValue(rowData.status)}
+        severity={getSeverity(rowData.status)}
+        onClick={() => confirm(rowData._id, rowData.status, "status")}
+      ></Tag>
+    );
+  };
+
   return (
     <main>
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
@@ -210,7 +186,7 @@ export const Products = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                Product List
+                Return/Replacement Request
               </h1>
               <span className="h-20px border-gray-300 border-start mx-4"></span>
               <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
@@ -226,7 +202,7 @@ export const Products = () => {
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
                 <li className="breadcrumb-item text-mute">
-                  Product Management
+                Return/Replacement Request
                 </li>
               </ul>
             </div>
@@ -269,11 +245,9 @@ export const Products = () => {
                   <div className="separator border-gray-200 mb-10"></div>
                   <Formik
                     initialValues={{
-                      price: "",
-                      discount: "",
-                      profession: "",
-                      card_type: "",
-                      product_name: "",
+                      name: "",
+                      email: "",
+                      phone_number: ""
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
@@ -283,12 +257,12 @@ export const Products = () => {
                           <div className="col-lg-6 col-md-6">
                             <div className="mb-10">
                               <label className="form-label fw-bold">
-                                Product Name
+                                 Name
                               </label>
                               <div>
                                 <Field
                                   type="text"
-                                  name="product_name"
+                                  name="name"
                                   className="form-control"
                                 ></Field>
                               </div>
@@ -297,12 +271,12 @@ export const Products = () => {
                           <div className="col-lg-6 col-md-6 mb-10">
                             <div className="">
                               <label className="form-label fw-bold">
-                                Discount
+                                Email
                               </label>
                               <div>
                                 <Field
                                   type="text"
-                                  name="discount"
+                                  name="email"
                                   className="form-control"
                                 ></Field>
                               </div>
@@ -313,50 +287,31 @@ export const Products = () => {
                           <div className="col-lg-6 col-md-6">
                             <div className="">
                               <label className="form-label fw-bold">
-                                Product Price
+                                Phone Number
                               </label>
                               <div>
                                 <Field
                                   type="text"
-                                  name="price"
+                                  name="phone_number"
                                   className="form-control"
                                 ></Field>
                               </div>
                             </div>
-                          </div>
+                          </div>   
                           <div className="col-lg-6 col-md-6">
-                            <label className="form-label fw-bold">
-                              Profession
-                            </label>
-                            <Field
-                              as="select"
-                              name="profession"
-                              className="form-control"
-                              id="floatingprofession"
-                            >
-                              <option value="">Select</option>
-                              <option value="Doctor">Doctor</option>
-                              <option value="Entrepreneur">Entrepreneur</option>
-                            </Field>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6">
-                            <label className="form-label fw-bold">
-                              Card Type
-                            </label>
-                            <Field
-                              as="select"
-                              name="card_type"
-                              className="form-control"
-                            >
-                              <option value="">Select</option>
-                              <option value="Gold Metallic">
-                                Gold Metallic
-                              </option>
-                              <option value="PVC Glossy">PVC Glossy</option>
-                            </Field>
-                          </div>
+                            <div className="">
+                              <label className="form-label fw-bold">
+                                Contact Method
+                              </label>
+                              <div>
+                                <Field
+                                  type="text"
+                                  name="preferred_contact_method"
+                                  className="form-control"
+                                ></Field>
+                              </div>
+                            </div>
+                          </div>     
                         </div>
                         <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
@@ -379,8 +334,8 @@ export const Products = () => {
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
-                                await getProducts();
-                                op.current.toggle(e);
+                                await getList();
+                                //op.current.toggle(e);
                               }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
@@ -394,8 +349,8 @@ export const Products = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/products/add" className="btn btn-sm btn-info">
-                Add Product
+              <Link href="#" onClick={leadDownload} className="btn btn-sm btn-info">
+                Download
               </Link>
             </div>
           </div>
@@ -413,7 +368,7 @@ export const Products = () => {
                 <Toast ref={toast} />
                 <ConfirmDialog />
                 <DataTable
-                  value={products}
+                  value={list}
                   paginator
                   showGridlines
                   rows={10}
@@ -424,39 +379,39 @@ export const Products = () => {
                     header="#"
                     body={(data, props) => props.rowIndex + 1}
                   ></Column>
-                  <Column field="product_name" sortable header="Name"></Column>
-                  <Column field="discount" sortable header="Discount"></Column>
-                  <Column field="price" sortable header="Price"></Column>
+                  <Column 
+                    field="customer_name" 
+                    sortable 
+                    header="Name"
+                  ></Column>
+                  <Column field="email" sortable header="Email"></Column>
+                  <Column field="phone_number" header="Phone Number"></Column>
+                 
                   <Column
-                    field="profession"
+                    field="preferred_contact_method"
                     sortable
-                    header="Profession"
+                    header="Preferred Contact  Method"
                   ></Column>
                   <Column
-                    field="card_type"
+                    field="issue_with_the_card"
                     sortable
-                    header="Card Type"
+                    header="Issue With The Card"
                   ></Column>
                   <Column
-                    field="is_feature"
-                    header="Is Feature"
-                    body={featureBodyTemplate}
+                    field="correct_information_on_card"
+                    sortable
+                    header="Information On Card"
                   ></Column>
-                  <Column
-                    field="is_new_release"
-                    header="New Release"
-                    body={releaseBodyTemplate}
+                   <Column
+                    field="created"
+                    sortable
+                    header="Created"
+                    body={(data, props) => dateFormat(data.created, "dddd, mmmm d, yyyy") }
                   ></Column>
                   <Column
                     field="status"
                     header="Status"
                     body={statusBodyTemplate}
-                  ></Column>
-                  <Column
-                    field=""
-                    header="Action"
-                    style={{ width: "130px" }}
-                    body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
               </div>
@@ -468,4 +423,4 @@ export const Products = () => {
   );
 };
 
-export default withAuth(Products);
+export default withAuth(ReturnReplacement);

@@ -15,7 +15,7 @@ import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 
 
-export const Products = () => {
+const GiftPreDesignProducts = () => {
   let formData = new FormData(); //formdata object
   const router  = useRouter();
   const [products, setProducts] = useState([]);
@@ -29,7 +29,7 @@ export const Products = () => {
     formData.append("limit", 10); //append the values with key, value pair
 
     instance
-      .post("products", formData)
+      .post("gift_pre_design_product", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
         setProducts(data);
@@ -118,14 +118,14 @@ export const Products = () => {
           label: 'Edit',
           icon: 'pi pi-refresh',
           command: () => {
-            router.push(`/admin/products/update/${rowData._id}`)
+            router.push(`/admin/gift-pre-design-products/update/${rowData._id}`)
           }
       },
       {
           label: 'View',
           icon: 'pi pi-eye',
           command: () => {
-            router.push(`/admin/products/view/${rowData._id}`)
+            router.push(`/admin/gift-pre-design-products/view/${rowData._id}`)
           }
       },
 
@@ -159,7 +159,7 @@ export const Products = () => {
     newFormData.append("status", status);
     newFormData.append("type", type);
     instance
-      .post("product_status", newFormData)
+      .post("gift_pre_design_product_status", newFormData)
       .then((response) => {
         getProducts();
         let data = response ? response : {};
@@ -210,7 +210,7 @@ export const Products = () => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                Product List
+                Gift Pre Design Product
               </h1>
               <span className="h-20px border-gray-300 border-start mx-4"></span>
               <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
@@ -226,7 +226,7 @@ export const Products = () => {
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
                 <li className="breadcrumb-item text-mute">
-                  Product Management
+                Gift Pre Design Product
                 </li>
               </ul>
             </div>
@@ -326,23 +326,6 @@ export const Products = () => {
                           </div>
                           <div className="col-lg-6 col-md-6">
                             <label className="form-label fw-bold">
-                              Profession
-                            </label>
-                            <Field
-                              as="select"
-                              name="profession"
-                              className="form-control"
-                              id="floatingprofession"
-                            >
-                              <option value="">Select</option>
-                              <option value="Doctor">Doctor</option>
-                              <option value="Entrepreneur">Entrepreneur</option>
-                            </Field>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6">
-                            <label className="form-label fw-bold">
                               Card Type
                             </label>
                             <Field
@@ -380,7 +363,7 @@ export const Products = () => {
                               onClick={async (e) => {
                                 resetForm();
                                 await getProducts();
-                                op.current.toggle(e);
+                                //op.current.toggle(e);
                               }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
@@ -394,7 +377,7 @@ export const Products = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/products/add" className="btn btn-sm btn-info">
+              <Link href="/admin/gift-pre-design-products/add" className="btn btn-sm btn-info">
                 Add Product
               </Link>
             </div>
@@ -427,11 +410,6 @@ export const Products = () => {
                   <Column field="product_name" sortable header="Name"></Column>
                   <Column field="discount" sortable header="Discount"></Column>
                   <Column field="price" sortable header="Price"></Column>
-                  <Column
-                    field="profession"
-                    sortable
-                    header="Profession"
-                  ></Column>
                   <Column
                     field="card_type"
                     sortable
@@ -468,4 +446,4 @@ export const Products = () => {
   );
 };
 
-export default withAuth(Products);
+export default withAuth(GiftPreDesignProducts);

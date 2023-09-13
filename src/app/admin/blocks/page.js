@@ -136,7 +136,7 @@ const Blocks = () => {
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/blocks/view/${rowData._id}`);
         },

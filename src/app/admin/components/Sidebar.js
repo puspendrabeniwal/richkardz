@@ -28,6 +28,13 @@ const Sidebar = () => {
       }
     },
     {
+      label: 'Gift Pre Design Product',
+      icon: 'pi pi-fw pi-shield',
+      command: () => {
+        router.push(`/admin/gift-pre-design-products`)
+      }
+    },
+    {
       label: 'Product Management',
       icon: 'pi pi-fw pi-shopping-bag',
       command: () => {
@@ -150,23 +157,42 @@ const Sidebar = () => {
             router.push(`/admin/leads/get-in-touch`)
           }
         },
+      ]
+    },
+    {
+      label: 'TNT Request',
+      icon: 'pi pi-fw pi-desktop',
+      items: [
+        {
+            label: 'Return/Replacement Request',
+            icon: 'pi pi-fw pi-align-left',
+            command: () => {
+              router.push(`/admin/return_replacement`)
+            }
+        },
         {
           label: 'Refund Request',
           icon: 'pi pi-fw pi-align-justify',
           command: () => {
-            router.push(`/admin/leads/refund-request`)
+            router.push(`/admin/refund_request`)
+          }
+        },
+        {
+          label: 'Warranty Claim Request',
+          icon: 'pi pi-fw pi-align-right',
+          command: () => {
+            router.push(`/admin/warranty_claim`)
           }
         },
         {
           label: 'Cancel Request',
           icon: 'pi pi-fw pi-align-justify',
           command: () => {
-            router.push(`/admin/leads/cancel-request`)
+            router.push(`/admin/cancel_request`)
           }
         },
       ]
     },
-  
   ];
 
   const end = <div>

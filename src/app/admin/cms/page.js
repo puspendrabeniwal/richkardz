@@ -133,7 +133,7 @@ const CMS = () => {
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/cms/view/${rowData._id}`);
         },

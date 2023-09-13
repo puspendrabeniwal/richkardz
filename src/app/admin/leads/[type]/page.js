@@ -6,6 +6,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
+import { Calendar } from 'primereact/calendar';
 import { OverlayPanel } from "primereact/overlaypanel";
 import { SplitButton } from 'primereact/splitbutton';
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
@@ -20,6 +21,7 @@ import withAuth from "@/hoc/withAuth";
 const Leads = ({params}) => {
   const router  = useRouter();
   const [list, setList] = useState([]);
+  const [dates, setDates] = useState(null);
   const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
 
@@ -77,12 +79,14 @@ const Leads = ({params}) => {
   };
 
   const onSubmit = async (values) => {
+    console.log(dates[0]);
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
     formData.append("name", values?.name);
     formData.append("email", values?.email);
     formData.append("phone_number", values?.phone_number);
-    formData.append("created", values?.created);
+    formData.append("start_date", (dates && dates.length > 0) ? dates[0] : '');
+    formData.append("end_date", (dates && dates.length > 0) ? dates[1] : '');
     formData.append("utm", values?.utm);
     formData.append("business_type", values?.business_type);
     getList();
@@ -164,6 +168,17 @@ const Leads = ({params}) => {
     });
   };
 
+  let breadcrumbName = {
+    "pre-checkout-users" : "Pre Checkout Users",
+    "digital-visiting-card" : "Digital Enquiries",
+    "B2B%20LP" : "B2B LP",
+    "gifting-leads-enquiry" : "Gifting Leads",
+    "contact-enquiries" : "Contact Enquiries",
+    "design-queries" : "Design Queries",
+    "brand-leads" : "Brand Leads",
+    "email-leads" : "Email Leads",
+    "get-in-touch" : "Get In Touch",
+  }
   return (
     <main>
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
@@ -179,7 +194,7 @@ const Leads = ({params}) => {
               className="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0"
             >
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
-                All Leads
+                {breadcrumbName[params.type]}
               </h1>
               <span className="h-20px border-gray-300 border-start mx-4"></span>
               <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
@@ -298,11 +313,7 @@ const Leads = ({params}) => {
                             <label className="form-label fw-bold">
                               Created
                             </label>
-                            <Field
-                              type="date"
-                              name="created"
-                              className="form-control"
-                            ></Field>
+                            <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput />
                           </div>
                         </div>
                         <div className="row">
@@ -348,7 +359,8 @@ const Leads = ({params}) => {
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
-                                await getProducts();
+                                setDates(null)
+                                await getList();
                                 //op.current.toggle(e);
                               }}
                               className="btn btn-sm btn-danger"
@@ -397,10 +409,10 @@ const Leads = ({params}) => {
                     field="name" 
                     sortable 
                     header="Name"
-                    body={(data, props) => (params.type === "design-queries" || params.type === "get-in-touch") ? data.first_name+ " "+ data.first_name : (params.type === "brand-leads") ? data.full_name :  (params.type === "cancel-request" || params.type === "refund-request") ? data.customer_name : data.name}
+                    body={(data, props) => (params.type === "design-queries" || params.type === "get-in-touch") ? data.first_name+ " "+ data.first_name : (params.type === "brand-leads" || params.type === "email-leads") ? data.full_name :  (params.type === "cancel-request" || params.type === "refund-request") ? data.customer_name : data.name}
                   ></Column>
                   <Column field="email" sortable header="Email"></Column>
-                  <Column field={(params.type === "contact-enquiries" || params.type === "design-queries" || params.type === "brand-leads" || params.type === "cancel-request" || params.type === "refund-request") ? "phone_number" : (params.type === "get-in-touch") ? "mobile" : "phone_no"} sortable header="Phone Number"></Column>
+                  <Column field={(params.type === "contact-enquiries" || params.type === "design-queries" || params.type === "brand-leads" || params.type === "cancel-request" || params.type === "refund-request" || params.type === "email-leads") ? "phone_number" : (params.type === "get-in-touch") ? "mobile" : "phone_no"} sortable header="Phone Number"></Column>
                   <Column
                     field="created"
                     sortable

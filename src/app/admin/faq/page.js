@@ -132,7 +132,7 @@ const FAQ = () => {
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/faq/view/${rowData._id}`);
         },

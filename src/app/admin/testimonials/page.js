@@ -124,7 +124,7 @@ export const Testimonials = () => {
 
   const router = useRouter();
   // ============Edit button for update form===========//
-  const getActionuttons = (rowData) => {
+  const getActionButtons = (rowData) => {
     const items = [
       {
         label: "Edit",
@@ -135,7 +135,7 @@ export const Testimonials = () => {
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/testimonials/view/${rowData._id}`);
         },
@@ -356,7 +356,7 @@ export const Testimonials = () => {
                     style={{ width: "130px" }}
                     field=""
                     header="Actions"
-                    body={getActionuttons}
+                    body={getActionButtons}
                   ></Column>
                 </DataTable>
               </div>
