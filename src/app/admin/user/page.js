@@ -126,14 +126,14 @@ const User = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/user/edit/${rowData._id}`);
         },
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/user/view/${rowData._id}`);
         },
@@ -153,16 +153,7 @@ const User = () => {
       </>
     );
   };
-  const imageBodyTemplate = (data) => {
-    return (
-      <img
-        src={`${data.full_image_path}`}
-        alt={data.image}
-        className="w-6rem shadow-2 border-round"
-        height={25}
-      ></img>
-    );
-  };
+
   return (
     <>
       <Toast ref={toast} />
@@ -351,19 +342,11 @@ const User = () => {
                     style={{ cursor: "pointer" }}
                   ></Column>
                   <Column
-                    field="image"
-                    header="Image"
-                    style={{ cursor: "pointer" }}
-                    body={imageBodyTemplate}
-                    sortable
-                  ></Column>
-                  <Column
                     field="email"
                     header="Email"
                     style={{ cursor: "pointer" }}
                     sortable
                   ></Column>
-
                   <Column
                     field="phone"
                     header="Phone"
@@ -378,6 +361,7 @@ const User = () => {
                   <Column
                     field=""
                     header="Actions"
+                    style={{ width: "130px" }}
                     body={getActionButton}
                   ></Column>
                 </DataTable>

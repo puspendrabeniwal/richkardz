@@ -52,14 +52,14 @@ const EmailTemplate = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/email/edit/${rowData._id}`);
         },
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/email/view/${rowData._id}`);
         },

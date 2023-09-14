@@ -129,7 +129,7 @@ const Blocks = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/blocks/edit/${rowData._id}`);
         },
@@ -362,6 +362,7 @@ const Blocks = () => {
                   <Column
                     field=""
                     header="Actions"
+                    style={{ width: "130px" }}
                     body={getActionButton}
                   ></Column>
                 </DataTable>

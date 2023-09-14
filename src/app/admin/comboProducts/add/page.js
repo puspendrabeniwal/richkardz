@@ -4,13 +4,18 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import ComboProductForm from "../../components/ComboProductsForm";
+import { useRouter } from "next/navigation";
 const AddProduct = () => {
   const toast = useRef(null);
+  const router = useRouter();
   const handleAddProduct = async (data) => {
     instance
       .post("combo-products/add", data)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/comboProducts");
+        }
       })
       .catch((error) => {
         console.log(error);

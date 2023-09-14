@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
 import ComboProductForm from "@/app/admin/components/ComboProductsForm";
+import { useRouter } from "next/navigation";
 const UpdateProduct = ({ params }) => {
   const toast = useRef(null);
+  const router = useRouter();
   const [productData, setProductData] = useState(null);
   useEffect(() => {
     getProductDetails();
@@ -35,7 +37,10 @@ const UpdateProduct = ({ params }) => {
     instance
       .post("combo-products/edit/" + params.productId, values)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/comboProducts");
+        }
       })
       .catch((error) => {
         console.log(error);

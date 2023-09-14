@@ -32,31 +32,7 @@ const ViewFAQ = ({ params }) => {
       console.log(error);
     }
   };
-  const showMessage = (data) => {
-    toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
-      detail: data.message,
-      life: 3000,
-    });
-  };
 
-  const editFAQAPI = async (data) => {
-    const postData = {
-      answer: data.answer,
-      question: data.question,
-    };
-    try {
-      const response = await instance.post(
-        `faqs/edit/${params.faqId}`,
-        postData
-      );
-      setFaqData(response);
-      showMessage(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <>
       <Toast ref={toast} />
@@ -112,15 +88,40 @@ const ViewFAQ = ({ params }) => {
           </div>
         </div>
       </div>
-      {faqData ? (
-        <FAQDetailsPage
-          faqValue={faqData}
-          handleSubmitFaq={editFAQAPI}
-          faqId={params.faqId}
-        />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card">
+              <div className="card-body py-9">
+                {faqData ? (
+                  <table className="table-border-padding w-100">
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Question</th>
+                      <td className="table-border-padding">
+                        {faqData.question}
+                      </td>
+                    </tr>
+
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Answer</th>
+                      <td className="table-border-padding">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: faqData.answer,
+                          }}
+                        ></span>
+                      </td>
+                    </tr>
+                  </table>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

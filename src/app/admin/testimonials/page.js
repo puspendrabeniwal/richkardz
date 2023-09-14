@@ -53,7 +53,7 @@ export const Testimonials = () => {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
-        style={{cursor:"pointer"}}
+        style={{ cursor: "pointer" }}
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
         onClick={() => confirm(rowData._id, rowData.status)}
@@ -128,7 +128,7 @@ export const Testimonials = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/testimonials/edit/${rowData._id}`);
         },

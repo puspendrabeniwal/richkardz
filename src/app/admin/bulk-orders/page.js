@@ -1,24 +1,21 @@
 "use client";
 import Link from "next/link";
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { SplitButton } from 'primereact/splitbutton';
+import { SplitButton } from "primereact/splitbutton";
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
 
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 
-
 const BulkOrders = () => {
-  const router  = useRouter();
+  const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
-
 
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -45,17 +42,24 @@ const BulkOrders = () => {
   const UpdateButtonLink = (rowData) => {
     const items = [
       {
-          label: 'View',
-          icon: 'pi pi-times',
-          command: () => {
-            router.push(`/admin/bulk-orders/view/${rowData._id}`)
-          }
+        label: "View",
+        icon: "pi pi-eye",
+        command: () => {
+          router.push(`/admin/bulk-orders/view/${rowData._id}`);
+        },
       },
-
     ];
     return (
       <>
-        <SplitButton label="Action" icon="pi pi-plus" small raised text severity="secondary" model={items}/>
+        <SplitButton
+          label="Action"
+          icon="pi pi-plus"
+          small
+          raised
+          text
+          severity="secondary"
+          model={items}
+        />
       </>
     );
   };
@@ -101,9 +105,7 @@ const BulkOrders = () => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li className="breadcrumb-item text-mute">
-                  Bulk Orders
-                </li>
+                <li className="breadcrumb-item text-mute">Bulk Orders</li>
               </ul>
             </div>
             <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -158,9 +160,7 @@ const BulkOrders = () => {
                         <div className="row ">
                           <div className="col-lg-6 col-md-6">
                             <div className="mb-10">
-                              <label className="form-label fw-bold">
-                                 Name
-                              </label>
+                              <label className="form-label fw-bold">Name</label>
                               <div>
                                 <Field
                                   type="text"
@@ -286,7 +286,11 @@ const BulkOrders = () => {
                   ></Column>
                   <Column field="name" sortable header="Name"></Column>
                   <Column field="email" sortable header="Email"></Column>
-                  <Column field="phone_number" sortable header="Phone Number"></Column>
+                  <Column
+                    field="phone_number"
+                    sortable
+                    header="Phone Number"
+                  ></Column>
                   <Column
                     field="no_of_card_you_want"
                     sortable

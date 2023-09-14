@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
-import BlockDetailsPage from "@/app/admin/components/BlockDetailsPage";
 import withAuth from "@/hoc/withAuth";
 
 const ViewBlock = ({ params }) => {
@@ -27,32 +26,6 @@ const ViewBlock = ({ params }) => {
       );
       const getData = response.result ? response.result : {};
       setBlockData(getData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const showMessage = (data) => {
-    toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
-      detail: data.message,
-      life: 3000,
-    });
-  };
-
-  const editBlockAPI = async (data) => {
-    const postData = {
-      name: data.blockName,
-      title: data.title,
-      body: data.description,
-    };
-    try {
-      const response = await instance.post(
-        `blocks/edit/${params.blockId}`,
-        postData
-      );
-      setBlockData(response);
-      showMessage(response);
     } catch (error) {
       console.log(error);
     }
@@ -117,15 +90,46 @@ const ViewBlock = ({ params }) => {
           </div>
         </div>
       </div>
-      {blockData ? (
-        <BlockDetailsPage
-          blockValue={blockData}
-          handleSubmitBlock={editBlockAPI}
-          blockId={params.blockId}
-        />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card">
+              <div className="card-body py-9">
+                {blockData ? (
+                  <table
+                    className="table-border-padding w-100"
+                    //   style={{ border: " 1px solid gray" }}
+                  >
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Name</th>
+                      <td className="table-border-padding">{blockData.name}</td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Title</th>
+                      <td className="table-border-padding">
+                        {blockData.title}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Description</th>
+                      <td className="table-border-padding">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: blockData.body,
+                          }}
+                        ></span>
+                      </td>
+                    </tr>
+                  </table>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

@@ -176,14 +176,14 @@ export const ComboProducts = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/comboProducts/update/${rowData._id}`);
         },
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/comboProducts/view/${rowData._id}`);
         },

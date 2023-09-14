@@ -32,31 +32,7 @@ const ViewEmail = ({ params }) => {
       console.log(error);
     }
   };
-  const showMessage = (data) => {
-    toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
-      detail: data.message,
-      life: 3000,
-    });
-  };
-
-  const editEmailAPI = async (data) => {
-    const postData = {
-      title: data.title,
-      content: data.content,
-    };
-    try {
-      const response = await instance.post(
-        `email_template/edit/${params.emailId}`,
-        postData
-      );
-      setEmailData(response);
-      showMessage(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  console.log("email dAta", emailData);
   return (
     <main>
       <Toast ref={toast} />
@@ -112,15 +88,40 @@ const ViewEmail = ({ params }) => {
           </div>
         </div>
       </div>
-      {emailData ? (
-        <EmailDetailsPage
-          emailValue={emailData}
-          handleSubmitEmail={editEmailAPI}
-          emailId={params.emailId}
-        />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card">
+              <div className="card-body py-9">
+                {emailData ? (
+                  <table className="table-border-padding w-100">
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Title</th>
+                      <td className="table-border-padding">
+                        {emailData.title}
+                      </td>
+                    </tr>
+
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Description</th>
+                      <td className="table-border-padding">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: emailData.content,
+                          }}
+                        ></span>
+                      </td>
+                    </tr>
+                  </table>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   );
 };

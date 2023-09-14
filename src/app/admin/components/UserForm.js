@@ -44,7 +44,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     youtube: userValue ? userValue.youtube : "",
     pinterest: userValue ? userValue.pinterest : "",
     catalogue: userValue ? userValue.catalogue : "",
-    gallery: userValue ? userValue.gallery : "",
+    gallery: [],
   };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -74,8 +74,11 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     formData.append("youtube", values.youtube);
     formData.append("pinterest", values.pinterest);
     formData.append("catalogue", values.catalogue);
-    formData.append("gallery", values.gallery);
-
+    for (const gallery of values.gallery) {
+      formData.append("gallery", gallery);
+    }
+    // formData.append("gallery", values.gallery);
+    console.log("values", values);
     await handleSubmitUser(formData);
   };
   return (
@@ -555,7 +558,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                         </label>
                         <FileUpload
                           name="catalogue"
-                          accept="image/*"
+                          accept=".pdf" // Accept only PDF files
                           auto
                           customUpload
                           maxFileSize={1000000}
@@ -581,11 +584,13 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           name="gallery"
                           accept="image/*"
                           auto
+                          multiple
                           customUpload
                           maxFileSize={1000000}
                           onSelect={(event) => {
-                            const files = event.files[0];
+                            const files = event.files;
                             setFieldValue("gallery", files);
+                            console.log("imagesss", files);
                           }}
                           emptyTemplate={
                             <Image

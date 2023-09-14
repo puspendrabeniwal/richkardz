@@ -126,7 +126,7 @@ const CMS = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/cms/edit/${rowData._id}`);
         },
@@ -339,6 +339,7 @@ const CMS = () => {
                   <Column
                     field=""
                     header="Actions"
+                    style={{ width: "130px" }}
                     body={getActionButton}
                   ></Column>
                 </DataTable>

@@ -125,7 +125,7 @@ const FAQ = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/faq/edit/${rowData._id}`);
         },
