@@ -14,6 +14,7 @@ import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog 
 import { confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 export const Testimonials = () => {
   const [monialData, setMonialData] = useState([]);
   const op = useRef(null);
@@ -53,7 +54,7 @@ export const Testimonials = () => {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
-        style={{cursor:"pointer"}}
+        style={{ cursor: "pointer" }}
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
         onClick={() => confirm(rowData._id, rowData.status)}
@@ -128,7 +129,7 @@ export const Testimonials = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/testimonials/edit/${rowData._id}`);
         },
@@ -264,32 +265,25 @@ export const Testimonials = () => {
                         {/* <div className="separator border-gray-200 mb-10"></div> */}
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getMonialAPI();
                                 op.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
@@ -297,11 +291,13 @@ export const Testimonials = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/testimonials/add"
-                className="btn btn-sm btn-success"
-              >
-                Add Testimonial
+              <Link href="/admin/testimonials/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add Testimonial"
+                />
               </Link>
             </div>
           </div>

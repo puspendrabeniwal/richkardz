@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
-import MonialDetailsPage from "@/app/admin/components/MonialDetailPage";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 
 const ViewMonials = ({ params }) => {
   const toast = useRef(null);
-  const [monialData, setMonialData] = useState(null);
+  const [monialData, setMonialData] = useState([]);
   useEffect(() => {
     getMonialData();
   }, []);
@@ -32,26 +32,14 @@ const ViewMonials = ({ params }) => {
         console.log(error);
       });
   };
-
-  const showMessage = (data) => {
-    toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
-      detail: data.message,
-      life: 3000,
-    });
-  };
-
-  const editMonialAPI = async (data) => {
-    instance
-      .post(`testimonials/edit/${params.MonialId}`, data)
-      .then((response) => {
-        showMessage(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  function convertRatingToStars(rating) {
+    if (typeof rating === "number" && rating >= 1 && rating <= 5) {
+      return "*".repeat(rating);
+    } else {
+      return "";
+    }
+  }
+  const starString = convertRatingToStars(monialData.rating);
 
   return (
     <main>
@@ -101,25 +89,70 @@ const ViewMonials = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link
-                href="/admin/testimonials"
-                className="btn btn-sm btn btn-success"
-              >
-                Back
+              <Link href="/admin/testimonials">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>
         </div>
       </div>
-      {monialData ? (
-        <MonialDetailsPage
-          monialValue={monialData}
-          handleSubmitMonial={editMonialAPI}
-          MonialId={params.MonialId}
-        />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card">
+              <div className="card-body py-9">
+                {monialData ? (
+                  <table className="table-border-padding w-100">
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Name</th>
+                      <td className="table-border-padding">
+                        {monialData.name}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding ">Rating</th>
+                      <td className="table-border-padding text-success">
+                        {starString}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Image</th>
+                      <td className="table-border-padding">
+                        <img
+                          src={`${monialData.full_image_path}`}
+                          alt={monialData.image}
+                          className="w-6rem shadow-2 border-round"
+                          height={45}
+                        ></img>
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Description</th>
+                      <td className="table-border-padding">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: monialData.descripiton,
+                          }}
+                        ></span>
+                      </td>
+                    </tr>
+                  </table>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   );
 };

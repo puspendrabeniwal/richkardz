@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
+import { Button } from "primereact/button";
 
 const UpdateProduct = ({ params }) => {
   const toast = useRef(null);
@@ -101,8 +102,15 @@ const UpdateProduct = ({ params }) => {
               </ul>
             </div>
             <div className="d-flex align-items-center gap-2 gap-lg-3">
-              <Link href="/admin/comboProducts" className="btn btn-sm btn-info">
-                Back
+              <Link href="/admin/comboProducts">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>
@@ -118,104 +126,106 @@ const UpdateProduct = ({ params }) => {
             <div className="card">
               <div className="card mb-6 mb-xl-9">
                 <div className="card-body pt-9 pb-0">
-                  <table className="table-border-padding w-100">
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Product Name</th>
-                      <td className="table-border-padding">
-                        {productData.product_name}
-                      </td>
-                    </tr>
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Price</th>
-                      <td className="table-border-padding">
-                        {productData.price}
-                      </td>
-                    </tr>
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Discount Price</th>
-                      <td className="table-border-padding">
-                        {productData.discount}
-                      </td>
-                    </tr>
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Product Text</th>
-                      <td className="table-border-padding">
-                        {productData.product_text}
-                      </td>
-                    </tr>
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Combo Type</th>
-                      <td className="table-border-padding">
-                        <span
-                          className={`badge badge-light-${
-                            productData?.combo_type === 1
-                              ? "success"
-                              : productData?.combo_type === 2
-                              ? "info"
-                              : "warning"
-                          } me-auto`}
-                        >
-                          {productData?.combo_type == 1
-                            ? "PVC Glossy"
-                            : productData?.combo_type == 2
-                            ? "Metel Cards"
-                            : productData?.combo_type == 3
-                            ? "Combo"
-                            : ""}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Choose Product</th>
-                      <td className="table-border-padding">
-                        <span className={`badge badge-light me-auto`}>
-                          {cardsList.length > 0 && cardsList.join(", ")}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Is Feature</th>
-                      <td className="table-border-padding">
-                        <span
-                          className={`badge badge-light-${
-                            productData?.is_feature === 1
-                              ? "success"
-                              : "warning"
-                          } me-auto`}
-                        >
-                          {productData?.is_feature === 1 ? "Yes" : "No"}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Is New Release</th>
-                      <td className="table-border-padding">
-                        <span
-                          className={`badge badge-light-${
-                            productData?.is_new_release === 1
-                              ? "success"
-                              : "warning"
-                          } me-auto`}
-                        >
-                          {productData?.is_new_release === 1 ? "Yes" : "No"}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr className="table-border-padding">
-                      <th className="table-border-padding">Status</th>
-                      <td className="table-border-padding">
-                        <span
-                          className={`badge badge-light-${
-                            productData?.status === 1 ? "success" : "warning"
-                          } me-auto`}
-                        >
-                          {productData?.is_new_release === 1
-                            ? "Active"
-                            : "Deactive"}
-                        </span>
-                      </td>
-                    </tr>
-                  </table>
+                  {productData ? (
+                    <table className="table-border-padding w-100">
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Product Name</th>
+                        <td className="table-border-padding">
+                          {productData?.product_name}
+                        </td>
+                      </tr>
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Price</th>
+                        <td className="table-border-padding">
+                          {productData?.price}
+                        </td>
+                      </tr>
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Discount Price</th>
+                        <td className="table-border-padding">
+                          {productData?.discount}
+                        </td>
+                      </tr>
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Product Text</th>
+                        <td className="table-border-padding">
+                          {productData?.product_text}
+                        </td>
+                      </tr>
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Combo Type</th>
+                        <td className="table-border-padding">
+                          <span
+                            className={`badge badge-light-${
+                              productData?.combo_type === 1
+                                ? "success"
+                                : productData?.combo_type === 2
+                                ? "info"
+                                : "warning"
+                            } me-auto`}
+                          >
+                            {productData?.combo_type == 1
+                              ? "PVC Glossy"
+                              : productData?.combo_type == 2
+                              ? "Metel Cards"
+                              : productData?.combo_type == 3
+                              ? "Combo"
+                              : ""}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Choose Product</th>
+                        <td className="table-border-padding">
+                          <span className={`badge badge-light me-auto`}>
+                            {cardsList.length > 0 && cardsList.join(", ")}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Is Feature</th>
+                        <td className="table-border-padding">
+                          <span
+                            className={`badge badge-light-${
+                              productData?.is_feature === 1
+                                ? "success"
+                                : "warning"
+                            } me-auto`}
+                          >
+                            {productData?.is_feature === 1 ? "Yes" : "No"}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Is New Release</th>
+                        <td className="table-border-padding">
+                          <span
+                            className={`badge badge-light-${
+                              productData?.is_new_release === 1
+                                ? "success"
+                                : "warning"
+                            } me-auto`}
+                          >
+                            {productData?.is_new_release === 1 ? "Yes" : "No"}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr className="table-border-padding">
+                        <th className="table-border-padding">Status</th>
+                        <td className="table-border-padding">
+                          <span
+                            className={`badge badge-light-${
+                              productData?.status === 1 ? "success" : "warning"
+                            } me-auto`}
+                          >
+                            {productData?.is_new_release === 1
+                              ? "Active"
+                              : "Deactive"}
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
+                  ) : null}
                 </div>
               </div>
             </div>

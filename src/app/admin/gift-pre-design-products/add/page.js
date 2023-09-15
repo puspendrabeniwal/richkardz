@@ -1,30 +1,32 @@
 "use client";
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import GiftProductForm from "../../components/GiftProductForm";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 
 const AddProduct = () => {
-    const router = useRouter();
-    const toast = useRef(null);
-    const handleAddProduct = async (data) => {
-        instance.post("gift_pre_design_product/add", data)
-        .then(response => {
-            showMessage(response)
-            router.push(`/admin/gift-pre-design-products`)
-        })
-        .catch(error => {
-            console.log(error);
-        });
-    };
+  const router = useRouter();
+  const toast = useRef(null);
+  const handleAddProduct = async (data) => {
+    instance
+      .post("gift_pre_design_product/add", data)
+      .then((response) => {
+        showMessage(response);
+        router.push(`/admin/gift-pre-design-products`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const showMessage = (data) => {
     toast.current.show({
-      severity: (data.status) ? "success" : "error",
-      summary: (data.status) ? "Success" : "Error",
+      severity: data.status ? "success" : "error",
+      summary: data.status ? "Success" : "Error",
       detail: data.message,
       life: 3000,
     });
@@ -63,13 +65,26 @@ const AddProduct = () => {
                     </div>
                 </div>
             </div>
-        </div>
-        <GiftProductForm
-            productValue={null}
-            handleSubmitProduct={handleAddProduct}
-            productId={null}
 
-        />
+            <div className="d-flex align-items-center gap-2 gap-lg-3">
+              <Link href="/admin/gift-pre-design-products">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  icon="pi pi-arrow-left"
+                />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+      <GiftProductForm
+        productValue={null}
+        handleSubmitProduct={handleAddProduct}
+        productId={null}
+      />
     </>
   );
 };

@@ -13,6 +13,7 @@ import withAuth from "@/hoc/withAuth";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
 const FAQ = () => {
   const [faqData, setFaqData] = useState([]);
   const op = useRef(null);
@@ -125,7 +126,7 @@ const FAQ = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/faq/edit/${rowData._id}`);
         },
@@ -252,32 +253,25 @@ const FAQ = () => {
                         {/* <div className="separator border-gray-200 mb-10"></div> */}
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getFAQAPI();
                                 op.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
@@ -285,8 +279,13 @@ const FAQ = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/faq/add" className="btn btn-sm btn-success">
-                Add FAQ
+              <Link href="/admin/faq/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add FAQ"
+                />
               </Link>
             </div>
           </div>

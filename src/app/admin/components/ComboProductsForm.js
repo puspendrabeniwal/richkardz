@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { MultiSelect } from "primereact/multiselect";
 import instance from "../axiosInterceptor";
+import Link from "next/link";
+import { Button } from "primereact/button";
 
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
@@ -19,20 +21,6 @@ const validationSchema = Yup.object().shape({
     .min(1, "Choose atleast 1 product")
     .max(3, "maximum 3 products required"),
   //   product_ids: Yup.array().required("Choose min 3 products is required"),
-  status: Yup.string().required("Status is required"),
-});
-
-const validationSchemaEdit = Yup.object().shape({
-  product_name: Yup.string().required("Name is required"),
-  price: Yup.number()
-    .typeError("Price must be a number")
-    .required("Price is required"),
-  discount: Yup.string().required("Discount price is required"),
-  product_text: Yup.string().required("Product Text is required"),
-  combo_type: Yup.string().required("Combo Type is required"),
-  product_ids: Yup.array().required("Choose min 3 products is required"),
-  is_feature: Yup.string().required("Is Feature is required"),
-  is_new_release: Yup.string().required("Is new Release is required"),
   status: Yup.string().required("Status is required"),
 });
 
@@ -59,6 +47,7 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     Object.keys(values).forEach(function (key, index) {
       formData.append(key, values[key]);
     });
+
     await handleSubmitProduct(formData);
   };
   const formRef = useRef(null);
@@ -108,13 +97,12 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                 <Formik
                   innerRef={formRef}
                   initialValues={defaultValues}
-                  validationSchema={
-                    productId ? validationSchemaEdit : validationSchema
-                  }
+                  validationSchema={validationSchema}
                   onSubmit={async (values) => await onSubmit(values)}
                 >
-                  {({ setFieldValue, values }) => (
+                  {({ setFieldValue, values, handleBlur }) => (
                     <Form className="form-design">
+                      {console.log("formref", formRef.current)}
                       <div className="row mb-3">
                         <div className="col-lg-6 col-md-6">
                           <label
@@ -256,6 +244,7 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               maxSelectedLabels={3}
                               className="w-full md:w-20rem"
                               name="product_ids"
+                              onBlur={handleBlur}
                               display="chip"
                             />
                           </div>
@@ -343,23 +332,23 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         </div>
                       </div>
 
-                      <div>
-                        <button
-                          type="submit"
-                          className="btn btn btn-success me-3"
+                      <div className="mt-7">
+                        <Button
+                          className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                        >
-                          Submit
-                        </button>
-                        <button
-                          type="reset"
-                          className="btn btn btn-warning me-3"
-                          data-kt-menu-trigger="click"
-                          data-kt-menu-placement="bottom-end"
-                        >
-                          Cancel
-                        </button>
+                          icon="pi pi-check"
+                          label={productId ? "Update" : "Submit"}
+                        />
+                        <Link href="/admin/comboProducts ">
+                          <Button
+                            className="btn btn btn-danger btn-sm me-3"
+                            data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end"
+                            icon="pi pi-times"
+                            label="Cancel"
+                          />
+                        </Link>
                       </div>
                     </Form>
                   )}

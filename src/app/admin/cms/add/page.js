@@ -5,9 +5,12 @@ import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import Link from "next/link";
 import withAuth from "@/hoc/withAuth";
+import { useRouter } from "next/navigation";
+import { Button } from "primereact/button";
 
 const AddCms = () => {
   const toast = useRef(null);
+  const router = useRouter();
   const addCmsAPI = async (data) => {
     const postData = {
       type: data.name,
@@ -16,7 +19,10 @@ const AddCms = () => {
     };
     try {
       const response = await instance.post(`cms/add`, postData);
-      showMessage(response);
+      if (response) {
+        showMessage(response);
+        router.push("/admin/cms");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -78,13 +84,15 @@ const AddCms = () => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/cms" className="btn btn-sm btn btn-success">
-                Back
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+              <Link href="/admin/cms">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

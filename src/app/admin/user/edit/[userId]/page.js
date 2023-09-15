@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import withAuth from "@/hoc/withAuth";
 import UserForm from "@/app/admin/components/UserForm";
+import { Button } from "primereact/button";
 
 const UpdateUser = ({ params }) => {
   const toast = useRef(null);
@@ -99,8 +100,15 @@ const UpdateUser = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/user" className="btn btn-sm btn btn-success">
-                Back
+              <Link href="/admin/user">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

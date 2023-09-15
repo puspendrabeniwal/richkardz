@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import { Editor } from "primereact/editor";
+import { Button } from "primereact/button";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -164,16 +165,23 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
                         </div>
                       </div>
 
-                      <div>
-                        <button
-                          type="submit"
-                          className="btn btn btn-success me-3"
+                      <div className="mt-7">
+                        <Button
+                          className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                          disabled={isSubmitting}
-                        >
-                          {MonialId ? "Update" : "Add"}
-                        </button>
+                          icon="pi pi-check"
+                          label={MonialId ? "Update" : "Submit"}
+                        />
+                        <Link href="/admin/testimonials ">
+                          <Button
+                            className="btn btn btn-danger btn-sm me-3"
+                            data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end"
+                            icon="pi pi-times"
+                            label="Cancel"
+                          />
+                        </Link>
                       </div>
                     </Form>
                   )}

@@ -13,6 +13,7 @@ import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog 
 import { confirmDialog } from "primereact/confirmdialog";
 import withAuth from "@/hoc/withAuth";
 import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
 
 const Blocks = () => {
   const [blockData, setBlockData] = useState([]);
@@ -129,7 +130,7 @@ const Blocks = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/blocks/edit/${rowData._id}`);
         },
@@ -271,32 +272,25 @@ const Blocks = () => {
                         {/* <div className="separator border-gray-200 mb-10"></div> */}
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getBlockAPI();
                                 op.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
@@ -304,16 +298,14 @@ const Blocks = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/blocks/add"
-                className="btn btn-sm btn btn-success"
-              >
-                Add Block
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+
+              <Link href="/admin/blocks/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add Block"
+                />
               </Link>
             </div>
           </div>
@@ -362,6 +354,7 @@ const Blocks = () => {
                   <Column
                     field=""
                     header="Actions"
+                    style={{ width: "130px" }}
                     body={getActionButton}
                   ></Column>
                 </DataTable>

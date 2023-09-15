@@ -4,16 +4,19 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 
 const ViewUser = ({ params }) => {
   const toast = useRef(null);
 
   const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     getUserData();
   }, []);
 
   const getUserData = async () => {
+    setIsLoading(true);
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData(); //formdata object
     formData.append(
@@ -25,11 +28,12 @@ const ViewUser = ({ params }) => {
     instance
       .post("users/view/" + params.userId, formData)
       .then((response) => {
-        let data = response.result ? response.result : {};
-        setUserData(data);
+        setUserData(response.result);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
       });
   };
   return (
@@ -78,13 +82,21 @@ const ViewUser = ({ params }) => {
               </ul>
             </div>
             <div className="d-flex align-items-center gap-2 gap-lg-3">
-              <Link href="/admin/user" className="btn btn-sm btn-info">
-                Back
+              <Link href="/admin/user">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>
         </div>
       </div>
+
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
@@ -93,11 +105,20 @@ const ViewUser = ({ params }) => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card">
               <div className="card-body py-9">
-                {userData ? (
+                {!userData ? (
+                  isLoading ? (
+                    <div>Loading...</div>
+                  ) : (
+                    <div> User Data is Not Found</div>
+                  )
+                ) : (
                   <table className="table-border-padding w-100">
                     <tr className="table-border-padding pl-3">
                       <h3
-                        style={{ marginLeft: "10px", padding: "11px 2px 3px" }}
+                        style={{
+                          marginLeft: "10px",
+                          padding: "11px 2px 3px",
+                        }}
                       >
                         PERSONAL DETAILS
                       </h3>
@@ -105,41 +126,45 @@ const ViewUser = ({ params }) => {
                     <tr className="table-border-padding">
                       <th className="table-border-padding">Full Name</th>
                       <td className="table-border-padding">
-                        {userData.full_name}
+                        {userData?.full_name ? userData?.full_name : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Contact Number</th>
-                      <td className="table-border-padding">{userData.phone}</td>
+                      <td className="table-border-padding">
+                        {userData?.phone ? userData?.phone : ""}
+                      </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">
                         Alternate Contact Number
                       </th>
                       <td className="table-border-padding">
-                        {userData.mobile}
+                        {userData?.mobile ? userData?.mobile : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Company Name</th>
                       <td className="table-border-padding">
-                        {userData.company_name}
+                        {userData?.company_name ? userData?.company_name : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Designation</th>
                       <td className="table-border-padding">
-                        {userData.designation}
+                        {userData?.designation ? userData?.designation : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Email</th>
-                      <td className="table-border-padding">{userData.email}</td>
+                      <td className="table-border-padding">
+                        {userData?.email ? userData?.email : ""}
+                      </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Website Link</th>
                       <td className="table-border-padding">
-                        {userData.website_link}
+                        {userData?.website_link ? userData?.website_link : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
@@ -160,12 +185,14 @@ const ViewUser = ({ params }) => {
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">About</th>
-                      <td className="table-border-padding">{userData.about}</td>
+                      <td className="table-border-padding">
+                        {userData?.about ? userData?.about : ""}
+                      </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Address</th>
                       <td className="table-border-padding">
-                        {userData.address}
+                        {userData?.address ? userData?.address : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
@@ -173,27 +200,29 @@ const ViewUser = ({ params }) => {
                         Nature of Business
                       </th>
                       <td className="table-border-padding">
-                        {userData.nature_of_business}
+                        {userData?.nature_of_business
+                          ? userData?.nature_of_business
+                          : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Pin Code</th>
                       <td className="table-border-padding">
-                        {userData.pincode}
+                        {userData?.pincode ? userData?.pincode : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Google map link</th>
                       <td className="table-border-padding">
-                        {userData.google_link}
+                        {userData?.google_link ? userData?.google_link : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Profile Image</th>
                       <td className="table-border-padding">
                         <img
-                          src={`${userData.full_image_path}`}
-                          alt={userData.image}
+                          src={`https://mern.richkardz.com/uploads/user/${userData.profile_image}`}
+                          alt={userData?.profile_image}
                           className="w-6rem shadow-2 border-round"
                           height={45}
                         ></img>
@@ -203,8 +232,9 @@ const ViewUser = ({ params }) => {
                       <th className="table-border-padding ">Banner Image</th>
                       <td className="table-border-padding">
                         <img
-                          src={`${userData.full_image_path}`}
-                          alt={userData.image}
+                          src={`https://mern.richkardz.com/uploads/user/${userData.banner_image}`}
+                          // src={`${userData?.full_image_path}`}
+                          alt={userData?.banner_image}
                           className="w-6rem shadow-2 border-round"
                           height={45}
                         ></img>
@@ -216,8 +246,8 @@ const ViewUser = ({ params }) => {
                       </th>
                       <td className="table-border-padding">
                         <img
-                          src={`${userData.full_image_path}`}
-                          alt={userData.image}
+                          src={`https://mern.richkardz.com/uploads/user/${userData.upi_scannaer}`}
+                          alt={userData?.upi_scannaer}
                           className="w-6rem shadow-2 border-round"
                           height={45}
                         ></img>
@@ -225,7 +255,10 @@ const ViewUser = ({ params }) => {
                     </tr>
                     <tr className="table-border-padding pl-3">
                       <h3
-                        style={{ marginLeft: "10px", padding: "11px 2px 3px" }}
+                        style={{
+                          marginLeft: "10px",
+                          padding: "11px 2px 3px",
+                        }}
                       >
                         SOCIAL MEDIA DETAILS
                       </h3>
@@ -233,69 +266,82 @@ const ViewUser = ({ params }) => {
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Facebook</th>
                       <td className="table-border-padding">
-                        {userData.facebook}
+                        {userData?.facebook ? userData?.facebook : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Instagram</th>
                       <td className="table-border-padding">
-                        {userData.instagram}
+                        {userData?.instagram ? userData?.instagram : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Linkedin</th>
                       <td className="table-border-padding">
-                        {userData.linkedin}
+                        {userData?.linkedin ? userData?.linkedin : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Twitter</th>
                       <td className="table-border-padding">
-                        {userData.twitter}
+                        {userData?.twitter ? userData?.twitter : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Whatsapp</th>
                       <td className="table-border-padding">
-                        {userData.whatsapp}
+                        {userData?.whatsapp ? userData?.whatsapp : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Youtube</th>
                       <td className="table-border-padding">
-                        {userData.youtube}
+                        {userData?.youtube ? userData?.youtube : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Pinterest</th>
                       <td className="table-border-padding">
-                        {userData.pinterest}
+                        {userData?.pinterest ? userData?.pinterest : ""}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Catalogue</th>
                       <td className="table-border-padding">
-                        <img
-                          src={`${userData.full_image_path}`}
-                          alt={userData.image}
-                          className="w-6rem shadow-2 border-round"
-                          height={45}
-                        ></img>
+                        {userData && userData.catalogue ? (
+                          <a
+                            href={`https://mern.richkardz.com/uploads/user/${userData.catalogue}`}
+                            target="_blank" // Opens the link in a new tab/window
+                            rel="noopener noreferrer" // Recommended for security reasons
+                          >
+                            View Catalogue (PDF)
+                          </a>
+                        ) : (
+                          "No catalogue available"
+                        )}
                       </td>
                     </tr>
                     <tr className="table-border-padding">
                       <th className="table-border-padding ">Gallery</th>
                       <td className="table-border-padding">
-                        <img
-                          src={`${userData.full_image_path}`}
-                          alt={userData.image}
-                          className="w-6rem shadow-2 border-round"
-                          height={45}
-                        ></img>
+                        <div className="d-flex flex-row p-3">
+                          {userData.gallery?.map((image, index) => (
+                            <div key={index}>
+                              <div key={index} className="p-2">
+                                <img
+                                  src={`https://mern.richkardz.com/uploads/user/${image.name}`}
+                                  alt={userData?.image}
+                                  className="w-6rem shadow-2 border-round"
+                                  height={45}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </td>
                     </tr>
                   </table>
-                ) : null}
+                )}
               </div>
             </div>
           </div>

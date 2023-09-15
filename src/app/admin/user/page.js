@@ -13,6 +13,7 @@ import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog 
 import { confirmDialog } from "primereact/confirmdialog";
 import withAuth from "@/hoc/withAuth";
 import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
 
 const User = () => {
   const [userData, setUserData] = useState([]);
@@ -126,14 +127,14 @@ const User = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/user/edit/${rowData._id}`);
         },
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/user/view/${rowData._id}`);
         },
@@ -153,16 +154,7 @@ const User = () => {
       </>
     );
   };
-  const imageBodyTemplate = (data) => {
-    return (
-      <img
-        src={`${data.full_image_path}`}
-        alt={data.image}
-        className="w-6rem shadow-2 border-round"
-        height={25}
-      ></img>
-    );
-  };
+
   return (
     <>
       <Toast ref={toast} />
@@ -278,32 +270,25 @@ const User = () => {
                         {/* <div className="separator border-gray-200 mb-10"></div> */}
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getUserAPI();
                                 op.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
@@ -311,11 +296,13 @@ const User = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/user/add"
-                className="btn btn-sm btn btn-success"
-              >
-                Add User
+              <Link href="/admin/user/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add User"
+                />
               </Link>
             </div>
           </div>
@@ -351,19 +338,11 @@ const User = () => {
                     style={{ cursor: "pointer" }}
                   ></Column>
                   <Column
-                    field="image"
-                    header="Image"
-                    style={{ cursor: "pointer" }}
-                    body={imageBodyTemplate}
-                    sortable
-                  ></Column>
-                  <Column
                     field="email"
                     header="Email"
                     style={{ cursor: "pointer" }}
                     sortable
                   ></Column>
-
                   <Column
                     field="phone"
                     header="Phone"
@@ -378,6 +357,7 @@ const User = () => {
                   <Column
                     field=""
                     header="Actions"
+                    style={{ width: "130px" }}
                     body={getActionButton}
                   ></Column>
                 </DataTable>

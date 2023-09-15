@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { SplitButton } from "primereact/splitbutton";
 import { Toast } from "primereact/toast";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 const CMS = () => {
   const [cmsData, setCmsData] = useState([]);
   const op = useRef(null);
@@ -126,7 +127,7 @@ const CMS = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/cms/edit/${rowData._id}`);
         },
@@ -251,32 +252,25 @@ const CMS = () => {
                         {/* <div className="separator border-gray-200 mb-10"></div> */}
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getCmsAPI();
                                 op.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
@@ -284,13 +278,13 @@ const CMS = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/cms/add" className="btn btn-sm btn-success">
-                Add CMS
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+              <Link href="/admin/cms/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add CMS"
+                />
               </Link>
             </div>
           </div>
@@ -339,6 +333,7 @@ const CMS = () => {
                   <Column
                     field=""
                     header="Actions"
+                    style={{ width: "130px" }}
                     body={getActionButton}
                   ></Column>
                 </DataTable>

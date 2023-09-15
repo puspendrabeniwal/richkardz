@@ -1,6 +1,5 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
-import FAQDetailsPage from "@/app/admin/components/FAQDetailPage";
 import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
@@ -32,31 +31,7 @@ const ViewFAQ = ({ params }) => {
       console.log(error);
     }
   };
-  const showMessage = (data) => {
-    toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
-      detail: data.message,
-      life: 3000,
-    });
-  };
 
-  const editFAQAPI = async (data) => {
-    const postData = {
-      answer: data.answer,
-      question: data.question,
-    };
-    try {
-      const response = await instance.post(
-        `faqs/edit/${params.faqId}`,
-        postData
-      );
-      setFaqData(response);
-      showMessage(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <>
       <Toast ref={toast} />
@@ -105,22 +80,53 @@ const ViewFAQ = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/faq" className="btn btn-sm btn btn-success">
-                Back
+              <Link href="/admin/faq">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>
         </div>
       </div>
-      {faqData ? (
-        <FAQDetailsPage
-          faqValue={faqData}
-          handleSubmitFaq={editFAQAPI}
-          faqId={params.faqId}
-        />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card">
+              <div className="card-body py-9">
+                {faqData ? (
+                  <table className="table-border-padding w-100">
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Question</th>
+                      <td className="table-border-padding">
+                        {faqData.question}
+                      </td>
+                    </tr>
+
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Answer</th>
+                      <td className="table-border-padding">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: faqData.answer,
+                          }}
+                        ></span>
+                      </td>
+                    </tr>
+                  </table>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
