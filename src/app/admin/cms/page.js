@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { SplitButton } from "primereact/splitbutton";
 import { Toast } from "primereact/toast";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 const CMS = () => {
   const [cmsData, setCmsData] = useState([]);
   const op = useRef(null);
@@ -284,13 +285,13 @@ const CMS = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/cms/add" className="btn btn-sm btn-success">
-                Add CMS
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+              <Link href="/admin/cms/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add CMS"
+                />
               </Link>
             </div>
           </div>

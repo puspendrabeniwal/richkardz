@@ -3,6 +3,8 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Editor } from "primereact/editor";
+import { Button } from "primereact/button";
+import Link from "next/link";
 
 const validationSchema = Yup.object().shape({
   question: Yup.string().required("Question is required"),
@@ -95,15 +97,22 @@ const FaqForm = ({ faqValue, handleSubmitFaq, faqId }) => {
                       </div>
 
                       <div>
-                        <button
-                          type="submit"
-                          className="btn btn btn-success me-3"
+                        <Button
+                          className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                          disabled={isSubmitting}
-                        >
-                          {faqId ? "Update" : "Add"}
-                        </button>
+                          icon="pi pi-check"
+                          label={faqId ? "Update" : "Submit"}
+                        />
+                        <Link href="/admin/faq ">
+                          <Button
+                            className="btn btn btn-danger btn-sm me-3"
+                            data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end"
+                            icon="pi pi-times"
+                            label="Cancel"
+                          />
+                        </Link>
                       </div>
                     </Form>
                   )}

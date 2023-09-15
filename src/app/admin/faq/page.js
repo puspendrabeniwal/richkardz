@@ -13,6 +13,7 @@ import withAuth from "@/hoc/withAuth";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
 const FAQ = () => {
   const [faqData, setFaqData] = useState([]);
   const op = useRef(null);
@@ -285,8 +286,13 @@ const FAQ = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/faq/add" className="btn btn-sm btn-success">
-                Add FAQ
+              <Link href="/admin/faq/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add FAQ"
+                />
               </Link>
             </div>
           </div>

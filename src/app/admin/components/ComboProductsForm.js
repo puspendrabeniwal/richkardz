@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { MultiSelect } from "primereact/multiselect";
 import instance from "../axiosInterceptor";
+import Link from "next/link";
+import { Button } from "primereact/button";
 
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
@@ -331,22 +333,22 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                       </div>
 
                       <div>
-                        <button
-                          type="submit"
-                          className="btn btn btn-success me-3"
+                        <Button
+                          className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                        >
-                          Submit
-                        </button>
-                        <button
-                          type="reset"
-                          className="btn btn btn-warning me-3"
-                          data-kt-menu-trigger="click"
-                          data-kt-menu-placement="bottom-end"
-                        >
-                          Cancel
-                        </button>
+                          icon="pi pi-check"
+                          label={productId ? "Update" : "Submit"}
+                        />
+                        <Link href="/admin/comboProducts ">
+                          <Button
+                            className="btn btn btn-danger btn-sm me-3"
+                            data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end"
+                            icon="pi pi-times"
+                            label="Cancel"
+                          />
+                        </Link>
                       </div>
                     </Form>
                   )}

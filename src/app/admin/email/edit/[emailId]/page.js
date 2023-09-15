@@ -3,11 +3,14 @@ import instance from "@/app/admin/axiosInterceptor";
 import EmailTempForm from "@/app/admin/components/EmailTempForm";
 import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
 
 const UpdateEmail = ({ params }) => {
   const toast = useRef(null);
+  const router = useRouter();
   const [emailData, setEmailData] = useState(null);
 
   useEffect(() => {
@@ -51,8 +54,11 @@ const UpdateEmail = ({ params }) => {
         `email_template/edit/${params.emailId}`,
         postData
       );
-      setEmailData(response);
-      showMessage(response);
+      if (response) {
+        showMessage(response);
+        router.push("/admin/email");
+        setEmailData(response);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -105,8 +111,15 @@ const UpdateEmail = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/email" className="btn btn-sm btn btn-success">
-                Back
+              <Link href="/admin/email">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

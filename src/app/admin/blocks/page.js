@@ -13,6 +13,7 @@ import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog 
 import { confirmDialog } from "primereact/confirmdialog";
 import withAuth from "@/hoc/withAuth";
 import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
 
 const Blocks = () => {
   const [blockData, setBlockData] = useState([]);
@@ -304,16 +305,14 @@ const Blocks = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/blocks/add"
-                className="btn btn-sm btn btn-success"
-              >
-                Add Block
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+
+              <Link href="/admin/blocks/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add Block"
+                />
               </Link>
             </div>
           </div>

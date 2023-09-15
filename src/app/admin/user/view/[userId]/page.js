@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 
 const ViewUser = ({ params }) => {
   const toast = useRef(null);
@@ -81,8 +82,15 @@ const ViewUser = ({ params }) => {
               </ul>
             </div>
             <div className="d-flex align-items-center gap-2 gap-lg-3">
-              <Link href="/admin/user" className="btn btn-sm btn-info">
-                Back
+              <Link href="/admin/user">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

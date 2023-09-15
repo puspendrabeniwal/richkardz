@@ -10,6 +10,7 @@ import instance from "../axiosInterceptor";
 import { useRouter } from "next/navigation";
 import { SplitButton } from "primereact/splitbutton";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 const EmailTemplate = () => {
   const [emailData, setEmailData] = useState([]);
   const op = useRef(null);
@@ -211,8 +212,13 @@ const EmailTemplate = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/email/add" className="btn btn-sm btn-success">
-                Add Email
+              <Link href="/admin/email/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add Email"
+                />
               </Link>
             </div>
           </div>

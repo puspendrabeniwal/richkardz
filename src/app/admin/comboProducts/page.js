@@ -13,6 +13,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 export const ComboProducts = () => {
   const router = useRouter();
   const [products, setProducts] = useState([]);
@@ -400,11 +401,13 @@ export const ComboProducts = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/comboProducts/add"
-                className="btn btn-sm btn-info"
-              >
-                Add Combo Product
+              <Link href="/admin/comboProducts/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add Combo Product"
+                />
               </Link>
             </div>
           </div>

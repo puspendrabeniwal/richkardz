@@ -3,11 +3,13 @@ import instance from "@/app/admin/axiosInterceptor";
 import FaqForm from "@/app/admin/components/FAQForm";
 import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
 
 const UpdateFAQ = ({ params }) => {
   const toast = useRef(null);
+  const router = useRouter();
   const [faqData, setFaqData] = useState(null);
 
   useEffect(() => {
@@ -51,8 +53,11 @@ const UpdateFAQ = ({ params }) => {
         `faqs/edit/${params.faqId}`,
         postData
       );
-      setFaqData(response);
-      showMessage(response);
+      if (response) {
+        showMessage(response);
+        router.push("/admin/faq");
+        setFaqData(response);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -105,8 +110,15 @@ const UpdateFAQ = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/faq" className="btn btn-sm btn btn-success">
-                Back
+              <Link href="/admin/faq">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

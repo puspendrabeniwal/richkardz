@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 const ViewCms = ({ params }) => {
   const toast = useRef(null);
   const [cmsData, setCmsData] = useState(null);
@@ -79,13 +80,15 @@ const ViewCms = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/cms" className="btn btn-sm btn btn-success">
-                Back
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+              <Link href="/admin/cms">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

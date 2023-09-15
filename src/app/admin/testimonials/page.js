@@ -14,6 +14,7 @@ import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog 
 import { confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 export const Testimonials = () => {
   const [monialData, setMonialData] = useState([]);
   const op = useRef(null);
@@ -297,11 +298,13 @@ export const Testimonials = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/testimonials/add"
-                className="btn btn-sm btn-success"
-              >
-                Add Testimonial
+              <Link href="/admin/testimonials/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add Testimonial"
+                />
               </Link>
             </div>
           </div>

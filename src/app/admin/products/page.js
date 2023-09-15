@@ -13,6 +13,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 
 export const Products = () => {
   let formData = new FormData(); //formdata object
@@ -400,8 +401,13 @@ export const Products = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/products/add" className="btn btn-sm btn-info">
-                Add Product
+              <Link href="/admin/products/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Add Product"
+                />
               </Link>
             </div>
           </div>

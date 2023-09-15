@@ -5,6 +5,7 @@ import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import MonialDetailsPage from "@/app/admin/components/MonialDetailPage";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 
 const ViewMonials = ({ params }) => {
   const toast = useRef(null);
@@ -101,11 +102,15 @@ const ViewMonials = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link
-                href="/admin/testimonials"
-                className="btn btn-sm btn btn-success"
-              >
-                Back
+              <Link href="/admin/testimonials">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

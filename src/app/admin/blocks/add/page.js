@@ -5,9 +5,12 @@ import instance from "../../axiosInterceptor";
 import { Toast } from "primereact/toast";
 import Link from "next/link";
 import withAuth from "@/hoc/withAuth";
+import { useRouter } from "next/navigation";
+import { Button } from "primereact/button";
 
 const AddBlocks = () => {
   const toast = useRef(null);
+  const router = useRouter();
   const addBlockAPI = async (data) => {
     const postData = {
       name: data.blockName,
@@ -16,7 +19,10 @@ const AddBlocks = () => {
     };
     try {
       const response = await instance.post(`blocks/add`, postData);
-      showMessage(response);
+      if (response) {
+        showMessage(response);
+        router.push("/admin/blocks");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -77,13 +83,14 @@ const AddBlocks = () => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/blocks" className="btn btn-sm btn btn-success">
-                Back
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+              <Link href="/admin/blocks">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>
