@@ -201,7 +201,7 @@ const Blocks = () => {
                   }}
                   aria-haspopup
                   aria-controls="overlay_panel"
-                  className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
+                  className="btn btn-sm btn-flex btn-primary btn-active-primary fw-bolder"
                 >
                   <span className="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
                     <svg
@@ -304,7 +304,8 @@ const Blocks = () => {
                   className="btn btn btn-info btn-sm me-3"
                   data-kt-menu-trigger="click"
                   data-kt-menu-placement="bottom-end"
-                  label="Add Block"
+                  label="Block"
+                  icon="pi pi-plus"
                 />
               </Link>
             </div>

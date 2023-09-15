@@ -79,8 +79,6 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     for (const gallery of values.gallery) {
       formData.append("gallery", gallery);
     }
-    // formData.append("gallery", values.gallery);
-    console.log("values", values);
     await handleSubmitUser(formData);
   };
   return (
@@ -376,7 +374,9 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           }}
                           emptyTemplate={
                             <Image
-                              src={userValue?.full_image_path}
+                              src={`${
+                                userValue?.image_url + userValue?.profile_image
+                              }`}
                               height="70px"
                               width="100px"
                               alt="Image"
@@ -400,7 +400,9 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           }}
                           emptyTemplate={
                             <Image
-                              src={userValue?.full_image_path}
+                              src={`${
+                                userValue?.image_url + userValue?.banner_image
+                              }`}
                               height="70px"
                               width="100px"
                               alt="Image"
@@ -424,7 +426,9 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           }}
                           emptyTemplate={
                             <Image
-                              src={userValue?.full_image_path}
+                              src={`${
+                                userValue?.image_url + userValue?.upi_scannaer
+                              }`}
                               height="70px"
                               width="100px"
                               alt="Image"
@@ -569,12 +573,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             setFieldValue("catalogue", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={userValue?.full_image_path}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div>
+                              {userValue?.catalogue ? (
+                                <a
+                                  href={`${
+                                    userValue?.image_url + userValue?.catalogue
+                                  }`}
+                                  target="_blank" // Opens the link in a new tab/window
+                                  rel="noopener noreferrer" // Recommended for security reasons
+                                >
+                                  View Catalogue (PDF)
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           }
                         />
                       </div>
@@ -592,15 +605,20 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           onSelect={(event) => {
                             const files = event.files;
                             setFieldValue("gallery", files);
-                            console.log("imagesss", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={userValue?.full_image_path}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div className="d-flex flex-wrap">
+                              {userValue?.gallery.map((image, index) => (
+                                <div key={index} className="m-2">
+                                  <Image
+                                    src={`${userValue?.image_url + image.name}`}
+                                    height="70px"
+                                    width="100px"
+                                    alt="Image"
+                                  />
+                                </div>
+                              ))}
+                            </div>
                           }
                         />
                       </div>
@@ -609,8 +627,8 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                          icon="pi pi-check"
-                          label={userId ? "Update" : "Submit"}
+                          icon="pi pi-save"
+                          label="Submit"
                         />
                         <Link href="/admin/user ">
                           <Button

@@ -132,8 +132,8 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
                           disabled={isLoading}
-                          icon="pi pi-check"
-                          label={blockId ? "Update" : "Submit"}
+                          icon="pi pi-save"
+                          label="Submit"
                         />
                         <Link href="/admin/blocks ">
                           <Button

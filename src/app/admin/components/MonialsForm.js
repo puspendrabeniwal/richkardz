@@ -170,8 +170,8 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
                           className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                          icon="pi pi-check"
-                          label={MonialId ? "Update" : "Submit"}
+                          icon="pi pi-save"
+                          label="Submit"
                         />
                         <Link href="/admin/testimonials ">
                           <Button
