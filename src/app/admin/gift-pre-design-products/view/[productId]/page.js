@@ -98,7 +98,6 @@ const UpdateProduct = ({ params }) => {
       <div
         className="content d-flex flex-column flex-column-fluid"
         id="kt_content"
-        style={{ height: "750px" }}
       >
         <div className=" d-flex flex-column-fluid" id="kt_post">
           <div id="kt_content_container" className="container-xxl">

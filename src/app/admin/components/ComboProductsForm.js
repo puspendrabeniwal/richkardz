@@ -337,8 +337,8 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                          icon="pi pi-check"
-                          label={productId ? "Update" : "Submit"}
+                          icon="pi pi-save"
+                          label="Submit"
                         />
                         <Link href="/admin/comboProducts ">
                           <Button

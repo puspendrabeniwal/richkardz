@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Tag } from "primereact/tag";
+import { Button } from "primereact/button";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Toast } from "primereact/toast";
 import { SplitButton } from "primereact/splitbutton";
@@ -381,9 +382,14 @@ const GiftPreDesignProducts = () => {
               </div>
               <Link
                 href="/admin/gift-pre-design-products/add"
-                className="btn btn-sm btn-info"
               >
-                Add Product
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Product"
+                  icon="pi pi-plus"
+                />
               </Link>
             </div>
           </div>
