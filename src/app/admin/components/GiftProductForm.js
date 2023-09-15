@@ -257,7 +257,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         </div>
                       </div>
 
-                      <div>
+                      <div className="mt-7">
                         <Button
                           className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"

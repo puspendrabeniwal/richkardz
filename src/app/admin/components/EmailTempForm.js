@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Editor } from "primereact/editor";
 import { Button } from "primereact/button";
+import Link from "next/link";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
@@ -96,7 +97,7 @@ const EmailTempForm = ({ emailValue, handleSubmitEmail, emailId }) => {
                         />
                       </div>
 
-                      <div>
+                      <div className="mt-7">
                         <Button
                           className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"

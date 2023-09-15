@@ -1,6 +1,5 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
-import EmailDetailsPage from "@/app/admin/components/EmailDetailPage";
 import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
 import { Button } from "primereact/button";

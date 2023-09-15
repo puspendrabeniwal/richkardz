@@ -1,6 +1,5 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
-import FAQDetailsPage from "@/app/admin/components/FAQDetailPage";
 import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
@@ -87,7 +86,6 @@ const ViewFAQ = ({ params }) => {
                   data-kt-menu-trigger="click"
                   data-kt-menu-placement="bottom-end"
                   label="Back"
-                  type="submit"
                   icon="pi pi-arrow-left"
                 />
               </Link>
