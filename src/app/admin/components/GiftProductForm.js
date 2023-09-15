@@ -33,7 +33,7 @@ const validationSchemaEdit = Yup.object().shape({
   price: Yup.number()
     .typeError("Price must be a number")
     .required("Price is required"),
-  discount: Yup.string().required("Discount price is required"),
+  discount: Yup.number().typeError("Price must be a number").required("Discount price is required"),
   card_type: Yup.string().required("Card Type is required"),
   product_desc: Yup.string().required("Product description is required"),
   status: Yup.string().required("Status is required"),
@@ -165,11 +165,15 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           id="floatingtype"
                         >
                           <option value="">Select</option>
-                          <option value="1">CA</option>
-                          <option value="2">Doctor</option>
-                          <option value="PVC Glossy">Lowyers</option>
-                          <option value="4">agent</option>
-                          <option value="5">Student</option>
+                          <option value="PVC Glossy">PVC Glossy</option>
+                          <option value="Metal Cards">Metal Cards</option>
+                          <option value="NFC RFID">NFC RFID</option>
+                          <option value="ID Cards">ID Cards</option>
+                          <option value="Wooden">Wooden</option>
+                          <option value="Black Metal">Black Metal</option>
+                          <option value="Golden Metal">Golden Metal</option>
+                          <option value="Silver Metal">Silver Metal</option>
+                          <option value="Sticker">Sticker</option>
                         </Field>
 
                         <ErrorMessage
@@ -265,18 +269,20 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                     <div>
                       <button
                         type="submit"
-                        className="btn btn btn-success me-3"
+                        className="btn btn-sm btn-success me-3"
                         data-kt-menu-trigger="click"
                         data-kt-menu-placement="bottom-end"
                       >
+                        <i className="pi pi-save"></i>
                       Submit
                       </button>
                       <button
                         type="reset"
-                        className="btn btn btn-warning me-3"
+                        className="btn btn-sm btn-danger me-3"
                         data-kt-menu-trigger="click"
                         data-kt-menu-placement="bottom-end"
                       >
+                        <i className="pi pi-times"></i>
                       Cancel
                       </button>
                     </div>

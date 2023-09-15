@@ -174,11 +174,14 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           id="floatingprofession"
                         >
                           <option value="">Select</option>
-                          <option value="1">CA</option>
-                          <option value="Entrepreneur">Doctor</option>
-                          <option value="3">Lowyers</option>
-                          <option value="4">agent</option>
-                          <option value="5">Student</option>
+                          <option value="CA">CA</option>
+                          <option value="Doctor">Doctor</option>
+                          <option value="Lawyers">Lawyers</option>
+                          <option value="Entrepreneur">Entrepreneur</option>
+                          <option value="Sales Person">Sales Person</option>
+                          <option value="Agents">Agents</option>
+                          <option value="Freelancers">Freelancers</option>
+                          <option value="Students">Students</option>
                         </Field>
 
                         <ErrorMessage
@@ -203,11 +206,15 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           id="floatingtype"
                         >
                           <option value="">Select</option>
-                          <option value="1">CA</option>
-                          <option value="2">Doctor</option>
-                          <option value="PVC Glossy">Lowyers</option>
-                          <option value="4">agent</option>
-                          <option value="5">Student</option>
+                          <option value="PVC Glossy">PVC Glossy</option>
+                          <option value="Metal Cards">Metal Cards</option>
+                          <option value="NFC RFID">NFC RFID</option>
+                          <option value="ID Cards">ID Cards</option>
+                          <option value="Wooden">Wooden</option>
+                          <option value="Black Metal">Black Metal</option>
+                          <option value="Golden Metal">Golden Metal</option>
+                          <option value="Silver Metal">Silver Metal</option>
+                          <option value="Sticker">Sticker</option>
                         </Field>
 
                         <ErrorMessage
@@ -231,7 +238,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                         >
                           <option value="">Select</option>
                           <option value="1">Yes</option>
-                          <option value="2">No</option>
+                          <option value="0">No</option>
                         </Field>
 
                         <ErrorMessage
@@ -351,18 +358,20 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                     <div>
                       <button
                         type="submit"
-                        className="btn btn btn-success me-3"
+                        className="btn btn-sm btn-success me-3"
                         data-kt-menu-trigger="click"
                         data-kt-menu-placement="bottom-end"
                       >
+                        <i className="pi pi-save"></i>
                       Submit
                       </button>
                       <button
                         type="reset"
-                        className="btn btn btn-warning me-3"
+                        className="btn btn-sm btn-danger me-3"
                         data-kt-menu-trigger="click"
                         data-kt-menu-placement="bottom-end"
                       >
+                        <i className="pi pi-times"></i>
                       Cancel
                       </button>
                     </div>

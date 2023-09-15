@@ -14,22 +14,25 @@ const EmailTemplate = () => {
   const [emailData, setEmailData] = useState([]);
   const op = useRef(null);
   let formData = new FormData();
+
   useEffect(() => {
     getEmailAPI();
   }, []);
+
   const removeFilter = () => {
     formData = new FormData();
     getEmailAPI();
   };
+
   //  ==============get Block API Data ====================//
   const getEmailAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
+    formData.append("skip", 0); //append the values with key, value pair
     formData.append("limit", 10); //append the values with key, value pair
 
     try {
-      const response = await instance.post(`email_template`, formData);
+      const response = await instance.post("email_template", formData);
       const newData = response.result;
       setEmailData(newData);
     } catch (error) {

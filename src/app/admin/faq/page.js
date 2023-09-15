@@ -25,7 +25,7 @@ const FAQ = () => {
   const getFAQAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
+    formData.append("skip", 0); //append the values with key, value pair
     formData.append("limit", 10); //append the values with key, value pair
 
     try {

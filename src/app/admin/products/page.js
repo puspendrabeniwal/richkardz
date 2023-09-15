@@ -116,7 +116,7 @@ export const Products = () => {
     const items = [
       {
           label: 'Edit',
-          icon: 'pi pi-refresh',
+          icon: 'pi pi-pencil',
           command: () => {
             router.push(`/admin/products/update/${rowData._id}`)
           }
@@ -145,11 +145,6 @@ export const Products = () => {
     formData.append("discount", values?.discount);
     formData.append("card_type", values?.card_type);
     formData.append("profession", values?.profession);
-    getProducts();
-  };
-
-  const removeFilter = () => {
-    formData = new FormData();
     getProducts();
   };
 
@@ -236,7 +231,7 @@ export const Products = () => {
                   onClick={(e) => filterOption.current.toggle(e)}
                   aria-haspopup
                   aria-controls="overlay_panel"
-                  className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
+                  className="btn btn-sm btn-flex btn-primary btn-active-primary fw-bolder"
                 >
                   <span className="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
                     <svg
@@ -335,8 +330,14 @@ export const Products = () => {
                               id="floatingprofession"
                             >
                               <option value="">Select</option>
+                              <option value="CA">CA</option>
                               <option value="Doctor">Doctor</option>
+                              <option value="Lawyers">Lawyers</option>
                               <option value="Entrepreneur">Entrepreneur</option>
+                              <option value="Sales Person">Sales Person</option>
+                              <option value="Agents">Agents</option>
+                              <option value="Freelancers">Freelancers</option>
+                              <option value="Students">Students</option>
                             </Field>
                           </div>
                         </div>
@@ -350,11 +351,16 @@ export const Products = () => {
                               name="card_type"
                               className="form-control"
                             >
-                              <option value="">Select</option>
-                              <option value="Gold Metallic">
-                                Gold Metallic
-                              </option>
-                              <option value="PVC Glossy">PVC Glossy</option>
+                            <option value="">Select</option>
+                            <option value="PVC Glossy">PVC Glossy</option>
+                            <option value="Metal Cards">Metal Cards</option>
+                            <option value="NFC RFID">NFC RFID</option>
+                            <option value="ID Cards">ID Cards</option>
+                            <option value="Wooden">Wooden</option>
+                            <option value="Black Metal">Black Metal</option>
+                            <option value="Golden Metal">Golden Metal</option>
+                            <option value="Silver Metal">Silver Metal</option>
+                            <option value="Sticker">Sticker</option>
                             </Field>
                           </div>
                         </div>
@@ -362,30 +368,25 @@ export const Products = () => {
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
                             <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
                               type="submit"
-                              className="btn btn-sm btn-success me-2"
+                              className="btn btn-sm btn-success me-2  btn-flex fw-bolder"
                               data-kt-menu-dismiss="true"
                             >
-                              Apply
+                              <i className="pi pi-save"></i>
+                              Submit
                             </button>
                             <button
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
+                                formData = new FormData();
                                 await getProducts();
-                                op.current.toggle(e);
+                                filterOption.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
+                              className="btn btn-sm btn-danger btn-flex fw-bolder"
                               data-kt-menu-dismiss="true"
                             >
-                              Remove
+                              <i className="pi pi-times"></i>Reset
                             </button>
                           </div>
                         </div>
@@ -395,7 +396,7 @@ export const Products = () => {
                 </OverlayPanel>
               </div>
               <Link href="/admin/products/add" className="btn btn-sm btn-info">
-                Add Product
+                <i className="pi pi-plus"></i> Product
               </Link>
             </div>
           </div>
@@ -455,7 +456,6 @@ export const Products = () => {
                   <Column
                     field=""
                     header="Action"
-                    style={{ width: "130px" }}
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>

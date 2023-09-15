@@ -110,13 +110,13 @@ const Header = () => {
           </div>
         </div>
         <div className="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-          <a href="../../demo1/dist/index.html" className="d-lg-none">
+          <Link href="/admin/dashboard" className="d-lg-none">
             <img
               alt="Logo"
-              src="../admin/assets/media/logos/logo-2.svg"
+              src="../admin/assets/media/logos/logo-1-dark.png"
               className="h-30px"
             />
-          </a>
+          </Link>
         </div>
         <div className="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
           <div className="d-flex align-items-stretch" id="kt_header_nav"></div>
@@ -138,8 +138,7 @@ const Header = () => {
                   alt="user" 
                 />
               </div>
-              <Menu model={items} popup ref={menuLeft}  width="300" />
-
+              <Menu style={{width : "277px"}} model={items} popup ref={menuLeft}/>
             </div>
             <div
               className="d-flex align-items-center d-lg-none ms-2 me-n3"

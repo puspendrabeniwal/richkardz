@@ -116,7 +116,7 @@ const GiftPreDesignProducts = () => {
     const items = [
       {
           label: 'Edit',
-          icon: 'pi pi-refresh',
+          icon: 'pi pi-pencil',
           command: () => {
             router.push(`/admin/gift-pre-design-products/update/${rowData._id}`)
           }
@@ -148,10 +148,7 @@ const GiftPreDesignProducts = () => {
     getProducts();
   };
 
-  const removeFilter = () => {
-    formData = new FormData();
-    getProducts();
-  };
+
 
   const accept = (id, status, type) => {
     let newFormData = new FormData();
@@ -236,7 +233,7 @@ const GiftPreDesignProducts = () => {
                   onClick={(e) => filterOption.current.toggle(e)}
                   aria-haspopup
                   aria-controls="overlay_panel"
-                  className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
+                  className="btn btn-sm btn-flex btn-primary btn-active-primary fw-bolder"
                 >
                   <span className="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
                     <svg
@@ -334,10 +331,15 @@ const GiftPreDesignProducts = () => {
                               className="form-control"
                             >
                               <option value="">Select</option>
-                              <option value="Gold Metallic">
-                                Gold Metallic
-                              </option>
                               <option value="PVC Glossy">PVC Glossy</option>
+                              <option value="Metal Cards">Metal Cards</option>
+                              <option value="NFC RFID">NFC RFID</option>
+                              <option value="ID Cards">ID Cards</option>
+                              <option value="Wooden">Wooden</option>
+                              <option value="Black Metal">Black Metal</option>
+                              <option value="Golden Metal">Golden Metal</option>
+                              <option value="Silver Metal">Silver Metal</option>
+                              <option value="Sticker">Sticker</option>
                             </Field>
                           </div>
                         </div>
@@ -345,30 +347,24 @@ const GiftPreDesignProducts = () => {
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
                             <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
                               type="submit"
                               className="btn btn-sm btn-success me-2"
                               data-kt-menu-dismiss="true"
                             >
-                              Apply
+                              <i className="pi pi-save"></i> Submit
                             </button>
                             <button
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
+                                formData = new FormData();
                                 await getProducts();
-                                //op.current.toggle(e);
+                                filterOption.current.toggle(e);
                               }}
                               className="btn btn-sm btn-danger"
                               data-kt-menu-dismiss="true"
                             >
-                              Remove
+                              <i className="pi pi-times"></i> Reset
                             </button>
                           </div>
                         </div>
@@ -378,7 +374,7 @@ const GiftPreDesignProducts = () => {
                 </OverlayPanel>
               </div>
               <Link href="/admin/gift-pre-design-products/add" className="btn btn-sm btn-info">
-                Add Product
+                <i className="pi pi-plus"></i> Product
               </Link>
             </div>
           </div>

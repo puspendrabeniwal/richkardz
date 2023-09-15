@@ -56,7 +56,7 @@ const AddProduct = () => {
 
 
                     <div className="d-flex align-items-center gap-2 gap-lg-3">
-                        <Link href="/admin/products" className="btn btn-sm btn-info">Back</Link>
+                        <Link href="/admin/products" className="btn btn-sm btn-warning"><i className="pi pi-arrow-left"></i>Back</Link>
                     </div>
                 </div>
             </div>
