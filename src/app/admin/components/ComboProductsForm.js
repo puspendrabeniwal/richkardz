@@ -242,7 +242,7 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               optionValue="prodId"
                               placeholder="Select Cards"
                               maxSelectedLabels={3}
-                              className="w-full md:w-20rem"
+                              className="form-control"
                               name="product_ids"
                               onBlur={handleBlur}
                               display="chip"

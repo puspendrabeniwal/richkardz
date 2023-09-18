@@ -3,7 +3,58 @@ const express	= 	require('express');
 const cors 		= require("cors");
 const app 		=	express();
 const path 		= require('path');
-//var timeout 	= require('connect-timeout')
+
+const qrcode = require('qrcode');
+const fs = require('fs');
+const jimp = require('jimp');
+
+// URL you want to redirect to
+const url = 'https://www.richkardz.com';
+
+// Path to your image icon (replace with your own icon)
+const iconPath = 'icon.png';
+
+// Generate the QR code as a data URI
+qrcode.toDataURL(url, (err, qrCodeData) => {
+  if (err) {
+    console.error('Error creating QR code:', err);
+    return;
+  }
+
+  // Load the image icon
+  jimp.read(iconPath, (err, iconImage) => {
+    if (err) {
+      console.error('Error loading icon image:', err);
+      return;
+    }
+
+    // Create a new Jimp image from the QR code data URI
+    jimp.read(Buffer.from(qrCodeData.split(',')[1], 'base64'), (err, qrImage) => {
+      if (err) {
+        console.error('Error creating QR code image:', err);
+        return;
+      }
+
+      // Calculate the position for the icon in the center of the QR code
+      const xPos = (qrImage.bitmap.width - iconImage.bitmap.width) / 2;
+      const yPos = (qrImage.bitmap.height - iconImage.bitmap.height) / 2;
+
+      // Composite the icon onto the QR code
+      qrImage.composite(iconImage, xPos, yPos);
+
+      // Save the final QR code with the icon as an image
+      const outputFilePath = 'qrcode_with_centered_icon.png';
+      qrImage.write(outputFilePath, (err) => {
+        if (err) {
+          console.error('Error saving QR code with centered icon:', err);
+        } else {
+          console.log(`QR code with centered icon saved as ${outputFilePath}`);
+        }
+      });
+    });
+  });
+});
+
 
 /**  Configure i18n options, this module is used for multi language site */
 const i18n 	= require("i18n");
