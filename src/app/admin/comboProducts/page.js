@@ -71,18 +71,20 @@ export const ComboProducts = () => {
   const comboTypeTemplate = (rowData) => {
     return (
       <span
-        className={`badge badge-light-${
-          rowData?.combo_type === 1
-            ? "success"
-            : rowData?.combo_type === 2
-            ? "info"
-            : "warning"
-        } me-auto`}
+        className={`badge me-auto ${
+          rowData?.combo_type == 1
+            ? "badge-success"
+            : rowData?.combo_type == 2
+            ? "badge-info"
+            : rowData?.combo_type == 3
+            ? "badge-warning"
+            : ""
+        }`}
       >
         {rowData?.combo_type == 1
           ? "PVC Glossy"
           : rowData?.combo_type == 2
-          ? "Metel Cards"
+          ? "Metal Cards"
           : rowData?.combo_type == 3
           ? "Combo"
           : ""}
@@ -90,50 +92,6 @@ export const ComboProducts = () => {
     );
   };
 
-  const cardTypeName = (value) => {
-    // switch (value) {
-    //   case 1:
-    //     return "PVC Glossy";
-    //   case 2:
-    //     return "Metel Cards";
-    //   case 3:
-    //     return "Combo";
-    //   default:
-    //     return null;
-    // }
-    console.log("type card value", value);
-    return (
-      <span
-        className={`badge badge-light-${
-          value?.combo_type === 1
-            ? "success"
-            : value?.combo_type === 2
-            ? "info"
-            : "warning"
-        } me-auto`}
-      >
-        {value?.combo_type == 1
-          ? "PVC Glossy"
-          : value?.combo_type == 2
-          ? "Metel Cards"
-          : value?.combo_type == 3
-          ? "Combo"
-          : ""}
-      </span>
-    );
-  };
-  const getCardColor = (value) => {
-    switch (value) {
-      case 1:
-        return "success";
-      case 2:
-        return "warning";
-      case 3:
-        return "info";
-      default:
-        return null;
-    }
-  };
   const getSeverity = (value) => {
     switch (value) {
       case 1:

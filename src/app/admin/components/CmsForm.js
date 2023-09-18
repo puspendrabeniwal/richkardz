@@ -138,8 +138,8 @@ const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
                           className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                          icon="pi pi-check"
-                          label={cmsId ? "Update" : "Submit"}
+                          icon="pi pi-save"
+                          label="Submit"
                         />
                         <Link href="/admin/cms ">
                           <Button

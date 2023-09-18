@@ -272,7 +272,7 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           >
                             <option value="">Select</option>
                             <option value="1">Yes</option>
-                            <option value="2">No</option>
+                            <option value="0">No</option>
                           </Field>
 
                           <ErrorMessage

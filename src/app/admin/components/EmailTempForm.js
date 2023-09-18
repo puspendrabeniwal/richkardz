@@ -102,8 +102,8 @@ const EmailTempForm = ({ emailValue, handleSubmitEmail, emailId }) => {
                           className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                          icon="pi pi-check"
-                          label={emailId ? "Update" : "Submit"}
+                          icon="pi pi-save"
+                          label="Submit"
                         />
                         <Link href="/admin/email ">
                           <Button

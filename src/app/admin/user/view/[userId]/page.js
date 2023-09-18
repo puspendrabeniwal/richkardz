@@ -221,7 +221,9 @@ const ViewUser = ({ params }) => {
                       <th className="table-border-padding ">Profile Image</th>
                       <td className="table-border-padding">
                         <img
-                          src={`https://mern.richkardz.com/uploads/user/${userData.profile_image}`}
+                          src={`${
+                            userData?.image_url + userData?.profile_image
+                          }`}
                           alt={userData?.profile_image}
                           className="w-6rem shadow-2 border-round"
                           height={45}
@@ -232,8 +234,9 @@ const ViewUser = ({ params }) => {
                       <th className="table-border-padding ">Banner Image</th>
                       <td className="table-border-padding">
                         <img
-                          src={`https://mern.richkardz.com/uploads/user/${userData.banner_image}`}
-                          // src={`${userData?.full_image_path}`}
+                          src={`${
+                            userData?.image_url + userData?.banner_image
+                          }`}
                           alt={userData?.banner_image}
                           className="w-6rem shadow-2 border-round"
                           height={45}
@@ -246,7 +249,9 @@ const ViewUser = ({ params }) => {
                       </th>
                       <td className="table-border-padding">
                         <img
-                          src={`https://mern.richkardz.com/uploads/user/${userData.upi_scannaer}`}
+                          src={`${
+                            userData?.image_url + userData?.upi_scannaer
+                          }`}
                           alt={userData?.upi_scannaer}
                           className="w-6rem shadow-2 border-round"
                           height={45}
@@ -310,7 +315,9 @@ const ViewUser = ({ params }) => {
                       <td className="table-border-padding">
                         {userData && userData.catalogue ? (
                           <a
-                            href={`https://mern.richkardz.com/uploads/user/${userData.catalogue}`}
+                            href={`${
+                              userData?.image_url + userData?.catalogue
+                            }`}
                             target="_blank" // Opens the link in a new tab/window
                             rel="noopener noreferrer" // Recommended for security reasons
                           >
@@ -329,7 +336,7 @@ const ViewUser = ({ params }) => {
                             <div key={index}>
                               <div key={index} className="p-2">
                                 <img
-                                  src={`https://mern.richkardz.com/uploads/user/${image.name}`}
+                                  src={`${userData?.image_url + image.name}`}
                                   alt={userData?.image}
                                   className="w-6rem shadow-2 border-round"
                                   height={45}
