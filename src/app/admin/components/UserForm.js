@@ -373,14 +373,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             setFieldValue("profile_image", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={`${
-                                userValue?.image_url + userValue?.profile_image
-                              }`}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div>
+                              {userValue?.profile_image ? (
+                                <Image
+                                  src={`${
+                                    userValue?.image_url +
+                                    userValue?.profile_image
+                                  }`}
+                                  height="70px"
+                                  width="100px"
+                                  alt="Image"
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           }
                         />
                       </div>
@@ -399,14 +406,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             setFieldValue("banner_image", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={`${
-                                userValue?.image_url + userValue?.banner_image
-                              }`}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div>
+                              {userValue?.banner_image ? (
+                                <Image
+                                  src={`${
+                                    userValue?.image_url +
+                                    userValue?.banner_image
+                                  }`}
+                                  height="70px"
+                                  width="100px"
+                                  alt="Image"
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           }
                         />
                       </div>
@@ -416,7 +430,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                         </label>
                         <FileUpload
                           name="upi_scannaer"
-                          accept="image/*"
+                          accept=".image"
                           auto
                           customUpload
                           maxFileSize={1000000}
@@ -425,14 +439,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             setFieldValue("upi_scannaer", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={`${
-                                userValue?.image_url + userValue?.upi_scannaer
-                              }`}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div>
+                              {userValue?.upi_scannaer ? (
+                                <Image
+                                  src={`${
+                                    userValue?.image_url +
+                                    userValue?.upi_scannaer
+                                  }`}
+                                  height="70px"
+                                  width="100px"
+                                  alt="Image"
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           }
                         />
                       </div>
