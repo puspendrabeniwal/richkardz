@@ -2,28 +2,24 @@
 import Link from "next/link";
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { SplitButton } from 'primereact/splitbutton';
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
-import download from "downloadjs";
 import dateFormat, { masks } from "dateformat";
 
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 
-
-const ReturnReplacement = ({params}) => {
-  const router  = useRouter();
+const ReturnReplacement = ({ params }) => {
+  const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
-
 
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -53,45 +49,61 @@ const ReturnReplacement = ({params}) => {
     formData.append("name", values?.name);
     formData.append("email", values?.email);
     formData.append("phone_number", values?.phone_number);
-    formData.append("preferred_contact_method", values?.preferred_contact_method);
+    formData.append(
+      "preferred_contact_method",
+      values?.preferred_contact_method
+    );
     getList();
   };
 
-
   const downloadFile = ({ data, fileName, fileType }) => {
-    const blob = new Blob([data], { type: fileType })
-  
-    const a = document.createElement('a')
-    a.download = fileName
-    a.href = window.URL.createObjectURL(blob)
-    const clickEvt = new MouseEvent('click', {
+    const blob = new Blob([data], { type: fileType });
+
+    const a = document.createElement("a");
+    a.download = fileName;
+    a.href = window.URL.createObjectURL(blob);
+    const clickEvt = new MouseEvent("click", {
       view: window,
       bubbles: true,
       cancelable: true,
-    })
-    a.dispatchEvent(clickEvt)
-    a.remove()
-  }
+    });
+    a.dispatchEvent(clickEvt);
+    a.remove();
+  };
 
+  const leadDownload = () => {
+    // Headers for each column
+    let headers = [
+      "Name, Email, Phone, Preferred contact method, Transaction Id",
+    ];
 
+    // Convert users data to a csv
+    let usersCsv = list.reduce((acc, user) => {
+      const {
+        customer_name,
+        email,
+        phone_number,
+        preferred_contact_method,
+        transaction_id,
+      } = user;
+      acc.push(
+        [
+          customer_name,
+          email,
+          phone_number,
+          preferred_contact_method,
+          transaction_id,
+        ].join(",")
+      );
+      return acc;
+    }, []);
 
-  const leadDownload = ()=>{
-  // Headers for each column
-  let headers = ['Name, Email, Phone, Preferred contact method, Transaction Id' ]
-
-  // Convert users data to a csv
-  let usersCsv = list.reduce((acc, user) => {
-    const { customer_name, email, phone_number, preferred_contact_method, transaction_id } = user
-    acc.push([customer_name, email, phone_number, preferred_contact_method, transaction_id].join(','))
-    return acc
-  }, [])
-
-  downloadFile({
-    data: [...headers, ...usersCsv].join('\n'),
-    fileName: 'warranty.csv',
-    fileType: 'text/csv',
-  })
-  }
+    downloadFile({
+      data: [...headers, ...usersCsv].join("\n"),
+      fileName: "warranty.csv",
+      fileType: "text/csv",
+    });
+  };
 
   const accept = (id) => {
     let newFormData = new FormData();
@@ -133,7 +145,6 @@ const ReturnReplacement = ({params}) => {
     });
   };
 
-   
   const getSeverity = (value) => {
     switch (value) {
       case 1:
@@ -146,7 +157,7 @@ const ReturnReplacement = ({params}) => {
         return null;
     }
   };
-  
+
   const getValue = (value) => {
     switch (value) {
       case 1:
@@ -163,7 +174,7 @@ const ReturnReplacement = ({params}) => {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
-        style={{cursor:"pointer"}}
+        style={{ cursor: "pointer" }}
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
         onClick={() => confirm(rowData._id, rowData.status, "status")}
@@ -201,7 +212,7 @@ const ReturnReplacement = ({params}) => {
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
                 <li className="breadcrumb-item text-mute">
-                Warranty Claim Request
+                  Warranty Claim Request
                 </li>
               </ul>
             </div>
@@ -249,7 +260,7 @@ const ReturnReplacement = ({params}) => {
                       phone_number: "",
                       created: "",
                       utm: "",
-                      business_type: ""
+                      business_type: "",
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
@@ -258,9 +269,7 @@ const ReturnReplacement = ({params}) => {
                         <div className="row ">
                           <div className="col-lg-6 col-md-6">
                             <div className="mb-10">
-                              <label className="form-label fw-bold">
-                                 Name
-                              </label>
+                              <label className="form-label fw-bold">Name</label>
                               <div>
                                 <Field
                                   type="text"
@@ -351,7 +360,11 @@ const ReturnReplacement = ({params}) => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="#" onClick={leadDownload} className="btn btn-sm btn-info">
+              <Link
+                href="#"
+                onClick={leadDownload}
+                className="btn btn-sm btn-info"
+              >
                 Download
               </Link>
             </div>
@@ -381,14 +394,10 @@ const ReturnReplacement = ({params}) => {
                     header="#"
                     body={(data, props) => props.rowIndex + 1}
                   ></Column>
-                  <Column 
-                    field="customer_name" 
-                    sortable 
-                    header="Name"
-                  ></Column>
+                  <Column field="customer_name" sortable header="Name"></Column>
                   <Column field="email" sortable header="Email"></Column>
                   <Column field="phone_number" header="Phone Number"></Column>
-                 
+
                   <Column
                     field="preferred_contact_method"
                     sortable
@@ -399,11 +408,13 @@ const ReturnReplacement = ({params}) => {
                     sortable
                     header="Transaction Id"
                   ></Column>
-                   <Column
+                  <Column
                     field="created"
                     sortable
                     header="Created"
-                    body={(data, props) => dateFormat(data.created, "dddd, mmmm d, yyyy") }
+                    body={(data, props) =>
+                      dateFormat(data.created, "dddd, mmmm d, yyyy")
+                    }
                   ></Column>
                   <Column
                     field="status"

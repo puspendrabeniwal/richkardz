@@ -20,7 +20,6 @@ const validationSchema = Yup.object().shape({
   product_ids: Yup.array()
     .min(1, "Choose atleast 1 product")
     .max(3, "maximum 3 products required"),
-  //   product_ids: Yup.array().required("Choose min 3 products is required"),
   status: Yup.string().required("Status is required"),
 });
 
@@ -39,40 +38,25 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     status: productValue ? productValue.status : "",
   };
   const [defaultValues, setDefaultValues] = useState(initialValues);
-
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
-    Object.keys(values).forEach(function (key, index) {
-      formData.append(key, values[key]);
-    });
 
-    await handleSubmitProduct(formData);
+    await handleSubmitProduct(values);
   };
   const formRef = useRef(null);
+
   const getMultiCards = (prodVal) => {
     instance
       .get(`combo-products/get-product/${prodVal}`)
       .then((response) => {
-        let data = response.result ? response.result : {};
+        let data = response.result;
         const ndt = data.map((item) => {
           return { name: item.product_name, prodId: item._id };
         });
         setCardsList(ndt);
-        if (productValue && productValue.product_ids.length && formRef) {
-          setDefaultValues({
-            ...defaultValues,
-            product_ids: [
-              ...defaultValues.product_ids,
-              ...productValue.product_ids.split(","),
-            ],
-          });
-          formRef.current.setFieldValue(
-            "product_ids",
-            productValue.product_ids.split(",")
-          );
-        }
+        formRef.current.setFieldValue("product_ids", productValue.product_ids);
       })
       .catch((error) => {
         console.log(error);
@@ -102,7 +86,6 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                 >
                   {({ setFieldValue, values, handleBlur }) => (
                     <Form className="form-design">
-                      {console.log("formref", formRef.current)}
                       <div className="row mb-3">
                         <div className="col-lg-6 col-md-6">
                           <label
@@ -242,7 +225,6 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               optionValue="prodId"
                               placeholder="Select Cards"
                               maxSelectedLabels={3}
-                              className="form-control"
                               name="product_ids"
                               onBlur={handleBlur}
                               display="chip"

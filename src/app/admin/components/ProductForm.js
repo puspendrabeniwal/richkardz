@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FileUpload } from "primereact/fileupload";
@@ -7,6 +7,7 @@ import { Image } from "primereact/image";
 import { Galleria } from "primereact/galleria";
 import { Button } from "primereact/button";
 import Link from "next/link";
+import { createFileObjects } from "../../../../utils/fileObject";
 
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
@@ -31,20 +32,6 @@ const validationSchema = Yup.object().shape({
     ),
 });
 
-const validationSchemaEdit = Yup.object().shape({
-  product_name: Yup.string().required("Name is required"),
-  price: Yup.number()
-    .typeError("Price must be a number")
-    .required("Price is required"),
-  discount: Yup.string().required("Discount price is required"),
-  profession: Yup.string().required("Profession is required"),
-  card_type: Yup.string().required("Card Type is required"),
-  is_feature: Yup.string().required("Is Feature is required"),
-  is_new_release: Yup.string().required("Is new Release is required"),
-  product_desc: Yup.string().required("Product description is required"),
-  status: Yup.string().required("Status is required"),
-});
-
 const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
   const defaultValues = {
     product_name: productValue ? productValue.product_name : "",
@@ -58,6 +45,8 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     status: productValue ? productValue.status : "",
     images: [],
   };
+  console.log("product values", productValue);
+  const formRef = useRef(null);
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -70,9 +59,35 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     for (const image of values.images) {
       formData.append("images", image);
     }
-
+    console.log("form values", values);
+    console.log("form data", formData);
     await handleSubmitProduct(formData);
   };
+
+  const getFileObjectOnEditValues = async () => {
+    if (
+      productValue &&
+      productValue.image_url &&
+      productValue.images?.length > 0
+    ) {
+      const productImages = productValue.images.map(
+        (image) => `${productValue.image_url}${image.name}`
+      );
+      formRef.current.setFieldValue("images", productImages);
+      console.log("productImages", productImages);
+      await createFileObjects(productImages).then((files) =>
+        console.log("filesssss", files)
+      );
+
+      // formRef.current.setFieldValue("images", imageFileObect);
+    }
+  };
+
+  useEffect(() => {
+    if (productValue && formRef) {
+      getFileObjectOnEditValues();
+    }
+  }, [productValue, formRef]);
 
   return (
     <main>
@@ -85,13 +100,12 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
             <div className="card">
               <div className="card-body py-9">
                 <Formik
+                  innerRef={formRef}
                   initialValues={defaultValues}
-                  validationSchema={
-                    productId ? validationSchemaEdit : validationSchema
-                  }
+                  validationSchema={validationSchema}
                   onSubmit={async (values) => await onSubmit(values)}
                 >
-                  {({ setFieldValue }) => (
+                  {({ setFieldValue, values }) => (
                     <Form className="form-design">
                       <div className="row mb-3">
                         <div className="col-lg-6 col-md-6">
@@ -305,7 +319,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           </label>
                           <div className=" billingForm">
                             <FileUpload
-                              name="image"
+                              name="images"
                               accept="image/*"
                               auto
                               multiple
@@ -313,9 +327,38 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               maxFileSize={1000000}
                               onSelect={(event) => {
                                 const files = event.files;
-                                setFieldValue("images", files);
+                                setFieldValue("images", files, true);
                               }}
-                              emptyTemplate={<></>}
+                              emptyTemplate={
+                                <div className="p">
+                                  {values?.images?.map((image, index) => (
+                                    <div
+                                      key={index}
+                                      className="p-5 position-relative"
+                                    >
+                                      <Image
+                                        src={image}
+                                        height="70px"
+                                        width="100px"
+                                        alt="Image"
+                                      />
+                                      <button
+                                        // className="btn-close"
+                                        // style={{
+                                        //   position: "absolute",
+                                        //   top: "-9px",
+                                        //   right: "-9px",
+                                        //   zIndex: "1",
+                                        //   fontSize: "10px",
+                                        // }}
+                                        onClick={() => handleRemoveImage(index)} // Implement a function to remove the image
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              }
                             />
                           </div>
                         </div>

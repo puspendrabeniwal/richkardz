@@ -608,7 +608,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           }}
                           emptyTemplate={
                             <div className="d-flex flex-wrap">
-                              {userValue?.gallery.map((image, index) => (
+                              {userValue?.gallery?.map((image, index) => (
                                 <div key={index} className="m-2">
                                   <Image
                                     src={`${userValue?.image_url + image.name}`}
