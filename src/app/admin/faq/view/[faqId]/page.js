@@ -2,6 +2,7 @@
 import instance from "@/app/admin/axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
+import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
 

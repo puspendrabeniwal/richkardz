@@ -60,6 +60,34 @@ const Sidebar = () => {
       ]
     },
     {
+      label: 'QR Codes',
+      icon: 'pi pi-fw pi-shopping-bag',
+      className: ([
+        "/admin/qr_code/0",
+        "/admin/qr_code/1",
+        "/admin/qr_code/add/0",
+        "/admin/qr_code/add/1",
+      ].includes(pathname)) ? "p-menuitem-active": "",
+      items: [
+        {
+            label: 'B2B Codes',
+            icon: 'pi pi-fw pi-align-left',
+            className: (pathname === "/admin/qr_code/1") ? "p-menuitem-active": "",
+            command: () => {
+              router.push(`/admin/qr_code/1`)
+            }
+        },
+        {
+          label: 'B2C Codes',
+          icon: 'pi pi-fw pi-align-justify',
+          className: (pathname === "/admin/qr_code/0") ? "p-menuitem-active": "",
+          command: () => {
+            router.push(`/admin/qr_code/0`)
+          }
+        },
+      ]
+    },
+    {
       label: 'System Management',
       icon: 'pi pi-fw pi-server',
       className: (["/admin/cms","/admin/blocks","/admin/faq","/admin/email","/admin/testimonials"].includes(pathname)) ? "p-menuitem-active": "",

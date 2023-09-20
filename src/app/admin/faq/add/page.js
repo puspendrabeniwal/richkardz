@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import Link from "next/link";
+import { Button } from "primereact/button";
 import FaqForm from "../../components/FAQForm";
 import withAuth from "@/hoc/withAuth";
 import { useRouter } from "next/navigation";
