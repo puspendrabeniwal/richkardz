@@ -21,18 +21,22 @@ const validationSchema = Yup.object().shape({
   is_new_release: Yup.string().required("Is new Release is required"),
   product_desc: Yup.string().required("Product description is required"),
   status: Yup.string().required("Status is required"),
-  images: Yup.array()
-    .min(1, "At least one image is required")
-    .of(
-      Yup.mixed().test("fileSize", "File is too large", (value) => {
-        if (!value) return false;
-        const maxSize = 5 * 1024 * 1024; // 5 MB
-        return value.size <= maxSize;
-      })
-    ),
+  // images: Yup.array()
+  //   .min(1, "At least one image is required")
+  //   .of(
+  //     Yup.mixed().test("fileSize", "File is too large", (value) => {
+  //       if (!value) return false;
+  //       const maxSize = 5 * 1024 * 1024; // 5 MB
+  //       return value.size <= maxSize;
+  //     })
+  //   ),
 });
 
 const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
+  const formRef = useRef(null);
+  const [delImage, setDelImage] = useState([]);
+  const [newImages, setNewImages] = useState(productValue?.images);
+
   const defaultValues = {
     product_name: productValue ? productValue.product_name : "",
     price: productValue ? productValue.price : "",
@@ -44,9 +48,8 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     product_desc: productValue ? productValue.product_desc : "",
     status: productValue ? productValue.status : "",
     images: [],
+    delete_images: delImage,
   };
-  console.log("product values", productValue);
-  const formRef = useRef(null);
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -59,36 +62,23 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     for (const image of values.images) {
       formData.append("images", image);
     }
-    console.log("form values", values);
-    console.log("form data", formData);
+    for (const image of delImage) {
+      formData.append("delete_images", image);
+    }
     await handleSubmitProduct(formData);
   };
+  let newImageDel = [];
 
-  const getFileObjectOnEditValues = async () => {
-    if (
-      productValue &&
-      productValue.image_url &&
-      productValue.images?.length > 0
-    ) {
-      const productImages = productValue.images.map(
-        (image) => `${productValue.image_url}${image.name}`
-      );
-      formRef.current.setFieldValue("images", productImages);
-      console.log("productImages", productImages);
-      await createFileObjects(productImages).then((files) =>
-        console.log("filesssss", files)
-      );
-
-      // formRef.current.setFieldValue("images", imageFileObect);
-    }
+  const handleRemoveImage = (idToRemove) => {
+    alert("kkkkkkkkk");
+    const filterImg = newImages.filter((item) => {
+      return idToRemove !== item._id;
+    });
+    setNewImages(filterImg);
+    setDelImage([...delImage, idToRemove]);
+    newImageDel.push([idToRemove]);
+    console.log("deleted image", delImage);
   };
-
-  useEffect(() => {
-    if (productValue && formRef) {
-      getFileObjectOnEditValues();
-    }
-  }, [productValue, formRef]);
-
   return (
     <main>
       <div
@@ -326,38 +316,46 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               customUpload
                               maxFileSize={1000000}
                               onSelect={(event) => {
-                                const files = event.files;
+                                const files = [...event.files];
                                 setFieldValue("images", files, true);
                               }}
                               emptyTemplate={
-                                <div className="p">
-                                  {values?.images?.map((image, index) => (
+                                <>
+                                  {newImages?.map((image, index) => (
                                     <div
-                                      key={index}
-                                      className="p-5 position-relative"
+                                      key={image._id}
+                                      className="p-5 position-relative image-container"
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                      }}
                                     >
                                       <Image
-                                        src={image}
+                                        src={`${
+                                          productValue?.image_url + image.name
+                                        }`}
                                         height="70px"
                                         width="100px"
-                                        alt="Image"
+                                        alt="ans"
                                       />
-                                      <button
-                                        // className="btn-close"
-                                        // style={{
-                                        //   position: "absolute",
-                                        //   top: "-9px",
-                                        //   right: "-9px",
-                                        //   zIndex: "1",
-                                        //   fontSize: "10px",
-                                        // }}
-                                        onClick={() => handleRemoveImage(index)} // Implement a function to remove the image
-                                      >
-                                        Delete
-                                      </button>
+                                      <Button
+                                        icon="pi pi-times text-danger"
+                                        style={{
+                                          backgroundColor: "transparent",
+                                          color: "inherit",
+                                          border: "white",
+                                          fontSize: "20px",
+                                        }}
+                                        type="button"
+                                        title="Delete"
+                                        onClick={() => {
+                                          handleRemoveImage(image._id);
+                                        }}
+                                      />
                                     </div>
                                   ))}
-                                </div>
+                                </>
                               }
                             />
                           </div>
@@ -366,6 +364,14 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           name="images"
                           component="div"
                           className="text-danger"
+                        />
+                      </div>
+                      <div className="col-lg-6 col-md-6">
+                        <Field
+                          type="hidden"
+                          name="delete_images"
+                          className="form-control"
+                          id="floatingname"
                         />
                       </div>
                       <div className="fv-row mb-3">
