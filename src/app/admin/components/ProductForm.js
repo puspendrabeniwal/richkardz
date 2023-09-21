@@ -4,10 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FileUpload } from "primereact/fileupload";
 import { Image } from "primereact/image";
-import { Galleria } from "primereact/galleria";
 import { Button } from "primereact/button";
 import Link from "next/link";
-import { createFileObjects } from "../../../../utils/fileObject";
 
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
@@ -23,10 +21,11 @@ const validationSchema = Yup.object().shape({
   status: Yup.string().required("Status is required"),
   // images: Yup.array()
   //   .min(1, "At least one image is required")
+  //   .max(5, "You can upload a maximum of five images")
   //   .of(
   //     Yup.mixed().test("fileSize", "File is too large", (value) => {
   //       if (!value) return false;
-  //       const maxSize = 5 * 1024 * 1024; // 5 MB
+  //       const maxSize = 2 * 1024 * 1024; // 2 MB
   //       return value.size <= maxSize;
   //     })
   //   ),
@@ -47,7 +46,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     is_new_release: productValue ? productValue.is_new_release : "",
     product_desc: productValue ? productValue.product_desc : "",
     status: productValue ? productValue.status : "",
-    images: [],
+    images: productValue ? productValue.images : [],
     delete_images: delImage,
   };
 
@@ -60,7 +59,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     });
 
     for (const image of values.images) {
-      formData.append("images", image);
+      formData.append("images", ...files, image);
     }
     for (const image of delImage) {
       formData.append("delete_images", image);
@@ -68,17 +67,15 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     await handleSubmitProduct(formData);
   };
   let newImageDel = [];
-
   const handleRemoveImage = (idToRemove) => {
-    alert("kkkkkkkkk");
     const filterImg = newImages.filter((item) => {
       return idToRemove !== item._id;
     });
     setNewImages(filterImg);
     setDelImage([...delImage, idToRemove]);
     newImageDel.push([idToRemove]);
-    console.log("deleted image", delImage);
   };
+
   return (
     <main>
       <div
@@ -318,6 +315,8 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               onSelect={(event) => {
                                 const files = [...event.files];
                                 setFieldValue("images", files, true);
+                                console.log("files", files);
+                                setNewImages(files);
                               }}
                               emptyTemplate={
                                 <>
@@ -405,6 +404,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
                           icon="pi pi-save"
+                          type="submit"
                           label="Submit"
                         />
                         <Link href="/admin/products ">
