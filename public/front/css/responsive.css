@@ -1,0 +1,371 @@
+@media (min-width: 576px) {
+	.container, .container-sm {
+		max-width: 90%;
+	}
+}
+@media (min-width: 992px) {
+	/* .benefitsCard::before{
+		content: "";
+		position: absolute;
+		left: -200px;
+		width: 500px;
+		height: 1px;
+		background-color: #4b505e;
+		top: -1px;
+   } */
+	.contactBanners{
+		position: absolute;
+		width: 645px;
+		right: -50px;
+		top: 114px;
+   }
+	.productVarticalTabs.nav-tabs .nav-link.active::before,.productVarticalTabs.nav-tabs .nav-link:hover::before{
+	   position: absolute;
+		content: "";
+		background-color: white;
+		top: -9px;
+		width: 37px;
+		bottom: -10px;
+		right: -22px;
+		border-radius: 29px 0px 0px 32px;
+   }
+	.productVarticalTabs li{
+	   position: relative;
+   }
+	.productSliderGallary .modal-lg, .modal-xl{
+	   max-width: 720px;
+   }
+   .frequeltyAsked .accordion-button{padding-right: 32px;}
+   .userViewContect{font-size: 14px;}
+   .userViewContect .fa{font-size: 30px;}
+}
+@media only screen and (min-width: 200px) and (max-width: 992px) {
+	.HometopBg h1{
+		font-size: 35px;
+   }
+	.HometopBg .btn{
+		min-width: 110px;
+		font-size: 17px;
+   }
+	.arrowTop {
+		height: 38px;
+		margin-left: 10px;
+   }
+	.peopleTop{
+	   font-size: 12px;
+   }
+
+	.dontSettle h1,.BenefitsSection h1,
+	.userAre_Heading h1,.ExploreOurSmart ul li,
+	.frequeltyAsked h1,.frequeltyAsked .accordion-button,
+	.loginPage h1,
+	 .AboutRichKardz h1,
+	.HowToOwnAboutus h1,.productDetails h1{
+		font-size: 28px;
+   }
+	.dontSettle p,.HometopBg p,
+	.BenefitsSection .benefitsCard p,
+	.userAre_Heading p,.userAreProPText,
+	.frequeltyAsked .accordion-item p, .faqSection .accordion-item p, .faqMainSection p, .latestBlogsSection p, .blogInternal p,.privacyPolicy p{
+		font-size: 15px;
+		line-height: 23px;
+   }
+
+	.BusinessCrdOvlyText h2{
+		font-size: 28px;
+   }
+	.whyRichKards h1,.HowRichWorks h1, .HometopBg h1, .faqMainSection h1, .latestBlogsSection h1,.contactPage h1, .thankYouSection h1,.aboutusSection h1
+	,.blogInternal h1,.privacyPolicySection h1{
+		font-size: 43px;
+   }
+	.makeAStrong h1{
+	   font-size: 50px;
+   }
+	.loginPage p{
+	   font-size: 13px;
+   }
+}
+@media only screen and (min-width: 992px) and (max-width: 1100px) {
+	.HometopBg h1{
+		font-size: 41px;
+   }
+	.HometopBg .btn{
+		max-width: 150px;
+		font-size: 17px;
+   }
+	.peopleTop{
+	   font-size: 13px;
+   }
+	.dontSettle h1,.BenefitsSection h1,
+	.userAre_Heading h1,.ExploreOurSmart ul li,
+	.frequeltyAsked h1,
+	.frequeltyAsked .accordion-button, .loginPage h1{
+		font-size: 25px;
+   }
+	.dontSettle p,.HometopBg p,
+	.BenefitsSection .benefitsCard p,
+	.userAre_Heading p,.userAreProPText,
+	.frequeltyAsked .accordion-item p, 
+	.loginPage label,.loginPage p, .faqSection .accordion-item p{
+		font-size: 12px;
+		line-height: 18px;
+   }
+	.userAreProText h3{
+		font-size: 18px;
+   }
+	.main-nav a, .main-nav select{
+		font-size: 14px;
+   }
+	.footerBottom p, .footerBottom ul li{
+		font-size: 13px;
+   }
+	.aboutUsUser h5{
+	   font-size: 14px;
+   }
+	.howToOwnCards h1{
+	   font-size: 18px;
+   }
+	.howToOwnCards p{
+	   font-size: 12px;
+   }
+   .privacyPolicy h3{
+	font-size: 18px;
+   }
+}
+@media (min-width: 1100px) {
+	.container {
+		max-width: 1100px 
+   }
+}
+@media (min-width: 1200px) {
+	.container {
+		max-width: 1170px;
+   }
+	.row{
+		margin-right: -20px;
+		margin-left: -20px;
+   }
+	.row>*{
+		padding-right: 20px;
+		padding-left: 20px;
+   }
+	.contactBanners{
+		width: 700px;
+   }
+}
+@media (min-width: 1400px){
+	.container {
+		max-width: 1290px;
+   }
+}
+@media (min-width: 1600px) {
+	.container {
+		max-width: 1490px;
+   }
+}
+@media (min-width: 1800px) {
+	.container {
+		max-width: 1500px;
+   }
+}
+@media(max-width: 1199px) {
+}
+@media (max-width: 991px) {
+	.benefits_CardM{
+		border-left: 1px solid #4b505e;
+		padding-bottom: 0px;
+   }
+	.BenefitsSection .benefitsCard{
+		padding: 20px;
+   }
+	.BenefitsSection .benefitsCard{
+		border-bottom: 1px solid #4b505e;
+   }
+	.benefits-CardIcon{
+		margin-right: 20px;
+   }
+	.footerBottom ul li{
+		padding-right: 30px;
+		font-size: 13px 
+   }
+	.productVarticalTabs.nav-tabs .nav-link {
+		border-radius: 14px;
+		margin: 5px 0px;
+		font-size: 17px;
+		padding: 5px 20px;
+		margin-right: 10px;
+   }
+	.matalNfcCard h1{
+	   font-size: 30px;
+   }
+	.matalNfcCard h2{
+	   font-size: 22px;
+   }
+	.matalNfcCard p{
+	   margin-top: 16px;
+   }
+	.userViewQuickContact .fa{font-size: 40px;}
+	.userViewQuickContact h5{font-size: 15px;}
+	.userViewQuickContact h6{font-size: 12px;}
+	.userViewQuickContact img{height: 40px;}
+	.mobileMenuDrop{
+		position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 2;
+	}
+}
+@media (max-width: 765px) {
+	.aboutusBanner {
+		transform: rotate(6deg);
+		margin-top: -38px;
+   }
+	.aboutusSection{
+		min-height: 300px;
+   }
+	.productSliderGallary .carousel-control-prev {
+		left: -44px;
+   }
+	.productSliderGallary .carousel-control-next {
+		right: -44px;
+   }
+	.productSliderGallary .carousel-control-next-icon,.productSliderGallary .carousel-control-prev-icon {
+		display: inline-block;
+		width: 15px;
+		height: 15px;
+   }
+   .digitalCardHeading{font-size: 50px;}
+   .logo-top{height: 46px;}
+   .countryMobileSelect li{padding: 3px 20px 3px 3px;font-size: 14px;}
+   .HowRichWorks {
+    background-size: 100% 63%;
+}
+.countryMobileMainSelect{margin-left: 0px;}
+}
+@media(max-width: 576px) {
+	.dontSettle p{
+		margin-top: 13px;
+   }
+	.BusinessCrdOvlyText h2{
+		font-size: 25px;
+   }
+	.whyRichKards h1, .HowRichWorks h1,.HometopBg h1, .faqMainSection h1, .latestBlogsSection h1,.contactPage h1, .thankYouSection h1
+	,.aboutusSection h1, .blogInternal h1{
+		font-size: 35px;
+   }
+	.frequeltyAsked .accordion-button, .faqSection .accordion-button{
+		font-size: 18px;
+   }
+	.frequeltyAsked .accordion-item p, .faqSection .accordion-item p{
+		font-size: 13px;
+   }
+	.makeAStrong h1{
+		font-size: 40px;
+   }
+	.headerNav{
+		height: 70px;
+   }
+	.makeAStrong{
+		min-height: 350px;
+   }
+	.HometopBg{
+		padding-top: 70px;
+   }
+	.makeAStrong .makeAStrongBtn {
+		min-width: 161px;
+		font-size: 19px;
+		padding: 6px;
+   }
+	.thankYouSection h3{
+		font-size: 17px;
+   }
+	.thankYouSection p{
+		font-size: 13px;
+   }
+	.ExploreOurSmart ul li{
+		font-size: 20px;
+   }
+	.youtubeModal .btn-close{
+		right: 0px;
+   }
+	.matalNfcCard{
+	   padding: 20px;
+   }
+	.aboutusBanner {
+		transform: rotate(5deg);
+		margin-top: -8px;
+   }
+	.aboutusSection {
+		min-height: 285px;
+   }
+	.aboutusCard{
+	   padding: 12px;
+   }
+	.AboutRichKardz p{
+		font-size: 15px;
+   }
+	.howToOwnCards h1{
+	   font-size: 20px;
+   }
+	.howToOwnCards p{
+	   font-size: 13px;
+   }
+	.modalProfile img{
+	   height: 30px;
+	   width: 30px;
+   }
+	.modalProfile h3{
+	   font-size: 16px;
+   }
+	.modalProfile p{
+	   font-size: 14px;
+   }
+	.productSliderGallary .modal-body{
+	   padding: 20px;
+   }
+	.productSliderGallary .carousel-control-prev {
+		left: -34px;
+   }
+	.productSliderGallary .carousel-control-next {
+		right: -34px;
+   }
+	.productSliderGallary .carousel-control-next-icon,.productSliderGallary .carousel-control-prev-icon {
+		display: inline-block;
+		width: 25px;
+		height: 25px;
+   }
+	.productSliderGallary .Modal_btn-close {
+		position: absolute;
+		right: 0px;
+   }
+   .HowRichWorksMain .videoPlayIcon img{
+	height: 50px;
+   }
+   .frequeltyAsked .accordion-body, .faqSection .accordion-body{
+	padding: 0px 29px 29px 29px;
+   }
+   .frequeltyAsked .accordion-button, .faqSection .accordion-button{
+    padding-left: 29px;
+   }
+   .frequeltyAsked .frequltyNumber, .faqSection .frequltyNumber{
+	left: 9px;
+   }
+   .latest_BlogsPages{margin-top: 20px;margin-bottom: 20px;}
+   .page404 h1{font-size: 90px;color: var(--orangeColor);}
+.page404{min-height: 250px;}
+.privacyPolicySection{min-height: 300px;}
+.privacyPolicy h3{font-size: 22px;}
+.digitalCardHeading{font-size: 40px;}
+.digitalCardDetails h3{font-size: 18px;}
+
+}
+@media(max-width: 400px) {
+	.arrowTop img{
+		height: 39px;
+		margin-top: 41px;
+		margin-left: 1px;
+   }
+	.makeAStrong h1 {
+		font-size: 29px;
+   }
+}

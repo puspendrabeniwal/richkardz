@@ -1,9 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useRouter, usePathname, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Toast } from "primereact/toast";
 import { SplitButton } from "primereact/splitbutton";
@@ -13,29 +12,39 @@ import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "@/app/admin/axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
-import { Button } from "primereact/button";
-
+import { Paginator } from 'primereact/paginator';
 const QrCode = () => {
-  const toastMessage = useRef(null);
-  let formData = new FormData(); //formdata object
-  const router = useRouter();
   const params = useParams();
-  const pathname = usePathname();
-
-  const [list, setList] = useState([]);
+  const toastMessage = useRef(null);
   const filterOption = useRef(null);
 
+  let formData = {};
+  let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+  formData["user_id"]= loginUser?._id;
+
+
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [list, setList] = useState([]);
+
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first)
+    setRows(event.rows);
+    formData["skip"]= event.first; //append the values with key, value pair
+    formData["limit"]= event.rows; //append the values with key, value pair
+    getList()
+  };
+
+
   const getList = () => {
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
-
     instance
       .post("qr_code/"+params.type, formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered ? response.recordsFiltered : 0;
+        setTotalRecords(recordsFiltered)
         setList(data);
       })
       .catch((error) => {
@@ -49,17 +58,15 @@ const QrCode = () => {
 
 
   const onSubmit = async (values) => {
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("company_name", values?.company_name);
-    formData.append("unique_code", values?.unique_code);
+    formData["company_name"] = values?.company_name;
+    formData["unique_code"] = values?.unique_code;
     getList();
   };
 
   const codeTypes = ["B2C Codes", "B2B Codes"];
   const codeUrlBodyTemplate = (rowData) => {
     return (
-      <Link style={{"text-decoration": "underline", "color" : "blue"}} href={rowData.code_url}>QR Code Url</Link>
+      <Link target="_blank" style={{"textDecoration": "underline", "color" : "blue"}} href={rowData.code_url}>QR Code Url</Link>
     );
   };
 
@@ -118,7 +125,6 @@ const QrCode = () => {
         reject,
       });
     };
-  
   
     return (
       <>
@@ -260,7 +266,6 @@ const QrCode = () => {
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
-                                formData = new FormData();
                                 await getList();
                                 filterOption.current.toggle(e);
                               }}
@@ -296,11 +301,9 @@ const QrCode = () => {
                 <ConfirmDialog />
                 <DataTable
                   value={list}
-                  paginator
                   showGridlines
-                  rows={10}
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
+                  emptyMessage="No Codes found."
                 >
                   <Column
                     header="#"
@@ -320,6 +323,7 @@ const QrCode = () => {
                     body={actionButtonBodyTemplate}
                   ></Column>
                 </DataTable>
+                <Paginator first={first} rows={rows} totalRecords={totalRecords} rowsPerPageOptions={[20, 50, 100, 1000]} onPageChange={onPageChange} />
               </div>
             </div>
           </div>

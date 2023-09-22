@@ -1,0 +1,559 @@
+
+/*------------------------------------------------------------ # 
+Navigation Menu 
+--------------------------------------------------------------*/
+.main-nav, .main-nav * {list-style: none;}
+.main-nav > ul > li {position: relative;white-space: nowrap;float: left;}
+.main-nav a, .main-nav select {color: white;padding: 3px 20px;font-size: 18px;font-family: Gilroy-Medium;}
+.main-nav select option{color: var(--blackColor);}
+.main-nav a.active,  .main-nav ul a.active, .main-nav li:hover > a {color: var(--orangeColor);}
+.main-nav .drop-down ul {display: block;position: absolute;right: 0;top: calc(100% + 30px);z-index: 99;opacity: 0;visibility: hidden;padding: 10px 0;background: #fff;box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);transition: ease all 0.3s;margin-top: 10px;}
+.main-nav .drop-down:hover > ul {opacity: 1;top: 100%;visibility: visible;}
+.main-nav .drop-down li {min-width: 180px;position: relative;}
+.main-nav .drop-down ul a {padding: 4px 20px; font-size: 14px; color: var(--blackColor); display: block;}
+.main-nav .drop-down ul a:hover, .main-nav .drop-down ul .active > a, .main-nav .drop-down ul li:hover > a {background-color:var(--color-red);color: #fff}
+.main-nav .drop-down > a:after {border: none!important;font: normal normal normal 14px/1 FontAwesome;content: "\f107"!important;vertical-align: 0;padding-left: 6px;}
+.main-nav .drop-down:hover .main-nav .drop-down > a:before{border: none!important;font: normal normal normal 14px/1 FontAwesome;content: "\f106"!important;vertical-align: 0;}
+.main-nav .drop-down .drop-down ul {top: 0;left: calc(100% - 30px);}
+.main-nav .drop-down .drop-down:hover > ul {opacity: 1;top: 0;left: 100%;}
+.main-nav .drop-down .drop-down > a {padding-right: 35px;}
+.main-nav .drop-down .drop-down > a:after {content: "\f105";position: absolute;right: 15px;}
+.main-nav ul li:nth-last-child(1) a{padding-right: 0px;}
+/* Mobile Navigation */
+.mobile-nav {position: fixed;top: 0;bottom: 0;z-index: 3333;overflow-y: auto;right: -290px;width: 290px;padding-top: 18px;background: #fff;transition: 0.4s;}
+.mobile-nav * {list-style: none;}
+.mobile-nav a, .mobile-nav select{display: block;position: relative;color: var(--blackColor);padding: 10px 20px;font-size: 13px;font-family: Gilroy-Bold;border-bottom: 1px solid;border-color: #f1f1f1}
+.mobile-nav a:focus, .mobile-nav a.active, .mobile-nav .drop-down.active,  .mobile-nav a:hover{color: var(--orangeColor);}
+.mobile-nav .drop-down li a:hover{background-color:#ab1899;color:  #fff;}
+.mobile-nav .drop-down > a:after {right: 15px;top: 13px;position: absolute; content: "\f067";border: none!important;font: normal normal normal 14px/1 FontAwesome;vertical-align: 0;}
+.mobile-nav .drop-down.active > a:after {content: "\f068" !important;}
+.mobile-nav .drop-down > a {padding-right: 35px;}
+.mobile-nav .drop-down.active{color: #fff}
+.mobile-nav .drop-down ul {display: none;overflow: hidden;}
+.mobile-nav .drop-down li a{padding-left: 25px;color: #fff}
+.mobile-nav-overly {width: 100%;height: 100%;z-index: 2222;top: 0;left: 0;position: fixed;background: rgba(0, 0, 0, 0.7);overflow: hidden;display: none;}
+.mobile-nav-active {overflow: hidden;}
+.mobile-nav-active .mobile-nav {right: 0;}
+.mobile-nav-active .mobile-nav-toggle i {color: #fff;}
+
+.languageSelect{background-color: unset;border: none !important;}
+/*navbar END*/
+.modal-backdrop{z-index: 33334}
+.modal{z-index: 33335}
+.logo-top{height: 57px;}
+.headerNav {height: 80px;z-index: 999;transition: all 0.9s;display: flex;align-items: center;}
+.navbarscroll{position: sticky;z-index: 2222;top: 0px;}
+.fixedHeader{background-color: var(--NavyBlueColor);box-shadow: 0px 0px 5px rgba(127, 137, 161, 0.3);}
+/*-------------------------------------------------------------- # 
+maintop sliders
+--------------------------------------------------------------*/
+
+/* ----------  CommanCss -------------*/
+.defaultPaddingTB{ padding-top: 60px;padding-bottom: 60px;}
+/* -------end------- */
+
+.HometopBg{ background-color: var(--NavyBlueColor); min-height: 600px; background-position: center; background-size: cover; margin-top: -80px; padding-top: 150px; } 
+.HometopBg h1{ font-size: 55px; font-family: Gilroy-Bold;color: white; }
+.HometopBg p{ font-size: 17px; font-family: Gilroy-Medium;color: white; margin-top: 20px; line-height: 24px;} 
+.HometopBg .btn{ min-width: 170px; border-radius: 10px;font-size: 21px; padding: 10px; } 
+.homeVideo{width: 100%;height: 500px;}
+.viewUser h3{color: white;font-family: Gilroy-ExtraBold;}
+.viewUser h6{color: white;font-size: 14px;}
+
+.userHomeProfile li img{height: 45px;width: 45px;object-fit: cover;border-radius: 50%;border: 2px solid white;}
+.userHomeProfile li{display: inline-block;    margin-left: -20px;}
+
+
+.arrowTop{width: 225px;} 
+.arrowTop img{height: 50px; margin-top: 33px; margin-left: 16px;} 
+.peopleTop{ font-family: Gilroy-Light; transform: rotate(-6deg); display: inline-block;font-size: 20px;}
+
+/* dontSettle-----start */
+.dontSettle{ background-image: linear-gradient(to bottom, #eef0fa, #f3f4f8); } 
+.dontSettle h1{ font-size: 35px; font-family: Gilroy-Bold;margin-bottom: 20px; } 
+.dontSettle p{ font-size: 16px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 10px; line-height: 24px; }
+/* ---------end----- */
+
+
+/* ---------- BenefitsSection start--------- */
+.BenefitsSection{ background-color: var(--NavyBlueColor); } 
+.BenefitsSection h1{ font-size: 45px; font-family: Gilroy-Bold; color: white;padding-bottom: 25px; } 
+.BenefitsSection h3{ font-size: 20px; font-family: Gilroy-Bold; color: white;} 
+.benefits_CardM{  padding: 25px 0px;} 
+.BenefitsSection .benefitsCard{ padding: 25px 25px 25px 0px; display: flex; align-items: center; position: relative;}
+.BenefitsSection .benefitsCard h3{ font-size: 21px; font-family: Gilroy-Bold; color: white; } 
+.BenefitsSection .benefitsCard p{font-size: 16px; font-family: Gilroy-Medium; color: #aeaeae; margin-top: 16px; line-height: 26px; } 
+.benefits-CardIcon{width: 50px; margin-right: 39px; }
+.benefitsVideo{width: 100%;height:500px;}
+
+/* -----end------- */
+
+/* --------userAreStart------- */
+.userAre_Heading h1{ font-size: 45px; font-family: Gilroy-Bold; } 
+.userAre_Heading p{ font-size: 16px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 16px;line-height: 24px;color: var(--grayColor); } 
+.userAreSaying { background-image: linear-gradient(to bottom, #eef0fa, #f3f4f8); }
+.userAreSlider{ margin-top: 30px; } 
+.userAreSlider .userAreProfile{ height: 300px; width: 100%; border-radius: 20px; position: relative; } 
+.userAreProText{ margin-top: 20px; } 
+.userAreProText h3{ font-size: 22px; font-family: Gilroy-Bold; } 
+.ratingStar{ color: #ffaa00; } 
+.ratingStar:hover{color: var(--NavyBlueColor);}
+.userAreProPText{ font-size: 16px; font-family: Gilroy-Light; margin-top: 10px; color: var(--grayColor); } 
+.userAreSaying .swiper-wrapper{ padding-bottom: 60px; }
+.swiper-pagination-bullet{ background-color: var(--NavyBlueColor) !important; } 
+.userProfile img{height: 100px;width: 100px;border-radius: 50%;    margin-top: -70px;}
+.userssaying{text-align: center;background-color: white;border-radius: 15px;padding: 15px;    box-shadow: 0px 0px 10px 0px #dfdfdf;margin-top: 60px;}
+
+.userAreProMain{ display: flex; align-items: center; justify-content: center; position: relative; } 
+.userAreProMain::after{ position: absolute; content: ""; top: 0px; bottom: 0px; right: 0px; left: 0px; background-color: #00000080; border-radius: 20px; } 
+/* .userAreProMain:hover::after{background-color: #0000007a;} */
+/* --------userAreEnd------- */
+
+.videoPlayIcon{ position: absolute; cursor: pointer; z-index: 3; background-color: unset; border: none; } 
+.videoPlayIcon img{ height: 50px; } .YouTubeVideo{ width: 100%; min-height: 400px; }
+.videoPlayIcon img:hover{background-color: var(--NavyBlueColor);border-radius: 50%;}
+.youtubeModal .Modal_btn-close{position: absolute; right: -23px; background: var(--orangeColor); color: white; opacity: 1; top: -13px; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; z-index: 1;}
+.youtubeModal .Modal_btn-close:hover{background-color: var(--NavyBlueColor);color: white;}
+.youtubeModal .modal-content{background-color: unset;border: none;}
+
+.upload_CampnayLogo .Modal_btn-close{ position: absolute; right: 16px; background: var(--orangeColor); color: white; opacity: 1; top: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; z-index: 1;}
+.upload_CampnayLogo .Modal_btn-close:hover{background-color: var(--NavyBlueColor);color: white;}
+
+/* Explore Our Smart */
+.ExploreOurSmart{ border: 1px solid #ccc; display: flex; } 
+.ExploreOurSmart  ul li{ display: inline-block; padding: 15px 20px; font-size: 35px; font-family: Gilroy-Bold; } 
+.BusinessCardsSection{ background-color: var(--NavyBlueColor); } 
+.BusinessCrds{ position: relative; } 
+.BusinessCrds img{ border-radius: 20px; } 
+.BusinessCrdOverlay{ position: absolute; top: 0px; bottom: 0px; right: 0px; left: 0px; background-image: linear-gradient(#ffffff00,#000000cf); border-radius: 20px; padding: 20px; display: flex; align-items: flex-end; } 
+.BusinessCrdOverlay:hover{ background-image: linear-gradient(#0000003c,#000000cf); }
+.BusinessCrdOvlyText{ display: flex; justify-content: space-between; align-items: center; width: 100%; } 
+.BusinessCrdOvlyText h2{ color: white; font-size: 28px; font-family: Gilroy-Medium; } 
+.BusinessCrdOvlyText a{ color: white; font-size: 16px; font-family: Gilroy-Medium; } 
+.BusinessCrdOvlyText a:hover{ color: var(--orangeColor); }
+.businesscardsslider .swiper-pagination-bullet{background: white !important;}
+/* ---whyRichKards */
+.whyRichKardsMain{background-image: url('../img/wayRichKarz.jpeg'); min-height: 600px; background-position: center; background-size: cover;}
+.whyRichKards h1{ font-size: 55px; font-family: Gilroy-Bold; }
+.whyRichKards p{ font-size: 17px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 20px; line-height: 24px;} 
+.whyRichKardsImgOveraly{position: relative;overflow: hidden;display: flex;align-items: center;justify-content: flex-end;}
+.whyRichKardsImgOveraly img{position: relative;}
+.whyRichKardsImgOveraly::before {position: absolute; content: ""; width: 400px; height: 100%; background-color: #e8eaff; right: 0px; top: 100px; border-top-right-radius: 220px; border-top-left-radius: 220px;}
+.whyRich_KardSlider{ margin-top: 30px; } 
+.whyRich_KardSlider .swiper-wrapper{ padding-bottom: 50px; } 
+.whyRich_KardSlider .swiper-slide{ background-color: var(--lightGray); padding: 20px; border-radius: 20px; } 
+.whyRich_KardSlider img{ height: 50px; } 
+.whyRich_KardSlider p { color: var(--grayColor); font-size: 18px; font-family: Gilroy-Medium; line-height: 24px; }
+
+/* ------frequelty Asked------- */
+.frequeltyAsked{ background-color: var(--NavyBlueColor); } 
+.frequeltyAsked h1 { font-size: 35px; font-family: Gilroy-Bold; text-align: center; color: white; } 
+.frequeltyAsked .accordion-item p { color: #aeaeae; font-size: 16px; font-family: Gilroy-Medium; line-height: 24px;} 
+.frequeltyAsked .accordion-button{ background-color: var(--NavyBlueColor); color: white; font-size: 23px;font-family: Gilroy-Medium;padding-right: 28px;padding-left: 44px; } 
+.frequeltyAsked .accordion-button:not(.collapsed){ background-color: #16203a;border-radius: 20px 20px 0px 0px; margin-top: 20px;} 
+.frequeltyAsked .accordion-collapse.collapse.show{ margin-bottom: 20px; } 
+.frequeltyAsked .accordion-item{ border-right: none; border-left: none; border-bottom: 1px solid #434a5d;background-color: unset; } 
+.frequeltyAsked .accordion-body{background-color: #16203a;    border-radius: 0px 0px 20px 20px;    padding:20px 44px 44px;} 
+.frequeltyAsked .accordion-button::after{ background-image: url('../img/upErrow.svg'); width: 19px;height: 15px;background-size: 19px;position: absolute;right: 10px;top: 20px; } 
+.frequeltyAsked .accordion-button:not(.collapsed)::after{ background-image: url('../img/downErrow.svg'); } 
+.frequeltyAsked button:focus:not(:focus-visible){box-shadow: none;}
+.frequeltyAsked .userAreProMain::after{border-radius: 12px;}
+.frequeltyAsked .frequltyNumber{position: absolute;left: 15px;top: 15px;}
+
+.HowRichWorks h1 { font-size: 55px; font-family: Gilroy-Bold; text-align: center;  } 
+.HowRichWorks{background-image: url('../img/WorksBackground.png');background-position: bottom;background-size: 100% 80%;background-repeat: no-repeat;}
+.HowRichWorksMain{ display: flex; align-items: center; justify-content: center; position: relative; } 
+.HowRichWorksMain::after{ position: absolute; content: ""; top: 0px; bottom: 0px; right: 0px; left: 0px; background-color: #00000080; border-radius: 20px; } 
+.HowRichWorksMain img{border-radius: 20px;}
+.HowRichWorksMain .videoPlayIcon img{height: 70px;}
+
+.companyLogo img{height: 50px;}
+
+.makeAStrong{background-image: url('../img/makeAStrong.png'); min-height: 500px; background-position: center; background-size: cover; display: flex;align-items: center;justify-content: center;} 
+.makeAStrong h1{ font-size: 70px; font-family: Gilroy-Bold; color: white; } 
+.makeAStrong .makeAStrongBtn{ min-width: 170px; border-radius: 30px; margin-top: 13px; font-size: 21px; padding: 10px; background-color: white; } 
+.makeAStrong .makeAStrongBtn:hover{ background-color: var(--NavyBlueColor); color: white; }
+.makeAStrong .makeAStrongBtn:focus:not(:focus-visible){background-color: #d78624;color: white;border: 1px solid;border-color: var(--NavyBlueColor);box-shadow: 0px 0px 10px 0px #fe8f09;}
+
+/*------ homepage end css------ */
+
+/* ------footer css start---- */
+.footerBottom p{font-size: 15px;font-family: Gilroy-Light;color: white;}
+.footerBottom ul li{display: inline-block;padding-left: 30px;font-size: 15px;font-family: Gilroy-Light;}
+.footerBottom ul li a{color: white;}
+.footerBottom ul li a:hover{color: var(--orangeColor);}
+.footerSection h5{font-size: 16px;font-family: Gilroy-Bold;color: white;}
+.footerSection p{font-size: 15px;font-family: Gilroy-Bold;color: white;}
+.footerSection ul li{padding: 3px 0px;display: block;}
+.footerSection ul li a{font-size: 14px;font-family: Gilroy-Medium;color: white;}
+.footerSection ul li a:hover{color: var(--orangeColor);}
+.footer{background-color: var(--NavyBlueColor)}
+.footerInput input{border: none;height: 50px;font-family: Gilroy-Bold;padding-right: 110px;}
+.footerInput .subscribe{position: absolute;right: 15px;top: 15px;font-family: Gilroy-Bold;}
+.footerInput .subscribe:hover{color: var(--orangeColor);}
+/* ------footer css end---- */
+
+
+/*----------------login Page Start-------- */
+.loginPage h1{ font-size: 35px; font-family: Gilroy-Bold; } 
+.loginPage p{ font-size: 16px; font-family: Gilroy-Regular;color: var(--grayColor);line-height: 24px;} 
+.loginPage input, .loginPage .btn{border-radius: 5px;font-size: 20px;}
+.loginPage label{font-size: 16px;font-family: Gilroy-Bold;}
+.loginPage input{background-color:var(--lightGray);font-size: 16px;font-family: Gilroy-Light;}
+/*-------- loginPage css end farukh----------- */
+
+
+/*-------- thankyou page css start farukh----------- */
+.thankYouSection h1{ font-size: 55px; font-family: Gilroy-Bold; } 
+.thankYouSection h3{ color: var(--orangeColor);font-family: Gilroy-Bold;margin-bottom: 10px;font-size: 22px;}
+.thankYouSection p{ font-size: 16px; font-family: Gilroy-Bold;color: var(--grayColor);line-height: 24px; } 
+.thankYouSection .thankyouRight{height: 50px;}
+/*-------- thankyou page css end farukh----------- */
+
+.orderSummary h3{ font-size: 16px;font-family: Gilroy-Bold; } 
+.orderSummary h2{ font-size: 32px;font-family: Gilroy-Bold; } 
+.orderSummary{ background-color: var(--lightGray);border-radius: 10px; padding: 15px; border: 1px solid #ccc; } 
+.border-top{ border-top:1px solid #ccc !important; } 
+.orderSummary ul li{ font-size: 14px; padding: 7px 0px; } 
+.orderSummary ul li span{ float: right; font-size: 19px; }
+
+
+.cardDetailsCollaps .card-header{background-color: var(--lightGray);padding: 0px;} 
+.cardDetailsCollaps .card-header .collapsebtn.collapsed{background-color: var(--lightGray);padding: 10px;font-size: 18px;font-family: Gilroy-Bold; display: block; text-align: left; }
+.card{border: 1px solid #ccc;} 
+.cardDetailsCollaps .card-header .collapsebtn:not(.collapsed){background-color: var(--NavyBlueColor);padding: 10px;font-size: 18px;font-family: Gilroy-Bold; display: block; text-align: left;color: white; border-bottom-left-radius: 0px !important; border-bottom-right-radius: 0px !important;} 
+.cardDetailsCollaps .card{margin-bottom: 30px;} .customFrom label{font-size: 16px;font-family: Gilroy-Bold;} 
+
+.customRadio .form-check-input{ min-width: 20px; min-height: 20px; margin-top: 0px;border-radius: 50%; } 
+.customRadio .form-check-label{ font-size: 15px;font-family: Gilroy-Bold;margin-left: 5px; } 
+.customRadio .form-check-input:checked{background-color: var(--NavyBlueColor);border-color: var(--NavyBlueColor);} 
+
+.customCheckbox .form-check-input{ min-width: 20px; min-height: 20px; margin-top: 0px;border-radius: 50%; } 
+.customCheckbox .form-check-label{ font-size: 15px;font-family: Gilroy-Bold;margin-left: 5px; } 
+.customCheckbox .form-check-input:checked{background-color: var(--NavyBlueColor);border-color: var(--NavyBlueColor);} 
+
+.richKarzsDetails{ padding: 30px 0px; } .richKarzsDetails label{ font-size: 15px;font-family: Gilroy-Bold; } 
+.richKarzsDetails h6{ font-size: 15px;font-family: Gilroy-Regular } .editBtn{border: none;background-color: unset;color: var(--orangeColor);} 
+.editBtn:hover{color: #d6bc9b;}
+
+/* -----contact page css---- */
+.contactPage{ background-image: url('../img/BannerBG.png'); min-height: 400px; background-position: center; background-size: cover; overflow: hidden;position: relative; } 
+.contactPage h1{ font-size: 55px; font-family: Gilroy-Bold; }
+.contactPage p{ font-size: 17px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 20px; line-height: 24px;} 
+/* ----contact page css end */
+
+.productMainCard { background: var(--lightGray); padding: 15px; border-radius: 20px; margin-top: 20px; } 
+.productMainImage{ margin-bottom: 10px; } 
+.productMainImage img { height: 200px; } 
+.productTitle h3 { font-size: 19px; } 
+.ratingStar{color: orange;} 
+.productPrice{ display: flex; align-items: center; margin-top: 10px; }
+
+.productPrice h2{font-size: 25px;font-family: Gilroy-Bold;}
+.productPrice del{font-size: 14px;margin: 0px 9px;color: var(--grayColor);}
+.productPrice h5{font-size: 14px;color: var(--orangeColor);font-family: Gilroy-Bold;}
+
+
+.productTabs.nav-tabs .nav-link {cursor: pointer;background-color: var(--lightGray);color: black;margin-right: 20px;min-width: 100px;border-radius: 10px;}
+.productTabs.nav-tabs .nav-item.show .nav-link,
+.productTabs.nav-tabs .nav-link.active,.productTabs.nav-tabs .nav-link:hover {background-color: var(--NavyBlueColor);color: white;}
+
+
+
+.productVarticalTabs.nav-tabs .nav-link {cursor: pointer;background-color:white;color: black;    border-radius: 20px 0px 0px 20px;margin: 20px 0px;display: block;width: 100%;border: none;font-size: 22px;padding: 16px 20px;}
+.productVarticalTabs.nav-tabs .nav-item.show .nav-link,
+.productVarticalTabs.nav-tabs .nav-link.active,.productVarticalTabs.nav-tabs .nav-link:hover {background-color: white;color: black;   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;}
+
+
+/* ----- --productCard---------- */
+.matalNfcCard{ box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; padding: 35px; border-radius: 20px; } 
+.matalNfcCard h2{ font-size: 27px; font-family: Gilroy-Light; } 
+.matalNfcCard h1{ font-size: 45px; font-family: Gilroy-Bold; } 
+.matalNfcCard p{ font-size: 15px; line-height: 24px; margin-top: 24px; }
+
+/* -----aboutus page css---- */
+.aboutusSection{ background-image: url('../img/BannerBG.png'); min-height: 400px; background-position: center; background-size: cover; overflow: hidden;position: relative; } 
+.aboutusSection h1{ font-size: 55px; font-family: Gilroy-Bold; }
+.aboutusSection p{ font-size: 17px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 20px; line-height: 24px;} 
+.aboutusBanner{transform: rotate(-8deg);margin-top: -107px;}
+
+.AboutRichKardz{background-image: url('../img/wayRichKarz.jpeg'); min-height: 600px; background-position: center; background-size: cover;}
+.AboutRichKardz h1{ font-size: 35px; font-family: Gilroy-Bold; }
+.AboutRichKardz p{ font-size: 16px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 20px; line-height: 24px;} 
+.AboutRichKardz h1 span{font-family: Gilroy-Light;}
+
+.aboutusCard{padding: 20px;background-color: white;box-shadow: 0px 0px 10px 0px #ccc;border-radius: 10px;}
+.aboutusCard h2{ font-size: 25px; font-family: Gilroy-Medium; }
+.aboutusCard p{ font-size: 16px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 10px; line-height: 24px;} 
+.aboutusOneCard{text-align: center;}
+.aboutusOneCard img{width: 50px;}
+
+.aboutUsUser{padding: 10px;background-color: white;box-shadow: 0px 0px 10px 0px #ccc;border-radius: 10px;}
+.aboutUsUser h2{ font-size: 28px; font-family: Gilroy-Bold; }
+.aboutUsUser h5{ font-size: 18px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 10px; line-height: 24px;} 
+.aboutUsUcARD img{height: 30px;}
+.aboutUsUcARD{width: 70px;height: 80px;text-align: center;background-color: var(--NavyBlueColor);margin-right: 10px;line-height: 80px;border-radius: 10px;}
+
+.HowToOwnAboutus{background-color: var(--NavyBlueColor);}
+
+.HowToOwnAboutus h1{ font-size: 35px; font-family: Gilroy-Bold;color: white; }
+.HowToOwnAboutus p{ font-size: 16px; font-family: Gilroy-Medium; margin-top: 20px; line-height: 24px;color: white;} 
+.HowToOwnAboutus h1 span{font-family: Gilroy-Light;color: white;}
+
+.howToOwnCount{display: flex;justify-content: space-between;margin-top: 50px;position: relative;}
+.howToOwnCount .countNumber{height: 60px;width: 60px;background-color: white;text-align: center;line-height: 60px;border-radius: 50%;position: relative;}
+.howToOwnCount .countNumber:hover{background-color: var(--orangeColor);color: white;}
+.howToOwnCount::before{position: absolute;content: "";background-color: #707070;height: 1px;width: 100%;top: 30px;}
+
+.howToOwnCards{background-color: #16203a;text-align: center;margin-top: 40px;border-radius: 20px;padding: 20px;position: relative;}
+.howToOwnCards img{height: 50px;margin-bottom: 20px;position: relative;}
+.howToOwnCards h1{font-size: 25px;position: relative;}
+.howToOwnCards p{font-size: 16px;position: relative;;}
+
+.howToOwnCards::before{background-color: white;position: absolute;content: "";top: 0px;bottom: 0px;width: 0px;transition: .3s;border-radius: 20px;left: 0px;}
+.howToOwnCards:hover::before{background-color: white;width: 100%;right: 0px;}
+.howToOwnCards:hover h1,.howToOwnCards:hover p{color: black;}
+/* ----aboutus page css end */
+
+
+.productSliderTwo{background-color: var(--lightGray);padding: 10px;border-radius: 20px;}
+.productSlider .productSmalSlider{background-color: var(--lightGray);padding: 10px;border-radius: 20px;position: relative;display: flex;align-items: center;justify-content: center;}
+
+.productSlider .productSmalSlider .videoPlayIcon img{height: 30px;}
+.productSlider .swiper-slide {opacity: .5;}
+.productSlider .swiper-slide-thumb-active{opacity: 1;}
+
+.productGallarySlider .carousel-item img {height: 400px;width: 100%;object-fit: cover;}
+
+.productSliderGallary .Modal_btn-close{position: absolute; right: -23px; background: var(--orangeColor); color: white; opacity: 1; top: -13px; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; z-index: 1;}
+.productSliderGallary .Modal_btn-close:hover{background-color: var(--NavyBlueColor);color: white;}
+
+.productSliderGallary .carousel-control-prev-icon{background-image: url('../img/rightArrow.svg');}
+.productSliderGallary .carousel-control-next-icon{background-image: url('../img/leftArrow.svg');}
+.productSliderGallary .carousel-control-prev {left: -74px;}
+.productSliderGallary .carousel-control-next {right: -74px;}
+.productSliderGallary .modal-body{padding: 40px;}
+
+.modalProfile img{height: 45px;width: 45px;border-radius: 50%;object-fit: cover;}
+.modalProfile h3{font-size: 18px;font-family: Gilroy-Bold;}
+.modalProfile p{font-size: 16px;}
+.paymentLogo img{height: 15px;}
+
+.productDetails h1{ font-size: 35px; font-family: Gilroy-Bold;}
+.productDetails p{ font-size: 16px; font-family: Gilroy-Medium; margin-top: 15px; line-height: 24px;} 
+
+.cardDesgin{ width: 70px; height: 70px; margin-right: 20px; margin-top: 10px; display: flex; align-items: center; justify-content: center; background-color: var(--lightGray); border-radius: 10px; } 
+.cardDesgin img{max-height: 50px;} 
+.cardDesgin.active, .cardDesgin:hover{ border: 1px solid; border-color: var(--NavyBlueColor); }
+
+.productpolicy{border-top: 1px solid #ccc;border-bottom: 1px solid #ccc}
+.productpolicy img{width: 20px;position: absolute;left: 0px;top: 10px;}
+.productpolicy li{position: relative;padding: 7px 0px 7px 30px;font-size: 16px; }
+.productpolicy b{font-family: Gilroy-Bold;}
+
+.productAbout li{padding: 6px 0px}
+.productAbout li b{font-family: Gilroy-Bold;}
+.progressProduct{display: flex;align-items: center;}
+.progressProduct .progress{height: 7px;width: 100%;}
+.progressProduct .progress-bar{background-color: orange;}
+.progressProduct span{color: var(--grayColor);font-family: Gilroy-Light !important;}
+.ReviewWithImage{height: 100px;width: 100%;object-fit: cover; }
+.ReviewImageView{position: absolute;background-color: #000000b9;color: white;top: 0px;bottom: 0px;right: 0px;left: 0px;display: flex;align-items: center;justify-content: center;font-size: 20px;}
+
+.ReviewSection{padding: 18px 0px;border-top: 1px solid #ccc;}
+.ReviewSection .reviewSProfile{height: 45px;width: 45px;border-radius: 50%;object-fit: cover;}
+.ReviewSection p{font-size: 16px;font-family: Gilroy-Bold;margin-top: 6px;}
+.ReviewSection h3{font-size: 16px;}
+
+.ReviewCardIMG{position: relative;}
+.ReviewCardIMG .cardReview{height: 100px;width: 100%;object-fit: cover;border-radius: 12px;position: relative;}
+.ReviewCardIMG .videoPlay_Icon{position: absolute;top: 0px;bottom: 0px;right: 0px;left: 0px;background-color: rgba(0, 0, 0, 0.539);border-radius: 12px;border: none;}
+.ReviewCardIMG .video_Icon{height: 30px;width: 30px;}
+
+
+.customPagination .page-item{margin-right: 20px;}
+.customPagination .page-item .page-link{border: none;color: black;}
+.customPagination .paginationNumber .page-link{height: 30px;width: 30px;border-radius: 50%;background-color: var(--lightGray);color: black;}
+.customPagination .page-item.active .page-link, .customPagination .page-item:hover .page-link {background: var(--NavyBlueColor);color: white;}
+
+
+
+/* faq */
+
+.faqSection .accordion-item p { color: #000; font-size: 16px; font-family: Gilroy-Medium; line-height: 24px;} 
+.faqSection .accordion-button{ background-color: white; color: black; font-size: 23px;font-family: Gilroy-Medium;padding-right: 28px;padding-left: 44px; } 
+.faqSection .accordion-button:not(.collapsed){ background-color: white;border-radius: 20px 20px 0px 0px;} 
+.faqSection .accordion-collapse.collapse.show{ margin-bottom: 20px; } 
+.faqSection .accordion-item{ border-right: none; border-left: none; border-bottom: 1px solid #ccc;background-color: unset; } 
+.faqSection .accordion-body{background-color: white;    border-radius: 0px 0px 20px 20px;    padding:20px 44px 44px;} 
+.faqSection .accordion-button::after{ width: 19px;height: 15px;background-size: 19px;position: absolute;right: 10px;top: 20px;} 
+.faqSection button:focus:not(:focus-visible){box-shadow: none;}
+.faqSection .userAreProMain::after{border-radius: 12px;}
+.faqSection .frequltyNumber{position: absolute;left: 15px;top: 15px;}
+.faqTabSection{margin-top: -150px;position: relative;background-image: linear-gradient(#ffffff00,#ffffff,#ffffff,#ffffff,#ffffff,#ffffff,#ffffff,#ffffff)}
+.faqSection .accordion{border-radius: 20px;overflow: hidden;box-shadow: rgba(0, 0, 0, 0.15) 0px -4px 7px !important;}
+
+
+.faqMainSection{ background-image: url('../img/BannerBG.png'); min-height: 400px; background-position: center; background-size: cover; overflow: hidden;position: relative; } 
+.faqMainSection h1{ font-size: 55px; font-family: Gilroy-Bold; }
+.faqMainSection p{ font-size: 17px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 20px; line-height: 24px;} 
+
+.latestBlogsSection h1{ font-size: 55px; font-family: Gilroy-Bold; }
+.latestBlogsSection p{ font-size: 17px; font-family: Gilroy-Medium;color: var(--grayColor);  line-height: 24px;} 
+
+.latestBlogs .swiper-wrapper{padding-bottom: 50px;} 
+.latestBlogs .swiper-slide { background-color: var(--lightGray); padding: 18px; margin-top: 30px; border-radius: 15px; } 
+.latestBlogs .swiper-slide img{ height: 270px; width: 100%; object-fit: cover; border-radius: 20px; } 
+.latestBlogs .swiper-slide h4{ font-size: 20px; font-family: Gilroy-Bold; margin-top: 20px; } 
+.latestBlogs .swiper-slide p{ font-size: 16px; font-family: Gilroy-Light; padding:10px 0px; } 
+.latestBlogs .swiper-slide .aLink{ display: inline-block;  text-decoration: underline;margin-top: 10px; }
+
+.latest_BlogsPages{margin-top: 30px;margin-bottom: 30px;}
+.latest_BlogsPages img{ height: 270px; width: 100%; object-fit: cover; border-radius: 20px; } 
+.latest_BlogsPages h4{ font-size: 20px; font-family: Gilroy-Bold; margin-top: 20px; } 
+.latest_BlogsPages p{ font-size: 16px; font-family: Gilroy-Light; padding:10px 0px; border-bottom: 1px solid #ccc; } 
+.latest_BlogsPages .aLink{ display: inline-block; margin-top: 10px; text-decoration: underline; }
+
+
+.blogInternal{ background-image: url('../img/BannerBG.png'); min-height: 400px; background-position: center; background-size: cover; overflow: hidden;position: relative; } 
+.blogInternal h1{ font-size: 55px; font-family: Gilroy-Bold; }
+.blogInternal p{ font-size: 17px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 20px; line-height: 24px;} 
+
+.blogProfile{display: flex;}
+.blogProfile img{height: 45px;width: 45px;border-radius: 50%;}
+.blogProfile h5{font-size: 17px;font-family: Gilroy-Light;}
+.blogProfile h4{font-size: 22px;font-family: Gilroy-Bold;}
+
+.blogSection p{font-size: 17px;line-height: 24px;font-family: Gilroy-Medium;text-align: justify;}
+.blogSection h3{font-size: 24px;font-family: Gilroy-Bold;}
+
+.blogCategoris{background-color: var(--lightGray);padding: 10px;border-radius: 15px;}
+.blogCategoris ul li{border-bottom: 1px solid #ccc;padding: 10px 0px;}
+.blogCategoris h4{font-family: Gilroy-Bold;font-size: 20px;}
+
+.blogRecentPosts{background-color: var(--lightGray);padding: 10px;border-radius: 15px;}
+.blogRecentPosts h4{font-family: Gilroy-Bold;font-size: 20px;}
+.blogRecentPosts img{border-radius: 5px;height: 50px;width: 100%;}
+.blogRecentPosts h5{font-size: 14px;font-family: Gilroy-Bold;object-fit: cover;}
+.blogRecentPosts h6{font-size: 12px;color: var(--grayColor);}
+
+
+.page404{background-image: url('../img/BannerBG.png');min-height: 400px;display: flex;background-size: cover;}
+.page404 h1{font-size: 150px;color: var(--orangeColor);}
+.page404 h3{font-family: Gilroy-Bold;}
+.page404 p{font-family: Gilroy-Bold;}
+
+
+/* user view card */
+.headerProfile{background-color: var(--NavyBlueColor); display: flex; justify-content: space-between; padding: 15px; align-items: center; position: sticky;width: 100%;top: 0px;z-index: 10;right: 0px;left: 0px;}
+.headerProfile img{height: 35px;}
+.viewNumber{background-color: white;padding: 8px 9px;border-radius: 30px;}
+.userViewBg{min-height: 230px;background-size: cover;background-position: bottom;display: flex;align-items: flex-end;position: relative;}
+.userViewBg::after{position: absolute;content: "";background-image:linear-gradient(rgba(255, 255, 255, 0),rgb(255 255 255 / 95%),rgb(255 255 255));top: 0px;bottom: 0px;width: 100%;}
+.userViewBg img{height: 100px;width: 100px;border-radius: 50%;}
+.userViewBg h3{font-family: Gilroy-Bold;}
+
+.userViewAboutUs h3{font-size: 26px;}
+.userViewAboutUs p{font-size: 13px;margin-top: 13px;color: var(--grayColor);font-family: Gilroy-Regular;}
+.userViewAboutUs .btn{background-color: white;border-radius: 50px;border: 1px solid;border-color: var(--NavyBlueColor);width: 100%;margin-top: 20px;padding: 10px 8px;}
+.userViewAboutUs .btn:hover, .userViewAboutUs .btn.active{background-color: var(--NavyBlueColor);color: white;}
+.userViewAboutUs .btn:focus{background-color: #d78624;color: white;border: 1px solid;border-color: var(--NavyBlueColor);box-shadow: 0px 0px 10px 0px #fe8f09;}
+.userViewsocialIcon li{display: inline-block;margin-top: 20px;}
+.userViewsocialIcon li a img{height: 44px;}
+
+.userViewQuickContact{background-color: var(--lightGray);text-align: center;padding: 20px;margin-top: 20px;display: flex;transition: .4s;border-radius: 10px;}
+.userViewQuickContact .fa{font-size: 50px;}
+.userViewQuickContact h5{margin-top: 20px;}
+.userViewQuickContact h6{margin-top: 10px;}
+.userViewQuickContact img{height: 50px;}
+.userViewQuickContact:hover{background-color: white;box-shadow: 0px 0px 10px 0px rgb(207, 207, 207);}
+
+.userViewqrCode{min-height: 100px;background-size: cover;background-position: center;background-repeat: repeat;border-radius: 10px;}
+.galleryImg img{height: 130px;width: 100%;object-fit: cover;}
+.downloadNow{background-image: linear-gradient(to top, white, #ffe8cb, white)}
+.downloadNow .btn{border-radius: 30px;}
+
+.usersendMessage{background-color: var(--NavyBlueColor);border-radius: 10px;}
+.usersendMessage .btn{font-size: 12px;padding: 8px 10px !important;border-radius: 30px;}
+.usersendMessage img{margin-top: -40px;}
+
+.userViewContect{min-height: 100px;background-size: cover;background-position: center;font-size: 10px;}
+.userViewContect .fa{font-size: 20px;}
+.userViewFooter img{height: 35px;}
+.userViewFooter{padding-bottom: 70px !important;}
+/* view card end css */
+
+
+.privacyPolicy{margin-top: -130px;position: relative;background-image: linear-gradient(#ffffff00,#ffffff,#ffffff,#ffffff,#ffffff,#ffffff,#ffffff,#ffffff)}
+.privacyPolicySection{ background-image: url('../img/BannerBG.png'); min-height: 400px; background-position: center; background-size: cover; overflow: hidden;position: relative; } 
+.privacyPolicySection h1{ font-size: 55px; font-family: Gilroy-Bold; }
+.privacyPolicy p{ font-size: 15px; font-family: Gilroy-Medium;color: var(--grayColor); margin-top: 2px; line-height: 24px;} 
+.privacyPolicy ul li{ font-size: 15px; font-family: Gilroy-Medium;color: var(--grayColor);padding: 5px 0px;} 
+.privacyPolicy h3{font-family: Gilroy-Bold;margin-top: 20px;}
+
+.cardViewfooter{position: fixed;bottom: 0px;width: 100%;background-color: white;padding: 10px;text-align: center;right: 0px;left: 0px;    box-shadow: 0 .5rem 1rem rgba(0,0,0,.45)!important;}
+.cardViewfooter .blueBtnsave{background-color: #0973ec;color: white;}
+.cardViewfooter .blueBtnsave:focus:not(:focus-visible){background-color: #004da5;box-shadow: 0px 0px 10px 0px #3730ff;}
+
+.cardViewfooter .greenBtnGreen{background-color: #00ab1c;color: white;}
+.cardViewfooter .greenBtnGreen:focus:not(:focus-visible){background-color: #006c12;box-shadow: 0px 0px 10px 0px #00a803;}
+
+
+.digitalCardMain{background-color: #032e3e;min-height: 100vh;}
+.digitalCardHeading{font-size: 80px;color: white;display: inline-block;
+    background: -webkit-linear-gradient(left, #fee48f, #c78433);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: math;
+    font-weight: 900;
+    border-image: linear-gradient(to right,#fee48f, #c78433) 30;
+border-bottom-width: 4px;
+border-bottom-style: solid;
+
+}
+
+.digitalCardDetails .fa{
+    background: -webkit-linear-gradient(top, #fee48f, #c78433);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 30px;
+    width: 50px;
+}
+.digitalCardDetails h3{
+    background: -webkit-linear-gradient(top,#fee48f, #c78433);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.vodiaMobilepicker{ display: none; width: 100%; } 
+.countryMobileSelect::before{ content: ""; position: absolute; right: 0px; top: 12px; background-image: url(../img/up-svg.svg); background-size: cover; height: 5px; width: 11px; background-position: center; } 
+#countryMobileSelectList{ padding: 10px; position: absolute; z-index: 2; background: white; box-shadow: 0px 0px 10px 0px #ddd; } 
+#countryMobileSelectList img, .countryMobileSelect img{ width: 18px; margin-left: 10px; } 
+#countryMobileSelectList li{ list-style: none; padding-top: 5px; padding-bottom: 5px; } 
+#countryMobileSelectList li:hover{ background-color: #F4F3F3; } 
+#countryMobileSelectList li img{ margin: 5px; } /* item list */ 
+.countryMobileMainSelect{ display: none; width: 100%; max-width: 350px; box-shadow: 0 6px 12px rgba(0,0,0,.175); border: 1px solid rgba(0,0,0,.15); border-radius: 5px; margin-left: 20px; } 
+.open{ display: show !important; } 
+.countryMobileSelect{ background-color: unset; border: none; position: relative; } 
+.countryMobileSelect li{ list-style: none; color: white; padding: 3px 20px; font-size: 18px; font-family: Gilroy-Medium; } 
+.countryMobileSelect:hover li{ margin-left: 0px; } 
+.countryMobileSelect:focus{ outline:none; } 
+.lang-Mobileselect{ display: inline-block }
+
+
+
+
+.vodiapicker{ display: none; width: 100%; } 
+.countrySelect::before{ content: ""; position: absolute; right: 0px; top: 14px; background-image: url(../img/up-svg.svg); background-size: cover; height: 5px; width: 11px; background-position: center; } 
+#countrySelectList{ padding: 10px; position: absolute; z-index: 2; background: white; box-shadow: 0px 0px 10px 0px #ddd; } 
+#countrySelectList img, .countrySelect img{ width: 18px; margin-left: 10px; } 
+#countrySelectList li{ list-style: none; padding-top: 5px; padding-bottom: 5px; } 
+#countrySelectList li:hover{ background-color: #F4F3F3; } 
+#countrySelectList li img{ margin: 5px; } /* item list */ 
+.countryMainSelect{ display: none; width: 100%; max-width: 350px; box-shadow: 0 6px 12px rgba(0,0,0,.175); border: 1px solid rgba(0,0,0,.15); border-radius: 5px; margin-left: 20px; } 
+.open{ display: show !important; } 
+.countrySelect{ background-color: unset; border: none; position: relative; } 
+.countrySelect li{ list-style: none; color: white; padding: 3px 20px; font-size: 18px; font-family: Gilroy-Medium; } 
+.countrySelect:hover li{ margin-left: 0px; } 
+.countrySelect:focus{ outline:none; } 
+.lang-select{ display: inline-block }
