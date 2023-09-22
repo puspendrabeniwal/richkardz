@@ -10,13 +10,19 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Paginator } from "primereact/paginator";
 
 const BulkOrders = () => {
   const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData(); //formdata object
-
+  useEffect(() => {
+    getList();
+  }, []);
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
@@ -28,6 +34,10 @@ const BulkOrders = () => {
       .post("bulk_orders", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setList(data);
       })
       .catch((error) => {
@@ -35,10 +45,14 @@ const BulkOrders = () => {
       });
   };
 
-  useEffect(() => {
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData["skip"] = event.first; //append the values with key, value pair
+    formData["limit"] = event.rows; //append the values with key, value pair
     getList();
-  }, []);
-
+  };
   const UpdateButtonLink = (rowData) => {
     const items = [
       {
@@ -274,7 +288,6 @@ const BulkOrders = () => {
               <div className="card-body py-9">
                 <DataTable
                   value={list}
-                  paginator
                   showGridlines
                   rows={10}
                   totalRecords={50}
@@ -308,6 +321,13 @@ const BulkOrders = () => {
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

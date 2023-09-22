@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
-import { Calendar } from 'primereact/calendar';
+import { Calendar } from "primereact/calendar";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { SplitButton } from "primereact/splitbutton";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
@@ -14,6 +14,7 @@ import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog m
 import dateFormat, { masks } from "dateformat";
 import instance from "../../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Paginator } from "primereact/paginator";
 
 const Leads = ({ params }) => {
   const router = useRouter();
@@ -21,7 +22,13 @@ const Leads = ({ params }) => {
   const [dates, setDates] = useState(null);
   const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
 
+  useEffect(() => {
+    getList();
+  }, []);
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
@@ -33,6 +40,10 @@ const Leads = ({ params }) => {
       .post("leads/" + params.type, formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setList(data);
       })
       .catch((error) => {
@@ -40,9 +51,14 @@ const Leads = ({ params }) => {
       });
   };
 
-  useEffect(() => {
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData["skip"] = event.first; //append the values with key, value pair
+    formData["limit"] = event.rows; //append the values with key, value pair
     getList();
-  }, []);
+  };
 
   const UpdateButtonLink = (rowData) => {
     const items = [
@@ -90,8 +106,8 @@ const Leads = ({ params }) => {
     formData.append("name", values?.name);
     formData.append("email", values?.email);
     formData.append("phone_number", values?.phone_number);
-    formData.append("start_date", (dates && dates.length > 0) ? dates[0] : '');
-    formData.append("end_date", (dates && dates.length > 0) ? dates[1] : '');
+    formData.append("start_date", dates && dates.length > 0 ? dates[0] : "");
+    formData.append("end_date", dates && dates.length > 0 ? dates[1] : "");
     formData.append("utm", values?.utm);
     formData.append("business_type", values?.business_type);
     getList();
@@ -171,16 +187,16 @@ const Leads = ({ params }) => {
   };
 
   let breadcrumbName = {
-    "pre-checkout-users" : "Pre Checkout Users",
-    "digital-visiting-card" : "Digital Enquiries",
-    "B2B%20LP" : "B2B LP",
-    "gifting-leads-enquiry" : "Gifting Leads",
-    "contact-enquiries" : "Contact Enquiries",
-    "design-queries" : "Design Queries",
-    "brand-leads" : "Brand Leads",
-    "email-leads" : "Email Leads",
-    "get-in-touch" : "Get In Touch",
-  }
+    "pre-checkout-users": "Pre Checkout Users",
+    "digital-visiting-card": "Digital Enquiries",
+    "B2B%20LP": "B2B LP",
+    "gifting-leads-enquiry": "Gifting Leads",
+    "contact-enquiries": "Contact Enquiries",
+    "design-queries": "Design Queries",
+    "brand-leads": "Brand Leads",
+    "email-leads": "Email Leads",
+    "get-in-touch": "Get In Touch",
+  };
   return (
     <main>
       <div className="d-flex flex-column flex-column-fluid" id="kt_content">
@@ -311,7 +327,12 @@ const Leads = ({ params }) => {
                             <label className="form-label fw-bold">
                               Created
                             </label>
-                            <Calendar value={dates} onChange={(e) => setDates(e.value)} selectionMode="range" readOnlyInput />
+                            <Calendar
+                              value={dates}
+                              onChange={(e) => setDates(e.value)}
+                              selectionMode="range"
+                              readOnlyInput
+                            />
                           </div>
                         </div>
                         <div className="row">
@@ -355,7 +376,7 @@ const Leads = ({ params }) => {
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
-                                setDates(null)
+                                setDates(null);
                                 await getList();
                                 //op.current.toggle(e);
                               }}
@@ -395,7 +416,6 @@ const Leads = ({ params }) => {
                 <ConfirmDialog />
                 <DataTable
                   value={list}
-                  paginator
                   showGridlines
                   rows={10}
                   totalRecords={50}
@@ -409,10 +429,36 @@ const Leads = ({ params }) => {
                     field="name"
                     sortable
                     header="Name"
-                    body={(data, props) => (params.type === "design-queries" || params.type === "get-in-touch") ? data.first_name+ " "+ data.first_name : (params.type === "brand-leads" || params.type === "email-leads") ? data.full_name :  (params.type === "cancel-request" || params.type === "refund-request") ? data.customer_name : data.name}
+                    body={(data, props) =>
+                      params.type === "design-queries" ||
+                      params.type === "get-in-touch"
+                        ? data.first_name + " " + data.first_name
+                        : params.type === "brand-leads" ||
+                          params.type === "email-leads"
+                        ? data.full_name
+                        : params.type === "cancel-request" ||
+                          params.type === "refund-request"
+                        ? data.customer_name
+                        : data.name
+                    }
                   ></Column>
                   <Column field="email" sortable header="Email"></Column>
-                  <Column field={(params.type === "contact-enquiries" || params.type === "design-queries" || params.type === "brand-leads" || params.type === "cancel-request" || params.type === "refund-request" || params.type === "email-leads") ? "phone_number" : (params.type === "get-in-touch") ? "mobile" : "phone_no"} sortable header="Phone Number"></Column>
+                  <Column
+                    field={
+                      params.type === "contact-enquiries" ||
+                      params.type === "design-queries" ||
+                      params.type === "brand-leads" ||
+                      params.type === "cancel-request" ||
+                      params.type === "refund-request" ||
+                      params.type === "email-leads"
+                        ? "phone_number"
+                        : params.type === "get-in-touch"
+                        ? "mobile"
+                        : "phone_no"
+                    }
+                    sortable
+                    header="Phone Number"
+                  ></Column>
                   <Column
                     field="created"
                     sortable
@@ -446,6 +492,13 @@ const Leads = ({ params }) => {
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

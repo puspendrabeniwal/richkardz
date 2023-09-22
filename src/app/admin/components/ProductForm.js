@@ -19,22 +19,15 @@ const validationSchema = Yup.object().shape({
   is_new_release: Yup.string().required("Is new Release is required"),
   product_desc: Yup.string().required("Product description is required"),
   status: Yup.string().required("Status is required"),
-  // images: Yup.array()
-  //   .min(1, "At least one image is required")
-  //   .max(5, "You can upload a maximum of five images")
-  //   .of(
-  //     Yup.mixed().test("fileSize", "File is too large", (value) => {
-  //       if (!value) return false;
-  //       const maxSize = 2 * 1024 * 1024; // 2 MB
-  //       return value.size <= maxSize;
-  //     })
-  //   ),
+  images: Yup.array()
+    .min(1, "At least one image is required")
+    .max(5, "You can upload a maximum of five images"),
 });
 
 const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
   const formRef = useRef(null);
-  const [delImage, setDelImage] = useState([]);
-  const [newImages, setNewImages] = useState(productValue?.images);
+  const [deletedImages, setDeletedImages] = useState([]);
+  const [apiImages, setApiImages] = useState([]);
 
   const defaultValues = {
     product_name: productValue ? productValue.product_name : "",
@@ -47,7 +40,6 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     product_desc: productValue ? productValue.product_desc : "",
     status: productValue ? productValue.status : "",
     images: [],
-    delete_images: delImage,
   };
 
   const onSubmit = async (values) => {
@@ -59,23 +51,58 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     });
 
     for (const image of values.images) {
-      formData.append("images", ...files, image);
+      formData.append("images", image);
     }
-    for (const image of delImage) {
+    for (const image of deletedImages) {
       formData.append("delete_images", image);
     }
     await handleSubmitProduct(formData);
   };
-  let newImageDel = [];
 
-  const handleRemoveImage = (idToRemove) => {
-    const filterImg = newImages.filter((item) => {
+  const handleRemoveImage = (formInputImages, idToRemove) => {
+    const filterImg = apiImages.filter((item) => {
       return idToRemove !== item._id;
     });
-    setNewImages(filterImg);
-    setDelImage([...delImage, idToRemove]);
-    newImageDel.push([idToRemove]);
+    setApiImages(filterImg);
+    setDeletedImages([...deletedImages, idToRemove]);
+
+    const newFormImages = formInputImages.filter((val) => {
+      const findImage = filterImg.find((v) => v._id === val._id);
+      if (findImage || !val._id) {
+        return true;
+      }
+    });
+
+    console.log("my images", newFormImages);
+    // const formImages = [...formInputImages, ...filterImg];
+    // formRef.current.setFieldValue("images", formImages);
   };
+
+  const getImageUrl = () => {
+    // let imageUrlArray = [];
+    let productImages = [];
+    if (
+      productValue &&
+      productValue.image_url &&
+      productValue.images?.length > 0
+    ) {
+      productImages = productValue.images.map((val) => {
+        // imageUrlArray.push(`${productValue.image_url}${val.name}`);
+        return {
+          ...val,
+          imageUrl: `${productValue.image_url}${val.name}`,
+        };
+      });
+      setApiImages(productImages);
+      formRef.current.setFieldValue("images", productImages);
+    }
+    // return productImages;
+  };
+  useEffect(() => {
+    if (productValue && formRef) {
+      getImageUrl();
+    }
+  }, [productValue, formRef]);
 
   return (
     <main>
@@ -206,6 +233,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                             className="form-control"
                             id="floatingtype"
                           >
+                            <option value="">Select</option>
                             <option value="PVC Glossy">PVC Glossy</option>
                             <option value="Metal Cards">Metal Cards</option>
                             <option value="NFC RFID">NFC RFID</option>
@@ -238,7 +266,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           >
                             <option value="">Select</option>
                             <option value="1">Yes</option>
-                            <option value="2">No</option>
+                            <option value="0">No</option>
                           </Field>
 
                           <ErrorMessage
@@ -314,49 +342,9 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               customUpload
                               maxFileSize={1000000}
                               onSelect={(event) => {
-                                const files = [...event.files];
+                                const files = [...event.files, ...apiImages];
                                 setFieldValue("images", files, true);
-                                console.log("files", files);
-                                setNewImages(files);
                               }}
-                              emptyTemplate={
-                                <>
-                                  {newImages?.map((image, index) => (
-                                    <div
-                                      key={image._id}
-                                      className="p-5 position-relative image-container"
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                      }}
-                                    >
-                                      <Image
-                                        src={`${
-                                          productValue?.image_url + image.name
-                                        }`}
-                                        height="70px"
-                                        width="100px"
-                                        alt="ans"
-                                      />
-                                      <Button
-                                        icon="pi pi-times text-danger"
-                                        style={{
-                                          backgroundColor: "transparent",
-                                          color: "inherit",
-                                          border: "white",
-                                          fontSize: "20px",
-                                        }}
-                                        type="button"
-                                        title="Delete"
-                                        onClick={() => {
-                                          handleRemoveImage(image._id);
-                                        }}
-                                      />
-                                    </div>
-                                  ))}
-                                </>
-                              }
                             />
                           </div>
                         </div>
@@ -366,14 +354,61 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           className="text-danger"
                         />
                       </div>
-                      <div className="col-lg-6 col-md-6">
-                        <Field
-                          type="hidden"
-                          name="delete_images"
-                          className="form-control"
-                          id="floatingname"
-                        />
-                      </div>
+                      {apiImages && apiImages.length > 0 && (
+                        <div className="fv-row mb-3">
+                          <div className="col-lg-12 col-md-12">
+                            <label
+                              className="col-form-label fw-semibold fs-6"
+                              htmlFor="floatinDescription"
+                            >
+                              Product Images List
+                            </label>
+                            <div className=" billingForm">
+                              {apiImages?.map((image, index) => (
+                                <div
+                                  key={image._id}
+                                  className="p-5 position-relative image-container"
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                  }}
+                                >
+                                  <Image
+                                    src={`${image?.imageUrl}`}
+                                    height="70px"
+                                    width="100px"
+                                    alt="ans"
+                                  />
+                                  <Button
+                                    icon="pi pi-times text-danger"
+                                    style={{
+                                      backgroundColor: "transparent",
+                                      color: "inherit",
+                                      border: "white",
+                                      fontSize: "20px",
+                                    }}
+                                    type="button"
+                                    title="Delete"
+                                    onClick={() => {
+                                      handleRemoveImage(
+                                        values.images,
+                                        image._id
+                                      );
+                                    }}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <ErrorMessage
+                            name="images"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+                      )}
+
                       <div className="fv-row mb-3">
                         <div className="col-lg-12 col-md-12">
                           <label
