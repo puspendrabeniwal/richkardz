@@ -6,14 +6,19 @@ import instance from "../../axiosInterceptor";
 import Link from "next/link";
 import withAuth from "@/hoc/withAuth";
 import { Button } from "primereact/button";
+import { useRouter } from "next/navigation";
 
 const AddMonials = () => {
   const toast = useRef(null);
+  const router = useRouter();
   const addMonialAPI = async (data) => {
     instance
       .post("testimonials/add", data)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/testimonials");
+        }
       })
       .catch((error) => {
         console.log(error);
