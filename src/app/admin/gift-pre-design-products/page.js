@@ -32,8 +32,8 @@ const GiftPreDesignProducts = () => {
   const getProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     instance
       .post("gift_pre_design_product", formData)
@@ -54,8 +54,8 @@ const GiftPreDesignProducts = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData["skip"] = event.first; //append the values with key, value pair
-    formData["limit"] = event.rows; //append the values with key, value pair
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
     getProducts();
   };
   const statusBodyTemplate = (rowData) => {
@@ -420,8 +420,6 @@ const GiftPreDesignProducts = () => {
                 <DataTable
                   value={products}
                   showGridlines
-                  rows={10}
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
                   <Column

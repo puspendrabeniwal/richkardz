@@ -14,41 +14,54 @@ import { confirmDialog } from "primereact/confirmdialog";
 import withAuth from "@/hoc/withAuth";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
+import { Paginator } from "primereact/paginator";
 
 const Blocks = () => {
   const [blockData, setBlockData] = useState([]);
   const op = useRef(null);
   const toast = useRef(null);
-  let formData = new FormData();
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
+  let formData = {};
   useEffect(() => {
     getBlockAPI();
   }, []);
-  const removeFilter = () => {
-    formData = new FormData();
-    getBlockAPI();
-  };
+
   //  ==============get Block API Data ====================//
   const getBlockAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     try {
       const response = await instance.post(`blocks`, formData);
       const newData = response.result;
+      let recordsFiltered = response.recordsFiltered
+        ? response.recordsFiltered
+        : 0;
+      console.log("response", response);
+      setTotalRecords(recordsFiltered);
       setBlockData(newData);
     } catch (error) {
       console.log(error);
     }
   };
-
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData["skip"] = event.first; //append the values with key, value pair
+    formData["limit"] = event.rows; //append the values with key, value pair
+    getBlockAPI();
+  };
   //  ==============on Submit for Search Fields====================//
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
-    formData.append("title", values?.title);
+    formData["user_id"] = loginUser?._id; //append the values with key, value pair
+    formData["name"] = values?.name;
+    formData["title"] = values?.title;
     getBlockAPI();
   };
 
@@ -323,13 +336,11 @@ const Blocks = () => {
               <div className="card-body py-9">
                 <ConfirmDialog />
                 <DataTable
-                  value={blockData}
-                  paginator
                   showGridlines
-                  rows={10}
-                  stripedRows
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
+                  emptyMessage="No Codes found."
+                  value={blockData}
+                  stripedRows
                 >
                   <Column
                     header="#"
@@ -359,6 +370,13 @@ const Blocks = () => {
                     body={getActionButton}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

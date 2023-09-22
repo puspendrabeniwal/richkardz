@@ -33,8 +33,8 @@ const Leads = ({ params }) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10);
-    formData.append("limit", 10);
+    formData.append("skip", first);
+    formData.append("limit", rows);
 
     instance
       .post("leads/" + params.type, formData)
@@ -55,8 +55,8 @@ const Leads = ({ params }) => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData["skip"] = event.first; //append the values with key, value pair
-    formData["limit"] = event.rows; //append the values with key, value pair
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
     getList();
   };
 

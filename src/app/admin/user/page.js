@@ -14,11 +14,15 @@ import { confirmDialog } from "primereact/confirmdialog";
 import withAuth from "@/hoc/withAuth";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
+import { Paginator } from "primereact/paginator";
 
 const User = () => {
   const [userData, setUserData] = useState([]);
   const op = useRef(null);
   const toast = useRef(null);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData();
   useEffect(() => {
     getUserAPI();
@@ -28,18 +32,29 @@ const User = () => {
   const getUserAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     try {
       const response = await instance.post(`users`, formData);
       const newData = response.result;
+      let recordsFiltered = response.recordsFiltered
+        ? response.recordsFiltered
+        : 0;
+      setTotalRecords(recordsFiltered);
       setUserData(newData);
     } catch (error) {
       console.log(error);
     }
   };
-
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
+    getUserAPI();
+  };
   //  ==============on Submit for Search Fields====================//
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -321,11 +336,8 @@ const User = () => {
                 <ConfirmDialog />
                 <DataTable
                   value={userData}
-                  paginator
                   showGridlines
-                  rows={10}
                   stripedRows
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
                   <Column
@@ -362,6 +374,13 @@ const User = () => {
                     body={getActionButton}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>
