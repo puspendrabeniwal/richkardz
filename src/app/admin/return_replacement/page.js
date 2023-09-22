@@ -11,27 +11,36 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
 import dateFormat, { masks } from "dateformat";
-
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Paginator } from "primereact/paginator";
 
 const ReturnReplacement = ({ params }) => {
   const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
-
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
+  useEffect(() => {
+    getList();
+  }, []);
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10);
-    formData.append("limit", 10);
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     instance
       .post("return_replacement", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setList(data);
       })
       .catch((error) => {
@@ -39,10 +48,14 @@ const ReturnReplacement = ({ params }) => {
       });
   };
 
-  useEffect(() => {
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
     getList();
-  }, []);
-
+  };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
@@ -382,7 +395,6 @@ const ReturnReplacement = ({ params }) => {
                 <ConfirmDialog />
                 <DataTable
                   value={list}
-                  paginator
                   showGridlines
                   rows={10}
                   totalRecords={50}
@@ -425,6 +437,13 @@ const ReturnReplacement = ({ params }) => {
                     body={statusBodyTemplate}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

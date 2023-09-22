@@ -13,25 +13,32 @@ import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
-import { Button } from "primereact/button";
+import { Paginator } from "primereact/paginator";
 
 export const Products = () => {
   let formData = new FormData(); //formdata object
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const filterOption = useRef(null);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   const getProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     instance
       .post("products", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setProducts(data);
       })
       .catch((error) => {
@@ -42,6 +49,15 @@ export const Products = () => {
   useEffect(() => {
     getProducts();
   }, []);
+
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
+    getProducts();
+  };
 
   const statusBodyTemplate = (rowData) => {
     return (
@@ -115,11 +131,11 @@ export const Products = () => {
   const UpdateButtonLink = (rowData) => {
     const items = [
       {
-          label: 'Edit',
-          icon: 'pi pi-pencil',
-          command: () => {
-            router.push(`/admin/products/update/${rowData._id}`)
-          }
+        label: "Edit",
+        icon: "pi pi-pencil",
+        command: () => {
+          router.push(`/admin/products/update/${rowData._id}`);
+        },
       },
       {
         label: "View",
@@ -358,16 +374,16 @@ export const Products = () => {
                               name="card_type"
                               className="form-control"
                             >
-                            <option value="">Select</option>
-                            <option value="PVC Glossy">PVC Glossy</option>
-                            <option value="Metal Cards">Metal Cards</option>
-                            <option value="NFC RFID">NFC RFID</option>
-                            <option value="ID Cards">ID Cards</option>
-                            <option value="Wooden">Wooden</option>
-                            <option value="Black Metal">Black Metal</option>
-                            <option value="Golden Metal">Golden Metal</option>
-                            <option value="Silver Metal">Silver Metal</option>
-                            <option value="Sticker">Sticker</option>
+                              <option value="">Select</option>
+                              <option value="PVC Glossy">PVC Glossy</option>
+                              <option value="Metal Cards">Metal Cards</option>
+                              <option value="NFC RFID">NFC RFID</option>
+                              <option value="ID Cards">ID Cards</option>
+                              <option value="Wooden">Wooden</option>
+                              <option value="Black Metal">Black Metal</option>
+                              <option value="Golden Metal">Golden Metal</option>
+                              <option value="Silver Metal">Silver Metal</option>
+                              <option value="Sticker">Sticker</option>
                             </Field>
                           </div>
                         </div>
@@ -422,7 +438,6 @@ export const Products = () => {
                 <ConfirmDialog />
                 <DataTable
                   value={products}
-                  paginator
                   showGridlines
                   rows={10}
                   totalRecords={50}
@@ -466,6 +481,13 @@ export const Products = () => {
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

@@ -6,9 +6,11 @@ import { Toast } from "primereact/toast";
 import withAuth from "@/hoc/withAuth";
 import UserForm from "@/app/admin/components/UserForm";
 import { Button } from "primereact/button";
+import { useRouter } from "next/navigation";
 
 const UpdateUser = ({ params }) => {
   const toast = useRef(null);
+  const router = useRouter();
   const [userData, setUserData] = useState(null);
   useEffect(() => {
     getUserAPI();
@@ -45,7 +47,11 @@ const UpdateUser = ({ params }) => {
     instance
       .post("users/edit/" + params.userId, values)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/user");
+          setProductData(response);
+        }
       })
       .catch((error) => {
         console.log(error);

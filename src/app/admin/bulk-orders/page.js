@@ -7,27 +7,34 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { SplitButton } from "primereact/splitbutton";
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Paginator } from "primereact/paginator";
 
 const BulkOrders = () => {
   const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData(); //formdata object
-
+  useEffect(() => {
+    getList();
+  }, []);
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
-
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
     instance
       .post("bulk_orders", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setList(data);
       })
       .catch((error) => {
@@ -35,10 +42,14 @@ const BulkOrders = () => {
       });
   };
 
-  useEffect(() => {
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
     getList();
-  }, []);
-
+  };
   const UpdateButtonLink = (rowData) => {
     const items = [
       {
@@ -274,10 +285,7 @@ const BulkOrders = () => {
               <div className="card-body py-9">
                 <DataTable
                   value={list}
-                  paginator
                   showGridlines
-                  rows={10}
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
                   <Column
@@ -308,6 +316,13 @@ const BulkOrders = () => {
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

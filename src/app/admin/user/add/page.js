@@ -6,14 +6,19 @@ import Link from "next/link";
 import withAuth from "@/hoc/withAuth";
 import UserForm from "../../components/UserForm";
 import { Button } from "primereact/button";
+import { useRouter } from "next/navigation";
 
 const AddUsers = () => {
   const toast = useRef(null);
+  const router = useRouter();
   const addUserAPI = async (data) => {
     instance
       .post("users/add", data)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/user");
+        }
       })
       .catch((error) => {
         console.log(error);

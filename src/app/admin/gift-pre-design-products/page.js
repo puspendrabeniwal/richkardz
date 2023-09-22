@@ -14,24 +14,35 @@ import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Paginator } from "primereact/paginator";
 
 const GiftPreDesignProducts = () => {
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData(); //formdata object
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const filterOption = useRef(null);
 
+  useEffect(() => {
+    getProducts();
+  }, []);
+
   const getProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     instance
       .post("gift_pre_design_product", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setProducts(data);
       })
       .catch((error) => {
@@ -39,10 +50,14 @@ const GiftPreDesignProducts = () => {
       });
   };
 
-  useEffect(() => {
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
     getProducts();
-  }, []);
-
+  };
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
@@ -154,8 +169,6 @@ const GiftPreDesignProducts = () => {
     formData.append("profession", values?.profession);
     getProducts();
   };
-
-
 
   const accept = (id, status, type) => {
     let newFormData = new FormData();
@@ -380,9 +393,7 @@ const GiftPreDesignProducts = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/gift-pre-design-products/add"
-              >
+              <Link href="/admin/gift-pre-design-products/add">
                 <Button
                   className="btn btn btn-info btn-sm me-3"
                   data-kt-menu-trigger="click"
@@ -408,10 +419,7 @@ const GiftPreDesignProducts = () => {
                 <ConfirmDialog />
                 <DataTable
                   value={products}
-                  paginator
                   showGridlines
-                  rows={10}
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
                   <Column
@@ -448,6 +456,13 @@ const GiftPreDesignProducts = () => {
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>
