@@ -50,7 +50,7 @@ const UpdateUser = ({ params }) => {
         if (response) {
           showMessage(response);
           router.push("/admin/user");
-          setProductData(response);
+          setUserData(response);
         }
       })
       .catch((error) => {

@@ -47,7 +47,11 @@ const UpdateMonials = ({ params }) => {
     instance
       .post(`testimonials/edit/${params.MonialId}`, data)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/testimonials");
+          setMonialData(response);
+        }
       })
       .catch((error) => {
         console.log(error);
