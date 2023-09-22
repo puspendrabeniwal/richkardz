@@ -11,7 +11,6 @@ import { OverlayPanel } from "primereact/overlaypanel";
 import { SplitButton } from "primereact/splitbutton";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
-import download from "downloadjs";
 import dateFormat, { masks } from "dateformat";
 
 import instance from "../axiosInterceptor";

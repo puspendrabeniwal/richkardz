@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FileUpload } from "primereact/fileupload";
 import { Image } from "primereact/image";
-import { Galleria } from "primereact/galleria";
 import { Button } from "primereact/button";
 import Link from "next/link";
 
@@ -20,32 +19,23 @@ const validationSchema = Yup.object().shape({
   is_new_release: Yup.string().required("Is new Release is required"),
   product_desc: Yup.string().required("Product description is required"),
   status: Yup.string().required("Status is required"),
-  images: Yup.array()
-    .min(1, "At least one image is required")
-    .of(
-      Yup.mixed().test("fileSize", "File is too large", (value) => {
-        if (!value) return false;
-        const maxSize = 5 * 1024 * 1024; // 5 MB
-        return value.size <= maxSize;
-      })
-    ),
-});
-
-const validationSchemaEdit = Yup.object().shape({
-  product_name: Yup.string().required("Name is required"),
-  price: Yup.number()
-    .typeError("Price must be a number")
-    .required("Price is required"),
-  discount: Yup.string().required("Discount price is required"),
-  profession: Yup.string().required("Profession is required"),
-  card_type: Yup.string().required("Card Type is required"),
-  is_feature: Yup.string().required("Is Feature is required"),
-  is_new_release: Yup.string().required("Is new Release is required"),
-  product_desc: Yup.string().required("Product description is required"),
-  status: Yup.string().required("Status is required"),
+  // images: Yup.array()
+  //   .min(1, "At least one image is required")
+  //   .max(5, "You can upload a maximum of five images")
+  //   .of(
+  //     Yup.mixed().test("fileSize", "File is too large", (value) => {
+  //       if (!value) return false;
+  //       const maxSize = 2 * 1024 * 1024; // 2 MB
+  //       return value.size <= maxSize;
+  //     })
+  //   ),
 });
 
 const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
+  const formRef = useRef(null);
+  const [delImage, setDelImage] = useState([]);
+  const [newImages, setNewImages] = useState(productValue?.images);
+
   const defaultValues = {
     product_name: productValue ? productValue.product_name : "",
     price: productValue ? productValue.price : "",
@@ -56,7 +46,8 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     is_new_release: productValue ? productValue.is_new_release : "",
     product_desc: productValue ? productValue.product_desc : "",
     status: productValue ? productValue.status : "",
-    images: [],
+    images: productValue ? productValue.images : [],
+    delete_images: delImage,
   };
 
   const onSubmit = async (values) => {
@@ -68,10 +59,21 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     });
 
     for (const image of values.images) {
-      formData.append("images", image);
+      formData.append("images", ...files, image);
     }
-
+    for (const image of delImage) {
+      formData.append("delete_images", image);
+    }
     await handleSubmitProduct(formData);
+  };
+  let newImageDel = [];
+  const handleRemoveImage = (idToRemove) => {
+    const filterImg = newImages.filter((item) => {
+      return idToRemove !== item._id;
+    });
+    setNewImages(filterImg);
+    setDelImage([...delImage, idToRemove]);
+    newImageDel.push([idToRemove]);
   };
 
   return (
@@ -85,13 +87,12 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
             <div className="card">
               <div className="card-body py-9">
                 <Formik
+                  innerRef={formRef}
                   initialValues={defaultValues}
-                  validationSchema={
-                    productId ? validationSchemaEdit : validationSchema
-                  }
+                  validationSchema={validationSchema}
                   onSubmit={async (values) => await onSubmit(values)}
                 >
-                  {({ setFieldValue }) => (
+                  {({ setFieldValue, values }) => (
                     <Form className="form-design">
                       <div className="row mb-3">
                         <div className="col-lg-6 col-md-6">
@@ -305,17 +306,56 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           </label>
                           <div className=" billingForm">
                             <FileUpload
-                              name="image"
+                              name="images"
                               accept="image/*"
                               auto
                               multiple
                               customUpload
                               maxFileSize={1000000}
                               onSelect={(event) => {
-                                const files = event.files;
-                                setFieldValue("images", files);
+                                const files = [...event.files];
+                                setFieldValue("images", files, true);
+                                console.log("files", files);
+                                setNewImages(files);
                               }}
-                              emptyTemplate={<></>}
+                              emptyTemplate={
+                                <>
+                                  {newImages?.map((image, index) => (
+                                    <div
+                                      key={image._id}
+                                      className="p-5 position-relative image-container"
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <Image
+                                        src={`${
+                                          productValue?.image_url + image.name
+                                        }`}
+                                        height="70px"
+                                        width="100px"
+                                        alt="ans"
+                                      />
+                                      <Button
+                                        icon="pi pi-times text-danger"
+                                        style={{
+                                          backgroundColor: "transparent",
+                                          color: "inherit",
+                                          border: "white",
+                                          fontSize: "20px",
+                                        }}
+                                        type="button"
+                                        title="Delete"
+                                        onClick={() => {
+                                          handleRemoveImage(image._id);
+                                        }}
+                                      />
+                                    </div>
+                                  ))}
+                                </>
+                              }
                             />
                           </div>
                         </div>
@@ -323,6 +363,14 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           name="images"
                           component="div"
                           className="text-danger"
+                        />
+                      </div>
+                      <div className="col-lg-6 col-md-6">
+                        <Field
+                          type="hidden"
+                          name="delete_images"
+                          className="form-control"
+                          id="floatingname"
                         />
                       </div>
                       <div className="fv-row mb-3">
@@ -356,6 +404,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
                           icon="pi pi-save"
+                          type="submit"
                           label="Submit"
                         />
                         <Link href="/admin/products ">

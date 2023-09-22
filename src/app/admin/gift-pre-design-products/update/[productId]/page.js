@@ -6,9 +6,11 @@ import instance from "../../../axiosInterceptor";
 import GiftProductForm from "../../../components/GiftProductForm";
 import withAuth from "@/hoc/withAuth";
 import { Button } from "primereact/button";
+import { useRouter } from "next/navigation";
 
 const UpdateProduct = ({ params }) => {
   const toast = useRef(null);
+  const router = useRouter();
   const [productData, setProductData] = useState(null);
   useEffect(() => {
     getProductDetails();
@@ -38,7 +40,11 @@ const UpdateProduct = ({ params }) => {
     instance
       .post("gift_pre_design_product/edit/" + params.productId, values)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/gift-pre-design-products");
+          setProductData(response);
+        }
       })
       .catch((error) => {
         console.log(error);
