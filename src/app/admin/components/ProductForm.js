@@ -46,7 +46,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     is_new_release: productValue ? productValue.is_new_release : "",
     product_desc: productValue ? productValue.product_desc : "",
     status: productValue ? productValue.status : "",
-    images: productValue ? productValue.images : [],
+    images: [],
     delete_images: delImage,
   };
 
@@ -67,6 +67,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     await handleSubmitProduct(formData);
   };
   let newImageDel = [];
+
   const handleRemoveImage = (idToRemove) => {
     const filterImg = newImages.filter((item) => {
       return idToRemove !== item._id;
