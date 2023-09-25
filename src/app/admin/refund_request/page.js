@@ -12,17 +12,17 @@ import { SplitButton } from "primereact/splitbutton";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
 import dateFormat, { masks } from "dateformat";
-
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import { Paginator } from "primereact/paginator";
+import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
 
 const ReturnReplacement = ({ params }) => {
   const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(20);
+  const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData(); //formdata object
   useEffect(() => {
@@ -471,7 +471,7 @@ const ReturnReplacement = ({ params }) => {
                   first={first}
                   rows={rows}
                   totalRecords={totalRecords}
-                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  rowsPerPageOptions={PAGE_ITEM_LIST}
                   onPageChange={onPageChange}
                 />
               </div>

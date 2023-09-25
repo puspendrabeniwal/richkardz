@@ -12,7 +12,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "@/app/admin/axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
-import { Paginator } from 'primereact/paginator';
+import { Paginator } from "primereact/paginator";
+import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../../constant";
+
 const QrCode = () => {
   const params = useParams();
   const toastMessage = useRef(null);
@@ -20,31 +22,31 @@ const QrCode = () => {
 
   let formData = {};
   let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-  formData["user_id"]= loginUser?._id;
-
+  formData["user_id"] = loginUser?._id;
 
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(20);
+  const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
   const [list, setList] = useState([]);
 
   /** Managing pagination */
   const onPageChange = (event) => {
-    setFirst(event.first)
+    setFirst(event.first);
     setRows(event.rows);
-    formData["skip"]= event.first; //append the values with key, value pair
-    formData["limit"]= event.rows; //append the values with key, value pair
-    getList()
+    formData["skip"] = event.first; //append the values with key, value pair
+    formData["limit"] = event.rows; //append the values with key, value pair
+    getList();
   };
-
 
   const getList = () => {
     instance
-      .post("qr_code/"+params.type, formData)
+      .post("qr_code/" + params.type, formData)
       .then((response) => {
         let data = response.result ? response.result : {};
-        let recordsFiltered = response.recordsFiltered ? response.recordsFiltered : 0;
-        setTotalRecords(recordsFiltered)
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setList(data);
       })
       .catch((error) => {
@@ -56,7 +58,6 @@ const QrCode = () => {
     getList();
   }, []);
 
-
   const onSubmit = async (values) => {
     formData["company_name"] = values?.company_name;
     formData["unique_code"] = values?.unique_code;
@@ -66,32 +67,37 @@ const QrCode = () => {
   const codeTypes = ["B2C Codes", "B2B Codes"];
   const codeUrlBodyTemplate = (rowData) => {
     return (
-      <Link target="_blank" style={{"textDecoration": "underline", "color" : "blue"}} href={rowData.code_url}>QR Code Url</Link>
+      <Link
+        target="_blank"
+        style={{ textDecoration: "underline", color: "blue" }}
+        href={rowData.code_url}
+      >
+        QR Code Url
+      </Link>
     );
   };
 
   const actionButtonBodyTemplate = (rowData) => {
     const items = [
       {
-          label: 'With Logo',
-          icon: 'pi pi-plus',
-          command: () => {
-            confirm(rowData.unique_code, "with_logo")
-          }
+        label: "With Logo",
+        icon: "pi pi-plus",
+        command: () => {
+          confirm(rowData.unique_code, "with_logo");
+        },
       },
       {
         label: "Without Logo",
         icon: "pi pi-times  ",
         command: () => {
-          confirm(rowData.unique_code, "without_logo")
+          confirm(rowData.unique_code, "without_logo");
         },
       },
     ];
 
-    
     const accept = (code, action) => {
       instance
-        .post("qr_code/edit/"+code+"/"+action, {})
+        .post("qr_code/edit/" + code + "/" + action, {})
         .then((response) => {
           getList();
           let data = response ? response : {};
@@ -106,7 +112,7 @@ const QrCode = () => {
           console.log(error);
         });
     };
-  
+
     const reject = () => {
       toastMessage.current.show({
         severity: "warn",
@@ -115,7 +121,7 @@ const QrCode = () => {
         life: 3000,
       });
     };
-  
+
     const confirm = (code, action) => {
       confirmDialog({
         message: "Are you sure you want to proceed?",
@@ -125,7 +131,7 @@ const QrCode = () => {
         reject,
       });
     };
-  
+
     return (
       <>
         <SplitButton
@@ -171,7 +177,7 @@ const QrCode = () => {
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
                 <li className="breadcrumb-item text-mute">
-                {codeTypes[params.type]}
+                  {codeTypes[params.type]}
                 </li>
               </ul>
             </div>
@@ -281,7 +287,10 @@ const QrCode = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href={`/admin/qr_code/add/${params.type}`} className="btn btn-sm btn-info">
+              <Link
+                href={`/admin/qr_code/add/${params.type}`}
+                className="btn btn-sm btn-info"
+              >
                 <i className="pi pi-plus"></i> {codeTypes[params.type]}
               </Link>
             </div>
@@ -297,7 +306,7 @@ const QrCode = () => {
           <div id="kt_content_container" className="container-xxl">
             <div className="card">
               <div className="card-body py-9">
-              <Toast ref={toastMessage} />
+                <Toast ref={toastMessage} />
                 <ConfirmDialog />
                 <DataTable
                   value={list}
@@ -310,10 +319,18 @@ const QrCode = () => {
                     body={(data, props) => props.rowIndex + 1}
                   ></Column>
                   <Column field="company_name" sortable header="Name"></Column>
-                  <Column field="unique_code" sortable header="Unique Code"></Column>
-                  <Column field="business_card_url" sortable header="Business Card Url"></Column>
-                  <Column 
-                    field=""  
+                  <Column
+                    field="unique_code"
+                    sortable
+                    header="Unique Code"
+                  ></Column>
+                  <Column
+                    field="business_card_url"
+                    sortable
+                    header="Business Card Url"
+                  ></Column>
+                  <Column
+                    field=""
                     header="Code Url"
                     body={codeUrlBodyTemplate}
                   ></Column>
@@ -323,7 +340,13 @@ const QrCode = () => {
                     body={actionButtonBodyTemplate}
                   ></Column>
                 </DataTable>
-                <Paginator first={first} rows={rows} totalRecords={totalRecords} rowsPerPageOptions={[20, 50, 100, 1000]} onPageChange={onPageChange} />
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={PAGE_ITEM_LIST}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

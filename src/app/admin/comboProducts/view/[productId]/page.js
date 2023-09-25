@@ -4,8 +4,8 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
 import { Button } from "primereact/button";
-import dateFormat, { masks } from "dateformat";
-import Image from "next/image";
+// import dateFormat, { masks } from "dateformat";
+// import Image from "next/image";
 
 const UpdateProduct = ({ params }) => {
   const toast = useRef(null);
@@ -214,8 +214,8 @@ const UpdateProduct = ({ params }) => {
                   <div className="separator"></div>
                   <h2 className="mt-4">Combo Product List</h2>
                   {productData &&
-                    productData?.combo_products?.map((item) => (
-                      <div className="card-body pt-9 pb-0">
+                    productData?.combo_products?.map((item, index) => (
+                      <div className="card-body pt-9 pb-0" key={index}>
                         <div className="d-flex flex-wrap flex-sm-nowrap mb-6">
                           <div className="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7 mb-4">
                             {item.image_url && item.image ? (
