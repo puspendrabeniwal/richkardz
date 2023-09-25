@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@svgedit/svgcanvas": "^7.2.1",
     "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "dateformat": "^5.0.3",
@@ -27,9 +26,10 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
-    "react-svg": "^16.1.25",
     "slug": "^8.2.3",
-    "svgedit": "^5.1.0",
     "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "file-loader": "^6.2.0"
   }
 }
