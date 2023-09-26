@@ -1029,3 +1029,19 @@ checkFileExist = (options)=>{
 		});
 	});
 };//end checkFileExist()
+
+/**
+ * Function to convert array to object
+ *
+ * @param array  	As Array
+ *
+ * @return json
+ */
+convertArrayToObjectId = (arr)=>{
+	if(arr.constructor !== Array) return arr;
+	let newArray = [];
+	arr.map(arrRecord=>{
+		newArray.push(ObjectId(arrRecord));
+	});
+	return newArray;
+};

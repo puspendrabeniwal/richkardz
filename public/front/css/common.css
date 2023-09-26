@@ -1,0 +1,232 @@
+	*{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	}
+	:root{
+	--orangeColor: #cc9b60;
+	--grayColor: #474747;
+	--NavyBlueColor: #0b1224;	
+	--blackColor: #0f0f0f;
+	--lightGray: #f5f5f7
+	}
+	
+	.bg-orange{
+		background-color: var(--orangeColor);
+	}
+
+	/*ALL FONT FACE*/
+	@font-face {
+		font-family: Gilroy-Black;
+		src: url('../fonts/Gilroy-Black.ttf');
+		}
+
+	@font-face {
+	font-family: Gilroy-ExtraBold;
+	src: url('../fonts/Gilroy-ExtraBold.ttf');
+	}
+	@font-face {
+	font-family: Gilroy-ExtraBoldItalic;
+	src: url('../fonts/Gilroy-ExtraBoldItalic.ttf');
+	}
+
+	@font-face {
+	font-family: Gilroy-Bold;
+	src: url('../fonts/Gilroy-Bold.ttf');
+	}
+
+	@font-face {
+	font-family: Gilroy-SemiBold;
+	src: url('../fonts/Gilroy-SemiBold.ttf');
+	}
+
+	@font-face {
+	font-family: Gilroy-Medium;
+	src: url('../fonts/Gilroy-Medium.ttf');
+	}
+
+	@font-face {
+	font-family: Gilroy-Regular;
+	src: url('../fonts/Gilroy-Regular.ttf');
+	}
+
+	@font-face {
+	font-family: Gilroy-Light;
+	src: url('../fonts/Gilroy-Light.ttf');
+	}
+
+	@font-face {
+	font-family: Gilroy-Thin;
+	src: url('../fonts/Gilroy-Thin.ttf');
+	}
+.Gilroy-Bold{
+	font-family: Gilroy-Bold;
+}
+.Gilroy-SemiBold{
+font-family: Gilroy-SemiBold;}
+
+.Gilroy-Light{
+	font-family: Gilroy-Light !important;
+}
+
+.Gilroy-Regular{
+	font-family: Gilroy-Regular !important;
+}
+
+	body {font-size: 15px;background: #fff;color: var(--blackColor);font-family: Gilroy-Medium;}
+	ol, ul{padding: 0px;}
+	h1,h2,h3,h4,h5,h6,p, ul{ margin:0px;}
+	h1,.h1{font-size: 38px;}
+	h2,.h2{font-size: 30px;}
+	h3,.h3{font-size: 26px;line-height: 1.2;}
+	h4,.h4{font-size: 21px;}
+	h5,.h5{font-size: 18px;}
+	h6,.h6{font-size: 16px;}
+
+	p{
+		line-height: 20px
+	}
+	img{max-width: 100%;}
+
+	form-group{border: 1px solid #ccc;border-radius: 0px;}
+	a, a:hover {outline: 0;text-decoration: none;color: #000}
+	a:hover{color: var(--orangeColor);}
+	a{color:var(--blackColor)}
+	form-control {border-color: #ccc;}
+	.form-control{border: 1px solid #ccc;}
+	.form-control:focus{box-shadow: 0 0 0 .5px rgba(0,123,255,.25)}
+	input{border: 1px solid #ccc;border-radius: 0px;}
+
+	.text-orange{color: var(--orangeColor);}
+	.text-gray{color: var(--grayColor)}
+
+
+	.mt30{margin-top: 30px;}
+
+
+	/* Search select box css   */
+
+	.selectuniversity select, .selectuniversity .btn{
+	height: auto !important;
+	}
+
+	.bootstrap-select .dropdown-menu li{
+	padding:3px 20px;
+	}
+	/* Search select box css end   */
+
+::placeholder{
+	color: red !important;
+}
+	/*farukh*/
+	.max-width-content{    max-width: fit-content;}
+	.btn.focus, .btn:focus, input{box-shadow: none;outline: 0;}
+	input, select{font-size: 14px;font-family: Gilroy-Regular;height: 44px;}
+	label{font-family: Gilroy-Regular;color: #333;font-size: 14px;margin-bottom: 3px;}
+	select, option{cursor: pointer;}
+
+
+	.box-shadow{box-shadow: 0px 3px 6px #00000029;background: #fff;}
+	.btn-sm{padding: 4px 10px !important;font-size: 14px;font-family: Gilroy-Regular;font-weight: 500 !important;}
+	.btn-lg{font-size: 16px;
+	padding:11px 34px;}
+
+	.text-underline, .text-underline:hover{
+	text-decoration: underline !important;
+	}
+	.fontSize18{
+	font-size: 18px;
+	}
+	.fontSize17{
+	font-size: 17px;
+	}
+	.fontSize16{
+	font-size: 16px;
+	}
+	.fontSize15{
+	font-size: 15px;
+	}
+	.fontSize14{
+	font-size: 14px;
+	line-height: 22px;
+	}
+	.fontSize13{
+	font-size: 13px;
+	}
+	.fontSize12{
+	font-size: 12px;
+	}
+	.fontSize11{
+	font-size: 11px;
+	}
+
+	/*bootstrap*/
+
+	.custom-control-label::after{cursor: pointer;}
+	input[type=number]::-webkit-inner-spin-button, 
+	input[type=number]::-webkit-outer-spin-button { 
+	opacity: 1 !important;
+	margin: 0; 
+	cursor: pointer;
+	}
+	input[type="number"] {
+	-moz-appearance: textfield;
+	}
+
+
+	::-webkit-input-placeholder { /* Edge */
+	color: #c1c1c1 !important;
+	}
+
+	:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #c1c1c1 !important;
+	}
+
+	::placeholder {
+	color: #c1c1c1 !important;
+	}
+	input[type=checkbox], input[type=radio]{
+	cursor: pointer;
+	}
+	button.close:focus {
+	outline: 0;
+	}
+
+	.form-check-input{cursor: pointer;}
+	.cursor-pointer{
+	cursor: pointer;
+	}
+
+
+	.btnOrange{border: 1px solid;border-color: var(--orangeColor);color:white;background-color: var(--orangeColor);font-size: 17px; font-family: Gilroy-Bold;padding: 8px 30px;}
+	.btnOrange:hover{background: var(--NavyBlueColor);color: white}
+	.btnOrange:not(:disabled):not(.disabled):active{background-color: var(--orangeColor); border-color: var(--orangeColor);color: black;}
+	.btnOrange:not(:disabled):not(.disabled):active:focus{box-shadow: 0 0 0 2px rgba(2, 50, 57, 0.5);}
+    .btnOrange:focus:not(:focus-visible){background-color: #d78624;color: white;border: 1px solid;border-color: var(--NavyBlueColor);box-shadow: 0px 0px 10px 0px #fe8f09;}
+
+
+	.btn-white{border: 1px solid;border-color: white;color:black;background-color: white;font-size: 17px; font-family: Gilroy-Bold;padding: 8px 30px;}
+	.btn-white:hover{background-color: var(--NavyBlueColor);color: white}
+	.btn-white:not(:disabled):not(.disabled):active{background-color: var(--orangeColor); border-color: var(--orangeColor);color: black;}
+	.btn-white:not(:disabled):not(.disabled):active:focus{box-shadow: 0 0 0 2px rgba(2, 50, 57, 0.5);}
+    .btn-white:focus:not(:focus-visible){background-color: #d78624;color: white;border: 1px solid;border-color: var(--NavyBlueColor);box-shadow: 0px 0px 10px 0px #fe8f09;}
+
+
+
+	.btnNavyBlue{border: 1px solid;border-color: var(--NavyBlueColor);color:white;background-color: var(--NavyBlueColor);font-size: 17px; font-family: Gilroy-Bold;padding: 8px 30px;}
+	.btnNavyBlue:hover{background: var(--orangeColor);color: white;border-color: var(--orangeColor)}
+	.btnNavyBlue:not(:disabled):not(.disabled):active{background-color: var(--orangeColor); border-color: var(--orangeColor);color: black;}
+	.btnNavyBlue:not(:disabled):not(.disabled):active:focus{box-shadow: 0 0 0 2px rgba(2, 50, 57, 0.5);}
+    .btnNavyBlue:focus:not(:focus-visible){background-color: #d78624;color: white;border: 1px solid;border-color: var(--NavyBlueColor);box-shadow: 0px 0px 10px 0px #fe8f09;}
+
+	
+	.btnNavyBlue.btn-lg{border: 1px solid;border-color: var(--NavyBlueColor);color:white;background-color: var(--NavyBlueColor);font-size: 22px; font-family: Gilroy-Bold;}
+	.btnNavyBlue.b.btnNavyBluetn-lg:hover{background: var(--orangeColor);color: white;border-color: var(--orangeColor)}
+
+	/*MY COMMON SECTION*/
+	.mt-6{
+	margin-top: 35px
+	}
+	.text-justify{
+	text-align: justify;
+	}

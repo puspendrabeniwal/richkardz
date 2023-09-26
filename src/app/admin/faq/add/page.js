@@ -3,11 +3,14 @@ import React, { useRef } from "react";
 import { Toast } from "primereact/toast";
 import instance from "../../axiosInterceptor";
 import Link from "next/link";
+import { Button } from "primereact/button";
 import FaqForm from "../../components/FAQForm";
 import withAuth from "@/hoc/withAuth";
+import { useRouter } from "next/navigation";
 
 const AddFAQ = () => {
   const toast = useRef(null);
+  const router = useRouter();
   const addFAQAPI = async (data) => {
     const postData = {
       answer: data.answer,
@@ -15,7 +18,10 @@ const AddFAQ = () => {
     };
     try {
       const response = await instance.post(`faqs/add`, postData);
-      showMessage(response);
+      if (response) {
+        showMessage(response);
+        router.push("/admin/faq");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -77,8 +83,15 @@ const AddFAQ = () => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/faq" className="btn btn-sm btn btn-success">
-                Back
+              <Link href="/admin/faq">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

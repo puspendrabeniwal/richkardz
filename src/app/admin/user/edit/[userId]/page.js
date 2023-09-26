@@ -5,9 +5,12 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import withAuth from "@/hoc/withAuth";
 import UserForm from "@/app/admin/components/UserForm";
+import { Button } from "primereact/button";
+import { useRouter } from "next/navigation";
 
 const UpdateUser = ({ params }) => {
   const toast = useRef(null);
+  const router = useRouter();
   const [userData, setUserData] = useState(null);
   useEffect(() => {
     getUserAPI();
@@ -44,7 +47,11 @@ const UpdateUser = ({ params }) => {
     instance
       .post("users/edit/" + params.userId, values)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/user");
+          setUserData(response);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -99,8 +106,15 @@ const UpdateUser = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/user" className="btn btn-sm btn btn-success">
-                Back
+              <Link href="/admin/user">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

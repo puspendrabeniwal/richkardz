@@ -1,37 +1,48 @@
 "use client";
 import Link from "next/link";
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Tag } from "primereact/tag";
+import { Button } from "primereact/button";
 import { OverlayPanel } from "primereact/overlaypanel";
 import { Toast } from "primereact/toast";
-import { SplitButton } from 'primereact/splitbutton';
+import { SplitButton } from "primereact/splitbutton";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
-
+import { Paginator } from "primereact/paginator";
 
 const GiftPreDesignProducts = () => {
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData(); //formdata object
-  const router  = useRouter();
+  const router = useRouter();
   const [products, setProducts] = useState([]);
   const filterOption = useRef(null);
 
+  useEffect(() => {
+    getProducts();
+  }, []);
+
   const getProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     instance
       .post("gift_pre_design_product", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setProducts(data);
       })
       .catch((error) => {
@@ -39,14 +50,18 @@ const GiftPreDesignProducts = () => {
       });
   };
 
-  useEffect(() => {
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
     getProducts();
-  }, []);
-
+  };
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
-        style={{cursor:"pointer"}}
+        style={{ cursor: "pointer" }}
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
         onClick={() => confirm(rowData._id, rowData.status, "status")}
@@ -57,7 +72,7 @@ const GiftPreDesignProducts = () => {
   const featureBodyTemplate = (rowData) => {
     return (
       <Tag
-        style={{cursor:"pointer"}}
+        style={{ cursor: "pointer" }}
         value={changeLevel(rowData.is_feature)}
         severity={getSeverity(rowData.is_feature)}
         onClick={() => confirm(rowData._id, rowData.is_feature, "feature")}
@@ -115,24 +130,31 @@ const GiftPreDesignProducts = () => {
   const UpdateButtonLink = (rowData) => {
     const items = [
       {
-          label: 'Edit',
-          icon: 'pi pi-refresh',
-          command: () => {
-            router.push(`/admin/gift-pre-design-products/update/${rowData._id}`)
-          }
+        label: "Edit",
+        icon: "pi pi-pencil",
+        command: () => {
+          router.push(`/admin/gift-pre-design-products/update/${rowData._id}`);
+        },
       },
       {
-          label: 'View',
-          icon: 'pi pi-eye',
-          command: () => {
-            router.push(`/admin/gift-pre-design-products/view/${rowData._id}`)
-          }
+        label: "View",
+        icon: "pi pi-eye",
+        command: () => {
+          router.push(`/admin/gift-pre-design-products/view/${rowData._id}`);
+        },
       },
-
     ];
     return (
       <>
-        <SplitButton label="Action" icon="pi pi-plus" small raised text severity="secondary" model={items}/>
+        <SplitButton
+          label="Action"
+          icon="pi pi-plus"
+          small
+          raised
+          text
+          severity="secondary"
+          model={items}
+        />
       </>
     );
   };
@@ -145,11 +167,6 @@ const GiftPreDesignProducts = () => {
     formData.append("discount", values?.discount);
     formData.append("card_type", values?.card_type);
     formData.append("profession", values?.profession);
-    getProducts();
-  };
-
-  const removeFilter = () => {
-    formData = new FormData();
     getProducts();
   };
 
@@ -226,7 +243,7 @@ const GiftPreDesignProducts = () => {
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
                 <li className="breadcrumb-item text-mute">
-                Gift Pre Design Product
+                  Gift Pre Design Product
                 </li>
               </ul>
             </div>
@@ -236,7 +253,7 @@ const GiftPreDesignProducts = () => {
                   onClick={(e) => filterOption.current.toggle(e)}
                   aria-haspopup
                   aria-controls="overlay_panel"
-                  className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
+                  className="btn btn-sm btn-flex btn-primary btn-active-primary fw-bolder"
                 >
                   <span className="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
                     <svg
@@ -334,42 +351,41 @@ const GiftPreDesignProducts = () => {
                               className="form-control"
                             >
                               <option value="">Select</option>
-                              <option value="Gold Metallic">
-                                Gold Metallic
-                              </option>
                               <option value="PVC Glossy">PVC Glossy</option>
+                              <option value="Metal Cards">Metal Cards</option>
+                              <option value="NFC RFID">NFC RFID</option>
+                              <option value="ID Cards">ID Cards</option>
+                              <option value="Wooden">Wooden</option>
+                              <option value="Black Metal">Black Metal</option>
+                              <option value="Golden Metal">Golden Metal</option>
+                              <option value="Silver Metal">Silver Metal</option>
+                              <option value="Sticker">Sticker</option>
                             </Field>
                           </div>
                         </div>
                         <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
+                                formData = new FormData();
                                 await getProducts();
-                                //op.current.toggle(e);
+                                filterOption.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
@@ -377,8 +393,14 @@ const GiftPreDesignProducts = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/gift-pre-design-products/add" className="btn btn-sm btn-info">
-                Add Product
+              <Link href="/admin/gift-pre-design-products/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Product"
+                  icon="pi pi-plus"
+                />
               </Link>
             </div>
           </div>
@@ -397,10 +419,7 @@ const GiftPreDesignProducts = () => {
                 <ConfirmDialog />
                 <DataTable
                   value={products}
-                  paginator
                   showGridlines
-                  rows={10}
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
                   <Column
@@ -437,6 +456,13 @@ const GiftPreDesignProducts = () => {
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

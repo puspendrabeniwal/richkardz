@@ -2,40 +2,45 @@
 import Link from "next/link";
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Tag } from "primereact/tag";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { SplitButton } from 'primereact/splitbutton';
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog"; // For confirmDialog method
-import download from "downloadjs";
 import dateFormat, { masks } from "dateformat";
-
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
+import { Paginator } from "primereact/paginator";
 
-
-const ReturnReplacement = ({params}) => {
-  const router  = useRouter();
+const ReturnReplacement = ({ params }) => {
+  const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
-
-
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
+  useEffect(() => {
+    getList();
+  }, []);
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10);
-    formData.append("limit", 10);
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     instance
       .post("return_replacement", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setList(data);
       })
       .catch((error) => {
@@ -43,55 +48,75 @@ const ReturnReplacement = ({params}) => {
       });
   };
 
-  useEffect(() => {
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
     getList();
-  }, []);
-
+  };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
     formData.append("name", values?.name);
     formData.append("email", values?.email);
     formData.append("phone_number", values?.phone_number);
-    formData.append("preferred_contact_method", values?.preferred_contact_method);
+    formData.append(
+      "preferred_contact_method",
+      values?.preferred_contact_method
+    );
     getList();
   };
 
-
   const downloadFile = ({ data, fileName, fileType }) => {
-    const blob = new Blob([data], { type: fileType })
-  
-    const a = document.createElement('a')
-    a.download = fileName
-    a.href = window.URL.createObjectURL(blob)
-    const clickEvt = new MouseEvent('click', {
+    const blob = new Blob([data], { type: fileType });
+
+    const a = document.createElement("a");
+    a.download = fileName;
+    a.href = window.URL.createObjectURL(blob);
+    const clickEvt = new MouseEvent("click", {
       view: window,
       bubbles: true,
       cancelable: true,
-    })
-    a.dispatchEvent(clickEvt)
-    a.remove()
-  }
+    });
+    a.dispatchEvent(clickEvt);
+    a.remove();
+  };
 
+  const leadDownload = () => {
+    // Headers for each column
+    let headers = [
+      "Name, Email, Phone, Preferred contact method, Issue with the card",
+    ];
 
+    // Convert users data to a csv
+    let usersCsv = list.reduce((acc, user) => {
+      const {
+        customer_name,
+        email,
+        phone_number,
+        preferred_contact_method,
+        issue_with_the_card,
+      } = user;
+      acc.push(
+        [
+          customer_name,
+          email,
+          phone_number,
+          preferred_contact_method,
+          issue_with_the_card,
+        ].join(",")
+      );
+      return acc;
+    }, []);
 
-  const leadDownload = ()=>{
-  // Headers for each column
-  let headers = ['Name, Email, Phone, Preferred contact method, Issue with the card' ]
-
-  // Convert users data to a csv
-  let usersCsv = list.reduce((acc, user) => {
-    const { customer_name, email, phone_number, preferred_contact_method, issue_with_the_card } = user
-    acc.push([customer_name, email, phone_number, preferred_contact_method, issue_with_the_card].join(','))
-    return acc
-  }, [])
-
-  downloadFile({
-    data: [...headers, ...usersCsv].join('\n'),
-    fileName: 'return.csv',
-    fileType: 'text/csv',
-  })
-  }
+    downloadFile({
+      data: [...headers, ...usersCsv].join("\n"),
+      fileName: "return.csv",
+      fileType: "text/csv",
+    });
+  };
 
   const accept = (id) => {
     let newFormData = new FormData();
@@ -133,7 +158,6 @@ const ReturnReplacement = ({params}) => {
     });
   };
 
-  
   const getSeverity = (value) => {
     switch (value) {
       case 1:
@@ -146,7 +170,7 @@ const ReturnReplacement = ({params}) => {
         return null;
     }
   };
-  
+
   const getValue = (value) => {
     switch (value) {
       case 1:
@@ -163,7 +187,7 @@ const ReturnReplacement = ({params}) => {
   const statusBodyTemplate = (rowData) => {
     return (
       <Tag
-        style={{cursor:"pointer"}}
+        style={{ cursor: "pointer" }}
         value={getValue(rowData.status)}
         severity={getSeverity(rowData.status)}
         onClick={() => confirm(rowData._id, rowData.status, "status")}
@@ -202,7 +226,7 @@ const ReturnReplacement = ({params}) => {
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
                 <li className="breadcrumb-item text-mute">
-                Return/Replacement Request
+                  Return/Replacement Request
                 </li>
               </ul>
             </div>
@@ -247,7 +271,7 @@ const ReturnReplacement = ({params}) => {
                     initialValues={{
                       name: "",
                       email: "",
-                      phone_number: ""
+                      phone_number: "",
                     }}
                     onSubmit={async (values) => await onSubmit(values)}
                   >
@@ -256,9 +280,7 @@ const ReturnReplacement = ({params}) => {
                         <div className="row ">
                           <div className="col-lg-6 col-md-6">
                             <div className="mb-10">
-                              <label className="form-label fw-bold">
-                                 Name
-                              </label>
+                              <label className="form-label fw-bold">Name</label>
                               <div>
                                 <Field
                                   type="text"
@@ -297,7 +319,7 @@ const ReturnReplacement = ({params}) => {
                                 ></Field>
                               </div>
                             </div>
-                          </div>   
+                          </div>
                           <div className="col-lg-6 col-md-6">
                             <div className="">
                               <label className="form-label fw-bold">
@@ -311,7 +333,7 @@ const ReturnReplacement = ({params}) => {
                                 ></Field>
                               </div>
                             </div>
-                          </div>     
+                          </div>
                         </div>
                         <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
@@ -349,7 +371,11 @@ const ReturnReplacement = ({params}) => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="#" onClick={leadDownload} className="btn btn-sm btn-info">
+              <Link
+                href="#"
+                onClick={leadDownload}
+                className="btn btn-sm btn-info"
+              >
                 Download
               </Link>
             </div>
@@ -369,7 +395,6 @@ const ReturnReplacement = ({params}) => {
                 <ConfirmDialog />
                 <DataTable
                   value={list}
-                  paginator
                   showGridlines
                   rows={10}
                   totalRecords={50}
@@ -379,14 +404,10 @@ const ReturnReplacement = ({params}) => {
                     header="#"
                     body={(data, props) => props.rowIndex + 1}
                   ></Column>
-                  <Column 
-                    field="customer_name" 
-                    sortable 
-                    header="Name"
-                  ></Column>
+                  <Column field="customer_name" sortable header="Name"></Column>
                   <Column field="email" sortable header="Email"></Column>
                   <Column field="phone_number" header="Phone Number"></Column>
-                 
+
                   <Column
                     field="preferred_contact_method"
                     sortable
@@ -402,11 +423,13 @@ const ReturnReplacement = ({params}) => {
                     sortable
                     header="Information On Card"
                   ></Column>
-                   <Column
+                  <Column
                     field="created"
                     sortable
                     header="Created"
-                    body={(data, props) => dateFormat(data.created, "dddd, mmmm d, yyyy") }
+                    body={(data, props) =>
+                      dateFormat(data.created, "dddd, mmmm d, yyyy")
+                    }
                   ></Column>
                   <Column
                     field="status"
@@ -414,6 +437,13 @@ const ReturnReplacement = ({params}) => {
                     body={statusBodyTemplate}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

@@ -13,10 +13,16 @@ import withAuth from "@/hoc/withAuth";
 import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog /> component
 import { confirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
+import { Paginator } from "primereact/paginator";
+
 const FAQ = () => {
   const [faqData, setFaqData] = useState([]);
   const op = useRef(null);
   const toast = useRef(null);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData();
   useEffect(() => {
     getFAQAPI();
@@ -25,24 +31,33 @@ const FAQ = () => {
   const getFAQAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     try {
       const response = await instance.post(`faqs`, formData);
       const newData = response.result;
+      let recordsFiltered = response.recordsFiltered
+        ? response.recordsFiltered
+        : 0;
+      setTotalRecords(recordsFiltered);
       setFaqData(newData);
-      console.log("newData", newData);
     } catch (error) {
       console.log(error);
     }
   };
-
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
+    getFAQAPI();
+  };
   //  ==============on Submit for Search Fields====================//
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
-    console.log("faq question", values);
     formData.append("question", values?.question);
     getFAQAPI();
   };
@@ -125,7 +140,7 @@ const FAQ = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/faq/edit/${rowData._id}`);
         },
@@ -194,7 +209,7 @@ const FAQ = () => {
                   onClick={(e) => op.current.toggle(e)}
                   aria-haspopup
                   aria-controls="overlay_panel"
-                  className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
+                  className="btn btn-sm btn-flex btn-primary btn-active-primary fw-bolder"
                 >
                   <span className="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
                     <svg
@@ -252,32 +267,25 @@ const FAQ = () => {
                         {/* <div className="separator border-gray-200 mb-10"></div> */}
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getFAQAPI();
                                 op.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
@@ -285,8 +293,14 @@ const FAQ = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link href="/admin/faq/add" className="btn btn-sm btn-success">
-                Add FAQ
+              <Link href="/admin/faq/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="FAQ"
+                  icon="pi pi-plus"
+                />
               </Link>
             </div>
           </div>
@@ -304,11 +318,8 @@ const FAQ = () => {
                 <ConfirmDialog />
                 <DataTable
                   value={faqData}
-                  rows={10}
                   stripedRows
-                  paginator
                   showGridlines
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
                   <Column
@@ -344,6 +355,13 @@ const FAQ = () => {
                     body={getActionButton}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

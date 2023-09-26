@@ -5,9 +5,12 @@ import instance from "../../axiosInterceptor";
 import Link from "next/link";
 import EmailTempForm from "../../components/EmailTempForm";
 import withAuth from "@/hoc/withAuth";
+import { useRouter } from "next/navigation";
+import { Button } from "primereact/button";
 
 const ViewEmail = () => {
   const toast = useRef(null);
+  const router = useRouter();
   const addEmailAPI = async (data) => {
     const postData = {
       title: data.title,
@@ -15,7 +18,10 @@ const ViewEmail = () => {
     };
     try {
       const response = await instance.post(`email_template/add`, postData);
-      showMessage(response);
+      if (response) {
+        showMessage(response);
+        router.push("/admin/email");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -77,8 +83,15 @@ const ViewEmail = () => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/email" className="btn btn-sm btn btn-success">
-                Back
+              <Link href="/admin/email">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

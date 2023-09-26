@@ -13,11 +13,16 @@ import { ConfirmDialog } from "primereact/confirmdialog"; // For <ConfirmDialog 
 import { confirmDialog } from "primereact/confirmdialog";
 import withAuth from "@/hoc/withAuth";
 import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
+import { Paginator } from "primereact/paginator";
 
 const User = () => {
   const [userData, setUserData] = useState([]);
   const op = useRef(null);
   const toast = useRef(null);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(20);
+  const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData();
   useEffect(() => {
     getUserAPI();
@@ -27,18 +32,30 @@ const User = () => {
   const getUserAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
 
     try {
-      const response = await instance.post(`users`, formData);
-      const newData = response.result;
+      let response = await instance.post(`users`, formData);
+      let newData = (response.result) ? response.result : [];
+      let recordsFiltered = (response.recordsFiltered)
+        ? response.recordsFiltered
+        : 0;
+        console.log(response ,"response")
+      setTotalRecords(recordsFiltered);
       setUserData(newData);
     } catch (error) {
       console.log(error);
     }
   };
-
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
+    getUserAPI();
+  };
   //  ==============on Submit for Search Fields====================//
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -126,14 +143,14 @@ const User = () => {
     const items = [
       {
         label: "Edit",
-        icon: "pi pi-refresh",
+        icon: "pi pi-pencil",
         command: () => {
           router.push(`/admin/user/edit/${rowData._id}`);
         },
       },
       {
         label: "View",
-        icon: "pi pi-times",
+        icon: "pi pi-eye",
         command: () => {
           router.push(`/admin/user/view/${rowData._id}`);
         },
@@ -153,16 +170,7 @@ const User = () => {
       </>
     );
   };
-  const imageBodyTemplate = (data) => {
-    return (
-      <img
-        src={`${data.full_image_path}`}
-        alt={data.image}
-        className="w-6rem shadow-2 border-round"
-        height={25}
-      ></img>
-    );
-  };
+
   return (
     <>
       <Toast ref={toast} />
@@ -207,7 +215,7 @@ const User = () => {
                   }}
                   aria-haspopup
                   aria-controls="overlay_panel"
-                  className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
+                  className="btn btn-sm btn-flex btn-primary btn-active-primary fw-bolder"
                 >
                   <span className="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
                     <svg
@@ -278,32 +286,25 @@ const User = () => {
                         {/* <div className="separator border-gray-200 mb-10"></div> */}
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getUserAPI();
                                 op.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
@@ -311,11 +312,14 @@ const User = () => {
                   </Formik>
                 </OverlayPanel>
               </div>
-              <Link
-                href="/admin/user/add"
-                className="btn btn-sm btn btn-success"
-              >
-                Add User
+              <Link href="/admin/user/add">
+                <Button
+                  className="btn btn btn-info btn-sm me-3"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="User"
+                  icon="pi pi-plus"
+                />
               </Link>
             </div>
           </div>
@@ -333,11 +337,8 @@ const User = () => {
                 <ConfirmDialog />
                 <DataTable
                   value={userData}
-                  paginator
                   showGridlines
-                  rows={10}
                   stripedRows
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
                   <Column
@@ -351,19 +352,11 @@ const User = () => {
                     style={{ cursor: "pointer" }}
                   ></Column>
                   <Column
-                    field="image"
-                    header="Image"
-                    style={{ cursor: "pointer" }}
-                    body={imageBodyTemplate}
-                    sortable
-                  ></Column>
-                  <Column
                     field="email"
                     header="Email"
                     style={{ cursor: "pointer" }}
                     sortable
                   ></Column>
-
                   <Column
                     field="phone"
                     header="Phone"
@@ -378,9 +371,17 @@ const User = () => {
                   <Column
                     field=""
                     header="Actions"
+                    style={{ width: "130px" }}
                     body={getActionButton}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

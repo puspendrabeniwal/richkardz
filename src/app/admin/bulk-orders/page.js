@@ -1,36 +1,40 @@
 "use client";
 import Link from "next/link";
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from "next/navigation";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { OverlayPanel } from "primereact/overlaypanel";
-import { SplitButton } from 'primereact/splitbutton';
+import { SplitButton } from "primereact/splitbutton";
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
-
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
-
+import { Paginator } from "primereact/paginator";
 
 const BulkOrders = () => {
-  const router  = useRouter();
+  const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData(); //formdata object
-
-
+  useEffect(() => {
+    getList();
+  }, []);
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-
     formData.append("user_id", loginUser?._id);
-    formData.append("skip", 10); //append the values with key, value pair
-    formData.append("limit", 10); //append the values with key, value pair
-
+    formData.append("skip", first); //append the values with key, value pair
+    formData.append("limit", rows); //append the values with key, value pair
     instance
       .post("bulk_orders", formData)
       .then((response) => {
         let data = response.result ? response.result : {};
+        let recordsFiltered = response.recordsFiltered
+          ? response.recordsFiltered
+          : 0;
+        setTotalRecords(recordsFiltered);
         setList(data);
       })
       .catch((error) => {
@@ -38,24 +42,35 @@ const BulkOrders = () => {
       });
   };
 
-  useEffect(() => {
+  /** Managing pagination */
+  const onPageChange = (event) => {
+    setFirst(event.first);
+    setRows(event.rows);
+    formData.append("skip", event.first);
+    formData.append("limit", event.rows);
     getList();
-  }, []);
-
+  };
   const UpdateButtonLink = (rowData) => {
     const items = [
       {
-          label: 'View',
-          icon: 'pi pi-times',
-          command: () => {
-            router.push(`/admin/bulk-orders/view/${rowData._id}`)
-          }
+        label: "View",
+        icon: "pi pi-eye",
+        command: () => {
+          router.push(`/admin/bulk-orders/view/${rowData._id}`);
+        },
       },
-
     ];
     return (
       <>
-        <SplitButton label="Action" icon="pi pi-plus" small raised text severity="secondary" model={items}/>
+        <SplitButton
+          label="Action"
+          icon="pi pi-plus"
+          small
+          raised
+          text
+          severity="secondary"
+          model={items}
+        />
       </>
     );
   };
@@ -101,9 +116,7 @@ const BulkOrders = () => {
                 <li className="breadcrumb-item">
                   <span className="bullet bg-gray-300 w-5px h-2px"></span>
                 </li>
-                <li className="breadcrumb-item text-mute">
-                  Bulk Orders
-                </li>
+                <li className="breadcrumb-item text-mute">Bulk Orders</li>
               </ul>
             </div>
             <div className="d-flex align-items-center gap-2 gap-lg-3">
@@ -158,9 +171,7 @@ const BulkOrders = () => {
                         <div className="row ">
                           <div className="col-lg-6 col-md-6">
                             <div className="mb-10">
-                              <label className="form-label fw-bold">
-                                 Name
-                              </label>
+                              <label className="form-label fw-bold">Name</label>
                               <div>
                                 <Field
                                   type="text"
@@ -274,10 +285,7 @@ const BulkOrders = () => {
               <div className="card-body py-9">
                 <DataTable
                   value={list}
-                  paginator
                   showGridlines
-                  rows={10}
-                  totalRecords={50}
                   tableStyle={{ minWidth: "75rem" }}
                 >
                   <Column
@@ -286,7 +294,11 @@ const BulkOrders = () => {
                   ></Column>
                   <Column field="name" sortable header="Name"></Column>
                   <Column field="email" sortable header="Email"></Column>
-                  <Column field="phone_number" sortable header="Phone Number"></Column>
+                  <Column
+                    field="phone_number"
+                    sortable
+                    header="Phone Number"
+                  ></Column>
                   <Column
                     field="no_of_card_you_want"
                     sortable
@@ -304,6 +316,13 @@ const BulkOrders = () => {
                     body={UpdateButtonLink}
                   ></Column>
                 </DataTable>
+                <Paginator
+                  first={first}
+                  rows={rows}
+                  totalRecords={totalRecords}
+                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  onPageChange={onPageChange}
+                />
               </div>
             </div>
           </div>

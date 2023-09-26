@@ -4,8 +4,11 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
 import ComboProductForm from "@/app/admin/components/ComboProductsForm";
+import { useRouter } from "next/navigation";
+import { Button } from "primereact/button";
 const UpdateProduct = ({ params }) => {
   const toast = useRef(null);
+  const router = useRouter();
   const [productData, setProductData] = useState(null);
   useEffect(() => {
     getProductDetails();
@@ -35,7 +38,10 @@ const UpdateProduct = ({ params }) => {
     instance
       .post("combo-products/edit/" + params.productId, values)
       .then((response) => {
-        showMessage(response);
+        if (response) {
+          showMessage(response);
+          router.push("/admin/comboProducts");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -98,8 +104,15 @@ const UpdateProduct = ({ params }) => {
             </div>
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
-              <Link href="/admin/comboProducts" className="btn btn-sm btn-info">
-                Back
+              <Link href="/admin/comboProducts">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>

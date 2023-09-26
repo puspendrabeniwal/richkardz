@@ -59,6 +59,10 @@ PRODUCTS_URL		=	WEBSITE_URL+"uploads/products/";
 USERS_FILE_PATH		=	WEBSITE_UPLOADS_ROOT_PATH+"user/";
 USERS_URL			=	WEBSITE_URL+"uploads/user/";
 
+/** For QR Code images file directory path and url*/
+QR_CODE_FILE_PATH		=	WEBSITE_UPLOADS_ROOT_PATH+"qr_code/";
+QR_CODE_URL			=	WEBSITE_URL+"uploads/qr_code/";
+
 
 
 /** Upload image configurations*/

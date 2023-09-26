@@ -5,6 +5,8 @@ import * as Yup from "yup";
 import { FileUpload } from "primereact/fileupload";
 import { Image } from "primereact/image";
 import { Divider } from "primereact/divider";
+import { Button } from "primereact/button";
+import Link from "next/link";
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
   phone: Yup.number()
@@ -44,7 +46,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     youtube: userValue ? userValue.youtube : "",
     pinterest: userValue ? userValue.pinterest : "",
     catalogue: userValue ? userValue.catalogue : "",
-    gallery: userValue ? userValue.gallery : "",
+    gallery: [],
   };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -74,8 +76,9 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     formData.append("youtube", values.youtube);
     formData.append("pinterest", values.pinterest);
     formData.append("catalogue", values.catalogue);
-    formData.append("gallery", values.gallery);
-
+    for (const gallery of values.gallery) {
+      formData.append("gallery", gallery);
+    }
     await handleSubmitUser(formData);
   };
   return (
@@ -370,12 +373,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             setFieldValue("profile_image", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={userValue?.full_image_path}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div>
+                              {userValue?.profile_image ? (
+                                <Image
+                                  src={`${
+                                    userValue?.image_url +
+                                    userValue?.profile_image
+                                  }`}
+                                  height="70px"
+                                  width="100px"
+                                  alt="Image"
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           }
                         />
                       </div>
@@ -394,12 +406,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             setFieldValue("banner_image", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={userValue?.full_image_path}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div>
+                              {userValue?.banner_image ? (
+                                <Image
+                                  src={`${
+                                    userValue?.image_url +
+                                    userValue?.banner_image
+                                  }`}
+                                  height="70px"
+                                  width="100px"
+                                  alt="Image"
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           }
                         />
                       </div>
@@ -409,7 +430,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                         </label>
                         <FileUpload
                           name="upi_scannaer"
-                          accept="image/*"
+                          accept=".image"
                           auto
                           customUpload
                           maxFileSize={1000000}
@@ -418,12 +439,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             setFieldValue("upi_scannaer", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={userValue?.full_image_path}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div>
+                              {userValue?.upi_scannaer ? (
+                                <Image
+                                  src={`${
+                                    userValue?.image_url +
+                                    userValue?.upi_scannaer
+                                  }`}
+                                  height="70px"
+                                  width="100px"
+                                  alt="Image"
+                                />
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           }
                         />
                       </div>
@@ -555,7 +585,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                         </label>
                         <FileUpload
                           name="catalogue"
-                          accept="image/*"
+                          accept=".pdf" // Accept only PDF files
                           auto
                           customUpload
                           maxFileSize={1000000}
@@ -564,12 +594,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             setFieldValue("catalogue", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={userValue?.full_image_path}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div>
+                              {userValue?.catalogue ? (
+                                <a
+                                  href={`${
+                                    userValue?.image_url + userValue?.catalogue
+                                  }`}
+                                  target="_blank" // Opens the link in a new tab/window
+                                  rel="noopener noreferrer" // Recommended for security reasons
+                                >
+                                  View Catalogue (PDF)
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           }
                         />
                       </div>
@@ -581,32 +620,46 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           name="gallery"
                           accept="image/*"
                           auto
+                          multiple
                           customUpload
                           maxFileSize={1000000}
                           onSelect={(event) => {
-                            const files = event.files[0];
+                            const files = event.files;
                             setFieldValue("gallery", files);
                           }}
                           emptyTemplate={
-                            <Image
-                              src={userValue?.full_image_path}
-                              height="70px"
-                              width="100px"
-                              alt="Image"
-                            />
+                            <div className="d-flex flex-wrap">
+                              {userValue?.gallery?.map((image, index) => (
+                                <div key={index} className="m-2">
+                                  <Image
+                                    src={`${userValue?.image_url + image.name}`}
+                                    height="70px"
+                                    width="100px"
+                                    alt="Image"
+                                  />
+                                </div>
+                              ))}
+                            </div>
                           }
                         />
                       </div>
-                      <div>
-                        <button
-                          type="submit"
-                          className="btn btn btn-success me-3"
+                      <div className="mt-7">
+                        <Button
+                          className="btn btn btn-success btn-sm me-3"
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
-                          disabled={isSubmitting}
-                        >
-                          {userId ? "Update" : "Add"}
-                        </button>
+                          icon="pi pi-save"
+                          label="Submit"
+                        />
+                        <Link href="/admin/user ">
+                          <Button
+                            className="btn btn btn-danger btn-sm me-3"
+                            data-kt-menu-trigger="click"
+                            data-kt-menu-placement="bottom-end"
+                            icon="pi pi-times"
+                            label="Cancel"
+                          />
+                        </Link>
                       </div>
                     </Form>
                   )}

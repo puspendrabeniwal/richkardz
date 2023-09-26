@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
-import BlockDetailsPage from "@/app/admin/components/BlockDetailsPage";
 import withAuth from "@/hoc/withAuth";
+import { Button } from "primereact/button";
 
 const ViewBlock = ({ params }) => {
   const toast = useRef(null);
@@ -27,32 +27,6 @@ const ViewBlock = ({ params }) => {
       );
       const getData = response.result ? response.result : {};
       setBlockData(getData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const showMessage = (data) => {
-    toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
-      detail: data.message,
-      life: 3000,
-    });
-  };
-
-  const editBlockAPI = async (data) => {
-    const postData = {
-      name: data.blockName,
-      title: data.title,
-      body: data.description,
-    };
-    try {
-      const response = await instance.post(
-        `blocks/edit/${params.blockId}`,
-        postData
-      );
-      setBlockData(response);
-      showMessage(response);
     } catch (error) {
       console.log(error);
     }
@@ -105,27 +79,60 @@ const ViewBlock = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/blocks" className="btn btn-sm btn btn-success">
-                Back
-                {/* <Button
-                      label="Add Block"
-                      className="btn btn-primary"
-                      icon="pi pi-plus"
-                    /> */}
+              <Link href="/admin/blocks">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>
         </div>
       </div>
-      {blockData ? (
-        <BlockDetailsPage
-          blockValue={blockData}
-          handleSubmitBlock={editBlockAPI}
-          blockId={params.blockId}
-        />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card">
+              <div className="card-body py-9">
+                {blockData ? (
+                  <table
+                    className="table-border-padding w-100"
+                    //   style={{ border: " 1px solid gray" }}
+                  >
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Name</th>
+                      <td className="table-border-padding">{blockData.name}</td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Title</th>
+                      <td className="table-border-padding">
+                        {blockData.title}
+                      </td>
+                    </tr>
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Description</th>
+                      <td className="table-border-padding">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: blockData.body,
+                          }}
+                        ></span>
+                      </td>
+                    </tr>
+                  </table>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

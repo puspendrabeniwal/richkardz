@@ -1,8 +1,8 @@
 "use client";
 import instance from "@/app/admin/axiosInterceptor";
-import EmailDetailsPage from "@/app/admin/components/EmailDetailPage";
 import withAuth from "@/hoc/withAuth";
 import Link from "next/link";
+import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -32,31 +32,7 @@ const ViewEmail = ({ params }) => {
       console.log(error);
     }
   };
-  const showMessage = (data) => {
-    toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
-      detail: data.message,
-      life: 3000,
-    });
-  };
-
-  const editEmailAPI = async (data) => {
-    const postData = {
-      title: data.title,
-      content: data.content,
-    };
-    try {
-      const response = await instance.post(
-        `email_template/edit/${params.emailId}`,
-        postData
-      );
-      setEmailData(response);
-      showMessage(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  console.log("email dAta", emailData);
   return (
     <main>
       <Toast ref={toast} />
@@ -105,22 +81,54 @@ const ViewEmail = ({ params }) => {
 
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0"></div>
-              <Link href="/admin/email" className="btn btn-sm btn btn-success">
-                Back
+              <Link href="/admin/email">
+                <Button
+                  className="btn btn btn-warning btn-sm me-3e"
+                  data-kt-menu-trigger="click"
+                  data-kt-menu-placement="bottom-end"
+                  label="Back"
+                  type="submit"
+                  icon="pi pi-arrow-left"
+                />
               </Link>
             </div>
           </div>
         </div>
       </div>
-      {emailData ? (
-        <EmailDetailsPage
-          emailValue={emailData}
-          handleSubmitEmail={editEmailAPI}
-          emailId={params.emailId}
-        />
-      ) : (
-        <div>Loading...</div>
-      )}
+      <div
+        className="content d-flex flex-column flex-column-fluid"
+        id="kt_content"
+      >
+        <div className=" d-flex flex-column-fluid" id="kt_post">
+          <div id="kt_content_container" className="container-xxl">
+            <div className="card">
+              <div className="card-body py-9">
+                {emailData ? (
+                  <table className="table-border-padding w-100">
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Title</th>
+                      <td className="table-border-padding">
+                        {emailData.title}
+                      </td>
+                    </tr>
+
+                    <tr className="table-border-padding">
+                      <th className="table-border-padding">Description</th>
+                      <td className="table-border-padding">
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: emailData.content,
+                          }}
+                        ></span>
+                      </td>
+                    </tr>
+                  </table>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   );
 };

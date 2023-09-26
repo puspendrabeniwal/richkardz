@@ -63,7 +63,7 @@ const UpdateProduct = ({ params }) => {
                         </ul>
                     </div>
                     <div className="d-flex align-items-center gap-2 gap-lg-3">
-                        <Link href="/admin/products" className="btn btn-sm btn-info">Back</Link>
+                        <Link href="/admin/products" className="btn btn-sm btn-warning"><i className="pi pi-arrow-left"></i>Back</Link>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,6 @@ const UpdateProduct = ({ params }) => {
         <div
             className="content d-flex flex-column flex-column-fluid"
             id="kt_content"
-            style={{height : "750px"}}
         >
             <div className=" d-flex flex-column-fluid" id="kt_post">
                 <div id="kt_content_container" className="container-xxl">
@@ -87,7 +86,7 @@ const UpdateProduct = ({ params }) => {
                                             <div className="d-flex flex-column">
                                                 <div className="d-flex align-items-center mb-1">
                                                     <a href="#" className="text-gray-800 text-hover-primary fs-2 fw-bold me-3">{productData?.product_name}</a>
-                                                    <span className="badge badge-light-info me-auto">{productData?.card_type}</span>
+                                                    <span className="badge badge-info me-auto">{productData?.card_type}</span>
                                                 </div>
                                                 <div className="d-flex flex-wrap fw-semibold mb-4 fs-5 text-gray-400">
                                                 {productData?.profession}
@@ -123,9 +122,9 @@ const UpdateProduct = ({ params }) => {
                                             
                                         </div>
                                         <div className="d-flex align-items-center mb-1">
-                                            Featrued : <span className={`badge badge-light-${((productData?.is_feature === 1) ? "success" : "warning")} me-auto`}>{(productData?.is_feature === 1) ? "Yes" : "No"}</span>
-                                            New Released : <span className={`badge badge-light-${((productData?.is_new_release === 1) ? "success" : "warning")} me-auto`}>{(productData?.is_new_release === 1) ? "Yes" : "No"}</span>
-                                            Status : <span className={`badge badge-light-${((productData?.status === 1) ? "success" : "warning")} me-auto`}>{(productData?.status === 1) ? "Active" : "Inactive"}</span>
+                                            Featrued : &nbsp;<span className={`badge badge-${((productData?.is_feature === 1) ? "success" : "warning")} me-auto`}> &nbsp;{(productData?.is_feature === 1) ? "Yes" : "No"}</span>
+                                            New Released : &nbsp;<span className={`badge badge-${((productData?.is_new_release === 1) ? "success" : "warning")} me-auto`}> {(productData?.is_new_release === 1) ? "Yes" : "No"}</span>
+                                            Status : &nbsp;<span className={`badge badge-${((productData?.status === 1) ? "success" : "warning")} me-auto`}> {(productData?.status === 1) ? "Active" : "Inactive"}</span>
                                         </div>
                                     </div>
                                 </div>
