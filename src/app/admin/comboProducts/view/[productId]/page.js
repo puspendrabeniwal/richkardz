@@ -4,8 +4,13 @@ import Link from "next/link";
 import { Toast } from "primereact/toast";
 import instance from "../../../axiosInterceptor";
 import { Button } from "primereact/button";
+<<<<<<< HEAD
 import dateFormat, { masks } from "dateformat";
 import Image from "next/image";
+=======
+// import dateFormat, { masks } from "dateformat";
+// import Image from "next/image";
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
 
 const UpdateProduct = ({ params }) => {
   const toast = useRef(null);

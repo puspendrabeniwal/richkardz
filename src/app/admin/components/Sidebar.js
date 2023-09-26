@@ -282,9 +282,18 @@ const Sidebar = () => {
         },
       ]
     },
+<<<<<<< HEAD
 
   ];
 
+=======
+
+  ];
+  const deletepost =(e)=> {
+    let a = e.currentTarget.parentNode.getAttribute("data-src");  
+      console.log(a);
+    }
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
   return (
     <main>
       <div
@@ -316,7 +325,11 @@ const Sidebar = () => {
             data-kt-toggle-target="body"
             data-kt-toggle-name="aside-minimize"
           >
+<<<<<<< HEAD
             <span className="svg-icon svg-icon-1 rotate-180">
+=======
+            {/* <span className="svg-icon svg-icon-1 rotate-180">
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -334,7 +347,11 @@ const Sidebar = () => {
                   fill="currentColor"
                 />
               </svg>
+<<<<<<< HEAD
             </span>
+=======
+            </span> */}
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
           </div>
         </div>
         <div className="aside-menu flex-column-fluid">
@@ -350,6 +367,7 @@ const Sidebar = () => {
           >
             <div
               className="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500"
+<<<<<<< HEAD
               id="#kt_aside_menu" data-kt-menu="true" data-kt-menu-expand="false"
             >
               <div data-kt-menu-trigger="click" className="menu-item here show menu-accordion">
@@ -394,6 +412,10 @@ const Sidebar = () => {
                     </div>
                 </div>
               </div>
+=======
+            >
+              <Menubar model={items} orientation="horozontal" breakpoint="767px"/>
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
             </div>
           </div>
         </div>

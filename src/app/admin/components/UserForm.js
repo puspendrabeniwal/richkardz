@@ -37,7 +37,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     google_link: userValue ? userValue.google_link : "",
     profile_image: userValue ? userValue.profile_image : "",
     banner_image: userValue ? userValue.banner_image : "",
-    upi_scannaer: userValue ? userValue.upi_scannaer : "",
+    upi_scanner: userValue ? userValue.upi_scanner : "",
     facebook: userValue ? userValue.facebook : "",
     instagram: userValue ? userValue.instagram : "",
     linkedin: userValue ? userValue.linkedin : "",
@@ -67,7 +67,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     formData.append("google_link", values.google_link);
     formData.append("profile_image", values.profile_image);
     formData.append("banner_image", values.banner_image);
-    formData.append("upi_scannaer", values.upi_scannaer);
+    formData.append("upi_scanner", values.upi_scanner);
     formData.append("facebook", values.facebook);
     formData.append("instagram", values.instagram);
     formData.append("linkedin", values.linkedin);
@@ -429,22 +429,35 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           UPI payment scanner
                         </label>
                         <FileUpload
+<<<<<<< HEAD
                           name="upi_scannaer"
                           accept=".image"
+=======
+                          name="upi_scanner"
+                          accept="image/*"
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
                           auto
                           customUpload
                           maxFileSize={1000000}
                           onSelect={(event) => {
                             const files = event.files[0];
-                            setFieldValue("upi_scannaer", files);
+                            setFieldValue("upi_scanner", files);
                           }}
                           emptyTemplate={
                             <div>
+<<<<<<< HEAD
                               {userValue?.upi_scannaer ? (
                                 <Image
                                   src={`${
                                     userValue?.image_url +
                                     userValue?.upi_scannaer
+=======
+                              {userValue?.upi_scanner ? (
+                                <Image
+                                  src={`${
+                                    userValue?.image_url +
+                                    userValue?.upi_scanner
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
                                   }`}
                                   height="70px"
                                   width="100px"

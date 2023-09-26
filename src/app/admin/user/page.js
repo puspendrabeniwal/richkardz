@@ -15,13 +15,14 @@ import withAuth from "@/hoc/withAuth";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Paginator } from "primereact/paginator";
+import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
 
 const User = () => {
   const [userData, setUserData] = useState([]);
   const op = useRef(null);
   const toast = useRef(null);
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(20);
+  const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData();
   useEffect(() => {
@@ -36,12 +37,11 @@ const User = () => {
     formData.append("limit", rows); //append the values with key, value pair
 
     try {
-      let response = await instance.post(`users`, formData);
-      let newData = (response.result) ? response.result : [];
-      let recordsFiltered = (response.recordsFiltered)
+      const response = await instance.post(`users`, formData);
+      const newData = response.result;
+      let recordsFiltered = response.recordsFiltered
         ? response.recordsFiltered
         : 0;
-        console.log(response ,"response")
       setTotalRecords(recordsFiltered);
       setUserData(newData);
     } catch (error) {
@@ -379,7 +379,7 @@ const User = () => {
                   first={first}
                   rows={rows}
                   totalRecords={totalRecords}
-                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  rowsPerPageOptions={PAGE_ITEM_LIST}
                   onPageChange={onPageChange}
                 />
               </div>

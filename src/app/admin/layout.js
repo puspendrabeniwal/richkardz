@@ -11,9 +11,6 @@ import 'primeicons/primeicons.css';
 export default function AdminLayout({ children }) {
   const [user, setUser] = useState({});
   const pathname  = usePathname();
-
-
-
   return (
     <html lang="en">
         <head>
@@ -40,10 +37,8 @@ export default function AdminLayout({ children }) {
             </div>
           </div>
           :children}
- 
-          <script  src="/admin/assets/plugins/global/plugins.bundle.js" async></script>
-          <script  src="/admin/assets/js/scripts.bundle.js" async></script>
         </body>
-      </html>
+            </html>
+  
   )
 }

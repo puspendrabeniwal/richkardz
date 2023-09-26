@@ -15,6 +15,7 @@ import dateFormat, { masks } from "dateformat";
 import instance from "../../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import { Paginator } from "primereact/paginator";
+import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../../constant";
 
 const Leads = ({ params }) => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const Leads = ({ params }) => {
   const filterOption = useRef(null);
   let formData = new FormData(); //formdata object
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(20);
+  const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
 
   useEffect(() => {
@@ -100,7 +101,6 @@ const Leads = ({ params }) => {
   };
 
   const onSubmit = async (values) => {
-    console.log(dates[0]);
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     formData.append("user_id", loginUser._id);
     formData.append("name", values?.name);
@@ -496,7 +496,7 @@ const Leads = ({ params }) => {
                   first={first}
                   rows={rows}
                   totalRecords={totalRecords}
-                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  rowsPerPageOptions={PAGE_ITEM_LIST}
                   onPageChange={onPageChange}
                 />
               </div>

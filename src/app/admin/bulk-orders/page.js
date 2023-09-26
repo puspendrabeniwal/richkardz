@@ -10,13 +10,21 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import { Paginator } from "primereact/paginator";
+<<<<<<< HEAD
+=======
+import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
 
 const BulkOrders = () => {
   const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
   const [first, setFirst] = useState(0);
+<<<<<<< HEAD
   const [rows, setRows] = useState(10);
+=======
+  const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
   const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData(); //formdata object
   useEffect(() => {
@@ -320,7 +328,11 @@ const BulkOrders = () => {
                   first={first}
                   rows={rows}
                   totalRecords={totalRecords}
+<<<<<<< HEAD
                   rowsPerPageOptions={[20, 50, 100, 1000]}
+=======
+                  rowsPerPageOptions={PAGE_ITEM_LIST}
+>>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
                   onPageChange={onPageChange}
                 />
               </div>

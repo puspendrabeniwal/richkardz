@@ -15,10 +15,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import { Paginator } from "primereact/paginator";
+import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
 
 const GiftPreDesignProducts = () => {
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(20);
+  const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData(); //formdata object
   const router = useRouter();
@@ -460,7 +461,7 @@ const GiftPreDesignProducts = () => {
                   first={first}
                   rows={rows}
                   totalRecords={totalRecords}
-                  rowsPerPageOptions={[20, 50, 100, 1000]}
+                  rowsPerPageOptions={PAGE_ITEM_LIST}
                   onPageChange={onPageChange}
                 />
               </div>
