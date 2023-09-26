@@ -429,13 +429,8 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           UPI payment scanner
                         </label>
                         <FileUpload
-<<<<<<< HEAD
-                          name="upi_scannaer"
-                          accept=".image"
-=======
                           name="upi_scanner"
                           accept="image/*"
->>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
                           auto
                           customUpload
                           maxFileSize={1000000}
@@ -445,19 +440,11 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           }}
                           emptyTemplate={
                             <div>
-<<<<<<< HEAD
-                              {userValue?.upi_scannaer ? (
-                                <Image
-                                  src={`${
-                                    userValue?.image_url +
-                                    userValue?.upi_scannaer
-=======
                               {userValue?.upi_scanner ? (
                                 <Image
                                   src={`${
                                     userValue?.image_url +
                                     userValue?.upi_scanner
->>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
                                   }`}
                                   height="70px"
                                   width="100px"

@@ -16,20 +16,13 @@ import { Toast } from "primereact/toast";
 import withAuth from "@/hoc/withAuth";
 import { Button } from "primereact/button";
 import { Paginator } from "primereact/paginator";
-<<<<<<< HEAD
-=======
 import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
->>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
 
 const CMS = () => {
   const [cmsData, setCmsData] = useState([]);
   const op = useRef(null);
   const [first, setFirst] = useState(0);
-<<<<<<< HEAD
-  const [rows, setRows] = useState(10);
-=======
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
->>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
   const [totalRecords, setTotalRecords] = useState(0);
   let formData = new FormData();
   const toast = useRef(null);
@@ -363,11 +356,7 @@ const CMS = () => {
                   first={first}
                   rows={rows}
                   totalRecords={totalRecords}
-<<<<<<< HEAD
-                  rowsPerPageOptions={[20, 50, 100, 1000]}
-=======
                   rowsPerPageOptions={PAGE_ITEM_LIST}
->>>>>>> a7e7e85441c9f05bd2c08124b45b5c96fbc46a1a
                   onPageChange={onPageChange}
                 />
               </div>
