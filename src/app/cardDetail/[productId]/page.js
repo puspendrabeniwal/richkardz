@@ -1,14 +1,15 @@
 "use client";
 import * as Yup from "yup";
 import { Button } from "primereact/button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
 import Header from "@/app/elements/Header/page";
 import Footer from "@/app/elements/Footer/page";
 import instance from "@/app/admin/axiosInterceptor";
-import {GST_PERCENTAGE} from "@/app/global_constant.js";
-
+import { GST_PERCENTAGE } from "@/app/global_constant.js";
+import { useRouter } from "next/navigation";
+import { Toast } from "primereact/toast";
+import { useSearchParams } from "next/navigation";
 
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
@@ -27,29 +28,54 @@ const queryValidationSchema = Yup.object().shape({
 
 const cardtDetail = ({ params }) => {
   const [productDetail, setProductDetail] = useState({});
+  const [cardDetailsData, setCardDetailsData] = useState({ full_name: "" });
+  const router = useRouter();
+  const toast = useRef(null);
+  const searchParams = useSearchParams();
 
+  const cardDetailDefaultValues = {
+    type: "card_detail",
+    product_id: params.productId,
+    full_name: cardDetailsData.full_name,
+    email: cardDetailsData ? cardDetailsData.email : "",
+    phone_number: cardDetailsData ? cardDetailsData.phone_number : "",
+    designation: cardDetailsData ? cardDetailsData.designation : "",
+    company_name: cardDetailsData ? cardDetailsData.company_name : "",
+    company_logo: {},
+    amount: productDetail?.grand_total,
+  };
   useEffect(() => {
     getProductDetail();
+    getCardDetails();
   }, []);
-
   const getProductDetail = () => {
     instance
       .post(`product/view/${params.productId}`, {})
       .then((response) => {
-        let data = (response.result) ? response.result : {};
-        let basePrice = (data?.discount) ? parseInt(data?.discount) : 0;
-        let gstPercentage = (data?.discount) ? parseInt((basePrice*GST_PERCENTAGE)/100) : 0;
+        let data = response.result ? response.result : {};
+        let basePrice = data?.discount ? parseInt(data?.discount) : 0;
+        let gstPercentage = data?.discount
+          ? parseInt((basePrice * GST_PERCENTAGE) / 100)
+          : 0;
         data["gst_value"] = gstPercentage;
-        data["grand_total"] = gstPercentage+basePrice;
+        data["grand_total"] = gstPercentage + basePrice;
         setProductDetail(data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-
-
+  const getCardDetails = () => {
+    instance
+      .post(`order/${searchParams.get("order_id")}`)
+      .then((response) => {
+        let data = response.result ? response.result : {};
+        setCardDetailsData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const onSubmitCardDetail = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
@@ -57,8 +83,35 @@ const cardtDetail = ({ params }) => {
     Object.keys(values).forEach(function (key, index) {
       formData.append(key, values[key]);
     });
+    await addCardDetail(formData);
   };
 
+  const addCardDetail = async (data) => {
+    instance
+      .post("save_order", data)
+      .then((response) => {
+        let orderId =
+          response.result && response.result.order_id
+            ? response.result.order_id
+            : "";
+        if (response.status === true) {
+          router.push(
+            `/deliveryAddress/${params.productId}?order_id=${orderId}`
+          );
+        }
+        showMessage(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const designContactDefaultValues = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    query_msg: "",
+  };
   const onSubmitDesignContact = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
@@ -66,27 +119,29 @@ const cardtDetail = ({ params }) => {
     Object.keys(values).forEach(function (key, index) {
       formData.append(key, values[key]);
     });
+    await addQueryCard(formData);
   };
-
-
-
-  const cardDetailDefaultValues ={
-    full_name : "",
-    email : "",
-    phone_number : "",
-    designation : "",
-    company_name : "",
-    company_logo : {}
-  }
-
-
-  const designContactDefaultValues ={
-    first_name : "",
-    last_name : "",
-    email : "",
-    phone_number : "",
-    query_msg  : ""
-  }
+  const addQueryCard = async (data) => {
+    instance
+      .post("design_contact", data)
+      .then((response) => {
+        if (response) {
+          showMessage(response);
+          router.push(`${params.productId}`);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const showMessage = (data) => {
+    toast.current.show({
+      severity: data.status ? "success" : "error",
+      summary: data.status ? "Success" : "Error",
+      detail: data.message,
+      life: 3000,
+    });
+  };
   return (
     <html lang="en">
       <head>
@@ -128,6 +183,7 @@ const cardtDetail = ({ params }) => {
         />
       </head>
       <body className="bodyMain">
+        <Toast ref={toast} />
         <Header />
         <section className="py-4 py-md-5 container">
           <div className="row">
@@ -150,9 +206,30 @@ const cardtDetail = ({ params }) => {
                   >
                     <div className="card-body px-md-5 py-md-4">
                       <Formik
-                        initialValues={cardDetailDefaultValues}
+                        enableReinitialize={true}
+                        initialValues={{
+                          type: "card_detail",
+                          product_id: params.productId,
+                          full_name: cardDetailsData.full_name
+                            ? cardDetailsData.full_name
+                            : "",
+                          email: cardDetailsData ? cardDetailsData.email : "",
+                          phone_number: cardDetailsData
+                            ? cardDetailsData.phone_number
+                            : "",
+                          designation: cardDetailsData
+                            ? cardDetailsData.designation
+                            : "",
+                          company_name: cardDetailsData
+                            ? cardDetailsData.company_name
+                            : "",
+                          company_logo: {},
+                          amount: productDetail?.grand_total,
+                        }}
                         validationSchema={validationSchema}
-                        onSubmit={async (values) => await onSubmitCardDetail(values)}
+                        onSubmit={async (values) =>
+                          await onSubmitCardDetail(values)
+                        }
                       >
                         {({ setFieldValue, values }) => (
                           <Form className="form-design">
@@ -162,7 +239,8 @@ const cardtDetail = ({ params }) => {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingname"
                                 >
-                                  Full Name <span className="text-danger">*</span>
+                                  Full Name{" "}
+                                  <span className="text-danger">*</span>
                                 </label>
 
                                 <Field
@@ -182,7 +260,8 @@ const cardtDetail = ({ params }) => {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingemail"
                                 >
-                                  Email Address <span className="text-danger">*</span>
+                                  Email Address{" "}
+                                  <span className="text-danger">*</span>
                                 </label>
                                 <div className=" billingForm">
                                   <Field
@@ -203,7 +282,8 @@ const cardtDetail = ({ params }) => {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingNumber"
                                 >
-                                  Phone Number <span className="text-danger">*</span>
+                                  Phone Number{" "}
+                                  <span className="text-danger">*</span>
                                 </label>
                                 <div className=" billingForm">
                                   <Field
@@ -224,7 +304,8 @@ const cardtDetail = ({ params }) => {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingDesignation"
                                 >
-                                  Designation <span className="text-danger">*</span>
+                                  Designation{" "}
+                                  <span className="text-danger">*</span>
                                 </label>
                                 <div className=" billingForm">
                                   <Field
@@ -289,14 +370,14 @@ const cardtDetail = ({ params }) => {
                               <div className=" billingForm">
                                 <Field
                                   type="file"
-                                  name="images"
+                                  name="company_logo"
                                   accept="image/*"
                                   className="form-control"
                                   id="floatingUpload"
                                   value={undefined}
                                   onChange={(event) => {
                                     const files = event.currentTarget.files[0];
-                                    setFieldValue("images", files);
+                                    setFieldValue("company_logo", files);
                                   }}
                                 />
                               </div>
@@ -341,7 +422,8 @@ const cardtDetail = ({ params }) => {
                     Delivery Charges <span> Free</span>
                   </li>
                   <li>
-                    GST @ {GST_PERCENTAGE}% <span> ₹ {productDetail?.gst_value}</span>
+                    GST @ {GST_PERCENTAGE}%{" "}
+                    <span> ₹ {productDetail?.gst_value}</span>
                   </li>
                 </ul>
                 <div className="mt-4 d-flex justify-content-between align-items-center pt-3 border-top">
@@ -378,7 +460,7 @@ const cardtDetail = ({ params }) => {
                 <Formik
                   initialValues={designContactDefaultValues}
                   validationSchema={queryValidationSchema}
-                  onHandleSubmit={async (values) =>
+                  onSubmit={async (values) =>
                     await onSubmitDesignContact(values)
                   }
                 >
