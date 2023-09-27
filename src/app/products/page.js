@@ -4,8 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import instance from "@/app/admin/axiosInterceptor";
-import Header from "@/app/components0/Header0/page";
-import Footer from "@/app/components0/Footer0/page";
+import Header from "@/app/elements/Header/page";
+import Footer from "@/app/elements/Footer/page";
 export default function Product() {
   const [products, setProducts] = useState([]);
   const [cardType, setCardType] = useState("All");
@@ -427,23 +427,6 @@ export default function Product() {
           </div>
         </section>
         <Footer />
-
-        <Script type="text/javascript" src="/front/js/jquery.min.js"></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/bootstrap.min.js"
-        ></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/particles.min.js"
-        ></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/swiper-bundle.min.js"
-        ></Script>
-        <Script type="text/javascript" src="/front/js/custom.js"></Script>
-        <Script type="text/javascript" src="/front/js/mobile-nav.js"></Script>
-        <Script type="text/javascript" src="/front/js/wow.js"></Script>
       </body>
     </html>
   );

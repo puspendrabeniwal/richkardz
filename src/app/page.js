@@ -1,11 +1,8 @@
 "use client";
-import { useEffect } from "react";
-import Script from "next/script";
-import Header from "./components0/Header0/page";
-import Footer from "./components0/Footer0/page";
+import Header from "./elements/Header/page";
+import Footer from "./elements/Footer/page";
 
 export default function Home() {
-
   return (
     
     <html lang="en">
@@ -170,8 +167,8 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="col-lg-5 my-4 my-lg-0 ps-xl-5">
-                    <video className="benefitsVideo" muted="true" preload="auto" autoplay="true" loop="true"
-                        playsinline="playsinline">
+                    <video className="benefitsVideo" muted={true} preload="auto" autoPlay={true} loop={true}
+                        playsInline="playsinline">
                         <source src="/front/video/homeVideo.mp4" type="video/mp4" />
                     </video>
                   </div>
@@ -398,7 +395,7 @@ export default function Home() {
                         </p>
                     </div>
                     <div className="swiper-slide">
-                        <img className="userAreProfile" src="img/showcase.png" alt="" />
+                        <img className="userAreProfile" src="/front/img/showcase.png" alt="" />
                         <p className="userAreProPText">RichKardz are environmentally friendly alternatives to traditional paper
                           cards.
                         </p>
@@ -511,7 +508,7 @@ export default function Home() {
                     <div className="accordion-item">
                         <h2 className="accordion-header" id="headingOne">
                           <button className="accordion-button" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              data-bs-target="#collapseOne" aria-expanded={true} aria-controls="collapseOne">
                               <span className="frequltyNumber">1.</span>System requirements
                           </button>
                         </h2>
@@ -695,7 +692,7 @@ export default function Home() {
             </div>
         </section>
         <div className="modal fade youtubeModal" id="videoPlayModal" data-bs-backdrop="static" data-bs-keyboard="false"
-            tabindex="-1" aria-labelledby="videoPlayModalLabel" aria-hidden="true">
+            tabIndex="-1" aria-labelledby="videoPlayModalLabel" aria-hidden={true}>
             <div className="modal-dialog modal-dialog-centered modal-lg">
               <div className="modal-content">
                   <div className="">
@@ -706,23 +703,13 @@ export default function Home() {
                   <div className="modal-body p-0">
                     <div className="embed-responsive embed-responsive-16by9">
                         <iframe className="embed-responsive-item YouTubeVideo" src="https://www.youtube.com/embed/WDQM9dTg6pk"
-                          title="" frameborder="0" allow="" allowfullscreen></iframe>
+                          title="" frameBorder="0" allow="" allowFullScreen></iframe>
                     </div>
                   </div>
               </div>
             </div>
         </div>
         <Footer />
-
-          {/* <Script type="text/javascript" src="/front/js/jquery.min.js" defer></Script> */}
-          {/* <Script type="text/javascript" src="/front/js/bootstrap.min.js" defer></Script> */}
-          {/* <Script type="text/javascript" src="/front/js/particles.min.js" defer></Script>
-          <Script type="text/javascript" src="/front/js/swiper-bundle.min.js" defer></Script>
-          <Script type="text/javascript" src="/front/js/custom.js" defer></Script>
-          <Script type="text/javascript" src="/front/js/mobile-nav.js" defer></Script>
-          <Script type="text/javascript" src="/front/js/wow.js" defer></Script> */}
-
-  
       </body>
     </html>
   )

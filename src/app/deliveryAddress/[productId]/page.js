@@ -1,11 +1,13 @@
 "use client";
-import Script from "next/script";
-import Head from "next/head";
+import * as Yup from "yup";
 import React, { useEffect, useState } from "react";
-import Header from "@/app/components0/Header0/page";
-import Footer from "@/app/components0/Footer0/page";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import Header from "@/app/elements/Header/page";
+import Footer from "@/app/elements/Footer/page";
 import instance from "@/app/admin/axiosInterceptor";
-export default function ProductDetail({ params }) {
+
+export default function DeliveryAddress({ params }) {
   const [productDetail, setProductDetail] = useState([]);
   useEffect(() => {
     getProductDetail();
@@ -16,6 +18,10 @@ export default function ProductDetail({ params }) {
       .post(`product/view/${params.productId}`, {})
       .then((response) => {
         let data = response.result ? response.result : {};
+        let basePrice = (data?.discount) ? parseInt(data?.discount) : 0;
+        let gstPercentage = (data?.discount) ? parseInt((basePrice*GST_PERCENTAGE)/100) : 0;
+        data["gst_value"] = gstPercentage;
+        data["grand_total"] = gstPercentage+basePrice;
         setProductDetail(data);
       })
       .catch((error) => {
@@ -32,7 +38,7 @@ export default function ProductDetail({ params }) {
         />
         <meta name="keywords" />
 
-        <title>Products</title>
+        <title>Delivery Address</title>
 
         <link
           rel="shortcut icon"
@@ -62,7 +68,7 @@ export default function ProductDetail({ params }) {
           type="text/css"
         />
       </head>
-      <body classNameNameName="bodyMain">
+      <body className="bodyMain">
         <Header />
         <section className="py-4 py-md-5 container">
           <div className="row">
@@ -109,7 +115,7 @@ export default function ProductDetail({ params }) {
                           </div>
                         </div>
                         <div className="col-lg-4 py-4 py-md-0 text-center">
-                          <img src="img/logo-social-sq.png" alt="" />
+                          <img src="/front/img/logo-social-sq.png" alt="" />
                         </div>
                       </div>
                     </div>
@@ -238,23 +244,6 @@ export default function ProductDetail({ params }) {
           </div>
         </section>
         <Footer />
-
-        <Script type="text/javascript" src="/front/js/jquery.min.js"></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/bootstrap.min.js"
-        ></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/particles.min.js"
-        ></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/swiper-bundle.min.js"
-        ></Script>
-        <Script type="text/javascript" src="/front/js/custom.js"></Script>
-        <Script type="text/javascript" src="/front/js/mobile-nav.js"></Script>
-        <Script type="text/javascript" src="/front/js/wow.js"></Script>
       </body>
     </html>
   );

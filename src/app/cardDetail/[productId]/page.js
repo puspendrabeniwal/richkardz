@@ -1,55 +1,56 @@
 "use client";
-import Script from "next/script";
-import React, { useEffect, useState } from "react";
-import Header from "@/app/components0/Header0/page";
-import Footer from "@/app/components0/Footer0/page";
-import instance from "@/app/admin/axiosInterceptor";
-import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Button } from "primereact/button";
+import React, { useEffect, useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import Header from "@/app/elements/Header/page";
+import Footer from "@/app/elements/Footer/page";
+import instance from "@/app/admin/axiosInterceptor";
+import {GST_PERCENTAGE} from "@/app/global_constant.js";
+
 
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
   email: Yup.string().required("Email is required"),
-  phone_number: Yup.string().required("Phone number price is required"),
+  phone_number: Yup.string().required("Phone number is required"),
   designation: Yup.string().required("Designation is required"),
 });
-const queryValidationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().required("Email is required"),
-  phone_number: Yup.string().required("Phone number price is required"),
-  designation: Yup.string().required("Designation is required"),
-  query: Yup.string().required("Query is required"),
-});
-const cardtDetail = ({ params }) => {
-  // const [productDetail, setProductDetail] = useState([]);
 
-  // useEffect(() => {
-  //   getProductDetail();
-  // }, []);
+const queryValidationSchema = Yup.object().shape({
+  first_name: Yup.string().required("First Name is required"),
+  last_name: Yup.string().required("Last Name is required"),
+  email: Yup.string().required("Email is required"),
+  phone_number: Yup.string().required("Phone number is required"),
+  query_msg: Yup.string().required("Query is required"),
+});
+
+const cardtDetail = ({ params }) => {
+  const [productDetail, setProductDetail] = useState({});
+
+  useEffect(() => {
+    getProductDetail();
+  }, []);
 
   const getProductDetail = () => {
     instance
       .post(`product/view/${params.productId}`, {})
       .then((response) => {
-        let data = response.result ? response.result : {};
+        let data = (response.result) ? response.result : {};
+        let basePrice = (data?.discount) ? parseInt(data?.discount) : 0;
+        let gstPercentage = (data?.discount) ? parseInt((basePrice*GST_PERCENTAGE)/100) : 0;
+        data["gst_value"] = gstPercentage;
+        data["grand_total"] = gstPercentage+basePrice;
         setProductDetail(data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  const onSubmit = async (values) => {
-    console.log("form values", values);
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    let formData = new FormData();
-    formData.append("user_id", loginUser._id);
-    Object.keys(values).forEach(function (key, index) {
-      formData.append(key, values[key]);
-    });
-  };
-  const onHandleSubmit = async (values) => {
-    console.log("form handle values", values);
+
+
+
+  const onSubmitCardDetail = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
@@ -58,6 +59,34 @@ const cardtDetail = ({ params }) => {
     });
   };
 
+  const onSubmitDesignContact = async (values) => {
+    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    let formData = new FormData();
+    formData.append("user_id", loginUser._id);
+    Object.keys(values).forEach(function (key, index) {
+      formData.append(key, values[key]);
+    });
+  };
+
+
+
+  const cardDetailDefaultValues ={
+    full_name : "",
+    email : "",
+    phone_number : "",
+    designation : "",
+    company_name : "",
+    company_logo : {}
+  }
+
+
+  const designContactDefaultValues ={
+    first_name : "",
+    last_name : "",
+    email : "",
+    phone_number : "",
+    query_msg  : ""
+  }
   return (
     <html lang="en">
       <head>
@@ -98,7 +127,7 @@ const cardtDetail = ({ params }) => {
           type="text/css"
         />
       </head>
-      <body classNameName="bodyMain">
+      <body className="bodyMain">
         <Header />
         <section className="py-4 py-md-5 container">
           <div className="row">
@@ -121,9 +150,9 @@ const cardtDetail = ({ params }) => {
                   >
                     <div className="card-body px-md-5 py-md-4">
                       <Formik
-                        // initialValues={defaultValues}
+                        initialValues={cardDetailDefaultValues}
                         validationSchema={validationSchema}
-                        onSubmit={async (values) => await onSubmit(values)}
+                        onSubmit={async (values) => await onSubmitCardDetail(values)}
                       >
                         {({ setFieldValue, values }) => (
                           <Form className="form-design">
@@ -133,7 +162,7 @@ const cardtDetail = ({ params }) => {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingname"
                                 >
-                                  Full Name
+                                  Full Name <span className="text-danger">*</span>
                                 </label>
 
                                 <Field
@@ -153,7 +182,7 @@ const cardtDetail = ({ params }) => {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingemail"
                                 >
-                                  Email Address
+                                  Email Address <span className="text-danger">*</span>
                                 </label>
                                 <div className=" billingForm">
                                   <Field
@@ -174,7 +203,7 @@ const cardtDetail = ({ params }) => {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingNumber"
                                 >
-                                  Phone Number
+                                  Phone Number <span className="text-danger">*</span>
                                 </label>
                                 <div className=" billingForm">
                                   <Field
@@ -195,7 +224,7 @@ const cardtDetail = ({ params }) => {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingDesignation"
                                 >
-                                  Designation
+                                  Designation <span className="text-danger">*</span>
                                 </label>
                                 <div className=" billingForm">
                                   <Field
@@ -207,6 +236,27 @@ const cardtDetail = ({ params }) => {
                                 </div>
                                 <ErrorMessage
                                   name="designation"
+                                  component="div"
+                                  className="text-danger"
+                                />
+                              </div>
+                              <div className="col-md-6 customFrom mb-3">
+                                <label
+                                  className="col-form-label required fw-semibold fs-6"
+                                  htmlFor="floatingCompany"
+                                >
+                                  Company Name
+                                </label>
+                                <div className=" billingForm">
+                                  <Field
+                                    type="text"
+                                    name="company_name"
+                                    className="form-control"
+                                    id="floatingCompany"
+                                  />
+                                </div>
+                                <ErrorMessage
+                                  name="company_name"
                                   component="div"
                                   className="text-danger"
                                 />
@@ -227,7 +277,7 @@ const cardtDetail = ({ params }) => {
                               />
                               <label
                                 className="form-check-label"
-                                for="flexCheckDefault"
+                                htmlFor="flexCheckDefault"
                               >
                                 Upload Your Company Logo
                               </label>
@@ -278,24 +328,6 @@ const cardtDetail = ({ params }) => {
                     </div>
                   </div>
                 </div>
-                <div className="card">
-                  <div className="card-header">
-                    <a
-                      className="collapsed btn collapsebtn"
-                      data-bs-toggle="collapse"
-                      href="#collapseTwo"
-                    >
-                      2. Delivery Address
-                    </a>
-                  </div>
-                  <div
-                    id="collapseTwo"
-                    className="collapse"
-                    data-bs-parent="#accordion"
-                  >
-                    <div className="card-body">Lorem ipsum..</div>
-                  </div>
-                </div>
               </div>
             </div>
             <div className="col-lg-3">
@@ -303,18 +335,18 @@ const cardtDetail = ({ params }) => {
                 <h3 className="mb-2">Order Summary</h3>
                 <ul className="list-unstyled">
                   <li>
-                    Base Total <span> ₹ 499</span>
+                    Base Total <span> ₹ {productDetail?.discount}</span>
                   </li>
                   <li>
                     Delivery Charges <span> Free</span>
                   </li>
                   <li>
-                    GST @ 18% <span> ₹ 89</span>
+                    GST @ {GST_PERCENTAGE}% <span> ₹ {productDetail?.gst_value}</span>
                   </li>
                 </ul>
                 <div className="mt-4 d-flex justify-content-between align-items-center pt-3 border-top">
                   <h3>Grand Total</h3>
-                  <h2>₹ 588</h2>
+                  <h2>₹ {productDetail?.grand_total}</h2>
                 </div>
               </div>
             </div>
@@ -323,7 +355,7 @@ const cardtDetail = ({ params }) => {
         <div
           className="modal fade upload_CampnayLogo"
           id="uploadCampnayLogoModal"
-          tabindex="-1"
+          tabIndex="-1"
           aria-labelledby="uploadCampnayLogoModalLabel"
           aria-hidden="true"
         >
@@ -331,7 +363,7 @@ const cardtDetail = ({ params }) => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="uploadCampnayLogoModalLabel">
-                  Modal title
+                  Design Query
                 </h5>
                 <button
                   type="button"
@@ -344,10 +376,10 @@ const cardtDetail = ({ params }) => {
               </div>
               <div className="modal-body">
                 <Formik
-                  // initialValues={defaultValues}
+                  initialValues={designContactDefaultValues}
                   validationSchema={queryValidationSchema}
                   onHandleSubmit={async (values) =>
-                    await onHandleSubmit(values)
+                    await onSubmitDesignContact(values)
                   }
                 >
                   {({ setFieldValue, values }) => (
@@ -358,17 +390,37 @@ const cardtDetail = ({ params }) => {
                             className="col-form-label required fw-semibold fs-6"
                             htmlFor="floatingname"
                           >
-                            Full Name
+                            First Name
                           </label>
 
                           <Field
                             type="text"
-                            name="name"
+                            name="first_name"
                             className="form-control"
                             id="floatingname"
                           />
                           <ErrorMessage
-                            name="name"
+                            name="first_name"
+                            component="div"
+                            className="text-danger"
+                          />
+                        </div>
+                        <div className="col-md-6 customFrom mb-3">
+                          <label
+                            className="col-form-label required fw-semibold fs-6"
+                            htmlFor="floatinglname"
+                          >
+                            Last Name
+                          </label>
+
+                          <Field
+                            type="text"
+                            name="last_name"
+                            className="form-control"
+                            id="floatinglname"
+                          />
+                          <ErrorMessage
+                            name="last_name"
                             component="div"
                             className="text-danger"
                           />
@@ -415,27 +467,6 @@ const cardtDetail = ({ params }) => {
                             className="text-danger"
                           />
                         </div>
-                        <div className="col-md-6 customFrom mb-3">
-                          <label
-                            className="col-form-label required fw-semibold fs-6"
-                            htmlFor="floatingDesignation"
-                          >
-                            Designation
-                          </label>
-                          <div className=" billingForm">
-                            <Field
-                              type="text"
-                              name="designation"
-                              className="form-control"
-                              id="floatingDesignation"
-                            />
-                          </div>
-                          <ErrorMessage
-                            name="designation"
-                            component="div"
-                            className="text-danger"
-                          />
-                        </div>
                       </div>
 
                       <div className="col-md-12 customFrom mb-3">
@@ -448,14 +479,14 @@ const cardtDetail = ({ params }) => {
                         <div className=" billingForm">
                           <Field
                             as="textarea"
-                            name="query"
+                            name="query_msg"
                             className="form-control"
                             rows="4"
                             cols="40"
                           ></Field>
                         </div>
                         <ErrorMessage
-                          name="query"
+                          name="query_msg"
                           component="div"
                           className="text-danger"
                         />
@@ -479,23 +510,6 @@ const cardtDetail = ({ params }) => {
           </div>
         </div>
         <Footer />
-
-        <Script type="text/javascript" src="/front/js/jquery.min.js"></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/bootstrap.min.js"
-        ></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/particles.min.js"
-        ></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/swiper-bundle.min.js"
-        ></Script>
-        <Script type="text/javascript" src="/front/js/custom.js"></Script>
-        <Script type="text/javascript" src="/front/js/mobile-nav.js"></Script>
-        <Script type="text/javascript" src="/front/js/wow.js"></Script>
       </body>
     </html>
   );

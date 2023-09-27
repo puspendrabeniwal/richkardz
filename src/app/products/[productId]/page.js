@@ -1,9 +1,11 @@
 "use client";
-import Script from "next/script";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import Header from "@/app/components0/Header0/page";
-import Footer from "@/app/components0/Footer0/page";
+
+import Header from "@/app/elements/Header/page";
+import Footer from "@/app/elements/Footer/page";
 import instance from "@/app/admin/axiosInterceptor";
+
 export default function ProductDetail({ params }) {
   const [productDetail, setProductDetail] = useState([]);
   useEffect(() => {
@@ -100,7 +102,7 @@ export default function ProductDetail({ params }) {
                     </div>
                   </div>
                   <div
-                    thumbsSlider=""
+                    thumbsslider=""
                     className="swiper productSlider mt-3 mb-md-5 mb-4"
                   >
                     <div className="swiper-wrapper">
@@ -164,7 +166,7 @@ export default function ProductDetail({ params }) {
                     </div>
                     <ul className="productpolicy list-unstyled my-4 py-2">
                       <li>
-                        <img src="img/Estimated.png" alt="" />{" "}
+                        <img src="/front/img/Estimated.png" alt="" />{" "}
                         <b>Estimated Delivery :</b> within 5-7 days
                       </li>
                       <li>
@@ -223,18 +225,18 @@ export default function ProductDetail({ params }) {
                   <h3>Payment Options</h3>
                   <div className="paymentLogo mt-3">
                     <a href="" className="me-2">
-                      <img src="img/googlepe.png" alt="" />
+                      <img src="/front/img/googlepe.png" alt="" />
                     </a>
                     <a href="" className="me-2">
-                      <img src="img/paytm.png" alt="" />
+                      <img src="/front/img/paytm.png" alt="" />
                     </a>
                     <a href="" className="me-2">
-                      <img src="img/phonepe.png" alt="" />
+                      <img src="/front/img/phonepe.png" alt="" />
                     </a>
                   </div>
                 </div>
               </div>
-              <button className="btn btnNavyBlue mt-4 w-100">Buy Now</button>
+              <Link href={`/cardDetail/${params.productId}`} className="btn btnNavyBlue mt-4 w-100 cursor-pointer">Buy Now</Link>
             </div>
           </div>
         </section>
@@ -516,7 +518,7 @@ export default function ProductDetail({ params }) {
                         >
                           <img
                             className="video_Icon"
-                            src="img/videoPlay.png"
+                            src="/front/img/videoPlay.png"
                             alt=""
                           />
                         </button>
@@ -609,7 +611,7 @@ export default function ProductDetail({ params }) {
                         >
                           <img
                             className="video_Icon"
-                            src="img/videoPlay.png"
+                            src="/front/img/videoPlay.png"
                             alt=""
                           />
                         </button>
@@ -658,7 +660,7 @@ export default function ProductDetail({ params }) {
                   <a
                     className="page-link"
                     href="#"
-                    tabindex="-1"
+                    tabIndex="-1"
                     aria-disabled="true"
                   >
                     Page 1 of 3
@@ -696,7 +698,7 @@ export default function ProductDetail({ params }) {
           id="productGallary"
           data-bs-backdrop="static"
           data-bs-keyboard="false"
-          tabindex="-1"
+          tabIndex="-1"
           aria-labelledby="productGallaryLabel"
           aria-hidden="true"
         >
@@ -721,21 +723,21 @@ export default function ProductDetail({ params }) {
                   <div className="carousel-inner productGallarySlider">
                     <div className="carousel-item active">
                       <img
-                        src="img/BusinessCards1.png"
+                        src="/front/img/BusinessCards1.png"
                         className="d-block w-100"
                         alt="..."
                       />
                     </div>
                     <div className="carousel-item">
                       <img
-                        src="img/BusinessCards2.png"
+                        src="/front/img/BusinessCards2.png"
                         className="d-block w-100"
                         alt="..."
                       />
                     </div>
                     <div className="carousel-item">
                       <img
-                        src="img/BannerBG.png"
+                        src="/front/img/BannerBG.png"
                         className="d-block w-100"
                         alt="..."
                       />
@@ -803,23 +805,6 @@ export default function ProductDetail({ params }) {
           </div>
         </div>
         <Footer />
-
-        <Script type="text/javascript" src="/front/js/jquery.min.js"></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/bootstrap.min.js"
-        ></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/particles.min.js"
-        ></Script>
-        <Script
-          type="text/javascript"
-          src="/front/js/swiper-bundle.min.js"
-        ></Script>
-        <Script type="text/javascript" src="/front/js/custom.js"></Script>
-        <Script type="text/javascript" src="/front/js/mobile-nav.js"></Script>
-        <Script type="text/javascript" src="/front/js/wow.js"></Script>
       </body>
     </html>
   );
