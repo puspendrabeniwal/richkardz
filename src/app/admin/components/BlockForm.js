@@ -149,7 +149,6 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
                             style={{ width: "30px", height: "30px" }}
                           />
                         )}
-                        {/* Show the PrimeReact spinner when submitting */}
                       </div>
                     </Form>
                   )}
