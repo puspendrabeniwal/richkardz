@@ -28,7 +28,6 @@ export default function DeliveryAddress({ params }) {
     getProductDetail();
     getAddressDetails();
   }, []);
-
   const getProductDetail = () => {
     instance
       .post(`product/view/${params.productId}`, {})
@@ -428,18 +427,18 @@ export default function DeliveryAddress({ params }) {
                 <h3 className="mb-2">Order Summary</h3>
                 <ul className="list-unstyled">
                   <li>
-                    Base Total <span> ₹ 499</span>
+                    Base Total <span> ₹ {productDetail?.price}</span>
                   </li>
                   <li>
                     Delivery Charges <span> Free</span>
                   </li>
                   <li>
-                    GST @ 18% <span> ₹ 89</span>
+                    GST @ 18% <span> ₹ {productDetail?.gst_value}</span>
                   </li>
                 </ul>
                 <div className="mt-4 d-flex justify-content-between align-items-center pt-3 border-top">
                   <h3>Grand Total</h3>
-                  <h2>₹ 588</h2>
+                  <h2>₹ {productDetail?.grand_total}</h2>
                 </div>
               </div>
             </div>
