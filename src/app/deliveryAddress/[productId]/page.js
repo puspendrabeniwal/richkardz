@@ -61,9 +61,9 @@ export default function DeliveryAddress({ params }) {
   const deliveryAddressValue = {
     type: "delivery_adderess",
     product_id: params.productId,
-    full_name: (cardDetail.full_name) ? cardDetail.full_name : '',
-    email: (cardDetail.email) ? cardDetail.email : '',
-    phone_number: (cardDetail.phone_number) ? cardDetail.phone_number : '',
+    full_name: cardDetail.full_name ? cardDetail.full_name : "",
+    email: cardDetail.email ? cardDetail.email : "",
+    phone_number: cardDetail.phone_number ? cardDetail.phone_number : "",
     designation: "",
     company_name: "",
     company_logo: {},
@@ -76,12 +76,10 @@ export default function DeliveryAddress({ params }) {
   };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    values["user_id"] = loginUser._id
-    console.log(values, "data")
+    values["user_id"] = loginUser._id;
     await addCardDetail(values);
   };
   const addCardDetail = async (data) => {
-
     instance
       .post("save_order", data)
       .then((response) => {
@@ -422,6 +420,7 @@ export default function DeliveryAddress({ params }) {
                 </div>
               </div>
             </div>
+
             <div className="col-lg-3">
               <div className="orderSummary">
                 <h3 className="mb-2">Order Summary</h3>
