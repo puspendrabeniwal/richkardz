@@ -18,9 +18,10 @@ const validationSchema = Yup.object().shape({
   city: Yup.string().required("City is required"),
   zipcode: Yup.string().required("Pincode is required"),
 });
+
 export default function DeliveryAddress({ params }) {
   const [productDetail, setProductDetail] = useState([]);
-  const [addressDetailData, setAddressDetailData] = useState([]);
+  const [cardDetail, setCardDetail] = useState([]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useRef(null);
@@ -51,18 +52,19 @@ export default function DeliveryAddress({ params }) {
       .post(`order/${searchParams.get("order_id")}`)
       .then((response) => {
         let data = response.result ? response.result : {};
-        setAddressDetailData(data);
+        setCardDetail(data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   const deliveryAddressValue = {
     type: "delivery_adderess",
     product_id: params.productId,
-    full_name: "",
-    email: "",
-    phone_number: "",
+    full_name: (cardDetail.full_name) ? cardDetail.full_name : '',
+    email: (cardDetail.email) ? cardDetail.email : '',
+    phone_number: (cardDetail.phone_number) ? cardDetail.phone_number : '',
     designation: "",
     company_name: "",
     company_logo: {},
@@ -75,20 +77,18 @@ export default function DeliveryAddress({ params }) {
   };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    let formData = new FormData();
-    formData.append("user_id", loginUser._id);
-    Object.keys(values).forEach(function (key, index) {
-      formData.append(key, values[key]);
-    });
-    await addCardDetail(formData);
+    values["user_id"] = loginUser._id
+    console.log(values, "data")
+    await addCardDetail(values);
   };
   const addCardDetail = async (data) => {
+
     instance
       .post("save_order", data)
       .then((response) => {
-        // if (response.status === true) {
-        //   router.push(`/deliveryAddress/${params.productId}`);
-        // }
+        if (response.status === true) {
+          window.location.replace(response.result.longurl);
+        }
         showMessage(response);
       })
       .catch((error) => {
@@ -161,7 +161,6 @@ export default function DeliveryAddress({ params }) {
                       <button
                         className="editBtn float-end"
                         onClick={() => {
-                          // router.push(`/orders?orderId=${orderId}`);
                           router.push(
                             `/cardDetail/${
                               params.productId
@@ -184,26 +183,26 @@ export default function DeliveryAddress({ params }) {
                           <div className="row mx-0">
                             <div className="col-6 col-lg-6 richKarzsDetails border-end">
                               <label for="">Full Name</label>
-                              <h6>{addressDetailData?.full_name}</h6>
+                              <h6>{cardDetail?.full_name}</h6>
                             </div>
                             <div className="col-6 col-lg-6 richKarzsDetails ps-md-5 ps-3">
                               <label for="">Email</label>
-                              <h6>{addressDetailData?.email}</h6>
+                              <h6>{cardDetail?.email}</h6>
                             </div>
                             <div className="col-6 col-lg-6 richKarzsDetails border-top border-end">
                               <label for="">Phone Number</label>
-                              <h6>{addressDetailData?.phone_number}</h6>
+                              <h6>{cardDetail?.phone_number}</h6>
                             </div>
                             <div className="col-6 col-lg-6 richKarzsDetails border-top ps-md-5 ps-3">
                               <label for="">Designation</label>
-                              <h6>{addressDetailData?.designation}</h6>
+                              <h6>{cardDetail?.designation}</h6>
                             </div>
                           </div>
                         </div>
                         <div className="col-lg-4 py-4 py-md-0 text-center">
                           <img
-                            src={`${addressDetailData?.full_image_path}`}
-                            alt={addressDetailData?.company_logo}
+                            src={`${cardDetail?.full_image_path}`}
+                            alt={cardDetail?.company_logo}
                             className="w-6rem shadow-2 border-round"
                             height={220}
                           ></img>
@@ -229,6 +228,7 @@ export default function DeliveryAddress({ params }) {
                   >
                     <div className="card-body px-md-5 py-md-4">
                       <Formik
+                        enableReinitialize={true}
                         initialValues={deliveryAddressValue}
                         validationSchema={validationSchema}
                         onSubmit={async (values) => await onSubmit(values)}

@@ -26,7 +26,7 @@ const queryValidationSchema = Yup.object().shape({
   query_msg: Yup.string().required("Query is required"),
 });
 
-const cardtDetail = ({ params }) => {
+export default function CardtDetail({ params }){
   const [productDetail, setProductDetail] = useState({});
   const [cardDetailsData, setCardDetailsData] = useState({ full_name: "" });
   const router = useRouter();
@@ -36,18 +36,21 @@ const cardtDetail = ({ params }) => {
   const cardDetailDefaultValues = {
     type: "card_detail",
     product_id: params.productId,
-    full_name: cardDetailsData.full_name,
-    email: cardDetailsData ? cardDetailsData.email : "",
-    phone_number: cardDetailsData ? cardDetailsData.phone_number : "",
-    designation: cardDetailsData ? cardDetailsData.designation : "",
-    company_name: cardDetailsData ? cardDetailsData.company_name : "",
+    full_name: (cardDetailsData.full_name) ? cardDetailsData.full_name : "",
+    email: (cardDetailsData.email) ? cardDetailsData.email : "",
+    phone_number: (cardDetailsData.phone_number) ? cardDetailsData.phone_number : "",
+    designation: (cardDetailsData.designation) ? cardDetailsData.designation : "",
+    company_name: (cardDetailsData.company_name) ? cardDetailsData.company_name : "",
     company_logo: {},
     amount: productDetail?.grand_total,
   };
+
   useEffect(() => {
     getProductDetail();
-    getCardDetails();
+    if(searchParams.get("order_id")) getCardDetails();
   }, []);
+
+
   const getProductDetail = () => {
     instance
       .post(`product/view/${params.productId}`, {})
@@ -207,25 +210,7 @@ const cardtDetail = ({ params }) => {
                     <div className="card-body px-md-5 py-md-4">
                       <Formik
                         enableReinitialize={true}
-                        initialValues={{
-                          type: "card_detail",
-                          product_id: params.productId,
-                          full_name: cardDetailsData.full_name
-                            ? cardDetailsData.full_name
-                            : "",
-                          email: cardDetailsData ? cardDetailsData.email : "",
-                          phone_number: cardDetailsData
-                            ? cardDetailsData.phone_number
-                            : "",
-                          designation: cardDetailsData
-                            ? cardDetailsData.designation
-                            : "",
-                          company_name: cardDetailsData
-                            ? cardDetailsData.company_name
-                            : "",
-                          company_logo: {},
-                          amount: productDetail?.grand_total,
-                        }}
+                        initialValues={cardDetailDefaultValues}
                         validationSchema={validationSchema}
                         onSubmit={async (values) =>
                           await onSubmitCardDetail(values)
@@ -596,4 +581,3 @@ const cardtDetail = ({ params }) => {
     </html>
   );
 };
-export default cardtDetail;

@@ -55,8 +55,8 @@ const Header =()=>{
               <ul className=" d-lg-flex align-items-lg-center float-lg-left">
                 <li className=""><Link href="/" className={(pathname === "/") ? "active" : ""}> Home</Link></li>
                 <li className=""><Link href="/products" className={(pathname === "/products") ? "active" : ""}>Products</Link></li>
-                <li className=""><a className="scrollLink" href="#gallery">About</a></li>
-                <li className=""><a className="" href="contect.html">Contact us</a></li>
+                <li className=""><Link href="/aboutUs" className={(pathname === "/aboutUs") ? "active" : ""}>About</Link></li>
+                <li className=""><Link href="/contactUs" className={(pathname === "/contactUs") ? "active" : ""}>Conatct Us</Link></li>
                 <li className="d-none d-lg-inline-block">
                     <select className="vodiapicker ms-lg-4">
                       <option value="au"
