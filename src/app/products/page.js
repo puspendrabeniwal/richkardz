@@ -16,7 +16,7 @@ export default function Product() {
 
   const getList = () => {
     instance
-      .post("products", { skip: 0, card_type: cardType })
+      .post("products", { skip: 0, card_type: cardType, status : 1 })
       .then((response) => {
         let data = response.result ? response.result : {};
         setImageUrl(response.image_url ? response.image_url : "");
@@ -148,7 +148,7 @@ export default function Product() {
                             <img className="img-fluid" src={imagePath} alt="" />
                           </div>
                           <div className="productTitle">
-                            <h3>{row?.product_name}1</h3>
+                            <h3>{row?.product_name}</h3>
                           </div>
                           <div className="mt-2">
                             <span className="ratingStar">

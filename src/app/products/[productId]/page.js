@@ -109,12 +109,16 @@ export default function ProductDetail({ params }) {
                       {productDetail?.images &&
                         productDetail?.images.map((row, index) => {
                           return (
-                            <div className="productSmalSlider" key={index}>
-                              <img
-                                src={productDetail?.image_url + row.name}
-                                alt=""
-                              />
-                            </div>
+                            <div className="swiper-slide" key={index}>
+                              <div className="productSmalSlider" >
+                                <img
+                                  src={productDetail?.image_url + row.name}
+                                  alt=""
+                                />
+                                
+                              </div>
+                              </div>
+                            
                           );
                         })}
                     </div>

@@ -56,7 +56,7 @@ const Footer = ()=>{
                               <li><Link href="/">Home</Link></li>
                               <li><Link href="/aboutUs">About Us</Link></li>
                               <li><Link href="/products">Products</Link></li>
-                              <li><Link href="/contactus">Contact Us</Link></li>
+                              <li><Link href="/contactUs">Contact Us</Link></li>
                           </ul>
                         </div>
                         <div className="col-lg-6 col-6 mt-4">

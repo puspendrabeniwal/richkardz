@@ -77,7 +77,7 @@ export default function DeliveryAddress({ params }) {
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     values["user_id"] = loginUser._id
-    console.log(values, "data")
+
     await addCardDetail(values);
   };
   const addCardDetail = async (data) => {

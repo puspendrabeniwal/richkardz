@@ -216,7 +216,7 @@ export const Products = () => {
   const toast = useRef(null);
   return (
     <main>
-      <div className="d-flex flex-column flex-column-fluid" id="kt_content">
+      <div className="" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
           <div
             id="kt_toolbar_container"

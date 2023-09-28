@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
+import { Skeleton } from "primereact/skeleton";
 import { useEffect, useRef, useState } from "react";
 import instance from "../axiosInterceptor";
 import { Tag } from "primereact/tag";
@@ -24,6 +25,7 @@ const User = () => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
+
   let formData = new FormData();
   useEffect(() => {
     getUserAPI();
@@ -138,6 +140,9 @@ const User = () => {
     });
   };
   const router = useRouter();
+  const processingTemplate = (rowData)=>{
+    return <Skeleton></Skeleton>
+  }
   // ============Edit button for update form===========//
   const getActionButton = (rowData) => {
     const items = [
@@ -156,6 +161,10 @@ const User = () => {
         },
       },
     ];
+
+
+
+
     return (
       <>
         <SplitButton
@@ -335,6 +344,7 @@ const User = () => {
             <div className="card">
               <div className="card-body py-9">
                 <ConfirmDialog />
+ 
                 <DataTable
                   value={userData}
                   showGridlines

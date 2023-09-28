@@ -201,15 +201,15 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                             id="floatingprofession"
                           >
                             <option value="">Select</option>
-                            <option value="1">Youngsters</option>
-                            <option value="2">CA</option>
-                            <option value="3">Doctor</option>
-                            <option value="4">Lawyers</option>
-                            <option value="5">Entrepreneur</option>
-                            <option value="6">Sales Person</option>
-                            <option value="7">Agents</option>
-                            <option value="8">Freelancers</option>
-                            <option value="9">Students</option>
+                            <option value="Youngsters">Youngsters</option>
+                            <option value="CA">CA</option>
+                            <option value="Doctor">Doctor</option>
+                            <option value="Lawyers">Lawyers</option>
+                            <option value="Entrepreneur">Entrepreneur</option>
+                            <option value="Sales Person">Sales Person</option>
+                            <option value="Agents">Agents</option>
+                            <option value="Freelancers">Freelancers</option>
+                            <option value="Students">Students</option>
                           </Field>
 
                           <ErrorMessage
