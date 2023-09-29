@@ -57,44 +57,46 @@ export default function ReturnAndRefundPolicy() {
             <p>Welcome to Rich Kardz!</p>
             <p>
               These terms and conditions outline the rules and regulations for
-              the use of J2D FASHIONS PRIVATE LIMITED's Website, located at
+              the use of J2D FASHIONS PRIVATE LIMITED&apos;s Website, located at
               <a href="../../">https://www.richkardz.com</a>.
             </p>
             <p>
               By accessing this website we assume you accept these terms and
-              conditions. Do not continue to use ‘RichKardz’ and/or ‘Rich Kardz’
-              if you do not agree to take all of the terms and conditions stated
-              on this page.
+              conditions. Do not continue to use ‘RichKardz&apos; and/or ‘Rich
+              Kardz&apos; if you do not agree to take all of the terms and
+              conditions stated on this page.
             </p>
             <p>
               The following terminology applies to these Terms and Conditions,
               Privacy Statement and Disclaimer Notice and all Agreements:
-              "Client", "You" and "Your" refers to you, the person log on this
-              website and compliant to the Company’s terms and conditions. "The
-              Company", "Ourselves", "We", "Our" and "Us", refers to our
-              Company. "Party", "Parties", or "Us", refers to both the Client
+              &quot;Client&quot;, &quot;You&quot; and &quot;Your&quot; refers to
+              you, the person log on this website and compliant to the
+              Company&apos;s terms and conditions. &quot;The Company&quot;,
+              &quot;Ourselves&quot;, &quot;We&quot;, &quot;Our&quot; and
+              &quot;Us&quot;, refers to our Company. &quot;Party&quot;,
+              &quot;Parties&quot;, or &quot;Us&quot;, refers to both the Client
               and ourselves. All terms refer to the offer, acceptance and
               consideration of payment necessary to undertake the process of our
               assistance to the Client in the most appropriate manner for the
-              express purpose of meeting the Client’s needs in respect of
-              provision of the Company’s stated services, in accordance with and
-              subject to, prevailing law of Netherlands. Any use of the above
-              terminology or other words in the singular, plural, capitalization
-              and/or he/she or they, are taken as interchangeable and therefore
-              as referring to the same.
+              express purpose of meeting the Client&apos;s needs in respect of
+              provision of the Company&apos;s stated services, in accordance
+              with and subject to, prevailing law of Netherlands. Any use of the
+              above terminology or other words in the singular, plural,
+              capitalization and/or he/she or they, are taken as interchangeable
+              and therefore as referring to the same.
             </p>
             <h2>Cookies</h2>
             <p>
               We employ the use of cookies. By accessing RichKardz, you agreed
               to use cookies in agreement with the J2D FASHIONS PRIVATE
-              LIMITED's Privacy Policy.
+              LIMITED&apos;s Privacy Policy.
             </p>
             <p>
               Most interactive websites use cookies to let us retrieve the
-              user’s details for each visit. Cookies are used by our website to
-              enable the functionality of certain areas to make it easier for
-              people visiting our website. Some of our affiliate/advertising
-              partners may also use cookies.
+              user&apos;s details for each visit. Cookies are used by our
+              website to enable the functionality of certain areas to make it
+              easier for people visiting our website. Some of our
+              affiliate/advertising partners may also use cookies.
             </p>
             <h2>Licence</h2>
             <p>
@@ -177,7 +179,7 @@ export default function ReturnAndRefundPolicy() {
               (b) does not falsely imply sponsorship, endorsement or approval of
               the linking party and its products and/or services; and
             </p>
-            <p>(c) fits within the context of the linking party’s site.</p>
+            <p>(c) fits within the context of the linking party&apos;s site.</p>
             <p>
               We may consider and approve other link requests from the following
               types of organisations:
@@ -224,7 +226,7 @@ export default function ReturnAndRefundPolicy() {
               (b) does not falsely imply sponsorship, endorsement or approval of
               the linking party and its products or services; and
             </p>
-            <p>(c) fits within the context of the linking party’s site.</p>
+            <p>(c) fits within the context of the linking party&apos;s site.</p>
             <p>
               If you are one of the organisations listed in paragraph 2 above
               and are interested in linking to our website, you must inform us
@@ -244,12 +246,12 @@ export default function ReturnAndRefundPolicy() {
               <br />
               By use of any other description of our Website being linked to
               that makes sense within the context and format of content on the
-              linking party’s site.
+              linking party&apos;s site.
             </p>
             <p>
-              No use of J2D FASHIONS PRIVATE LIMITED's logo or other artwork
-              will be allowed for linking in absence of a trademark licence
-              agreement.
+              No use of J2D FASHIONS PRIVATE LIMITED&apos;s logo or other
+              artwork will be allowed for linking in absence of a trademark
+              licence agreement.
             </p>
             <h2>
               <br />

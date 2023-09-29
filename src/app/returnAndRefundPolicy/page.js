@@ -14,7 +14,7 @@ export default function ReturnAndRefundPolicy() {
         />
         <meta name="keywords" />
 
-        <title>Retum & Refund Policy</title>
+        <title></title>
 
         <link
           rel="shortcut icon"
@@ -53,16 +53,12 @@ export default function ReturnAndRefundPolicy() {
         </section>
         <section className="privacyPolicy pb-5">
           <div className="container">
-            <h2>
-              Return / Replacement Policy
-              <br />
-            </h2>
             <p>
               If your item arrives damaged, defective, or different from what
               you ordered, you can request a free replacement within 3 days of
               delivery. Please keep the item in its original condition with the
-              manufacturer's packaging. We may contact you to understand the
-              issue before issuing a replacement.
+              manufacturer&apos;s packaging. We may contact you to understand
+              the issue before issuing a replacement.
             </p>
             <p>
               <strong>Important Note:</strong>
@@ -74,14 +70,14 @@ export default function ReturnAndRefundPolicy() {
               mistakes or if you simply change your mind.
             </p>
             <p>
-              To raise a replacement request{" "}
+              To raise a replacement request
               <a href="../../site/return-replacement-request">CLICK HERE</a>.
             </p>
             <h2>Refund/Cancellation Policy</h2>
             <p>
               No refund will be issued if the refund and/or cancellation request
               is raised after 3 Hours of order placement. To raise your
-              cancellation/refund request{" "}
+              cancellation/refund request
               <a href="../../site/refund-request">CLICK HERE</a>.
               <br />
               Please be aware that refunds will not be provided if your phone
@@ -103,8 +99,7 @@ export default function ReturnAndRefundPolicy() {
               NFC capability.
             </p>
             <p>
-              {" "}
-              To raise a replacement request{" "}
+              To raise a replacement request
               <a href="../../site/warranty-claim">CLICK HERE</a>.
             </p>
           </div>

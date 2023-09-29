@@ -146,7 +146,7 @@ const ContactUs = () => {
             <div class="d-flex mt-2 justify-content-between align-items-center">
               <div>
                 <p>
-                  Don't have login details?{" "}
+                  Don&apos;t have login details?{" "}
                   <a href="" class="Gilroy-Bold">
                     Click Here
                   </a>

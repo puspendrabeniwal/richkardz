@@ -9,12 +9,15 @@ import { Button } from "primereact/button";
 import Link from "next/link";
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
-  phone: Yup.number()
-    .typeError("Phone Number must be a number")
-    .required("Phone Number is required"),
+  phone: Yup.string().matches(
+    /^[0-9]{10}$/,
+    "Phone number must be exactly 10 digits"
+  ),
   company_name: Yup.string().required("Company name is required"),
   designation: Yup.string().required("Designation is required"),
-  email: Yup.string().required("Email is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
   address: Yup.string().required("Address is required"),
   pincode: Yup.string().required("Pincode is required"),
   whatsapp: Yup.string().required("Whatsapp is required"),

@@ -8,8 +8,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
-  email: Yup.string().required("Email is required"),
-  phone_number: Yup.string().required("Phone number is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  phone_number: Yup.string().matches(
+    /^[0-9]{10}$/,
+    "Phone number must be exactly 10 digits"
+  ),
   city: Yup.string().required("City is required"),
   message: Yup.string().required("Message is required"),
 });

@@ -56,11 +56,11 @@ export default function ShipingAndDelivery() {
             <div className="col-md-12 col-sm-12">
               <p>
                 <a>https://www.richkardz.com/</a> is committed to excellence,
-                and the full satisfaction of our customers.{" "}
+                and the full satisfaction of our customers.
                 <a>https://www.richkardz.com/</a> proudly offers shipping
                 services. Be assured we are doing everything in our power to get
                 your order to you as soon as possible. Please consider any
-                holidays that might impact delivery times.{" "}
+                holidays that might impact delivery times.
                 <a>https://www.richkardz.com/</a> also offers same day dispatch.
               </p>
               <ol>
@@ -125,7 +125,7 @@ export default function ShipingAndDelivery() {
                 <li>IMPORT DUTY AND TAXES</li>
               </ol>
               <p>
-                When dealing with{" "}
+                When dealing with
                 <a href="../../">https://www.richkardz.com/</a> you have the
                 following options when it comes to taxes as well as import
                 duties:You will be required to settle the requisite fees when
@@ -143,7 +143,7 @@ export default function ShipingAndDelivery() {
               </ol>
               <p>
                 In the event you have any questions or comments please reach us
-                via the following contacts: Email -{" "}
+                via the following contacts: Email -
                 <a href="/cdn-cgi/l/email-protection#34474144445b464074465d575c5f5546504e1a575b59">
                   <span
                     className="__cf_email__"
@@ -153,7 +153,7 @@ export default function ShipingAndDelivery() {
                   </span>
                 </a>
               </p>
-            </div>{" "}
+            </div>
           </div>
         </section>
         <Footer />

@@ -110,11 +110,7 @@ export default function FAQs() {
                               data-bs-toggle="modal"
                               data-bs-target="#videoPlayModal"
                             >
-                              <img
-                                className=""
-                                src="/front/img/videoPlay.png"
-                                alt=""
-                              />
+                              <img src="/front/img/videoPlay.png" alt="" />
                             </button>
                           </div>
                         </div>
@@ -172,11 +168,7 @@ export default function FAQs() {
                               data-bs-toggle="modal"
                               data-bs-target="#videoPlayModal"
                             >
-                              <img
-                                className=""
-                                src="/front/img/videoPlay.png"
-                                alt=""
-                              />
+                              <img src="/front/img/videoPlay.png" alt="" />
                             </button>
                           </div>
                         </div>
@@ -233,11 +225,7 @@ export default function FAQs() {
                                 data-bs-toggle="modal"
                                 data-bs-target="#videoPlayModal"
                               >
-                                <img
-                                  className=""
-                                  src="/front/img/videoPlay.png"
-                                  alt=""
-                                />
+                                <img src="/front/img/videoPlay.png" alt="" />
                               </button>
                             </div>
                           </div>
