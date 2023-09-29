@@ -80,8 +80,10 @@ const Header =()=>{
                 </li>
                 <li className="d-none d-lg-inline-block"><a className="" href=""><i className="fa fa-phone" aria-hidden="true"></i>
                     </a></li>
-                <li className="d-none d-lg-inline-block"><a className="scrollLink" href="#"> <i className="fa fa-user-o ms-1" aria-hidden="true"></i>
-                    </a>
+                <li className="d-none d-lg-inline-block">
+                  <Link  href="/login"> 
+                    <i className="fa fa-user-o ms-1" aria-hidden="true"></i>
+                  </Link>
                 </li>
               </ul>
           </div>

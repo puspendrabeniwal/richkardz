@@ -75,7 +75,7 @@ const ContactUs = () => {
             <img src="/front/img/contactBanner.png" alt="" />
           </div>
 
-          <div className="col-lg-5">
+          <div className="col-lg-5 col-sm-10 mx-auto col-xxl-4 me-xxl-auto ms-xxl-0 px-lg-5  py-4 py-lg-0">
             <h1 class="mb-4">Login Into Your Account</h1>
 
             <Formik

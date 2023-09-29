@@ -102,7 +102,7 @@ export default function FAQs() {
                           <div className="userAreProMain">
                             <img
                               className="w-100"
-                              src="img/askedQustion.png"
+                              src="/front/img/askedQustion.png"
                               alt=""
                             />
                             <button
@@ -112,7 +112,7 @@ export default function FAQs() {
                             >
                               <img
                                 className=""
-                                src="img/videoPlay.png"
+                                src="/front/img/videoPlay.png"
                                 alt=""
                               />
                             </button>
@@ -164,7 +164,7 @@ export default function FAQs() {
                           <div className="userAreProMain">
                             <img
                               className="w-100"
-                              src="img/popupImgOpen.png"
+                              src="/front/img/popupImgOpen.png"
                               alt=""
                             />
                             <button
@@ -174,7 +174,7 @@ export default function FAQs() {
                             >
                               <img
                                 className=""
-                                src="img/videoPlay.png"
+                                src="/front/img/videoPlay.png"
                                 alt=""
                               />
                             </button>
@@ -225,7 +225,7 @@ export default function FAQs() {
                             <div className="userAreProMain">
                               <img
                                 className="w-100"
-                                src="img/popupImgOpen.png"
+                                src="/front/img/popupImgOpen.png"
                                 alt=""
                               />
                               <button
@@ -235,7 +235,7 @@ export default function FAQs() {
                               >
                                 <img
                                   className=""
-                                  src="img/videoPlay.png"
+                                  src="/front/img/videoPlay.png"
                                   alt=""
                                 />
                               </button>
