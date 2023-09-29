@@ -52,6 +52,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     gallery: [],
   };
   const onSubmit = async (values) => {
+    console.log("user values", values);
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
@@ -266,8 +267,9 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           </Field>
                         </div>
                       </div>
+
                       <div className="row mb-6">
-                        <div className="col-lg-12 col-md-12">
+                        <div className="col-lg-6 col-md-6">
                           <label
                             className="col-form-label fw-semibold fs-6"
                             htmlFor="about"
@@ -276,15 +278,15 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           </label>
 
                           <Field
-                            type="text"
+                            as="textarea"
                             name="about"
                             className="form-control"
                             id="about"
+                            rows="4"
+                            cols="40"
                           />
                         </div>
-                      </div>
-                      <div className="row mb-6">
-                        <div className="col-lg-12 col-md-12">
+                        <div className="col-lg-6 col-md-6">
                           <label
                             className="col-form-label required fw-semibold fs-6"
                             htmlFor="address"
@@ -293,10 +295,12 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           </label>
 
                           <Field
-                            type="text"
+                            as="textarea"
                             name="address"
                             className="form-control"
                             id="address"
+                            rows="4"
+                            cols="40"
                           />
 
                           <ErrorMessage
@@ -306,23 +310,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           />
                         </div>
                       </div>
-                      <div className="row mb-6">
-                        <div className="col-lg-12 col-md-12">
-                          <label
-                            className="col-form-label fw-semibold fs-6"
-                            htmlFor="nature_of_business"
-                          >
-                            Nature of Business
-                          </label>
 
-                          <Field
-                            type="text"
-                            name="nature_of_business"
-                            className="form-control"
-                            id="nature_of_business"
-                          />
-                        </div>
-                      </div>
                       <div className="row mb-3">
                         <div className="col-lg-6 col-md-6">
                           <label
@@ -362,103 +350,123 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                       </div>
 
                       <div className="row mb-6">
-                        <label className="col-lg-4 col-form-label fw-semibold fs-6">
-                          Profile Image
-                        </label>
-                        <FileUpload
-                          name="profile_image"
-                          accept="image/*"
-                          auto
-                          customUpload
-                          maxFileSize={1000000}
-                          onSelect={(event) => {
-                            const files = event.files[0];
-                            setFieldValue("profile_image", files);
-                          }}
-                          emptyTemplate={
-                            <div>
-                              {userValue?.profile_image ? (
-                                <Image
-                                  src={`${
-                                    userValue?.image_url +
-                                    userValue?.profile_image
-                                  }`}
-                                  height="70px"
-                                  width="100px"
-                                  alt="Image"
-                                />
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          }
-                        />
+                        <div className="col-lg-6 col-md-6">
+                          <label className="col-lg-4 col-form-label fw-semibold fs-6">
+                            Profile Image
+                          </label>
+                          <FileUpload
+                            name="profile_image"
+                            accept="image/*"
+                            auto
+                            customUpload
+                            maxFileSize={1000000}
+                            onSelect={(event) => {
+                              const files = event.files[0];
+                              setFieldValue("profile_image", files);
+                            }}
+                            emptyTemplate={
+                              <div>
+                                {userValue?.profile_image ? (
+                                  <Image
+                                    src={`${
+                                      userValue?.image_url +
+                                      userValue?.profile_image
+                                    }`}
+                                    height="70px"
+                                    width="100px"
+                                    alt="Image"
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            }
+                          />
+                        </div>
+                        <div className="col-lg-6 col-md-6">
+                          <label className="col-lg-4 col-form-label fw-semibold fs-6">
+                            Banner Image
+                          </label>
+                          <FileUpload
+                            name="banner_image"
+                            accept="image/*"
+                            auto
+                            customUpload
+                            maxFileSize={1000000}
+                            onSelect={(event) => {
+                              const files = event.files[0];
+                              setFieldValue("banner_image", files);
+                            }}
+                            emptyTemplate={
+                              <div>
+                                {userValue?.banner_image ? (
+                                  <Image
+                                    src={`${
+                                      userValue?.image_url +
+                                      userValue?.banner_image
+                                    }`}
+                                    height="70px"
+                                    width="100px"
+                                    alt="Image"
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            }
+                          />
+                        </div>
                       </div>
+
                       <div className="row mb-6">
-                        <label className="col-lg-4 col-form-label fw-semibold fs-6">
-                          Banner Image
-                        </label>
-                        <FileUpload
-                          name="banner_image"
-                          accept="image/*"
-                          auto
-                          customUpload
-                          maxFileSize={1000000}
-                          onSelect={(event) => {
-                            const files = event.files[0];
-                            setFieldValue("banner_image", files);
-                          }}
-                          emptyTemplate={
-                            <div>
-                              {userValue?.banner_image ? (
-                                <Image
-                                  src={`${
-                                    userValue?.image_url +
-                                    userValue?.banner_image
-                                  }`}
-                                  height="70px"
-                                  width="100px"
-                                  alt="Image"
-                                />
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          }
-                        />
-                      </div>
-                      <div className="row mb-6">
-                        <label className="col-lg-4 col-form-label fw-semibold fs-6">
-                          UPI payment scanner
-                        </label>
-                        <FileUpload
-                          name="upi_scanner"
-                          accept="image/*"
-                          auto
-                          customUpload
-                          maxFileSize={1000000}
-                          onSelect={(event) => {
-                            const files = event.files[0];
-                            setFieldValue("upi_scanner", files);
-                          }}
-                          emptyTemplate={
-                            <div>
-                              {userValue?.upi_scanner ? (
-                                <Image
-                                  src={`${
-                                    userValue?.image_url +
-                                    userValue?.upi_scanner
-                                  }`}
-                                  height="70px"
-                                  width="100px"
-                                  alt="Image"
-                                />
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          }
-                        />
+                        <div className="col-lg-6 col-md-6">
+                          <label className="col-lg-4 col-form-label fw-semibold fs-6">
+                            UPI payment scanner
+                          </label>
+                          <FileUpload
+                            name="upi_scanner"
+                            accept="image/*"
+                            auto
+                            customUpload
+                            maxFileSize={1000000}
+                            onSelect={(event) => {
+                              const files = event.files[0];
+                              setFieldValue("upi_scanner", files);
+                            }}
+                            emptyTemplate={
+                              <div>
+                                {userValue?.upi_scanner ? (
+                                  <Image
+                                    src={`${
+                                      userValue?.image_url +
+                                      userValue?.upi_scanner
+                                    }`}
+                                    height="70px"
+                                    width="100px"
+                                    alt="Image"
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            }
+                          />
+                        </div>
+                        <div className="col-lg-6 col-md-6">
+                          <label
+                            className="col-form-label fw-semibold fs-6"
+                            htmlFor="nature_of_business"
+                          >
+                            Nature of Business
+                          </label>
+
+                          <Field
+                            type="text"
+                            name="nature_of_business"
+                            className="form-control"
+                            id="nature_of_business"
+                          />
+                        </div>
                       </div>
                       <Divider />
                       <h3>SOCIAL MEDIA DETAILS</h3>
@@ -567,6 +575,40 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                       </div>
                       <div className="row mb-6">
                         <div className="col-lg-6 col-md-6">
+                          <label className="col-lg-4 col-form-label fw-semibold fs-6">
+                            Catalogue
+                          </label>
+                          <FileUpload
+                            name="catalogue"
+                            accept=".pdf" // Accept only PDF files
+                            auto
+                            customUpload
+                            maxFileSize={1000000}
+                            onSelect={(event) => {
+                              const files = event.files[0];
+                              setFieldValue("catalogue", files);
+                            }}
+                            emptyTemplate={
+                              <div>
+                                {userValue?.catalogue ? (
+                                  <a
+                                    href={`${
+                                      userValue?.image_url +
+                                      userValue?.catalogue
+                                    }`}
+                                    target="_blank" // Opens the link in a new tab/window
+                                    rel="noopener noreferrer" // Recommended for security reasons
+                                  >
+                                    View Catalogue (PDF)
+                                  </a>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            }
+                          />
+                        </div>
+                        <div className="col-lg-6 col-md-6">
                           <label
                             className="col-form-label fw-semibold fs-6"
                             htmlFor="pinterest"
@@ -582,39 +624,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           />
                         </div>
                       </div>
-                      <div className="row mb-6">
-                        <label className="col-lg-4 col-form-label fw-semibold fs-6">
-                          Catalogue
-                        </label>
-                        <FileUpload
-                          name="catalogue"
-                          accept=".pdf" // Accept only PDF files
-                          auto
-                          customUpload
-                          maxFileSize={1000000}
-                          onSelect={(event) => {
-                            const files = event.files[0];
-                            setFieldValue("catalogue", files);
-                          }}
-                          emptyTemplate={
-                            <div>
-                              {userValue?.catalogue ? (
-                                <a
-                                  href={`${
-                                    userValue?.image_url + userValue?.catalogue
-                                  }`}
-                                  target="_blank" // Opens the link in a new tab/window
-                                  rel="noopener noreferrer" // Recommended for security reasons
-                                >
-                                  View Catalogue (PDF)
-                                </a>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          }
-                        />
-                      </div>
+
                       <div className="row mb-6">
                         <label className="col-lg-4 col-form-label fw-semibold fs-6">
                           Gallery

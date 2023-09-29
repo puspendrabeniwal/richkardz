@@ -6,9 +6,11 @@ import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import withAuth from "@/hoc/withAuth";
 import { Button } from "primereact/button";
+import { useRouter } from "next/navigation";
 
 const UpdateMonials = ({ params }) => {
   const toast = useRef(null);
+  const router = useRouter();
   const [monialData, setMonialData] = useState(null);
   useEffect(() => {
     getMonialData();
