@@ -6,6 +6,12 @@ import * as Yup from "yup";
 import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Toast } from "primereact/toast";
+import { useRouter } from "next/navigation";
+import instance from "../admin/axiosInterceptor";
+import ReCAPTCHA from "react-google-recaptcha"
+import { ThreeCircles } from "react-loader-spinner";
+
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
   email: Yup.string()
@@ -19,6 +25,10 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required("Message is required"),
 });
 const ContactUs = () => {
+  const [buttonLoader, setbuttonLoader] = useState(false);
+  const toast = useRef(null);
+  const router = useRouter();
+  const recaptcha = useRef();
   const contactValues = {
     full_name: "",
     email: "",
@@ -26,15 +36,67 @@ const ContactUs = () => {
     city: "",
     message: "",
   };
+  const addContactAPI = async (data) => {
+    setbuttonLoader(true)
+    instance
+      .post("contactUs", data)
+      .then((response) => {
+        console.log("contact data",response)
+        if (response) {
+          showMessage(response);
+          router.push("/contactUs");
+        }
+    setbuttonLoader(false)
+
+      })
+      .catch((error) => {
+        console.log(error);
+    setbuttonLoader(false)
+
+      });
+  };
+  const showMessage = (data) => {
+    toast.current.show({
+      severity: data.status ? "success" : "error",
+      summary: data.status ? "Success" : "Error",
+      detail: data.message,
+      life: 300000,
+    });
+  };
+  // Your detail has been saved successfully, we will contact you soon"
   const onSubmit = async (values) => {
-    console.log("submit values", values);
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
     Object.keys(values).forEach(function (key, index) {
       formData.append(key, values[key]);
     });
-    await addCardDetail(formData);
+    const captchaValue = recaptcha.current.getValue();
+    if (!captchaValue) {
+      alert("Please verify the reCAPTCHA!");
+    } else {
+      // make form submission
+      alert("Form submission successful!");
+      await addContactAPI(formData);
+    }
+  };
+  const cardLoader = () => {
+    return (
+      <span>
+        <ThreeCircles
+          height="20"
+          width="25"
+          color="snow"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+          ariaLabel="three-circles-rotating"
+          outerCircleColor=""
+          innerCircleColor=""
+          middleCircleColor=""
+        />
+      </span>
+    );
   };
   return (
     <html lang="en">
@@ -78,6 +140,7 @@ const ContactUs = () => {
       </head>
       <body className="bodyMain">
         <Header />
+      <Toast ref={toast} />
         <section className="contactPage py-md-5 py-3">
           <div className="container">
             <div className="row align-items-center">
@@ -212,8 +275,11 @@ const ContactUs = () => {
                           data-kt-menu-placement="bottom-end"
                           icon="pi pi-save"
                           type="submit"
-                          label="Send"
+                          // label="Send"
+                          label={buttonLoader === true ? cardLoader() : "Send"}
+                          disabled={buttonLoader === true ? true : false}
                         />
+                          <ReCAPTCHA ref={recaptcha} sitekey={process.env.GOOGLE_CAPTCHA_SITE_KEY} />
                       </Form>
                     )}
                   </Formik>
