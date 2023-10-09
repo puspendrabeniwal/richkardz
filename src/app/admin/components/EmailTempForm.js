@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Editor } from "primereact/editor";
 import { Button } from "primereact/button";
 import Link from "next/link";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
@@ -14,6 +15,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const EmailTempForm = ({ emailValue, handleSubmitEmail, emailId }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const defaultValues = {
     title: emailValue ? emailValue.title : "",
     content: emailValue ? emailValue.content : "",
@@ -42,7 +44,9 @@ const EmailTempForm = ({ emailValue, handleSubmitEmail, emailId }) => {
                   initialValues={defaultValues}
                   validationSchema={validationSchema}
                   onSubmit={async (values, { resetForm }) => {
+                    setIsLoading(true);
                     await onSubmit(values);
+                    setIsLoading(false);
                     resetForm();
                   }}
                 >
@@ -104,6 +108,7 @@ const EmailTempForm = ({ emailValue, handleSubmitEmail, emailId }) => {
                           data-kt-menu-placement="bottom-end"
                           icon="pi pi-save"
                           label="Submit"
+                          disabled={isLoading}
                         />
                         <Link href="/admin/email ">
                           <Button
@@ -114,6 +119,11 @@ const EmailTempForm = ({ emailValue, handleSubmitEmail, emailId }) => {
                             label="Cancel"
                           />
                         </Link>
+                        {isLoading && (
+                          <ProgressSpinner
+                            style={{ width: "30px", height: "30px" }}
+                          />
+                        )}
                       </div>
                     </Form>
                   )}

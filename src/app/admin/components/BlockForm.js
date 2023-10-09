@@ -44,9 +44,9 @@ const BlockForm = ({ blockValue, handleSubmitBlock, blockId }) => {
                   initialValues={defaultValues}
                   validationSchema={validationSchema}
                   onSubmit={async (values, { resetForm }) => {
-                    setIsLoading(true); // Show the loading spinner while submitting
+                    setIsLoading(true);
                     await onSubmit(values);
-                    setIsLoading(false); // Hide the loading spinner after submission
+                    setIsLoading(false);
                     resetForm();
                   }}
                 >

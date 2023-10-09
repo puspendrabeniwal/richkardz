@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Editor } from "primereact/editor";
 import { Button } from "primereact/button";
 import Link from "next/link";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const validationSchema = Yup.object().shape({
   question: Yup.string().required("Question is required"),
@@ -14,12 +15,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const FaqForm = ({ faqValue, handleSubmitFaq, faqId }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const defaultValues = {
     question: faqValue ? faqValue.question : "",
     answer: faqValue ? faqValue.answer : "",
   };
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
@@ -27,7 +30,6 @@ const FaqForm = ({ faqValue, handleSubmitFaq, faqId }) => {
       formData.append(key, values[key]);
     });
     await handleSubmitFaq(values);
-    setSubmitting(false);
   };
   return (
     <main>
@@ -42,8 +44,12 @@ const FaqForm = ({ faqValue, handleSubmitFaq, faqId }) => {
                 <Formik
                   initialValues={defaultValues}
                   validationSchema={validationSchema}
-                  // onSubmit={async (values) => await onSubmit(values)}
-                  onSubmit={onSubmit}
+                  onSubmit={async (values, { resetForm }) => {
+                    setIsLoading(true);
+                    await onSubmit(values);
+                    setIsLoading(false);
+                    resetForm();
+                  }}
                 >
                   {({ isSubmitting, setFieldValue, values }) => (
                     <Form className="form-design">
@@ -111,8 +117,14 @@ const FaqForm = ({ faqValue, handleSubmitFaq, faqId }) => {
                             data-kt-menu-placement="bottom-end"
                             icon="pi pi-times"
                             label="Cancel"
+                            disabled={isLoading}
                           />
                         </Link>
+                        {isLoading && (
+                          <ProgressSpinner
+                            style={{ width: "30px", height: "30px" }}
+                          />
+                        )}
                       </div>
                     </Form>
                   )}

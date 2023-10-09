@@ -6,6 +6,7 @@ import { MultiSelect } from "primereact/multiselect";
 import instance from "../axiosInterceptor";
 import Link from "next/link";
 import { Button } from "primereact/button";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
@@ -26,6 +27,8 @@ const validationSchema = Yup.object().shape({
 const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
   const [productValueEnd, setProductValueEnd] = useState("");
   const [cardList, setCardsList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const initialValues = {
     product_name: productValue ? productValue.product_name : "",
     price: productValue ? productValue.price : "",
@@ -42,7 +45,6 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
-
     await handleSubmitProduct(values);
   };
   const formRef = useRef(null);
@@ -82,7 +84,12 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                   innerRef={formRef}
                   initialValues={defaultValues}
                   validationSchema={validationSchema}
-                  onSubmit={async (values) => await onSubmit(values)}
+                  onSubmit={async (values, { resetForm }) => {
+                    setIsLoading(true);
+                    await onSubmit(values);
+                    setIsLoading(false);
+                    resetForm();
+                  }}
                 >
                   {({ setFieldValue, values, handleBlur }) => (
                     <Form className="form-design">
@@ -320,6 +327,7 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
                           icon="pi pi-save"
+                          disabled={isLoading}
                           label="Submit"
                         />
                         <Link href="/admin/comboProducts ">
@@ -331,6 +339,11 @@ const ComboProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                             label="Cancel"
                           />
                         </Link>
+                        {isLoading && (
+                          <ProgressSpinner
+                            style={{ width: "30px", height: "30px" }}
+                          />
+                        )}
                       </div>
                     </Form>
                   )}

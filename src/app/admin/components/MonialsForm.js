@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import Link from "next/link";
 import { Editor } from "primereact/editor";
 import { Button } from "primereact/button";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -12,22 +13,16 @@ const validationSchema = Yup.object().shape({
   descripiton: Yup.string()
     .required("Description is required")
     .min(10, "Description is too short"),
-  // image: Yup.min(1, "At least one image is required").of(
-  //   Yup.mixed().test("fileSize", "File is too large", (value) => {
-  //     if (!value) return false;
-  //     const maxSize = 5 * 1024 * 1024; // 5 MB
-  //     return value.size <= maxSize;
-  //   })
-  // ),
 });
 
 const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const defaultValues = {
     name: monialValue ? monialValue.name : "",
     descripiton: monialValue ? monialValue.descripiton : "",
     rating: monialValue ? monialValue.rating : "",
     image: monialValue ? monialValue.image : "",
-    // full_image_path: monialValue ? monialValue.image : "",
   };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
@@ -55,7 +50,9 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
                   initialValues={defaultValues}
                   validationSchema={validationSchema}
                   onSubmit={async (values, { resetForm }) => {
+                    setIsLoading(true);
                     await onSubmit(values);
+                    setIsLoading(false);
                     resetForm();
                   }}
                 >
@@ -172,6 +169,7 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
                           data-kt-menu-placement="bottom-end"
                           icon="pi pi-save"
                           label="Submit"
+                          disabled={isLoading}
                         />
                         <Link href="/admin/testimonials ">
                           <Button
@@ -182,6 +180,11 @@ const MonialsForm = ({ monialValue, handleSubmitMonial, MonialId }) => {
                             label="Cancel"
                           />
                         </Link>
+                        {isLoading && (
+                          <ProgressSpinner
+                            style={{ width: "30px", height: "30px" }}
+                          />
+                        )}
                       </div>
                     </Form>
                   )}

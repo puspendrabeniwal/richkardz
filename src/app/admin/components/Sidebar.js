@@ -7,19 +7,17 @@ const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isMouseHover, setIsMouseHover] = useState(false);
-  console.log("mouse", isMouseHover);
   const items = [
     {
-      label: isMouseHover === true ? "Dashboard" : "",
+      label: "Dashboard",
       icon: "pi pi-fw pi-microsoft",
       className: pathname === "/admin/dashboard" ? "p-menuitem-active" : "",
       command: () => {
         router.push(`/admin/dashboard`);
       },
     },
-
     {
-      label: isMouseHover === true ? "User Management" : "",
+      label: "User Management",
       icon: "pi pi-fw pi-user",
       className: pathname === "/admin/user" ? "p-menuitem-active" : "",
       command: () => {
@@ -27,7 +25,7 @@ const Sidebar = () => {
       },
     },
     {
-      label: isMouseHover === true ? "Product Management" : "",
+      label: "Product Management",
       icon: "pi pi-fw pi-shopping-bag",
       className: [
         "/admin/products",
@@ -69,7 +67,7 @@ const Sidebar = () => {
       ],
     },
     {
-      label: isMouseHover === true ? "QR Codes" : "",
+      label: "QR Codes",
       icon: "pi pi-fw pi-shopping-bag",
       className: [
         "/admin/qr_code/0",
@@ -99,7 +97,7 @@ const Sidebar = () => {
       ],
     },
     {
-      label: isMouseHover === true ? "System Management" : "",
+      label: "System Management",
       icon: "pi pi-fw pi-server",
       className: [
         "/admin/cms",
@@ -155,7 +153,7 @@ const Sidebar = () => {
       ],
     },
     {
-      label: isMouseHover === true ? " Bulk Order Management" : "",
+      label: " Bulk Order Management",
       icon: "pi pi-fw pi-shield",
       className: pathname === "/admin/bulk-orders" ? "p-menuitem-active" : "",
       command: () => {
@@ -163,7 +161,7 @@ const Sidebar = () => {
       },
     },
     {
-      label: isMouseHover === true ? "TNT Request" : "",
+      label: "TNT Request",
       icon: "pi pi-fw pi-desktop",
       className: [
         "/admin/return_replacement",
@@ -213,7 +211,7 @@ const Sidebar = () => {
       ],
     },
     {
-      label: isMouseHover === true ? "All Leads" : "",
+      label: "All Leads",
       icon: "pi pi-fw pi-desktop",
       className: [
         "/admin/leads/pre-checkout-users",
@@ -351,8 +349,8 @@ const Sidebar = () => {
         data-kt-drawer-width="{default:'200px', '300px': '250px'}"
         data-kt-drawer-direction="start"
         data-kt-drawer-toggle="#kt_aside_mobile_toggle"
-        onMouseLeave={() => setIsMouseHover(false)}
-        onMouseEnter={() => setIsMouseHover(true)}
+        // onMouseLeave={() => setIsMouseHover(false)}
+        // onMouseEnter={() => setIsMouseHover(true)}
       >
         <div className="aside-logo flex-column-auto" id="kt_aside_logo">
           <Link href="/admin/dashboard">

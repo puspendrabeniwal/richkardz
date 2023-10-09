@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FileUpload } from "primereact/fileupload";
@@ -7,6 +7,7 @@ import { Image } from "primereact/image";
 import { Divider } from "primereact/divider";
 import { Button } from "primereact/button";
 import Link from "next/link";
+import { ProgressSpinner } from "primereact/progressspinner";
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
   phone: Yup.string().matches(
@@ -24,6 +25,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const UserForm = ({ userValue, handleSubmitUser, userId }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const defaultValues = {
     full_name: userValue ? userValue.full_name : "",
     phone: userValue ? userValue.phone : "",
@@ -99,7 +102,9 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                   initialValues={defaultValues}
                   validationSchema={validationSchema}
                   onSubmit={async (values, { resetForm }) => {
+                    setIsLoading(true);
                     await onSubmit(values);
+                    setIsLoading(false);
                     resetForm();
                   }}
                 >
@@ -663,6 +668,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           data-kt-menu-placement="bottom-end"
                           icon="pi pi-save"
                           label="Submit"
+                          disabled={isLoading}
                         />
                         <Link href="/admin/user ">
                           <Button
@@ -673,6 +679,11 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             label="Cancel"
                           />
                         </Link>
+                        {isLoading && (
+                          <ProgressSpinner
+                            style={{ width: "30px", height: "30px" }}
+                          />
+                        )}
                       </div>
                     </Form>
                   )}

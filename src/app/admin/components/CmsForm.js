@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import { Editor } from "primereact/editor";
 import { Button } from "primereact/button";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -15,13 +16,15 @@ const validationSchema = Yup.object().shape({
 });
 
 const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const defaultValues = {
     name: cmsValue ? cmsValue.type : "",
     title: cmsValue ? cmsValue.title : "",
     description: cmsValue ? cmsValue.content : "",
   };
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
@@ -29,7 +32,6 @@ const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
       formData.append(key, values[key]);
     });
     await handleSubmitCMS(values);
-    setSubmitting(false);
   };
   return (
     <main>
@@ -44,25 +46,15 @@ const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
                 <Formik
                   initialValues={defaultValues}
                   validationSchema={validationSchema}
-                  // onSubmit={async (values) => await onSubmit(values)}
-                  onSubmit={onSubmit}
+                  onSubmit={async (values, { resetForm }) => {
+                    setIsLoading(true);
+                    await onSubmit(values);
+                    setIsLoading(false);
+                    resetForm();
+                  }}
                 >
                   {({ isSubmitting, setFieldValue, values }) => (
                     <Form className="form-design">
-                      {/* <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                          <h3 className="font-weight-bold">Add Product</h3>
-                        </div>
-                        <div>
-                          <Link
-                            href="/admin/cms"
-                            type="button"
-                            className="btn btn-primary"
-                          >
-                            Back
-                          </Link>
-                        </div>
-                      </div> */}
                       <div className="row mb-3">
                         <div className="col-lg-16 col-md-6">
                           <label
@@ -139,6 +131,7 @@ const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
                           data-kt-menu-trigger="click"
                           data-kt-menu-placement="bottom-end"
                           icon="pi pi-save"
+                          disabled={isLoading}
                           label="Submit"
                         />
                         <Link href="/admin/cms ">
@@ -148,8 +141,14 @@ const CmsForm = ({ cmsValue, handleSubmitCMS, cmsId }) => {
                             data-kt-menu-placement="bottom-end"
                             icon="pi pi-times"
                             label="Cancel"
+                            disabled={isLoading}
                           />
                         </Link>
+                        {isLoading && (
+                          <ProgressSpinner
+                            style={{ width: "30px", height: "30px" }}
+                          />
+                        )}
                       </div>
                     </Form>
                   )}

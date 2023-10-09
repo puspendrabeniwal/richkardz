@@ -6,6 +6,7 @@ import { FileUpload } from "primereact/fileupload";
 import { Image } from "primereact/image";
 import { Button } from "primereact/button";
 import Link from "next/link";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const validationSchema = Yup.object().shape({
   product_name: Yup.string().required("Name is required"),
@@ -48,6 +49,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
   const formRef = useRef(null);
   const [deletedImages, setDeletedImages] = useState([]);
   const [apiImages, setApiImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const defaultValues = {
     product_name: productValue ? productValue.product_name : "",
@@ -135,7 +137,13 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                   validationSchema={
                     productId ? validationSchemaEdit : validationSchema
                   }
-                  onSubmit={async (values) => await onSubmit(values)}
+                  onSubmit={async (values, { resetForm }) => {
+                    setIsLoading(true);
+                    await onSubmit(values);
+                    setIsLoading(false);
+                    resetForm();
+                  }}
+                  // onSubmit={async (values) => await onSubmit(values)}
                 >
                   {({ setFieldValue }) => (
                     <Form className="form-design">
@@ -386,6 +394,7 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                             icon="pi pi-save"
                             type="submit"
                             label="Submit"
+                            disabled={isLoading}
                           />
                           <Link href="/admin/gift-pre-design-products ">
                             <Button
@@ -396,6 +405,11 @@ const ProductForm = ({ productValue, handleSubmitProduct, productId }) => {
                               label="Cancel"
                             />
                           </Link>
+                          {isLoading && (
+                            <ProgressSpinner
+                              style={{ width: "30px", height: "30px" }}
+                            />
+                          )}
                         </div>
                       </div>
                     </Form>
