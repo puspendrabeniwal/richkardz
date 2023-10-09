@@ -9,9 +9,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Toast } from "primereact/toast";
 import { useRouter } from "next/navigation";
 import instance from "../admin/axiosInterceptor";
-import ReCAPTCHA from "react-google-recaptcha"
+import ReCAPTCHA from "react-google-recaptcha";
 import { ThreeCircles } from "react-loader-spinner";
 
+const GOOGLE_CAPTCHA_SITE_KEY = "6Lf_6oIoAAAAAJR7U_xA1scHBM-sRsEWEYi3jOVY";
+const SITE_SECRET = "6Lf_6oIoAAAAAEMfdcK1FdFNy9WAQY-V0fUfDBAC";
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
   email: Yup.string()
@@ -24,6 +26,7 @@ const validationSchema = Yup.object().shape({
   city: Yup.string().required("City is required"),
   message: Yup.string().required("Message is required"),
 });
+
 const ContactUs = () => {
   const [buttonLoader, setbuttonLoader] = useState(false);
   const toast = useRef(null);
@@ -37,22 +40,20 @@ const ContactUs = () => {
     message: "",
   };
   const addContactAPI = async (data) => {
-    setbuttonLoader(true)
+    setbuttonLoader(true);
     instance
       .post("contactUs", data)
       .then((response) => {
-        console.log("contact data",response)
+        console.log("contact data", response);
         if (response) {
           showMessage(response);
           router.push("/contactUs");
         }
-    setbuttonLoader(false)
-
+        setbuttonLoader(false);
       })
       .catch((error) => {
         console.log(error);
-    setbuttonLoader(false)
-
+        setbuttonLoader(false);
       });
   };
   const showMessage = (data) => {
@@ -60,14 +61,12 @@ const ContactUs = () => {
       severity: data.status ? "success" : "error",
       summary: data.status ? "Success" : "Error",
       detail: data.message,
-      life: 300000,
+      life: 5000,
     });
   };
-  // Your detail has been saved successfully, we will contact you soon"
   const onSubmit = async (values) => {
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    console.log("contact values", values);
     let formData = new FormData();
-    formData.append("user_id", loginUser._id);
     Object.keys(values).forEach(function (key, index) {
       formData.append(key, values[key]);
     });
@@ -80,6 +79,7 @@ const ContactUs = () => {
       await addContactAPI(formData);
     }
   };
+
   const cardLoader = () => {
     return (
       <span>
@@ -140,7 +140,7 @@ const ContactUs = () => {
       </head>
       <body className="bodyMain">
         <Header />
-      <Toast ref={toast} />
+        <Toast ref={toast} />
         <section className="contactPage py-md-5 py-3">
           <div className="container">
             <div className="row align-items-center">
@@ -155,7 +155,10 @@ const ContactUs = () => {
                     enableReinitialize={true}
                     initialValues={contactValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values) => await onSubmit(values)}
+                    onSubmit={async (values, { resetForm }) => {
+                      await onSubmit(values);
+                      resetForm();
+                    }}
                   >
                     {({ setFieldValue, values }) => (
                       <Form className="form-design">
@@ -268,7 +271,12 @@ const ContactUs = () => {
                             />
                           </div>
                         </div>
-
+                        <>
+                          <ReCAPTCHA
+                            ref={recaptcha}
+                            sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                          />
+                        </>
                         <Button
                           className="btn btnNavyBlue px-5 mt-4 py-2"
                           data-kt-menu-trigger="click"
@@ -279,7 +287,6 @@ const ContactUs = () => {
                           label={buttonLoader === true ? cardLoader() : "Send"}
                           disabled={buttonLoader === true ? true : false}
                         />
-                          <ReCAPTCHA ref={recaptcha} sitekey={process.env.GOOGLE_CAPTCHA_SITE_KEY} />
                       </Form>
                     )}
                   </Formik>

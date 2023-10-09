@@ -1,3 +1,4 @@
+"use client"
 const Footer = () => {
     return (
         <div className="footer py-4 d-flex flex-lg-column" id="kt_footer">
@@ -17,7 +18,11 @@ const Footer = () => {
                     <a href="https://1.envato.market/EA4JP" target="_blank" className="menu-link px-2">Purchase</a>
                 </li>
             </ul> */}
+            
         </div>
+
+        
+
     </div>
     );
   };

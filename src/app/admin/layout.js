@@ -38,6 +38,8 @@ export default function AdminLayout({ children }) {
           </div>
           :children}
         </body>
+        <script async src="/admin/assets/plugins/global/plugins.bundle.js"></script>
+                            <script async src="/admin/assets/js/scripts.bundle.js"></script>
             </html>
   
   )

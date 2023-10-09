@@ -1,190 +1,221 @@
 import Link from "next/link";
-import { Image } from 'primereact/image';
-import { Menubar } from 'primereact/menubar';
-import { useRouter, usePathname } from 'next/navigation'
+import { Image } from "primereact/image";
+import { Menubar } from "primereact/menubar";
+import { useRouter, usePathname } from "next/navigation";
+import { useState } from "react";
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [isMouseHover, setIsMouseHover] = useState(false);
+  console.log("mouse", isMouseHover);
   const items = [
     {
-      label: ' Dashboard ',
-      icon: 'pi pi-fw pi-microsoft',
-      className: (pathname === "/admin/dashboard") ? "p-menuitem-active": "",
+      label: isMouseHover === true ? "Dashboard" : "",
+      icon: "pi pi-fw pi-microsoft",
+      className: pathname === "/admin/dashboard" ? "p-menuitem-active" : "",
       command: () => {
-        router.push(`/admin/dashboard`)
-      }
+        router.push(`/admin/dashboard`);
+      },
     },
 
     {
-      label: 'User Management',
-      icon: 'pi pi-fw pi-user',
-      className: (pathname === "/admin/user") ? "p-menuitem-active": "",
+      label: isMouseHover === true ? "User Management" : "",
+      icon: "pi pi-fw pi-user",
+      className: pathname === "/admin/user" ? "p-menuitem-active" : "",
       command: () => {
-        router.push(`/admin/user`)
-      }
+        router.push(`/admin/user`);
+      },
     },
     {
-      label: 'Product Management',
-      icon: 'pi pi-fw pi-shopping-bag',
-      className: ([
+      label: isMouseHover === true ? "Product Management" : "",
+      icon: "pi pi-fw pi-shopping-bag",
+      className: [
         "/admin/products",
         "/admin/comboProducts",
         "/admin/gift-pre-design-products",
-        "/admin/gift-pre-design-products/add"
-      ].includes(pathname)) ? "p-menuitem-active": "",
+        "/admin/gift-pre-design-products/add",
+      ].includes(pathname)
+        ? "p-menuitem-active"
+        : "",
       items: [
         {
-            label: 'Products',
-            icon: 'pi pi-fw pi-align-left',
-            className: (pathname === "/admin/products") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/products`)
-            }
+          label: "Products",
+          icon: "pi pi-fw pi-align-left",
+          className: pathname === "/admin/products" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/products`);
+          },
         },
         {
-          label: 'Combo Product',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/comboProducts") ? "p-menuitem-active": "",
+          label: "Combo Product",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/comboProducts" ? "p-menuitem-active" : "",
           command: () => {
-            router.push(`/admin/comboProducts`)
-          }
+            router.push(`/admin/comboProducts`);
+          },
         },
         {
-          label: 'Gift Pre Design Product',
-          icon: 'pi pi-fw pi-align-right',
-          className: (pathname === "/admin/gift-pre-design-products") ? "p-menuitem-active": "",
+          label: "Gift Pre Design Product",
+          icon: "pi pi-fw pi-align-right",
+          className:
+            pathname === "/admin/gift-pre-design-products"
+              ? "p-menuitem-active"
+              : "",
           command: () => {
-            router.push(`/admin/gift-pre-design-products`)
-          }
+            router.push(`/admin/gift-pre-design-products`);
+          },
         },
-      ]
+      ],
     },
     {
-      label: 'QR Codes',
-      icon: 'pi pi-fw pi-shopping-bag',
-      className: ([
+      label: isMouseHover === true ? "QR Codes" : "",
+      icon: "pi pi-fw pi-shopping-bag",
+      className: [
         "/admin/qr_code/0",
         "/admin/qr_code/1",
         "/admin/qr_code/add/0",
         "/admin/qr_code/add/1",
-      ].includes(pathname)) ? "p-menuitem-active": "",
+      ].includes(pathname)
+        ? "p-menuitem-active"
+        : "",
       items: [
         {
-            label: 'B2B Codes',
-            icon: 'pi pi-fw pi-align-left',
-            className: (pathname === "/admin/qr_code/1") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/qr_code/1`)
-            }
+          label: "B2B Codes",
+          icon: "pi pi-fw pi-align-left",
+          className: pathname === "/admin/qr_code/1" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/qr_code/1`);
+          },
         },
         {
-          label: 'B2C Codes',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/qr_code/0") ? "p-menuitem-active": "",
+          label: "B2C Codes",
+          icon: "pi pi-fw pi-align-justify",
+          className: pathname === "/admin/qr_code/0" ? "p-menuitem-active" : "",
           command: () => {
-            router.push(`/admin/qr_code/0`)
-          }
+            router.push(`/admin/qr_code/0`);
+          },
         },
-      ]
+      ],
     },
     {
-      label: 'System Management',
-      icon: 'pi pi-fw pi-server',
-      className: (["/admin/cms","/admin/blocks","/admin/faq","/admin/email","/admin/testimonials"].includes(pathname)) ? "p-menuitem-active": "",
+      label: isMouseHover === true ? "System Management" : "",
+      icon: "pi pi-fw pi-server",
+      className: [
+        "/admin/cms",
+        "/admin/blocks",
+        "/admin/faq",
+        "/admin/email",
+        "/admin/testimonials",
+      ].includes(pathname)
+        ? "p-menuitem-active"
+        : "",
       items: [
         {
-            label: 'Blocks',
-            icon: 'pi pi-fw pi-align-left',
-            className: (pathname === "/admin/blocks") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/blocks`)
-            }
-        },
-        {
-            label: 'CMS',
-            icon: 'pi pi-fw pi-align-right',
-            className: (pathname === "/admin/cms") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/cms`)
-            }
-        },
-        {
-            label: 'FAQs',
-            icon: 'pi pi-fw pi-align-center',
-            className: (pathname === "/admin/faq") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/faq`)
-            }
-        },
-        {
-            label: 'Email Templates',
-            icon: 'pi pi-fw pi-align-justify',
-            className: (pathname === "/admin/email") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/email`)
-            }
-        },
-        {
-          label: 'Testimonials',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/testimonials") ? "p-menuitem-active": "",
+          label: "Blocks",
+          icon: "pi pi-fw pi-align-left",
+          className: pathname === "/admin/blocks" ? "p-menuitem-active" : "",
           command: () => {
-            router.push(`/admin/testimonials`)
-          }
+            router.push(`/admin/blocks`);
+          },
         },
-      ]
+        {
+          label: "CMS",
+          icon: "pi pi-fw pi-align-right",
+          className: pathname === "/admin/cms" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/cms`);
+          },
+        },
+        {
+          label: "FAQs",
+          icon: "pi pi-fw pi-align-center",
+          className: pathname === "/admin/faq" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/faq`);
+          },
+        },
+        {
+          label: "Email Templates",
+          icon: "pi pi-fw pi-align-justify",
+          className: pathname === "/admin/email" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/email`);
+          },
+        },
+        {
+          label: "Testimonials",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/testimonials" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/testimonials`);
+          },
+        },
+      ],
     },
     {
-      label: ' Bulk Order Management',
-      icon: 'pi pi-fw pi-shield',
-      className: (pathname === "/admin/bulk-orders") ? "p-menuitem-active": "",
+      label: isMouseHover === true ? " Bulk Order Management" : "",
+      icon: "pi pi-fw pi-shield",
+      className: pathname === "/admin/bulk-orders" ? "p-menuitem-active" : "",
       command: () => {
-        router.push(`/admin/bulk-orders`)
-      }
+        router.push(`/admin/bulk-orders`);
+      },
     },
     {
-      label: 'TNT Request',
-      icon: 'pi pi-fw pi-desktop',
-      className: (["/admin/return_replacement","/admin/refund_request","/admin/warranty_claim","/admin/cancel_request"].includes(pathname)) ? "p-menuitem-active": "",
+      label: isMouseHover === true ? "TNT Request" : "",
+      icon: "pi pi-fw pi-desktop",
+      className: [
+        "/admin/return_replacement",
+        "/admin/refund_request",
+        "/admin/warranty_claim",
+        "/admin/cancel_request",
+      ].includes(pathname)
+        ? "p-menuitem-active"
+        : "",
       items: [
         {
-            label: 'Return/Replacement Request',
-            icon: 'pi pi-fw pi-align-left',
-            className: (pathname === "/admin/return_replacement") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/return_replacement`)
-            }
+          label: "Return/Replacement Request",
+          icon: "pi pi-fw pi-align-left",
+          className:
+            pathname === "/admin/return_replacement" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/return_replacement`);
+          },
         },
         {
-          label: 'Refund Request',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/refund_request") ? "p-menuitem-active": "",
+          label: "Refund Request",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/refund_request" ? "p-menuitem-active" : "",
           command: () => {
-            router.push(`/admin/refund_request`)
-          }
+            router.push(`/admin/refund_request`);
+          },
         },
         {
-          label: 'Warranty Claim Request',
-          icon: 'pi pi-fw pi-align-right',
-          className: (pathname === "/admin/warranty_claim") ? "p-menuitem-active": "",
+          label: "Warranty Claim Request",
+          icon: "pi pi-fw pi-align-right",
+          className:
+            pathname === "/admin/warranty_claim" ? "p-menuitem-active" : "",
           command: () => {
-            router.push(`/admin/warranty_claim`)
-          }
+            router.push(`/admin/warranty_claim`);
+          },
         },
         {
-          label: 'Cancel Request',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/cancel_request") ? "p-menuitem-active": "",
+          label: "Cancel Request",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/cancel_request" ? "p-menuitem-active" : "",
           command: () => {
-            router.push(`/admin/cancel_request`)
-          }
+            router.push(`/admin/cancel_request`);
+          },
         },
-      ]
+      ],
     },
     {
-      label: 'All Leads',
-      icon: 'pi pi-fw pi-desktop',
-      className: ([
+      label: isMouseHover === true ? "All Leads" : "",
+      icon: "pi pi-fw pi-desktop",
+      className: [
         "/admin/leads/pre-checkout-users",
         "/admin/leads/digital-visiting-card",
         "/admin/leads/B2B%20LP",
@@ -194,100 +225,120 @@ const Sidebar = () => {
         "/admin/leads/brand-leads",
         "/admin/leads/email-leads",
         "/admin/leads/get-in-touch",
-      ].includes(pathname)) ? "p-menuitem-active": "",
+      ].includes(pathname)
+        ? "p-menuitem-active"
+        : "",
       items: [
         {
-            label: 'Pre Checkout Users',
-            icon: 'pi pi-fw pi-align-left',
-            className: (pathname === "/admin/leads/pre-checkout-users") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/leads/pre-checkout-users`)
-            }
-        },
-        {
-            label: 'Digital Enquiries',
-            icon: 'pi pi-fw pi-align-right',
-            className: (pathname === "/admin/leads/digital-visiting-card") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/leads/digital-visiting-card`)
-            }
-        },
-        {
-            label: 'B2B LP',
-            icon: 'pi pi-fw pi-align-center',
-            className: (pathname === "/admin/leads/B2B%20LP") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/leads/B2B LP`)
-            }
-        },
-        {
-            label: 'Gifting Leads',
-            icon: 'pi pi-fw pi-align-justify',
-            className: (pathname === "/admin/leads/gifting-leads-enquiry") ? "p-menuitem-active": "",
-            command: () => {
-              router.push(`/admin/leads/gifting-leads-enquiry`)
-            }
-        },
-        {
-          label: 'Contact Enquiries',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/leads/contact-enquiries") ? "p-menuitem-active": "",
+          label: "Pre Checkout Users",
+          icon: "pi pi-fw pi-align-left",
+          className:
+            pathname === "/admin/leads/pre-checkout-users"
+              ? "p-menuitem-active"
+              : "",
           command: () => {
-            router.push(`/admin/leads/contact-enquiries`)
-          }
+            router.push(`/admin/leads/pre-checkout-users`);
+          },
         },
         {
-          label: 'Design Queries',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/leads/design-queries") ? "p-menuitem-active": "",
+          label: "Digital Enquiries",
+          icon: "pi pi-fw pi-align-right",
+          className:
+            pathname === "/admin/leads/digital-visiting-card"
+              ? "p-menuitem-active"
+              : "",
           command: () => {
-            router.push(`/admin/leads/design-queries`)
-          }
+            router.push(`/admin/leads/digital-visiting-card`);
+          },
         },
         {
-          label: 'Brand Leads',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/leads/brand-leads") ? "p-menuitem-active": "",
+          label: "B2B LP",
+          icon: "pi pi-fw pi-align-center",
+          className:
+            pathname === "/admin/leads/B2B%20LP" ? "p-menuitem-active" : "",
           command: () => {
-            router.push(`/admin/leads/brand-leads`)
-          }
+            router.push(`/admin/leads/B2B LP`);
+          },
         },
         {
-          label: 'Email Leads',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/leads/email-leads") ? "p-menuitem-active": "",
+          label: "Gifting Leads",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/leads/gifting-leads-enquiry"
+              ? "p-menuitem-active"
+              : "",
           command: () => {
-            router.push(`/admin/leads/email-leads`)
-          }
+            router.push(`/admin/leads/gifting-leads-enquiry`);
+          },
         },
         {
-          label: 'Get In Touch',
-          icon: 'pi pi-fw pi-align-justify',
-          className: (pathname === "/admin/leads/get-in-touch") ? "p-menuitem-active": "",
+          label: "Contact Enquiries",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/leads/contact-enquiries"
+              ? "p-menuitem-active"
+              : "",
           command: () => {
-            router.push(`/admin/leads/get-in-touch`)
-          }
+            router.push(`/admin/leads/contact-enquiries`);
+          },
         },
         {
-          label: '',
-          icon: 'pi pi-fw pi-align-',
+          label: "Design Queries",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/leads/design-queries"
+              ? "p-menuitem-active"
+              : "",
+          command: () => {
+            router.push(`/admin/leads/design-queries`);
+          },
         },
         {
-          label: '',
-          icon: 'pi pi-fw pi-align-',
+          label: "Brand Leads",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/leads/brand-leads" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/leads/brand-leads`);
+          },
         },
         {
-          label: '',
-          icon: 'pi pi-fw pi-align-',
+          label: "Email Leads",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/leads/email-leads" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/leads/email-leads`);
+          },
         },
-      ]
+        {
+          label: "Get In Touch",
+          icon: "pi pi-fw pi-align-justify",
+          className:
+            pathname === "/admin/leads/get-in-touch" ? "p-menuitem-active" : "",
+          command: () => {
+            router.push(`/admin/leads/get-in-touch`);
+          },
+        },
+        {
+          label: "",
+          icon: "pi pi-fw pi-align-",
+        },
+        {
+          label: "",
+          icon: "pi pi-fw pi-align-",
+        },
+        {
+          label: "",
+          icon: "pi pi-fw pi-align-",
+        },
+      ],
     },
-
   ];
-  const deletepost =(e)=> {
-    let a = e.currentTarget.parentNode.getAttribute("data-src");  
-      console.log(a);
-    }
+  const deletepost = (e) => {
+    let a = e.currentTarget.parentNode.getAttribute("data-src");
+    console.log(a);
+  };
   return (
     <main>
       <div
@@ -300,6 +351,8 @@ const Sidebar = () => {
         data-kt-drawer-width="{default:'200px', '300px': '250px'}"
         data-kt-drawer-direction="start"
         data-kt-drawer-toggle="#kt_aside_mobile_toggle"
+        onMouseLeave={() => setIsMouseHover(false)}
+        onMouseEnter={() => setIsMouseHover(true)}
       >
         <div className="aside-logo flex-column-auto" id="kt_aside_logo">
           <Link href="/admin/dashboard">
@@ -319,7 +372,7 @@ const Sidebar = () => {
             data-kt-toggle-target="body"
             data-kt-toggle-name="aside-minimize"
           >
-            {/* <span className="svg-icon svg-icon-1 rotate-180">
+            <span className="svg-icon svg-icon-1 rotate-180">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -337,7 +390,7 @@ const Sidebar = () => {
                   fill="currentColor"
                 />
               </svg>
-            </span> */}
+            </span>
           </div>
         </div>
         <div className="aside-menu flex-column-fluid">
@@ -351,10 +404,12 @@ const Sidebar = () => {
             data-kt-scroll-wrappers="#kt_aside_menu"
             data-kt-scroll-offset="0"
           >
-            <div
-              className="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500"
-            >
-              <Menubar model={items} orientation="horozontal" breakpoint="767px"/>
+            <div className="menu menu-column menu-title-gray-800 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-500">
+              <Menubar
+                model={items}
+                orientation="horozontal"
+                breakpoint="767px"
+              />
             </div>
           </div>
         </div>
