@@ -17,7 +17,7 @@ import { Paginator } from "primereact/paginator";
 import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
 
 export const Products = () => {
-  let formData = new FormData(); //formdata object
+  let formData = {};
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const filterOption = useRef(null);
@@ -28,9 +28,9 @@ export const Products = () => {
   const getProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     instance
       .post("products", formData)
@@ -55,8 +55,8 @@ export const Products = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getProducts();
   };
 
@@ -163,20 +163,20 @@ export const Products = () => {
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("product_name", values?.product_name);
-    formData.append("price", values?.price);
-    formData.append("discount", values?.discount);
-    formData.append("card_type", values?.card_type);
-    formData.append("profession", values?.profession);
+    formData["user_id"] = loginUser._id;
+    formData["product_name"] = values?.product_name;
+    formData["price"] = values?.price;
+    formData["discount"] = values?.discount;
+    formData["card_type"] = values?.card_type;
+    formData["profession"] = values?.profession;
     getProducts();
   };
 
   const accept = (id, status, type) => {
-    let newFormData = new FormData();
-    newFormData.append("product_id", id);
-    newFormData.append("status", status);
-    newFormData.append("type", type);
+    let newFormData = {};
+    newFormData["product_id"] = id;
+    newFormData["status"] = status;
+    newFormData["type"] = type;
     instance
       .post("product_status", newFormData)
       .then((response) => {
@@ -403,7 +403,7 @@ export const Products = () => {
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
-                                formData = new FormData();
+                                formData = {};
                                 await getProducts();
                                 filterOption.current.toggle(e);
                               }}

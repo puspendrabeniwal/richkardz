@@ -11,6 +11,7 @@ import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import { Paginator } from "primereact/paginator";
 import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
+import { Button } from "primereact/button";
 
 const BulkOrders = () => {
   const router = useRouter();
@@ -19,15 +20,16 @@ const BulkOrders = () => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
-  let formData = new FormData(); //formdata object
+  const op = useRef(null);
+  let formData = {};
   useEffect(() => {
     getList();
   }, []);
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
     instance
       .post("bulk_orders", formData)
       .then((response) => {
@@ -47,8 +49,8 @@ const BulkOrders = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getList();
   };
   const UpdateButtonLink = (rowData) => {
@@ -78,12 +80,12 @@ const BulkOrders = () => {
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
-    formData.append("email", values?.email);
-    formData.append("phone_number", values?.phone_number);
-    formData.append("no_of_card_you_want", values?.no_of_card_you_want);
-    formData.append("company_name", values?.company_name);
+    formData["user_id"] = loginUser._id;
+    formData["name"] = values?.name;
+    formData["email"] = values?.email;
+    formData["phone_number"] = values?.phone_number;
+    formData["no_of_card_you_want"] = values?.no_of_card_you_want;
+    formData["company_name"] = values?.company_name;
     getList();
   };
 
@@ -123,7 +125,7 @@ const BulkOrders = () => {
             <div className="d-flex align-items-center gap-2 gap-lg-3">
               <div className="m-0">
                 <button
-                  onClick={(e) => filterOption.current.toggle(e)}
+                  onClick={(e) => op.current.toggle(e)}
                   aria-haspopup
                   aria-controls="overlay_panel"
                   className="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
@@ -145,7 +147,7 @@ const BulkOrders = () => {
                   Filter
                 </button>
                 <OverlayPanel
-                  ref={filterOption}
+                  ref={op}
                   showCloseIcon
                   id="overlay_panel"
                   style={{ width: "450px" }}
@@ -238,32 +240,26 @@ const BulkOrders = () => {
                         <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
-                                await getProducts();
-                                //op.current.toggle(e);
+                                await getList();
+                                op.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>

@@ -24,16 +24,16 @@ const FAQ = () => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
-  let formData = new FormData();
+  let formData = {};
   useEffect(() => {
     getFAQAPI();
   }, []);
   //  ==============get Block API Data ====================//
   const getFAQAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     try {
       const response = await instance.post(`faqs`, formData);
@@ -51,15 +51,15 @@ const FAQ = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getFAQAPI();
   };
   //  ==============on Submit for Search Fields====================//
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("question", values?.question);
+    formData["user_id"] = loginUser._id;
+    formData["question"] = values?.question;
     getFAQAPI();
   };
   //  ============== Status Confirmation ====================//
@@ -107,9 +107,9 @@ const FAQ = () => {
     });
   };
   const accept = (id, status) => {
-    let newFormData = new FormData();
-    newFormData.append("id", id);
-    newFormData.append("status", status);
+    let newFormData = {};
+    newFormData["id"] = id;
+    newFormData["status"] = status;
     instance
       .post("faqs/status", newFormData)
       .then((response) => {

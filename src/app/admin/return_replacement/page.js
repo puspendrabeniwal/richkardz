@@ -20,7 +20,7 @@ const ReturnReplacement = ({ params }) => {
   const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
-  let formData = new FormData(); //formdata object
+  let formData = {}; //formdata object
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -30,9 +30,9 @@ const ReturnReplacement = ({ params }) => {
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     instance
       .post("return_replacement", formData)
@@ -53,20 +53,18 @@ const ReturnReplacement = ({ params }) => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getList();
   };
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
-    formData.append("email", values?.email);
-    formData.append("phone_number", values?.phone_number);
-    formData.append(
-      "preferred_contact_method",
-      values?.preferred_contact_method
-    );
+    formData["user_id"] = loginUser._id;
+    formData["name"] = values?.name;
+    formData["email"] = values?.email;
+    formData["phone_number"] = values?.phone_number;
+    formData["preferred_contact_method"] = values?.preferred_contact_method;
+
     getList();
   };
 
@@ -120,8 +118,8 @@ const ReturnReplacement = ({ params }) => {
   };
 
   const accept = (id) => {
-    let newFormData = new FormData();
-    newFormData.append("request_id", id);
+    let newFormData = {};
+    newFormData["request_id"] = id;
     instance
       .post("return_replacement_status", newFormData)
       .then((response) => {
@@ -340,30 +338,25 @@ const ReturnReplacement = ({ params }) => {
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
                             <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
                               type="submit"
-                              className="btn btn-sm btn-success me-2"
+                              className="btn btn-sm btn-success me-2  btn-flex fw-bolder"
                               data-kt-menu-dismiss="true"
                             >
-                              Apply
+                              <i className="pi pi-save"></i>
+                              Submit
                             </button>
                             <button
                               type="button"
                               onClick={async (e) => {
                                 resetForm();
+                                formData = {};
                                 await getList();
-                                //op.current.toggle(e);
+                                filterOption.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
+                              className="btn btn-sm btn-danger btn-flex fw-bolder"
                               data-kt-menu-dismiss="true"
                             >
-                              Remove
+                              <i className="pi pi-times"></i>Reset
                             </button>
                           </div>
                         </div>

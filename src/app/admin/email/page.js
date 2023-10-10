@@ -20,7 +20,7 @@ const EmailTemplate = () => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
-  let formData = new FormData();
+  let formData = {};
 
   useEffect(() => {
     getEmailAPI();
@@ -29,9 +29,9 @@ const EmailTemplate = () => {
   //  ==============get Block API Data ====================//
   const getEmailAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     try {
       const response = await instance.post("email_template", formData);
@@ -49,15 +49,15 @@ const EmailTemplate = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getEmailAPI();
   };
   //  ==============on Submit for Search Fields====================//
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("title", values?.title);
+    formData["user_id"] = loginUser._id;
+    formData["title"] = values?.title;
     getEmailAPI();
   };
 

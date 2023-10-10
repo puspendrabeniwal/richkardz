@@ -21,8 +21,8 @@ const UserProfile = () => {
 
   const getUserDetail = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    let formData = new FormData();
-    formData.append("user_id", loginUser._id);
+    let formData = {};
+    formData["user_id"] = loginUser._id;
 
     instance
       .post("getUserDetail", formData)
@@ -60,12 +60,12 @@ const UserProfile = () => {
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(false);
-    let formData = new FormData();
+    let formData = {};
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("full_name", values.full_name);
-    formData.append("email", values.email);
-    formData.append("image", values.image);
+    formData["user_id"] = loginUser._id;
+    formData["full_name"] = values.full_name;
+    formData["email"] = values.email;
+    formData["image"] = values.image;
     instance
       .post("updateUserProfile", formData)
       .then((response) => {

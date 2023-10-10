@@ -21,7 +21,7 @@ const GiftPreDesignProducts = () => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
-  let formData = new FormData(); //formdata object
+  let formData = {};
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const filterOption = useRef(null);
@@ -32,9 +32,9 @@ const GiftPreDesignProducts = () => {
 
   const getProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     instance
       .post("gift_pre_design_product", formData)
@@ -55,8 +55,8 @@ const GiftPreDesignProducts = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getProducts();
   };
   const statusBodyTemplate = (rowData) => {
@@ -162,20 +162,20 @@ const GiftPreDesignProducts = () => {
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("product_name", values?.product_name);
-    formData.append("price", values?.price);
-    formData.append("discount", values?.discount);
-    formData.append("card_type", values?.card_type);
-    formData.append("profession", values?.profession);
+    formData["user_id"] = loginUser._id;
+    formData["product_name"] = values?.product_name;
+    formData["price"] = values?.price;
+    formData["discount"] = values?.discount;
+    formData["card_type"] = values?.card_type;
+    formData["profession"] = values?.profession;
     getProducts();
   };
 
   const accept = (id, status, type) => {
     let newFormData = new FormData();
-    newFormData.append("product_id", id);
-    newFormData.append("status", status);
-    newFormData.append("type", type);
+    newFormData["product_id"] = id;
+    newFormData["status"] = status;
+    newFormData["type"] = type;
     instance
       .post("gift_pre_design_product_status", newFormData)
       .then((response) => {

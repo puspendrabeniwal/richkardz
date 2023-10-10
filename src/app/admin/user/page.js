@@ -26,7 +26,7 @@ const User = () => {
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  let formData = new FormData();
+  let formData = {};
   useEffect(() => {
     getUserAPI();
   }, []);
@@ -34,9 +34,9 @@ const User = () => {
   //  ==============get Block API Data ====================//
   const getUserAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     try {
       const response = await instance.post(`users`, formData);
@@ -54,16 +54,16 @@ const User = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getUserAPI();
   };
   //  ==============on Submit for Search Fields====================//
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
-    formData.append("email", values?.email);
+    formData["user_id"] = loginUser._id;
+    formData["name"] = values?.name;
+    formData["email"] = values?.email;
     getUserAPI();
   };
 
@@ -112,9 +112,9 @@ const User = () => {
     });
   };
   const accept = (id, status) => {
-    let newFormData = new FormData();
-    newFormData.append("id", id);
-    newFormData.append("status", status);
+    let newFormData = {};
+    newFormData["id"] = id;
+    newFormData["status"] = status;
     instance
       .post("users/status", newFormData)
       .then((response) => {
@@ -140,9 +140,9 @@ const User = () => {
     });
   };
   const router = useRouter();
-  const processingTemplate = (rowData)=>{
-    return <Skeleton></Skeleton>
-  }
+  const processingTemplate = (rowData) => {
+    return <Skeleton></Skeleton>;
+  };
   // ============Edit button for update form===========//
   const getActionButton = (rowData) => {
     const items = [
@@ -161,9 +161,6 @@ const User = () => {
         },
       },
     ];
-
-
-
 
     return (
       <>
@@ -344,7 +341,7 @@ const User = () => {
             <div className="card">
               <div className="card-body py-9">
                 <ConfirmDialog />
- 
+
                 <DataTable
                   value={userData}
                   showGridlines

@@ -16,6 +16,7 @@ import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import { Paginator } from "primereact/paginator";
 import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
+import { Button } from "primereact/button";
 
 const ReturnReplacement = ({ params }) => {
   const router = useRouter();
@@ -24,14 +25,14 @@ const ReturnReplacement = ({ params }) => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
-  let formData = new FormData(); //formdata object
+  let formData = {};
 
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     instance
       .post("cancel_request", formData)
@@ -55,56 +56,18 @@ const ReturnReplacement = ({ params }) => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getList();
-  };
-  const UpdateButtonLink = (rowData) => {
-    const items = [
-      {
-        label: "Delete",
-        icon: "pi pi-times",
-        command: () => {
-          confirm(rowData._id, rowData?.type);
-        },
-      },
-    ];
-
-    if (
-      params.type === "contact-enquiries" ||
-      params.type === "design-queries"
-    ) {
-      items.push({
-        label: "View",
-        icon: "pi pi-eye",
-        command: () => {
-          router.push(`/admin/leads/view/${params.type}/${rowData._id}`);
-        },
-      });
-    }
-
-    return (
-      <>
-        <SplitButton
-          label="Action"
-          icon="pi pi-plus"
-          small
-          raised
-          text
-          severity="secondary"
-          model={items}
-        />
-      </>
-    );
   };
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
-    formData.append("email", values?.email);
-    formData.append("phone_number", values?.phone_number);
-    formData.append("transaction_id", values?.transaction_id);
+    formData["user_id"] = loginUser._id;
+    formData["name"] = values?.name;
+    formData["email"] = values?.email;
+    formData["phone_number"] = values?.phone_number;
+    formData["transaction_id"] = values?.transaction_id;
     getList();
   };
 
@@ -375,32 +338,25 @@ const ReturnReplacement = ({ params }) => {
                         <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getList();
-                                //op.current.toggle(e);
+                                filterOption.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>

@@ -21,7 +21,7 @@ export const ComboProducts = () => {
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const op = useRef(null);
-  let formData = new FormData(); //formdata object
+  let formData = {};
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -31,9 +31,9 @@ export const ComboProducts = () => {
   const getComboProducts = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     instance
       .post("combo-products", formData)
@@ -54,8 +54,8 @@ export const ComboProducts = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getComboProducts();
   };
   const statusBodyTemplate = (rowData) => {
@@ -182,17 +182,17 @@ export const ComboProducts = () => {
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("product_name", values?.product_name);
-    formData.append("combo_type", values?.combo_type);
+    formData["user_id"] = loginUser._id;
+    formData["product_name"] = values?.product_name;
+    formData["combo_type"] = values?.combo_type;
     getComboProducts();
   };
 
   const accept = (id, status) => {
     let newFormData = new FormData();
-    newFormData.append("product_id", id);
-    newFormData.append("status", status);
-    newFormData.append("type", "status");
+    newFormData["product_id"] = id;
+    newFormData["status"] = status;
+    newFormData["type"] = "status";
     instance
       .post("combo-products/status", newFormData)
       .then((response) => {

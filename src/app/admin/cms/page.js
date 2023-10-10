@@ -24,7 +24,7 @@ const CMS = () => {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
-  let formData = new FormData();
+  let formData = {};
   const toast = useRef(null);
   useEffect(() => {
     getCmsAPI();
@@ -33,9 +33,9 @@ const CMS = () => {
   //  ==============get Block API Data ====================//
   const getCmsAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     try {
       const response = await instance.post(`cms`, formData);
@@ -53,15 +53,15 @@ const CMS = () => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getCmsAPI();
   };
   //  ==============on Submit for Search Fields====================//
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("title", values?.title);
+    formData["user_id"] = loginUser._id;
+    formData["title"] = values?.title;
     getCmsAPI();
   };
 
@@ -111,8 +111,8 @@ const CMS = () => {
   };
   const accept = (id, status) => {
     let newFormData = new FormData();
-    newFormData.append("id", id);
-    newFormData.append("status", status);
+    newFormData["id"] = id;
+    newFormData["status"] = status;
     instance
       .post("cms/status", newFormData)
       .then((response) => {
@@ -175,7 +175,7 @@ const CMS = () => {
     <>
       <Toast ref={toast} />
       {/* ==================================Search Fields=========================================== */}
-      <div className="d-flex flex-column flex-column-fluid" id="kt_content">
+      <div className="" id="kt_content">
         <div className="toolbar" id="kt_toolbar">
           <div
             id="kt_toolbar_container"

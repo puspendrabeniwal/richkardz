@@ -15,12 +15,13 @@ import instance from "../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import { Paginator } from "primereact/paginator";
 import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../constant";
+import { Button } from "primereact/button";
 
 const ReturnReplacement = ({ params }) => {
   const router = useRouter();
   const [list, setList] = useState([]);
   const filterOption = useRef(null);
-  let formData = new FormData(); //formdata object
+  let formData = {}; //formdata object
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -30,9 +31,9 @@ const ReturnReplacement = ({ params }) => {
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first); //append the values with key, value pair
-    formData.append("limit", rows); //append the values with key, value pair
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     instance
       .post("warranty_claim", formData)
@@ -53,21 +54,19 @@ const ReturnReplacement = ({ params }) => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getList();
   };
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
-    formData.append("email", values?.email);
-    formData.append("phone_number", values?.phone_number);
-    formData.append(
-      "preferred_contact_method",
-      values?.preferred_contact_method
-    );
+    formData["user_id"] = loginUser._id;
+    formData["name"] = values?.name;
+    formData["email"] = values?.email;
+    formData["phone_number"] = values?.phone_number;
+    formData["preferred_contact_method"] = values?.preferred_contact_method;
+
     getList();
   };
 
@@ -121,7 +120,7 @@ const ReturnReplacement = ({ params }) => {
   };
 
   const accept = (id) => {
-    let newFormData = new FormData();
+    let newFormData = {};
     newFormData.append("request_id", id);
     instance
       .post("warranty_status", newFormData)
@@ -342,32 +341,25 @@ const ReturnReplacement = ({ params }) => {
                         <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
                                 await getList();
-                                //op.current.toggle(e);
+                                filterOption.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>
