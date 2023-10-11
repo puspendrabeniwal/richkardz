@@ -5,28 +5,52 @@ import * as Yup from "yup";
 import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Toast } from "primereact/toast";
+import instance from "../front/axiosInterceptor";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email address")
+  username: Yup.string()
+    // .email("Invalid email address")
     .required("Email is required"),
   password: Yup.string().required("Password is required"),
 });
 
 const ContactUs = () => {
+  const toast = useRef(null);
+  let user;
   const loginValues = {
-    email: "",
+    username: "",
     password: "",
   };
-  const onSubmit = async (values) => {
-    console.log("vauesss", values);
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    let formData = new FormData();
-    formData.append("user_id", loginUser._id);
-    Object.keys(values).forEach(function (key, index) {
-      formData.append(key, values[key]);
+
+  useEffect(() => {
+    user = localStorage.getItem("loginDetail");
+    if (user) window.location.replace("/front/dashboard");
+  }, []);
+
+  async function onSubmit(values) {
+    try {
+      const response = await instance.post(`auth`, values);
+      console.log("user login", response);
+      let user = response.result ? response.result : {};
+      let token = response.token ? response.token : "";
+      if (token && Object.keys(user).length > 0) {
+        localStorage.setItem("loginDetail", JSON.stringify(user));
+        window.location.replace("/front/dashboard");
+      }
+      showMessage(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const showMessage = (data) => {
+    toast.current.show({
+      severity: data.status ? "success" : "error",
+      summary: data.status ? "Success" : "Error",
+      detail: data.message,
+      life: 3000,
     });
-    // await addCardDetail(formData);
   };
 
   return (
@@ -71,7 +95,7 @@ const ContactUs = () => {
       </head>
       <body className="bodyMain">
         <Header />
-
+        <Toast ref={toast} />
         <div class="row loginPage mx-0 align-items-center">
           <div class="col-lg-6">
             <img src="/front/img/contactBanner.png" alt="" />
@@ -99,13 +123,13 @@ const ContactUs = () => {
                       <div className=" billingForm">
                         <Field
                           type="text"
-                          name="email"
+                          name="username"
                           className="form-control"
                           id="floatingemail"
                         />
                       </div>
                       <ErrorMessage
-                        name="email"
+                        name="username"
                         component="div"
                         className="text-danger"
                       />
