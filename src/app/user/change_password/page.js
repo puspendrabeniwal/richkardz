@@ -2,10 +2,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Link from "next/link";
 import { Toast } from "primereact/toast";
-import instance from "../axiosInterceptor";
 import withAuth from "@/hocFront/withAuth";
+import instance from "../axiosInterceptor";
 const ChangePassword = () => {
   const toast = useRef(null);
 

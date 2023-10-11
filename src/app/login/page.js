@@ -23,6 +23,7 @@ const LoginUser = () => {
   const loginValues = {
     username: "",
     password: "",
+    role_id: 2,
   };
 
   useEffect(() => {

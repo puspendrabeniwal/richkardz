@@ -4,6 +4,9 @@ import { Image } from "primereact/image";
 import { Menu } from "primereact/menu";
 import React, { useEffect, useContext, useRef } from "react";
 import { AuthContext } from "../AuthContext";
+import { ConfirmDialog } from "primereact/confirmdialog";
+import { confirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
 const Header = () => {
   const menuLeft = useRef(null);
   const items = [
@@ -45,7 +48,10 @@ const Header = () => {
               </Link>
             </div>
             <div className="menu-item px-5 my-1">
-              <Link href={`/user/user_profile/${user?._id}`} className="menu-link px-5">
+              <Link
+                href={`/user/user_profile/${user?._id}`}
+                className="menu-link px-5"
+              >
                 User Profile
               </Link>
             </div>
@@ -62,7 +68,7 @@ const Header = () => {
             </div>
             <div className="separator my-2"></div>
             <div className="menu-item px-5">
-              <Link href="#" onClick={logout} className="menu-link px-5">
+              <Link href="#" onClick={confirm()} className="menu-link px-5">
                 Log Out
               </Link>
             </div>
@@ -71,7 +77,7 @@ const Header = () => {
       },
     },
   ];
-
+  const toast = useRef(null);
   const { user, setUser } = useContext(AuthContext);
   useEffect(() => {
     if (user && Object.keys(user).length === 0) {
@@ -83,6 +89,26 @@ const Header = () => {
     localStorage.removeItem("loginDetail");
     window.location.replace("/login");
   };
+
+  const confirm = () => {
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => {
+        logout
+      },
+      reject: () => {
+        toast.current.show({
+          severity: "warn",
+          summary: "Rejected",
+          detail: "You have rejected",
+          life: 3000,
+        });
+      },
+    });
+  };
+
   return (
     <div id="kt_header" className="header align-items-stretch">
       <div className="container-fluid d-flex align-items-stretch justify-content-between">
@@ -151,6 +177,8 @@ const Header = () => {
                 ref={menuLeft}
               />
             </div>
+            <Toast ref={toast} />
+            <ConfirmDialog />
             <div
               className="d-flex align-items-center d-lg-none ms-2 me-n3"
               title="Show header menu"
