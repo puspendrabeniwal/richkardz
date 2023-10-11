@@ -206,7 +206,7 @@ export default function Product() {
                             <img className="img-fluid" src={imagePath} alt="" />
                           </div>
                           <div className="productTitle">
-                            <h3>{row?.product_name}2</h3>
+                            <h3>{row?.product_name}</h3>
                           </div>
                           <div className="mt-2">
                             <span className="ratingStar">
@@ -265,7 +265,7 @@ export default function Product() {
                             <img className="img-fluid" src={imagePath} alt="" />
                           </div>
                           <div className="productTitle">
-                            <h3>{row?.product_name}3</h3>
+                            <h3>{row?.product_name}</h3>
                           </div>
                           <div className="mt-2">
                             <span className="ratingStar">

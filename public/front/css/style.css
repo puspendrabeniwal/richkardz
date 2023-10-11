@@ -41,7 +41,7 @@ Navigation Menu
 .modal-backdrop{z-index: 33334}
 .modal{z-index: 33335}
 .logo-top{height: 57px;}
-.headerNav {height: 80px;z-index: 999;transition: all 0.9s;display: flex;align-items: center;}
+.headerNav {height: 80px;z-index: 999;transition: all 0.9s;display: flex;align-items: center;background-color: var(--NavyBlueColor);}
 .navbarscroll{position: sticky;z-index: 2222;top: 0px;}
 .fixedHeader{background-color: var(--NavyBlueColor);box-shadow: 0px 0px 5px rgba(127, 137, 161, 0.3);}
 /*-------------------------------------------------------------- # 

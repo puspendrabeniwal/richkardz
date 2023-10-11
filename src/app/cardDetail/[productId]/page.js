@@ -97,9 +97,13 @@ export default function CardtDetail({ params }){
           response.result && response.result.order_id
             ? response.result.order_id
             : "";
+            let new_user_id =
+          response.result && response.result.new_user_id
+            ? response.result.new_user_id
+            : "";
         if (response.status === true) {
           router.push(
-            `/deliveryAddress/${params.productId}?order_id=${orderId}`
+            `/deliveryAddress/${params.productId}?order_id=${orderId}&&new_user_id=${new_user_id}`
           );
         }
         showMessage(response);

@@ -74,8 +74,6 @@ const ContactUs = () => {
     if (!captchaValue) {
       alert("Please verify the reCAPTCHA!");
     } else {
-      // make form submission
-      alert("Form submission successful!");
       await addContactAPI(formData);
     }
   };
@@ -155,7 +153,8 @@ const ContactUs = () => {
                     enableReinitialize={true}
                     initialValues={contactValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values, { resetForm }) => {
+                    onSubmit={async (values, { resetForm, errors }) => {
+                      console.log(errors)
                       await onSubmit(values);
                       resetForm();
                     }}
