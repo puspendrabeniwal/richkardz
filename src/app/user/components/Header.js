@@ -40,8 +40,13 @@ const Header = () => {
             </div>
             <div className="separator my-2"></div>
             <div className="menu-item px-5 my-1">
-              <Link href="/user/user_profile" className="menu-link px-5">
-                Account Settings
+              <Link href="/user/dashboard" className="menu-link px-5">
+                Home
+              </Link>
+            </div>
+            <div className="menu-item px-5 my-1">
+              <Link href={`/user/user_profile/${user?._id}`}className="menu-link px-5">
+                User Profile
               </Link>
             </div>
 
@@ -50,10 +55,15 @@ const Header = () => {
                 Change Password
               </Link>
             </div>
+            <div className="menu-item px-5 my-1">
+              <Link href="/user/public_view" className="menu-link px-5">
+                Public View
+              </Link>
+            </div>
             <div className="separator my-2"></div>
             <div className="menu-item px-5">
               <Link href="#" onClick={logout} className="menu-link px-5">
-                Sign Out
+                Log Out
               </Link>
             </div>
           </div>

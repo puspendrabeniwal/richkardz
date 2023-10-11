@@ -6,7 +6,7 @@ import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Toast } from "primereact/toast";
-import instance from "../front/axiosInterceptor";
+import instance from "../user/axiosInterceptor";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required("Password is required"),
 });
 
-const ContactUs = () => {
+const LoginUser = () => {
   const toast = useRef(null);
   let user;
   const loginValues = {
@@ -25,7 +25,7 @@ const ContactUs = () => {
 
   useEffect(() => {
     user = localStorage.getItem("loginDetail");
-    if (user) window.location.replace("/front/dashboard");
+    if (user) window.location.replace("/user/dashboard");
   }, []);
 
   async function onSubmit(values) {
@@ -36,7 +36,7 @@ const ContactUs = () => {
       let token = response.token ? response.token : "";
       if (token && Object.keys(user).length > 0) {
         localStorage.setItem("loginDetail", JSON.stringify(user));
-        window.location.replace("/front/dashboard");
+        window.location.replace("/user/dashboard");
       }
       showMessage(response);
     } catch (error) {
@@ -191,4 +191,4 @@ const ContactUs = () => {
   );
 };
 
-export default ContactUs;
+export default LoginUser;

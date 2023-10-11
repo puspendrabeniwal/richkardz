@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 // import instance from "../axiosInterceptor";
-import withAuth from "@/hoc/withAuth";
+import withAuth from "@/hocFront/withAuth";
 const ChangePassword = () => {
   const toast = useRef(null);
 
@@ -85,21 +85,7 @@ const ChangePassword = () => {
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
                 Change Password
               </h1>
-              <span className="h-20px border-gray-300 border-start mx-4"></span>
-              <ul className="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
-                <li className="breadcrumb-item text-muted">
-                  <Link
-                    href="/admin/dashboard"
-                    className="text-muted text-hover-primary"
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li className="breadcrumb-item">
-                  <span className="bullet bg-gray-300 w-5px h-2px"></span>
-                </li>
-                <li className="breadcrumb-item text-mute">Update Password</li>
-              </ul>
+
             </div>
           </div>
         </div>

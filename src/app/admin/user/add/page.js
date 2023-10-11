@@ -4,7 +4,7 @@ import instance from "../../axiosInterceptor";
 import { Toast } from "primereact/toast";
 import Link from "next/link";
 import withAuth from "@/hoc/withAuth";
-import UserForm from "../../components/UserForm";
+import UserForm from "../../../user/components/UserForm";
 import { Button } from "primereact/button";
 import { useRouter } from "next/navigation";
 

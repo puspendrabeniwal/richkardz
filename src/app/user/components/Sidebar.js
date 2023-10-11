@@ -2,18 +2,55 @@ import Link from "next/link";
 import { Image } from "primereact/image";
 import { Menubar } from "primereact/menubar";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import React, { useState,useEffect, useContext, useRef } from "react";
+
+import { AuthContext } from "./../AuthContext";
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isMouseHover, setIsMouseHover] = useState(false);
+  const { user, setUser } = useContext(AuthContext);
+
   const items = [
     {
-      label: "Dashboard",
+      label: "Home",
       icon: "pi pi-fw pi-microsoft",
-      className: pathname === "/admin/dashboard" ? "p-menuitem-active" : "",
+      className: pathname === "/user/dashboard" ? "p-menuitem-active" : "",
       command: () => {
-        router.push(`/admin/dashboard`);
+        router.push(`/user/dashboard`);
+      },
+    },
+    {
+      label: "Update Profile",
+      icon: "pi pi-fw pi-user",
+      className: pathname === "/user/user_profile/"+user?._id ? "p-menuitem-active" : "",
+      command: () => {
+        router.push(`/user/user_profile/${user?._id}`);
+      },
+    },
+    {
+      label: "Change Password",
+      icon: "pi pi-fw pi-lock",
+      className: pathname === "/user/change_password" ? "p-menuitem-active" : "",
+      command: () => {
+        router.push(`/user/change_password`);
+      },
+    },
+    {
+      label: "Public View",
+      icon: "pi pi-fw pi-eye",
+      className: pathname === "/user/public_view" ? "p-menuitem-active" : "",
+      command: () => {
+        router.push(`/user/public_view`);
+      },
+    },
+    {
+      label: "Logout",
+      icon: "pi pi-fw pi-circle",
+      className: pathname === "/user/public_view" ? "p-menuitem-active" : "",
+      command: () => {
+        localStorage.removeItem("loginDetail");
+        window.location.replace("/login");
       },
     },
   ];
@@ -54,7 +91,7 @@ const Sidebar = () => {
             data-kt-toggle-target="body"
             data-kt-toggle-name="aside-minimize"
           >
-            <span className="svg-icon svg-icon-1 rotate-180">
+            {/* <span className="svg-icon svg-icon-1 rotate-180">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -72,7 +109,7 @@ const Sidebar = () => {
                   fill="currentColor"
                 />
               </svg>
-            </span>
+            </span> */}
           </div>
         </div>
         <div className="aside-menu flex-column-fluid">
