@@ -1,17 +1,19 @@
 "use client";
-import Header from "@/app/elements/Header/page";
-import Footer from "@/app/elements/Footer/page";
+
 import * as Yup from "yup";
+import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Toast } from "primereact/toast";
+
 import instance from "../user/axiosInterceptor";
+import Header from "@/app/elements/Header/page";
+import Footer from "@/app/elements/Footer/page";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
     // .email("Invalid email address")
-    .required("Email is required"),
+    .required("Username is required"),
   password: Yup.string().required("Password is required"),
 });
 
@@ -29,9 +31,9 @@ const LoginUser = () => {
   }, []);
 
   async function onSubmit(values) {
+    values["role_id"] = 2;
     try {
       const response = await instance.post(`auth`, values);
-      console.log("user login", response);
       let user = response.result ? response.result : {};
       let token = response.token ? response.token : "";
       if (token && Object.keys(user).length > 0) {

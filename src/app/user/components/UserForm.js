@@ -55,8 +55,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
     gallery: [],
   };
   const onSubmit = async (values) => {
-    console.log("user values", values);
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    let loginUser = JSON.parse(localStorage.getItem("loginDetail"));
     let formData = new FormData();
     formData.append("user_id", loginUser._id);
     formData.append("full_name", values.full_name);
@@ -352,6 +351,21 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                             id="google_link"
                           />
                         </div>
+                        <div className="col-lg-6 col-md-6">
+                          <label
+                            className="col-form-label fw-semibold fs-6"
+                            htmlFor="nature_of_business"
+                          >
+                            Nature of Business
+                          </label>
+
+                          <Field
+                            type="text"
+                            name="nature_of_business"
+                            className="form-control"
+                            id="nature_of_business"
+                          />
+                        </div>
                       </div>
 
                       <div className="row mb-6">
@@ -425,7 +439,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
 
                       <div className="row mb-6">
                         <div className="col-lg-6 col-md-6">
-                          <label className="col-lg-4 col-form-label fw-semibold fs-6">
+                          <label className="col-form-label fw-semibold fs-6">
                             UPI payment scanner
                           </label>
                           <FileUpload
@@ -458,20 +472,70 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                           />
                         </div>
                         <div className="col-lg-6 col-md-6">
-                          <label
-                            className="col-form-label fw-semibold fs-6"
-                            htmlFor="nature_of_business"
-                          >
-                            Nature of Business
+                          <label className="col-lg-4 col-form-label fw-semibold fs-6">
+                            Catalogue
                           </label>
-
-                          <Field
-                            type="text"
-                            name="nature_of_business"
-                            className="form-control"
-                            id="nature_of_business"
+                          <FileUpload
+                            name="catalogue"
+                            accept=".pdf" // Accept only PDF files
+                            auto
+                            customUpload
+                            maxFileSize={1000000}
+                            onSelect={(event) => {
+                              const files = event.files[0];
+                              setFieldValue("catalogue", files);
+                            }}
+                            emptyTemplate={
+                              <div>
+                                {userValue?.catalogue ? (
+                                  <a
+                                    href={`${
+                                      userValue?.image_url +
+                                      userValue?.catalogue
+                                    }`}
+                                    target="_blank" // Opens the link in a new tab/window
+                                    rel="noopener noreferrer" // Recommended for security reasons
+                                  >
+                                    View Catalogue (PDF)
+                                  </a>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            }
                           />
                         </div>
+                      </div>
+                      <div className="row mb-6">
+                        <label className="col-lg-4 col-form-label fw-semibold fs-6">
+                          Gallery
+                        </label>
+                        <FileUpload
+                          name="gallery"
+                          accept="image/*"
+                          auto
+                          multiple
+                          customUpload
+                          maxFileSize={1000000}
+                          onSelect={(event) => {
+                            const files = event.files;
+                            setFieldValue("gallery", files);
+                          }}
+                          emptyTemplate={
+                            <div className="d-flex flex-wrap">
+                              {userValue?.gallery?.map((image, index) => (
+                                <div key={index} className="m-2">
+                                  <Image
+                                    src={`${userValue?.image_url + image.name}`}
+                                    height="70px"
+                                    width="100px"
+                                    alt="Image"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          }
+                        />
                       </div>
                       <Divider />
                       <h3>SOCIAL MEDIA DETAILS</h3>
@@ -579,40 +643,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                         </div>
                       </div>
                       <div className="row mb-6">
-                        <div className="col-lg-6 col-md-6">
-                          <label className="col-lg-4 col-form-label fw-semibold fs-6">
-                            Catalogue
-                          </label>
-                          <FileUpload
-                            name="catalogue"
-                            accept=".pdf" // Accept only PDF files
-                            auto
-                            customUpload
-                            maxFileSize={1000000}
-                            onSelect={(event) => {
-                              const files = event.files[0];
-                              setFieldValue("catalogue", files);
-                            }}
-                            emptyTemplate={
-                              <div>
-                                {userValue?.catalogue ? (
-                                  <a
-                                    href={`${
-                                      userValue?.image_url +
-                                      userValue?.catalogue
-                                    }`}
-                                    target="_blank" // Opens the link in a new tab/window
-                                    rel="noopener noreferrer" // Recommended for security reasons
-                                  >
-                                    View Catalogue (PDF)
-                                  </a>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                            }
-                          />
-                        </div>
+
                         <div className="col-lg-6 col-md-6">
                           <label
                             className="col-form-label fw-semibold fs-6"
@@ -630,37 +661,7 @@ const UserForm = ({ userValue, handleSubmitUser, userId }) => {
                         </div>
                       </div>
 
-                      <div className="row mb-6">
-                        <label className="col-lg-4 col-form-label fw-semibold fs-6">
-                          Gallery
-                        </label>
-                        <FileUpload
-                          name="gallery"
-                          accept="image/*"
-                          auto
-                          multiple
-                          customUpload
-                          maxFileSize={1000000}
-                          onSelect={(event) => {
-                            const files = event.files;
-                            setFieldValue("gallery", files);
-                          }}
-                          emptyTemplate={
-                            <div className="d-flex flex-wrap">
-                              {userValue?.gallery?.map((image, index) => (
-                                <div key={index} className="m-2">
-                                  <Image
-                                    src={`${userValue?.image_url + image.name}`}
-                                    height="70px"
-                                    width="100px"
-                                    alt="Image"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          }
-                        />
-                      </div>
+
                       <div className="mt-7">
                         <Button
                           className="btn btn btn-success btn-sm me-3"

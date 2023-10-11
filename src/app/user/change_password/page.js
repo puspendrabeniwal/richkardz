@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
-// import instance from "../axiosInterceptor";
+import instance from "../axiosInterceptor";
 import withAuth from "@/hocFront/withAuth";
 const ChangePassword = () => {
   const toast = useRef(null);
@@ -50,7 +50,7 @@ const ChangePassword = () => {
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(false);
     let formData = new FormData();
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
+    let loginUser = JSON.parse(localStorage.getItem("loginDetail"));
     formData.append("user_id", loginUser._id);
     formData.append("old_password", values.old_password);
     formData.append("new_password", values.new_password);
@@ -85,7 +85,6 @@ const ChangePassword = () => {
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
                 Change Password
               </h1>
-
             </div>
           </div>
         </div>

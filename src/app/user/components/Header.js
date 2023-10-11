@@ -45,7 +45,7 @@ const Header = () => {
               </Link>
             </div>
             <div className="menu-item px-5 my-1">
-              <Link href={`/user/user_profile/${user?._id}`}className="menu-link px-5">
+              <Link href={`/user/user_profile/${user?._id}`} className="menu-link px-5">
                 User Profile
               </Link>
             </div>
@@ -56,7 +56,7 @@ const Header = () => {
               </Link>
             </div>
             <div className="menu-item px-5 my-1">
-              <Link href="/user/public_view" className="menu-link px-5">
+              <Link href={`/user/public_view/${user?._id}`} className="menu-link px-5">
                 Public View
               </Link>
             </div>

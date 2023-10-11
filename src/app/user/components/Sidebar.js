@@ -39,15 +39,14 @@ const Sidebar = () => {
     {
       label: "Public View",
       icon: "pi pi-fw pi-eye",
-      className: pathname === "/user/public_view" ? "p-menuitem-active" : "",
+      className: pathname === "/user/public_view/"+user?._id ? "p-menuitem-active" : "",
       command: () => {
-        router.push(`/user/public_view`);
+        router.push(`/user/public_view/${user?._id}`);
       },
     },
     {
       label: "Logout",
       icon: "pi pi-fw pi-circle",
-      className: pathname === "/user/public_view" ? "p-menuitem-active" : "",
       command: () => {
         localStorage.removeItem("loginDetail");
         window.location.replace("/login");

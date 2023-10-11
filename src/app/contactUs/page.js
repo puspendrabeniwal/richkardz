@@ -154,7 +154,6 @@ const ContactUs = () => {
                     initialValues={contactValues}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { resetForm, errors }) => {
-                      console.log(errors)
                       await onSubmit(values);
                       resetForm();
                     }}

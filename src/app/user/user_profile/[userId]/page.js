@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import instance from "@/app/admin/axiosInterceptor";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
@@ -7,11 +7,13 @@ import withAuth from "@/hocFront/withAuth";
 import UserForm from "@/app/user/components/UserForm";
 import { Button } from "primereact/button";
 import { useRouter } from "next/navigation";
+import { AuthContext } from "../../AuthContext";
 
 const UpdateUser = ({ params }) => {
   const toast = useRef(null);
   const router = useRouter();
   const [userData, setUserData] = useState(null);
+  const { user, setUser } = useContext(AuthContext);
   useEffect(() => {
     getUserAPI();
   }, []);
@@ -29,6 +31,7 @@ const UpdateUser = ({ params }) => {
         formData
       );
       const getData = response.result ? response.result : {};
+      setUser(getData)
       setUserData(getData);
     } catch (error) {
       console.log(error);
@@ -49,8 +52,7 @@ const UpdateUser = ({ params }) => {
       .then((response) => {
         if (response) {
           showMessage(response);
-          router.push("/admin/user");
-          setUserData(response);
+          getUserAPI()
         }
       })
       .catch((error) => {
