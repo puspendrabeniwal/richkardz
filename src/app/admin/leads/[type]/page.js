@@ -16,13 +16,14 @@ import instance from "../../axiosInterceptor";
 import withAuth from "@/hoc/withAuth";
 import { Paginator } from "primereact/paginator";
 import { DEFAULT_PAGE_ITEM, PAGE_ITEM_LIST } from "../../constant";
+import { Button } from "primereact/button";
 
 const Leads = ({ params }) => {
   const router = useRouter();
   const [list, setList] = useState([]);
   const [dates, setDates] = useState(null);
   const filterOption = useRef(null);
-  let formData = new FormData(); //formdata object
+  let formData = {}; //formdata object
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(DEFAULT_PAGE_ITEM);
   const [totalRecords, setTotalRecords] = useState(0);
@@ -33,9 +34,9 @@ const Leads = ({ params }) => {
   const getList = () => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
 
-    formData.append("user_id", loginUser?._id);
-    formData.append("skip", first);
-    formData.append("limit", rows);
+    formData["user_id"] = loginUser?._id;
+    formData["skip"] = first;
+    formData["limit"] = rows;
 
     instance
       .post("leads/" + params.type, formData)
@@ -56,8 +57,8 @@ const Leads = ({ params }) => {
   const onPageChange = (event) => {
     setFirst(event.first);
     setRows(event.rows);
-    formData.append("skip", event.first);
-    formData.append("limit", event.rows);
+    formData["skip"] = event.first;
+    formData["limit"] = event.rows;
     getList();
   };
 
@@ -102,14 +103,14 @@ const Leads = ({ params }) => {
 
   const onSubmit = async (values) => {
     let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    formData.append("user_id", loginUser._id);
-    formData.append("name", values?.name);
-    formData.append("email", values?.email);
-    formData.append("phone_number", values?.phone_number);
-    formData.append("start_date", dates && dates.length > 0 ? dates[0] : "");
-    formData.append("end_date", dates && dates.length > 0 ? dates[1] : "");
-    formData.append("utm", values?.utm);
-    formData.append("business_type", values?.business_type);
+    formData["user_id"] = loginUser._id;
+    formData["name"] = values?.name;
+    formData["email"] = values?.email;
+    formData["phone_number"] = values?.phone_number;
+    formData["start_date"] = dates && dates.length > 0 ? dates[0] : "";
+    formData["end_date"] = dates && dates.length > 0 ? dates[1] : "";
+    formData["utm"] = values?.utm;
+    formData["business_type"] = values?.business_type;
     getList();
   };
 
@@ -147,8 +148,8 @@ const Leads = ({ params }) => {
   };
 
   const accept = (id) => {
-    let newFormData = new FormData();
-    newFormData.append("id", id);
+    let newFormData = {};
+    newFormData["id"] = id;
     instance
       .post("leads/delete/" + params.type + "/" + id, newFormData)
       .then((response) => {
@@ -358,33 +359,25 @@ const Leads = ({ params }) => {
                         <div className="separator border-gray-200 mb-10"></div>
                         <div className="px-7 py-5">
                           <div className="d-flex justify-content-end">
-                            <button
-                              type="reset"
-                              className="btn btn-sm btn-warning me-2"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Reset
-                            </button>
-                            <button
-                              type="submit"
+                            <Button
                               className="btn btn-sm btn-success me-2"
+                              icon="pi pi-save"
+                              type="submit"
                               data-kt-menu-dismiss="true"
-                            >
-                              Apply
-                            </button>
-                            <button
-                              type="button"
+                              label="Submit"
+                            />
+                            <Button
+                              className="btn btn-sm btn-danger me-2"
+                              icon="pi pi-times"
+                              type="reset"
+                              data-kt-menu-dismiss="true"
+                              label="Reset"
                               onClick={async (e) => {
                                 resetForm();
-                                setDates(null);
                                 await getList();
-                                //op.current.toggle(e);
+                                filterOption.current.toggle(e);
                               }}
-                              className="btn btn-sm btn-danger"
-                              data-kt-menu-dismiss="true"
-                            >
-                              Remove
-                            </button>
+                            />
                           </div>
                         </div>
                       </Form>

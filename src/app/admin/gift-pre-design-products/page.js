@@ -172,7 +172,7 @@ const GiftPreDesignProducts = () => {
   };
 
   const accept = (id, status, type) => {
-    let newFormData = new FormData();
+    let newFormData = {};
     newFormData["product_id"] = id;
     newFormData["status"] = status;
     newFormData["type"] = type;
@@ -382,7 +382,7 @@ const GiftPreDesignProducts = () => {
                               label="Reset"
                               onClick={async (e) => {
                                 resetForm();
-                                formData = new FormData();
+                                formData = {};
                                 await getProducts();
                                 filterOption.current.toggle(e);
                               }}
