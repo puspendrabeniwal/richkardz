@@ -17,12 +17,10 @@ const UpdateUser = ({ params }) => {
   }, []);
   const getUserAPI = async () => {
     let loginUser = JSON.parse(localStorage.getItem("loginDetail"));
-    let formData = new FormData(); //formdata object
-    formData.append(
-      "user_id",
-      Object.keys(loginUser).length > 0 ? loginUser?._id : ""
-    ); //append the values with key, value pair
-    formData.append("id", params.userId); //append the values with key, value pair
+    let formData = {}; //formdata object
+    formData["user_id"] =
+      Object.keys(loginUser).length > 0 ? loginUser?._id : "";
+    formData["id"] = params.userId;
     try {
       const response = await instance.post(
         `users/view/${params.userId}`,
@@ -76,10 +74,7 @@ const UpdateUser = ({ params }) => {
               <h1 className="d-flex text-dark fw-bolder fs-3 align-items-center my-1">
                 Update Profile
               </h1>
-
             </div>
-
-
           </div>
         </div>
       </div>

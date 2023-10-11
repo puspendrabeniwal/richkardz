@@ -2,15 +2,48 @@ import Link from "next/link";
 import { Image } from "primereact/image";
 import { Menubar } from "primereact/menubar";
 import { useRouter, usePathname } from "next/navigation";
-import React, { useState,useEffect, useContext, useRef } from "react";
-
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { AuthContext } from "./../AuthContext";
+import { ConfirmDialog } from "primereact/confirmdialog";
+import { confirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isMouseHover, setIsMouseHover] = useState(false);
   const { user, setUser } = useContext(AuthContext);
-
+  const [showDialog, setShowDialog] = useState(false);
+  const toast = useRef(null);
+  const showLogoutConfirmation = () => {
+    console.log("showLogoutConfirmation called");
+    setShowDialog(true);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem("loginDetail");
+    window.location.replace("/login");
+  };
+  const logout = () => {
+    confirm();
+  };
+  const confirm = () => {
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => {
+        localStorage.removeItem("loginDetail");
+        window.location.replace("/login");
+      },
+      reject: () => {
+        toast.current.show({
+          severity: "warn",
+          summary: "Rejected",
+          detail: "You have rejected",
+          life: 3000,
+        });
+      },
+    });
+  };
   const items = [
     {
       label: "Home",
@@ -23,7 +56,10 @@ const Sidebar = () => {
     {
       label: "Update Profile",
       icon: "pi pi-fw pi-user",
-      className: pathname === "/user/user_profile/"+user?._id ? "p-menuitem-active" : "",
+      className:
+        pathname === "/user/user_profile/" + user?._id
+          ? "p-menuitem-active"
+          : "",
       command: () => {
         router.push(`/user/user_profile/${user?._id}`);
       },
@@ -31,7 +67,8 @@ const Sidebar = () => {
     {
       label: "Change Password",
       icon: "pi pi-fw pi-lock",
-      className: pathname === "/user/change_password" ? "p-menuitem-active" : "",
+      className:
+        pathname === "/user/change_password" ? "p-menuitem-active" : "",
       command: () => {
         router.push(`/user/change_password`);
       },
@@ -48,16 +85,10 @@ const Sidebar = () => {
       label: "Logout",
       icon: "pi pi-fw pi-circle",
       className: pathname === "/user/public_view" ? "p-menuitem-active" : "",
-      command: () => {
-        localStorage.removeItem("loginDetail");
-        window.location.replace("/login");
-      },
+      command: logout,
     },
   ];
-  const deletepost = (e) => {
-    let a = e.currentTarget.parentNode.getAttribute("data-src");
-    console.log(a);
-  };
+
   return (
     <main>
       <div
@@ -70,9 +101,10 @@ const Sidebar = () => {
         data-kt-drawer-width="{default:'200px', '300px': '250px'}"
         data-kt-drawer-direction="start"
         data-kt-drawer-toggle="#kt_aside_mobile_toggle"
-        // onMouseLeave={() => setIsMouseHover(false)}
-        // onMouseEnter={() => setIsMouseHover(true)}
       >
+        <Toast ref={toast} />
+        <ConfirmDialog />
+
         <div className="aside-logo flex-column-auto" id="kt_aside_logo">
           <Link href="/admin/dashboard">
             <Image
