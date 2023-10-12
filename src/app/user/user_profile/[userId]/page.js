@@ -87,7 +87,7 @@ const UpdateUser = ({ params }) => {
           userId={params.userId}
         />
       ) : (
-        <div>Loading...</div>
+        ""
       )}
     </>
   );

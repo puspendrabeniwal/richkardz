@@ -10,38 +10,20 @@ import { Toast } from "primereact/toast";
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const [isMouseHover, setIsMouseHover] = useState(false);
   const { user, setUser } = useContext(AuthContext);
-  const [showDialog, setShowDialog] = useState(false);
   const toast = useRef(null);
-  const showLogoutConfirmation = () => {
-    console.log("showLogoutConfirmation called");
-    setShowDialog(true);
-  };
-  const handleLogout = () => {
-    localStorage.removeItem("loginDetail");
-    window.location.replace("/login");
-  };
+
   const logout = () => {
     localStorage.removeItem("loginDetail");
     window.location.replace("/login");
   };
-  const confirm = () => {
+
+  const logoutConfirmation = () => {
     confirmDialog({
-      message: "Are you sure you want to proceed?",
+      message: "Are you sure you want to logout?",
       header: "Confirmation",
       icon: "pi pi-exclamation-triangle",
-      accept: () => {
-        logout()
-      },
-      reject: () => {
-        toast.current.show({
-          severity: "warn",
-          summary: "Rejected",
-          detail: "You have rejected",
-          life: 3000,
-        });
-      },
+      accept: () => logout()
     });
   };
   const items = [
@@ -85,7 +67,7 @@ const Sidebar = () => {
       label: "Logout",
       icon: "pi pi-fw pi-circle",
       className: pathname === "/user/public_view" ? "p-menuitem-active" : "",
-      command: confirm(),
+      command: ()=>{logoutConfirmation()},
     },
   ];
 
@@ -103,7 +85,7 @@ const Sidebar = () => {
         data-kt-drawer-toggle="#kt_aside_mobile_toggle"
       >
         <Toast ref={toast} />
-        <ConfirmDialog />
+        
 
         <div className="aside-logo flex-column-auto" id="kt_aside_logo">
           <Link href="/admin/dashboard">

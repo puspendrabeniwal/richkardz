@@ -68,7 +68,7 @@ const Header = () => {
             </div>
             <div className="separator my-2"></div>
             <div className="menu-item px-5">
-              <Link href="#" onClick={confirm()} className="menu-link px-5">
+              <Link href="#" onClick={() =>confirm()} className="menu-link px-5">
                 Log Out
               </Link>
             </div>
@@ -92,20 +92,10 @@ const Header = () => {
 
   const confirm = () => {
     confirmDialog({
-      message: "Are you sure you want to proceed?",
+      message: "Are you sure you want to logout?",
       header: "Confirmation",
       icon: "pi pi-exclamation-triangle",
-      accept: () => {
-        logout
-      },
-      reject: () => {
-        toast.current.show({
-          severity: "warn",
-          summary: "Rejected",
-          detail: "You have rejected",
-          life: 3000,
-        });
-      },
+      accept: () => logout()
     });
   };
 

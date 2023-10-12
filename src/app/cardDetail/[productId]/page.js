@@ -80,13 +80,7 @@ export default function CardtDetail({ params }){
       });
   };
   const onSubmitCardDetail = async (values) => {
-    let loginUser = JSON.parse(localStorage.getItem("loginInfo"));
-    let formData = new FormData();
-    formData.append("user_id", loginUser._id);
-    Object.keys(values).forEach(function (key, index) {
-      formData.append(key, values[key]);
-    });
-    await addCardDetail(formData);
+    await addCardDetail(values);
   };
 
   const addCardDetail = async (data) => {
