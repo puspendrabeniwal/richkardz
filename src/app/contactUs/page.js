@@ -12,17 +12,19 @@ import instance from "../admin/axiosInterceptor";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ThreeCircles } from "react-loader-spinner";
 
-const GOOGLE_CAPTCHA_SITE_KEY = "6Lf_6oIoAAAAAJR7U_xA1scHBM-sRsEWEYi3jOVY";
-const SITE_SECRET = "6Lf_6oIoAAAAAEMfdcK1FdFNy9WAQY-V0fUfDBAC";
+const GOOGLE_CAPTCHA_SITE_KEY = "6LeWkZUoAAAAAH-uaK5CzfWkf8p7HFDx7ju5u6lQ";
+const SITE_SECRET = "6LeWkZUoAAAAAOsb6EBCRAFLwky6keUrgQ7nowT0";
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-  phone_number: Yup.string().matches(
-    /^[0-9]{10}$/,
-    "Phone number must be exactly 10 digits"
-  ),
+  phone_number: Yup.string()
+    .matches(
+      /^(\+\d{1,2}\s?)?(\()?\d{3}(\))?[-.\s]?\d{3}[-.\s]?\d{4}$/,
+      "Invalid phone number format"
+    )
+    .required("Phone number is required"),
   city: Yup.string().required("City is required"),
   message: Yup.string().required("Message is required"),
 });
