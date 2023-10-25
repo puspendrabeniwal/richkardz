@@ -9,6 +9,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "../user/axiosInterceptor";
 import Header from "@/app/elements/Header/page";
 import Footer from "@/app/elements/Footer/page";
+import Link from "next/link";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
@@ -16,7 +17,11 @@ const validationSchema = Yup.object().shape({
     .required("Username is required"),
   password: Yup.string().required("Password is required"),
 });
-
+const queryValidationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email address.")
+    .required("Email cannot be blank."),
+});
 const LoginUser = () => {
   const toast = useRef(null);
   let user;
@@ -56,6 +61,13 @@ const LoginUser = () => {
     });
   };
 
+  const designContactDefaultValues = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    query_msg: "",
+  };
   return (
     <html lang="en">
       <head>
@@ -99,6 +111,118 @@ const LoginUser = () => {
       <body className="bodyMain">
         <Header />
         <Toast ref={toast} />
+        <div
+          className="modal fade upload_CampnayLogo"
+          id="uploadCampnayLogoModal"
+          tabIndex="-1"
+          aria-labelledby="uploadCampnayLogoModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog  modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="uploadCampnayLogoModalLabel">
+                  Forgot Password
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close Modal_btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <i className="fa fa-close"></i>
+                </button>
+              </div>
+              <div className="modal-body">
+                <Formik
+                  initialValues={designContactDefaultValues}
+                  validationSchema={queryValidationSchema}
+                  onSubmit={async (values) =>
+                    await onSubmitDesignContact(values)
+                  }
+                >
+                  {({ setFieldValue, values }) => (
+                    <Form className="form-design">
+                      <div
+                        className="align-items-center justify-content-center col-md-12 customFrom mb-3"
+                        style={{ padding: "40px 70px 20px 70px" }}
+                      >
+                        <div className=" billingForm">
+                          <Field
+                            type="text"
+                            name="email"
+                            placeholder="Enter your Registered Email"
+                            className="form-control"
+                            id="floatingemail"
+                          />
+                        </div>
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+
+                      <div className="d-md-flex align-items-center justify-content-center mb-4">
+                        <Button
+                          className="btn btn btn-success btn-sm btnNavyBlue "
+                          type="submit"
+                          label="Continue"
+                        />
+                      </div>
+                    </Form>
+                  )}
+                </Formik>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="modal fade upload_CampnayLogo"
+          id="uploadCampnayLogoModal1"
+          tabIndex="-1"
+          aria-labelledby="uploadCampnayLogoModalLabel1"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog  modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header align-items-center justify-content-center">
+                <h5
+                  className="align-items-center justify-content-center"
+                  id="uploadCampnayLogoModalLabel1"
+                >
+                  How to Create Account?
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close Modal_btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <i className="fa fa-close"></i>
+                </button>
+              </div>
+              <div className="modal-body">
+                <p
+                  className="d-md-flex pb-0 pt-0 align-items-center justify-content-center"
+                  style={{ padding: "96px" }}
+                >
+                  You need to buy one RichKardz, then only you can create an
+                  account with us.
+                </p>
+              </div>
+              <Link href="/products">
+                <div className="d-md-flex align-items-center justify-content-center">
+                  <Button
+                    className="btn btn btn-success btn-sm btnNavyBlue mb-5 mt-3"
+                    type="submit"
+                    label="Shop Now"
+                  />
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
         <div class="row loginPage mx-0 align-items-center">
           <div class="col-lg-6">
             <img src="/front/img/contactBanner.png" alt="" />
@@ -163,8 +287,7 @@ const LoginUser = () => {
                   <Button
                     className="btn btnNavyBlue w-100 mt-3"
                     data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
-                    icon="pi pi-save"
+                    data-kt-menu-placement="bottom-center"
                     type="submit"
                     label="Login"
                   />
@@ -176,13 +299,25 @@ const LoginUser = () => {
               <div>
                 <p>
                   Don&apos;t have login details?{" "}
-                  <a href="" class="Gilroy-Bold">
+                  <a
+                    href=""
+                    className="Gilroy-Bold"
+                    data-bs-toggle="modal"
+                    data-bs-target="#uploadCampnayLogoModal1"
+                  >
                     Click Here
                   </a>
                 </p>
               </div>
               <p>
-                <a href="">Forgot Password?</a>
+                <a
+                  href=""
+                  className="Gilroy-Bold"
+                  data-bs-toggle="modal"
+                  data-bs-target="#uploadCampnayLogoModal"
+                >
+                  Forgot Password?
+                </a>
               </p>
             </div>
           </div>

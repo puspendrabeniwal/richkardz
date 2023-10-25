@@ -76,14 +76,29 @@ const AboutUs = () => {
                   About <span>Rich Kardz</span>
                 </h1>
                 <p>
-                  At Rich Kardz, we are on a mission to make networking smarter
-                  and more eco-friendly. Every year more than 7.2 Million Trees
-                  are cut for visiting cards. By using Rich Kardz you can be a
-                  part of the change and network the sustainable way.
+                  At Rich Kardz, we understand that traditional paper business
+                  cards are a staple in networking and marketing, but the
+                  constant printing and disposal of paper cards can have a
+                  significant impact on the environment. That&apos;s why we
+                  decided to offer a solution that combines technology and
+                  sustainability. Every year more than 7.2 Million Trees are cut
+                  for visiting cards. By using Rich Kardz you can be a part of
+                  the change and network the sustainable way. We also plant a
+                  tree for every order we receive.
                 </p>
                 <p>
-                  And what’s more is that we plant a tree for every order we
-                  receive.
+                  Our NFC business cards are made with high-quality materials
+                  and embedded with a Near Field Communication (NFC) chip. This
+                  chip allows you to easily share your contact information with
+                  others simply by tapping your card to their smartphone.
+                  It&apos;s a convenient and eco-friendly way to exchange
+                  information without the need for paper.
+                </p>
+                <p>
+                  Our team is passionate about promoting sustainability and
+                  reducing waste in the business world. We believe that small
+                  changes can make a big impact, and our NFC business cards are
+                  just one way to do so.
                 </p>
                 <div className="row mx-0 aboutusCard mt-3">
                   <div className="col-2 px-0  text-center col-md-2 aboutusOneCard">
@@ -105,13 +120,12 @@ const AboutUs = () => {
               </div>
               <div className="col-lg-6 mt-4 mt-lg-0">
                 <h1>
-                  Customized And Control <br />
-                  <span> Your Own Credit Card</span>
+                  Customised to your liking <br />
                 </h1>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                  Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                  natoque penatibus et magnis dis parturient montes, nascetur.
+                  All of our cards are available in multiple of designs and can
+                  also be custom designed for you with your logo, design, name,
+                  contact and much more.
                 </p>
                 <div className="row mt-2">
                   <div className="col-12 col-md-6">
@@ -204,7 +218,7 @@ const AboutUs = () => {
         <section className="userAreSaying defaultPaddingTB">
           <div className="container">
             <div className="userAre_Heading text-center">
-              <h1>What RichKardz Users are saying?</h1>
+              <h1>What our Clients Say ?</h1>
               <p>
                 Happy clients are what make a brand strong and visible in the
                 market. Rich Kardz has been <br />
@@ -226,11 +240,12 @@ const AboutUs = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#videoPlayModal"
                     >
-                      <img src="/front/img/videoPlay.png" alt="" />
+                      <img src="/front/img/Dinesh.png" alt="" />
                     </button>
                   </div>
                   <div className="userAreProText">
-                    <h3>Rahul Signh</h3>
+                    <h3>Dinesh Brahma</h3>
+                    <p>National Sales Head</p>
                     <div>
                       <a href="" className="ratingStar">
                         <i className="fa fa-star"></i>
@@ -250,8 +265,13 @@ const AboutUs = () => {
                     </div>
                   </div>
                   <p className="userAreProPText">
-                    RichKardz are environmentally friendly alternatives to
-                    traditional paper cards.
+                    The digital NFC business card provided by Rich Kardz is a
+                    game-changer. It&apos;s eco-friendly, and I can easily
+                    update my contact information without having to reprint
+                    physical business cards. It has helped make our company
+                    eco-friendly and sustainable. Also it has brought down our
+                    card printing budget drastically. I don&apos;t know how it
+                    can get better.
                   </p>
                 </div>
                 <div className="swiper-slide">
@@ -266,11 +286,12 @@ const AboutUs = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#videoPlayModal"
                     >
-                      <img src="/front/img/videoPlay.png" alt="" />
+                      <img src="/front/img/Shishir.png" alt="" />
                     </button>
                   </div>
                   <div className="userAreProText">
-                    <h3>Rahul Signh</h3>
+                    <h3>Shishir Pal Singh</h3>
+                    <p>CBO</p>
                     <div>
                       <a href="" className="ratingStar">
                         <i className="fa fa-star"></i>
@@ -290,8 +311,13 @@ const AboutUs = () => {
                     </div>
                   </div>
                   <p className="userAreProPText">
-                    RichKardz are environmentally friendly alternatives to
-                    traditional paper cards.
+                    As a business owner, I was hesitant about making the switch
+                    to digital business cards. However, after using Rich Kardz,
+                    I&apos;m a complete convert. The technology is impressive,
+                    and it&apos;s convenient to have to carry only 1 card
+                    instead of a bulk of cards. Also I land up directly in my
+                    prospective client&apos;s phone book. Absolutely does away
+                    with misplacement and throwing away of paper visiting cards.
                   </p>
                 </div>
                 <div className="swiper-slide">
@@ -306,11 +332,12 @@ const AboutUs = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#videoPlayModal"
                     >
-                      <img src="/front/img/videoPlay.png" alt="" />
+                      <img src="/front/img/Shreya.png" alt="" />
                     </button>
                   </div>
                   <div className="userAreProText">
-                    <h3>Rahul Signh</h3>
+                    <h3>Shreya Raghav</h3>
+                    <p>Sales Manager</p>
                     <div>
                       <a href="" className="ratingStar">
                         <i className="fa fa-star"></i>
@@ -330,11 +357,62 @@ const AboutUs = () => {
                     </div>
                   </div>
                   <p className="userAreProPText">
-                    RichKardz are environmentally friendly alternatives to
-                    traditional paper cards.
+                    I&apos;ve been using Rich Kardz for 2 months, and it&apos;s
+                    transformed the way I network. The card is easy to use, and
+                    I no longer have to worry about carrying crumpled paper
+                    cards. Also it makes me stand out in the sea of people
+                    handing out paper visiting cards. Makes me look tech-savvy.
+                    Who doesn&apos;t like to look cool?.
                   </p>
                 </div>
                 <div className="swiper-slide">
+                  <div className="userAreProMain">
+                    <img
+                      className="userAreProfile"
+                      src="/front/img/userSay2.png"
+                      alt=""
+                    />
+                    <button
+                      className="videoPlayIcon"
+                      data-bs-toggle="modal"
+                      data-bs-target="#videoPlayModal"
+                    >
+                      <img src="/front/img/Arun.png" alt="" />
+                    </button>
+                  </div>
+                  <div className="userAreProText">
+                    <h3>Arun S</h3>
+                    <p>General Manager</p>
+                    <div>
+                      <a href="" className="ratingStar">
+                        <i className="fa fa-star"></i>
+                      </a>
+                      <a href="" className="ratingStar">
+                        <i className="fa fa-star"></i>
+                      </a>
+                      <a href="" className="ratingStar">
+                        <i className="fa fa-star"></i>
+                      </a>
+                      <a href="" className="ratingStar">
+                        <i className="fa fa-star"></i>
+                      </a>
+                      <a href="" className="ratingStar">
+                        <i className="fa fa-star"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <p className="userAreProPText">
+                    I was impressed with the digital NFC business card provided
+                    by Rich Kardz. It is extremely convenient to share my
+                    contact information with potential clients without worrying
+                    about running out of physical business cards. The process is
+                    seamless, and the card&apos;s design is customizable, making
+                    it an essential tool for any business professional. I had a
+                    hard time deciding which card I should buy because there are
+                    so many options.
+                  </p>
+                </div>
+                {/* <div className="swiper-slide">
                   <div className="userAreProMain">
                     <img
                       className="userAreProfile"
@@ -453,47 +531,7 @@ const AboutUs = () => {
                     RichKardz are environmentally friendly alternatives to
                     traditional paper cards.
                   </p>
-                </div>
-                <div className="swiper-slide">
-                  <div className="userAreProMain">
-                    <img
-                      className="userAreProfile"
-                      src="/front/img/userSay2.png"
-                      alt=""
-                    />
-                    <button
-                      className="videoPlayIcon"
-                      data-bs-toggle="modal"
-                      data-bs-target="#videoPlayModal"
-                    >
-                      <img src="/front/img/videoPlay.png" alt="" />
-                    </button>
-                  </div>
-                  <div className="userAreProText">
-                    <h3>Rahul Signh</h3>
-                    <div>
-                      <a href="" className="ratingStar">
-                        <i className="fa fa-star"></i>
-                      </a>
-                      <a href="" className="ratingStar">
-                        <i className="fa fa-star"></i>
-                      </a>
-                      <a href="" className="ratingStar">
-                        <i className="fa fa-star"></i>
-                      </a>
-                      <a href="" className="ratingStar">
-                        <i className="fa fa-star"></i>
-                      </a>
-                      <a href="" className="ratingStar">
-                        <i className="fa fa-star"></i>
-                      </a>
-                    </div>
-                  </div>
-                  <p className="userAreProPText">
-                    RichKardz are environmentally friendly alternatives to
-                    traditional paper cards.
-                  </p>
-                </div>
+                </div> */}
               </div>
               <div className="swiper-pagination"></div>
             </div>
