@@ -1,33 +1,24 @@
 "use client";
-import Header from "./elements/Header/page";
-import Footer from "./elements/Footer/page";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(()=>{
+    var loadScript = function (src) {
+      var tag = document.createElement("script");
+      tag.async = false;
+      tag.defer = false;
+      tag.src = src;
+      document.head.appendChild(tag);
+    };
+    loadScript("/front/js/jquery.min.js");
+    loadScript("/front/js/bootstrap.min.js");
+    loadScript("/front/js/particles.min.js");
+    loadScript("/front/js/swiper-bundle.min.js");
+    loadScript("/front/js/custom.js");
+  },[])
   return (
-    
-    <html lang="en">
-      <head>
-
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="keywords" />
-
-        <title>Home</title>
-
-        <link rel="shortcut icon" href="/admin/assets/media/logos/favicon.png" />
-
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
-        <link href="/front/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/style.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/common.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/responsive.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/animate.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
-      </head>
-      <body className="bodyMain">
-
-        <Header />
-
+      <main>
         <section className="HometopBg defaultPaddingTB">
             <div className="container">
               <div className="row align-items-center">
@@ -52,9 +43,9 @@ export default function Home() {
                         </p>
                     </div>
                     <div className="d-flex align-items-center mt-5">
-                        <button className="btn btn-white">
+                        <Link href="/products" className="btn btn-white">
                           Buy Now
-                        </button>
+                        </Link>
 
                         <ul className="userHomeProfile ms-lg-5 ms-5 ps-lg-5">
                           <li><img
@@ -167,10 +158,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="col-lg-5 my-4 my-lg-0 ps-xl-5">
-                    <video className="benefitsVideo" muted={true} preload="auto" autoPlay={true} loop={true}
-                        playsInline="playsinline">
-                        <source src="/front/video/homeVideo.mp4" type="video/mp4" />
-                    </video>
+                  <img className="" src="/front/img/rk.gif" />
                   </div>
               </div>
             </div>
@@ -179,7 +167,7 @@ export default function Home() {
         <section className="userAreSaying defaultPaddingTB">
             <div className="container">
               <div className="userAre_Heading text-center">
-                  <h1>What RichKardz <br /> Users are saying?
+                  <h1>What our <br /> Clients Say ??
                   </h1>
                   <p>
                     Happy clients are what make a brand strong and visible in the market. Rich Kardz has been <br />
@@ -193,13 +181,12 @@ export default function Home() {
                   <div className="swiper-wrapper">
                     <div className="swiper-slide userssaying">
                         <div className="userProfile">
-                          <img className="" src="/front/img/userSay1.png" alt="" />
+                          <img className="" src="/front/img/testimonial/Arun.png" alt="" />
                         </div>
                         <div className="userAreProText">
-                          <h3>Rahul Signh</h3>
+                          <h3>Arun S</h3>
                         </div>
-                        <p className="userAreProPText">RichKardz are environmentally friendly alternatives to traditional paper
-                          cards.RichKardz are environmentally friendly alternatives to traditional paper.
+                        <p className="userAreProPText">I was impressed with the digital NFC business card provided by Rich Kardz. It is extremely convenient to share my contact information with potential clients without worrying about running out of physical business cards. The process is seamless, and the card&apos;s design is customizable, making it an essential tool for any business professional. I had a hard time deciding which card I should buy because there are so many options.
                         </p>
                         <div className="mt-2">
                           <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
@@ -212,13 +199,12 @@ export default function Home() {
 
                     <div className="swiper-slide userssaying">
                         <div className="userProfile">
-                          <img className="" src="/front/img/userSay1.png" alt="" />
+                          <img className="" src="/front/img/testimonial/Dinesh.png" alt="" />
                         </div>
                         <div className="userAreProText">
-                          <h3>Rahul Signh</h3>
+                          <h3>Dinesh Brahma</h3>
                         </div>
-                        <p className="userAreProPText">RichKardz are environmentally friendly alternatives to traditional paper
-                          cards.RichKardz are environmentally friendly alternatives to traditional paper.
+                        <p className="userAreProPText">The digital NFC business card provided by Rich Kardz is a game-changer. It&apos;s eco-friendly, and I can easily update my contact information without having to reprint physical business cards. It has helped make our company eco-friendly and sustainable. Also it has brought down our card printing budget drastically. I don&apos;t know how it can get better.
                         </p>
                         <div className="mt-2">
                           <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
@@ -231,33 +217,12 @@ export default function Home() {
 
                     <div className="swiper-slide userssaying">
                         <div className="userProfile">
-                          <img className="" src="/front/img/userSay2.png" alt="" />
+                          <img className="" src="/front/img/testimonial/Shishir.png" alt="" />
                         </div>
                         <div className="userAreProText">
-                          <h3>Rahul Signh</h3>
+                          <h3>Shishir Pal Singh</h3>
                         </div>
-                        <p className="userAreProPText">RichKardz are environmentally friendly alternatives to traditional paper
-                          cards.RichKardz are environmentally friendly alternatives to traditional paper.
-                        </p>
-                        <div className="mt-2">
-                          <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
-                          <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
-                          <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
-                          <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
-                          <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
-                        </div>
-                    </div>
-
-
-                    <div className="swiper-slide userssaying">
-                        <div className="userProfile">
-                          <img className="" src="/front/img/userSay3.png" alt="" />
-                        </div>
-                        <div className="userAreProText">
-                          <h3>Rahul Signh</h3>
-                        </div>
-                        <p className="userAreProPText">RichKardz are environmentally friendly alternatives to traditional paper
-                          cards.RichKardz are environmentally friendly alternatives to traditional paper.
+                        <p className="userAreProPText">As a business owner, I was hesitant about making the switch to digital business cards. However, after using Rich Kardz, I&apos;m a complete convert. The technology is impressive, and it&apos;s convenient to have to carry only 1 card instead of a bulk of cards. Also I land up directly in my prospective client&apos;s phone book. Absolutely does away with misplacement and throwing away of paper visiting cards.
                         </p>
                         <div className="mt-2">
                           <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
@@ -271,13 +236,12 @@ export default function Home() {
 
                     <div className="swiper-slide userssaying">
                         <div className="userProfile">
-                          <img className="" src="/front/img/userSay1.png" alt="" />
+                          <img className="" src="/front/img/testimonial/Shreya.png" alt="" />
                         </div>
                         <div className="userAreProText">
-                          <h3>Rahul Signh</h3>
+                          <h3>Shreya Raghav</h3>
                         </div>
-                        <p className="userAreProPText">RichKardz are environmentally friendly alternatives to traditional paper
-                          cards.RichKardz are environmentally friendly alternatives to traditional paper.
+                        <p className="userAreProPText">I&apos;ve been using Rich Kardz for 2 months, and it&apos;s transformed the way I network. The card is easy to use, and I no longer have to worry about carrying crumpled paper cards. Also it makes me stand out in the sea of people handing out paper visiting cards. Makes me look tech-savvy. Who doesn&apos;t like to look cool?.
                         </p>
                         <div className="mt-2">
                           <a href="" className="ratingStar"><i className="fa fa-star"></i></a>
@@ -314,7 +278,7 @@ export default function Home() {
                           <div className="BusinessCrdOverlay">
                               <div className="BusinessCrdOvlyText">
                                 <h2>Pvc Card</h2>
-                                <a href="">Explore <i className="fa fa-long-arrow-right"></i></a>
+                                <Link href="/products?type=PVC Glossy">Explore <i className="fa fa-long-arrow-right"></i></Link>
                               </div>
                           </div>
                         </div>
@@ -325,7 +289,7 @@ export default function Home() {
                           <div className="BusinessCrdOverlay">
                               <div className="BusinessCrdOvlyText">
                                 <h2>Metal Cards</h2>
-                                <a href="">Explore <i className="fa fa-long-arrow-right"></i></a>
+                                <Link href="/products?type=Metal Cards">Explore <i className="fa fa-long-arrow-right"></i></Link>
                               </div>
                           </div>
                         </div>
@@ -336,7 +300,7 @@ export default function Home() {
                           <div className="BusinessCrdOverlay">
                               <div className="BusinessCrdOvlyText">
                                 <h2>Pvc Card</h2>
-                                <a href="">Explore <i className="fa fa-long-arrow-right"></i></a>
+                                <Link href="/products?type=PVC Glossy">Explore <i className="fa fa-long-arrow-right"></i></Link>
                               </div>
                           </div>
                         </div>
@@ -347,7 +311,7 @@ export default function Home() {
                           <div className="BusinessCrdOverlay">
                               <div className="BusinessCrdOvlyText">
                                 <h2>Metal Cards</h2>
-                                <a href="">Explore <i className="fa fa-long-arrow-right"></i></a>
+                                <Link href="/products?type=Metal Cards">Explore <i className="fa fa-long-arrow-right"></i></Link>
                               </div>
                           </div>
                         </div>
@@ -473,7 +437,6 @@ export default function Home() {
               </div>
             </div>
         </section>
-
 
         <section className="frequeltyAsked defaultPaddingTB">
             <div className="container">
@@ -687,7 +650,7 @@ export default function Home() {
                   <h1>make a strong impression
                     that people won’t forget.
                   </h1>
-                  <button className="makeAStrongBtn btn">Buy Now</button>
+                  <Link href="/products" className="makeAStrongBtn btn">Buy Now</Link>
               </div>
             </div>
         </section>
@@ -709,8 +672,6 @@ export default function Home() {
               </div>
             </div>
         </div>
-        <Footer />
-      </body>
-    </html>
+      </main>
   )
 }

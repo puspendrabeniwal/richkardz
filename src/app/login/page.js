@@ -7,8 +7,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import instance from "../user/axiosInterceptor";
-import Header from "@/app/elements/Header/page";
-import Footer from "@/app/elements/Footer/page";
 import Link from "next/link";
 
 const validationSchema = Yup.object().shape({
@@ -69,59 +67,19 @@ const LoginUser = () => {
     query_msg: "",
   };
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <meta name="keywords" />
-
-        <title>Login</title>
-
-        <link
-          rel="shortcut icon"
-          href="/admin/assets/media/logos/favicon.png"
-        />
-
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="/front/css/bootstrap.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/style.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/common.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/responsive.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/animate.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/swiper-bundle.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-      </head>
-      <body className="bodyMain">
-        <Header />
+      <main>
         <Toast ref={toast} />
         <div
           className="modal fade upload_CampnayLogo"
-          id="uploadCampnayLogoModal"
+          id="forgot-password"
           tabIndex="-1"
-          aria-labelledby="uploadCampnayLogoModalLabel"
+          aria-labelledby="forgot-password-label"
           aria-hidden="true"
         >
           <div className="modal-dialog  modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id="uploadCampnayLogoModalLabel">
+                <h5 className="modal-title" id="forgot-password-label">
                   Forgot Password
                 </h5>
                 <button
@@ -179,9 +137,9 @@ const LoginUser = () => {
         </div>
         <div
           className="modal fade upload_CampnayLogo"
-          id="uploadCampnayLogoModal1"
+          id="create-account"
           tabIndex="-1"
-          aria-labelledby="uploadCampnayLogoModalLabel1"
+          aria-labelledby="create-account-label"
           aria-hidden="true"
         >
           <div className="modal-dialog  modal-dialog-centered">
@@ -189,7 +147,7 @@ const LoginUser = () => {
               <div className="modal-header align-items-center justify-content-center">
                 <h5
                   className="align-items-center justify-content-center"
-                  id="uploadCampnayLogoModalLabel1"
+                  id="create-account-label"
                 >
                   How to Create Account?
                 </h5>
@@ -215,7 +173,9 @@ const LoginUser = () => {
                 <div className="d-md-flex align-items-center justify-content-center">
                   <Button
                     className="btn btn btn-success btn-sm btnNavyBlue mb-5 mt-3"
-                    type="submit"
+                    type="btn"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
                     label="Shop Now"
                   />
                 </div>
@@ -303,7 +263,7 @@ const LoginUser = () => {
                     href=""
                     className="Gilroy-Bold"
                     data-bs-toggle="modal"
-                    data-bs-target="#uploadCampnayLogoModal1"
+                    data-bs-target="#create-account"
                   >
                     Click Here
                   </a>
@@ -314,7 +274,7 @@ const LoginUser = () => {
                   href=""
                   className="Gilroy-Bold"
                   data-bs-toggle="modal"
-                  data-bs-target="#uploadCampnayLogoModal"
+                  data-bs-target="#forgot-password"
                 >
                   Forgot Password?
                 </a>
@@ -322,11 +282,7 @@ const LoginUser = () => {
             </div>
           </div>
         </div>
-
-        <Footer />
-      </body>
-    </html>
-  );
+        </main>  );
 };
 
 export default LoginUser;

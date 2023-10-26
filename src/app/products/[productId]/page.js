@@ -2,8 +2,6 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import Header from "@/app/elements/Header/page";
-import Footer from "@/app/elements/Footer/page";
 import instance from "@/app/admin/axiosInterceptor";
 
 export default function ProductDetail({ params }) {
@@ -24,47 +22,7 @@ export default function ProductDetail({ params }) {
       });
   };
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <meta name="keywords" />
-
-        <title>Products</title>
-
-        <link
-          rel="shortcut icon"
-          href="/admin/assets/media/logos/favicon.png"
-        />
-
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="/front/css/bootstrap.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/style.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/common.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/responsive.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/animate.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/swiper-bundle.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-      </head>
-      <body className="bodyMain">
-        <Header />
+      <main>
         <section className="py-4 py-md-5 container">
           <div className="row">
             <div className="col-lg-9">
@@ -240,7 +198,7 @@ export default function ProductDetail({ params }) {
                   </div>
                 </div>
               </div>
-              <Link href={`/cardDetail/${params.productId}`} className="btn btnNavyBlue mt-4 w-100 cursor-pointer">Buy Now</Link>
+              <Link href={`/card-detail/${params.productId}`} className="btn btnNavyBlue mt-4 w-100 cursor-pointer">Buy Now</Link>
             </div>
           </div>
         </section>
@@ -808,8 +766,6 @@ export default function ProductDetail({ params }) {
             </div>
           </div>
         </div>
-        <Footer />
-      </body>
-    </html>
+      </main>
   );
 }

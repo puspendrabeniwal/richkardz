@@ -8,9 +8,9 @@ const Header =()=>{
         <header id="header" className="navbarscroll w-100 headerNav headerTop ">
         <div className="container d-flex align-items-center justify-content-between">
           <div className="">
-              <a className="p-0 d-flex align-items-center" href="/">
+              <Link className="p-0 d-flex align-items-center" href="/">
                 <img className="logo-top" src="/front/img/Richkardz-logo.png" />
-              </a>
+              </Link>
           </div>
 
           <ul className="d-lg-none">
@@ -55,8 +55,8 @@ const Header =()=>{
               <ul className=" d-lg-flex align-items-lg-center float-lg-left">
                 <li className=""><Link href="/" className={(pathname === "/") ? "active" : ""}> Home</Link></li>
                 <li className=""><Link href="/products" className={(pathname === "/products") ? "active" : ""}>Products</Link></li>
-                <li className=""><Link href="/aboutUs" className={(pathname === "/aboutUs") ? "active" : ""}>About</Link></li>
-                <li className=""><Link href="/contactUs" className={(pathname === "/contactUs") ? "active" : ""}>Conatct Us</Link></li>
+                <li className=""><Link href="/about-us" className={(pathname === "/about-us") ? "active" : ""}>About</Link></li>
+                <li className=""><Link href="/contact-us" className={(pathname === "/contact-us") ? "active" : ""}>Conatct Us</Link></li>
                 <li className="d-none d-lg-inline-block">
                     <select className="vodiapicker ms-lg-4">
                       <option value="au"

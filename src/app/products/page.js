@@ -1,15 +1,18 @@
 "use client";
-import Script from "next/script";
 import Link from "next/link";
-import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+
 import instance from "@/app/admin/axiosInterceptor";
-import Header from "@/app/elements/Header/page";
-import Footer from "@/app/elements/Footer/page";
 export default function Product() {
+  
+  const searchParams = useSearchParams();
+  const typeOfCard = searchParams.get('type')
+
   const [products, setProducts] = useState([]);
-  const [cardType, setCardType] = useState("All");
+  const [cardType, setCardType] = useState((typeOfCard) ? typeOfCard : "All");
   const [imageUrl, setImageUrl] = useState("");
+
   useEffect(() => {
     getList();
   }, [cardType]);
@@ -27,47 +30,7 @@ export default function Product() {
       });
   };
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <meta name="keywords" />
-
-        <title>Products</title>
-
-        <link
-          rel="shortcut icon"
-          href="/admin/assets/media/logos/favicon.png"
-        />
-
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="/front/css/bootstrap.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/style.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/common.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/responsive.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/animate.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/swiper-bundle.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-      </head>
-      <body className="bodyMain">
-        <Header />
+      <main>
         <section className="py-4 py-md-15 container">
           <ul
             className="nav nav-tabs productTabs border-0"
@@ -77,7 +40,7 @@ export default function Product() {
             <li className="nav-item" role="presentation">
               <button
                 onClick={() => setCardType("All")}
-                className="nav-link active"
+                className={`nav-link ${(cardType === "All") ? 'active' : ''}`}
                 id="all-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#all"
@@ -92,7 +55,7 @@ export default function Product() {
             <li className="nav-item" role="presentation">
               <button
                 onClick={() => setCardType("PVC Glossy")}
-                className="nav-link"
+                className={`nav-link ${(cardType === "PVC Glossy") ? 'active' : ''}`}
                 id="home-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#home"
@@ -107,7 +70,7 @@ export default function Product() {
             <li className="nav-item" role="presentation">
               <button
                 onClick={() => setCardType("Metal Cards")}
-                className="nav-link"
+                className={`nav-link ${(cardType === "Metal Cards") ? 'active' : ''}`}
                 id="profile-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#profile"
@@ -117,6 +80,21 @@ export default function Product() {
                 aria-selected="false"
               >
                 Metal Cards
+              </button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button
+                onClick={() => setCardType("Metal Cards")}
+                className={`nav-link ${(cardType === "combo") ? 'active' : ''}`}
+                id="combo-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#combo"
+                type="button"
+                role="tab"
+                aria-controls="combo"
+                aria-selected="false"
+              >
+                COMBO
               </button>
             </li>
           </ul>
@@ -297,6 +275,64 @@ export default function Product() {
                 })}
               </div>
             </div>
+            <div
+              className="tab-pane fade"
+              id="combo"
+              role="tabpanel"
+              aria-labelledby="combo-tab"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <div className="row">
+                {products.map((row, index) => {
+                  let image =
+                    row.images && row.images.length > 0
+                      ? row.images[0]["name"]
+                      : "";
+                  let imagePath =
+                    imageUrl && image
+                      ? imageUrl + image
+                      : "/front/img/card.png";
+                  return (
+                    <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
+                      <Link href={`/combo-products/printing-details/${row?._id}`}>
+                        <div className="productMainCard">
+                          <div className="productMainImage text-center">
+                            <img className="img-fluid" src={imagePath} alt="" />
+                          </div>
+                          <div className="productTitle">
+                            <h3>{row?.product_name} Combo</h3>
+                          </div>
+                          <div className="mt-2">
+                            <span className="ratingStar">
+                              <i className="fa fa-star"></i>
+                            </span>
+                            <span className="ratingStar">
+                              <i className="fa fa-star"></i>
+                            </span>
+                            <span className="ratingStar">
+                              <i className="fa fa-star"></i>
+                            </span>
+                            <span className="ratingStar">
+                              <i className="fa fa-star"></i>
+                            </span>
+                            <span className="ratingStar">
+                              <i className="fa fa-star"></i>
+                            </span>
+                            <span className="ratingStarText">(4.6)</span>
+                          </div>
+                          <div className="productPrice">
+                            <h2>₹ {row?.discount}</h2>
+                            <del>₹ {row?.price}</del>
+                            <h5 className="">( 20% OFF )</h5>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </section>
         <section className=" container pb-md-5 pb-3">
@@ -426,8 +462,6 @@ export default function Product() {
             </div>
           </div>
         </section>
-        <Footer />
-      </body>
-    </html>
+      </main>
   );
 }

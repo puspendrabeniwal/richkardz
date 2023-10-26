@@ -116,8 +116,8 @@ maintop sliders
 .youtubeModal .Modal_btn-close:hover{background-color: var(--NavyBlueColor);color: white;}
 .youtubeModal .modal-content{background-color: unset;border: none;}
 
-.upload_CampnayLogo .Modal_btn-close{ position: absolute; right: 16px; background: var(--orangeColor); color: white; opacity: 1; top: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; z-index: 1;}
-.upload_CampnayLogo .Modal_btn-close:hover{background-color: var(--NavyBlueColor);color: white;}
+.upload_CampnayLogo .Modal_btn-close{ position: absolute; right: 16px; background: var(--NavyBlueColor); color: white; opacity: 1; top: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 20px; width: 20px; z-index: 1;}
+.upload_CampnayLogo .Modal_btn-close:hover{background-color: var(--orangeColor);color: white;}
 
 /* Explore Our Smart */
 .ExploreOurSmart{ border: 1px solid #ccc; display: flex; } 
@@ -172,7 +172,7 @@ maintop sliders
 .makeAStrong{background-image: url('../img/makeAStrong.png'); min-height: 500px; background-position: center; background-size: cover; display: flex;align-items: center;justify-content: center;} 
 .makeAStrong h1{ font-size: 70px; font-family: Gilroy-Bold; color: white; } 
 .makeAStrong .makeAStrongBtn{ min-width: 170px; border-radius: 30px; margin-top: 13px; font-size: 21px; padding: 10px; background-color: white; } 
-.makeAStrong .makeAStrongBtn:hover{ background-color: var(--NavyBlueColor); color: white; }
+.makeAStrong .makeAStrongBtn:hover{ background-color: var(--orangeColor); color: white; }
 .makeAStrong .makeAStrongBtn:focus:not(:focus-visible){background-color: #d78624;color: white;border: 1px solid;border-color: var(--NavyBlueColor);box-shadow: 0px 0px 10px 0px #fe8f09;}
 
 /*------ homepage end css------ */
@@ -557,3 +557,7 @@ border-bottom-style: solid;
 .countrySelect:hover li{ margin-left: 0px; } 
 .countrySelect:focus{ outline:none; } 
 .lang-select{ display: inline-block }
+
+.p-toast{
+    z-index: 55555555 !important;
+}

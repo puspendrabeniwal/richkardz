@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import Header from "@/app/elements/Header/page";
-import Footer from "@/app/elements/Footer/page";
 import instance from "@/app/admin/axiosInterceptor";
 import { Toast } from "primereact/toast";
 import { useSearchParams } from "next/navigation";
@@ -38,49 +36,9 @@ export default function OrderStatus({ params }) {
   
   return (
     
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <meta name="keywords" />
-
-        <title>Thank you</title>
-
-        <link
-          rel="shortcut icon"
-          href="/admin/assets/media/logos/favicon.png"
-        />
-
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="/front/css/bootstrap.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/style.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/common.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/responsive.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/animate.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/swiper-bundle.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-      </head>
-      <body className="bodyMain">
+      <main>
         {(paymentStatus === "Credit") ? <>
         <Toast ref={toast} />
-        <Header />
         <div className="row thankYouSection mx-0 align-items-center">
          <div className="col-lg-6 px-0">
             <img src="/front/img/thankYou.png" alt="" />
@@ -96,9 +54,7 @@ export default function OrderStatus({ params }) {
             <Link href="/products" className="btn btnNavyBlue mt-3 px-5">Coutinue</Link>
          </div>
       </div>
-        <Footer />
         </>:""}
-      </body>
-    </html>
+        </main>
   );
 }

@@ -1,51 +1,9 @@
 "use client";
 import React from "react";
-import Header from "../elements/Header/page";
-import Footer from "../elements/Footer/page";
 
 export default function FAQs() {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <meta name="keywords" />
-
-        <title>FAQs</title>
-
-        <link
-          rel="shortcut icon"
-          href="/admin/assets/media/logos/favicon.png"
-        />
-
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="/front/css/bootstrap.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/style.css" rel="stylesheet" type="text/css" />
-        <link href="/front/css/common.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/responsive.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-        <link href="/front/css/animate.css" rel="stylesheet" type="text/css" />
-        <link
-          href="/front/css/swiper-bundle.min.css"
-          rel="stylesheet"
-          type="text/css"
-        />
-      </head>
-      <body className="bodyMain">
-        <Header />
+      <main>
         <section className="faqMainSection py-md-5 pt-5 pb-3">
           <div className="container">
             <h1 className="text-center">Frequeltly Asked Questions</h1>
@@ -246,8 +204,6 @@ export default function FAQs() {
             </div>
           </div>
         </section>
-        <Footer />
-      </body>
-    </html>
+      </main>
   );
 }

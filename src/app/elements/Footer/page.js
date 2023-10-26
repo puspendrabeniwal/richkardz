@@ -61,13 +61,13 @@ const Footer = () => {
                     <Link href="/">Home</Link>
                   </li>
                   <li>
-                    <Link href="/aboutUs">About Us</Link>
+                    <Link href="/about-us">About Us</Link>
                   </li>
                   <li>
                     <Link href="/products">Products</Link>
                   </li>
                   <li>
-                    <Link href="/contactUs">Contact Us</Link>
+                    <Link href="/contact-us">Contact Us</Link>
                   </li>
                 </ul>
               </div>
@@ -75,10 +75,10 @@ const Footer = () => {
                 <h5>FOLLOW US</h5>
                 <ul className="list-unstyled">
                   <li>
-                    <a href="">Facebook</a>
+                    <a href="https://www.linkedin.com/company/rich-kardz/" target="_blank">Linkedin</a>
                   </li>
                   <li>
-                    <a href="">Instagram</a>
+                    <a href="https://www.instagram.com/richkardz_/" target="_blank">Instagram</a>
                   </li>
                 </ul>
               </div>
@@ -94,16 +94,16 @@ const Footer = () => {
           <div className="col-xl-8 col-lg-9">
             <ul className="text-lg-end text-center mt-3 mt-md-0">
               <li>
-                <Link href="/privacyPolicy">Privacy Policy</Link>
+                <Link href="/privacy-policy">Privacy Policy</Link>
               </li>
               <li>
-                <Link href="/termAndCondition">Terms & Conditions</Link>
+                <Link href="/terms-conditions">Terms & Conditions</Link>
               </li>
               <li>
-                <Link href="/returnAndRefundPolicy">Retum & Refund Policy</Link>
+                <Link href="/refund-policy">Retum & Refund Policy</Link>
               </li>
               <li>
-                <Link href="/shippingAndDelivery">Shipping & Delivery</Link>
+                <Link href="/shipping-delivery-policy">Shipping & Delivery</Link>
               </li>
               <li>
                 <Link href="/faqs">FAQs</Link>

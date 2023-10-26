@@ -94,9 +94,9 @@ const Signin = () => {
                       <Toast ref={toast} />
                         <h1 className="text-dark fw-bolder mb-3">Sign In</h1>
 
-                        <div className="text-gray-500 fw-semibold fs-6">
+                        {/* <div className="text-gray-500 fw-semibold fs-6">
                           Your Social Campaigns
-                        </div>
+                        </div> */}
                       </div>
 
                       <div className="fv-row mb-8">
@@ -165,10 +165,10 @@ const Signin = () => {
           <div
             className="d-flex flex-lg-row-fluid w-lg-50 bgi-size-cover h-760px h-md-575px bgi-position-center order-1 order-lg-2"
             style={{
-              backgroundImage: "url(/admin/assets/media/misc/search-bg.png)",
+              background: "#034b65",
             }}
           >
-            <div className="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
+            <div className="d-flex flex-column flex-center py-7 py-lg-9 px-5 px-md-15 w-100">
               <a href="#" className="mb-0 mb-lg-12">
                 <img
                   alt="Logo"
@@ -178,8 +178,8 @@ const Signin = () => {
               </a>
 
               <img
-                className="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20"
-                src="/admin/assets/media/misc/auth-screens.jpg"
+                className="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px"
+                src="/admin/assets/media/misc/auth-screens.png"
                 alt=""
               />
             </div>
