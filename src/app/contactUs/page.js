@@ -15,18 +15,18 @@ import { ThreeCircles } from "react-loader-spinner";
 const GOOGLE_CAPTCHA_SITE_KEY = "6LeWkZUoAAAAAH-uaK5CzfWkf8p7HFDx7ju5u6lQ";
 const SITE_SECRET = "6LeWkZUoAAAAAOsb6EBCRAFLwky6keUrgQ7nowT0";
 const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("Name is required"),
+  full_name: Yup.string().required("Name cannot be blank."),
   email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
+    .email("Email is not a valid email address.")
+    .required("Email cannot be blank."),
   phone_number: Yup.string()
     .matches(
       /^(\+\d{1,2}\s?)?(\()?\d{3}(\))?[-.\s]?\d{3}[-.\s]?\d{4}$/,
-      "Invalid phone number format"
+      "Phone Number should contain at most 10 characters."
     )
-    .required("Phone number is required"),
-  city: Yup.string().required("City is required"),
-  message: Yup.string().required("Message is required"),
+    .required("Phone Number cannot be blank."),
+  city: Yup.string().required("City cannot be blank."),
+  message: Yup.string().required("Message cannot be blank."),
 });
 
 const ContactUs = () => {
