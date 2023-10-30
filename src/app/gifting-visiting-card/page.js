@@ -5,11 +5,11 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
 import { useRef } from "react";
 const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("Name cannot be blank."),
+  name: Yup.string().required("Name cannot be blank."),
   email: Yup.string()
     .email("Email is not a valid email address.")
     .required("Email cannot be blank."),
-  phone_number: Yup.string()
+  phone_no: Yup.string()
     .matches(
       /^(\+\d{1,2}\s?)?(\()?\d{3}(\))?[-.\s]?\d{3}[-.\s]?\d{4}$/,
       "Phone Number should contain at most 10 characters."
@@ -18,14 +18,53 @@ const validationSchema = Yup.object().shape({
   city: Yup.string().required("City cannot be blank."),
 });
 
-const initialValues = {
-  full_name: "",
-  email: "",
-  phone_number: "",
-  city: "",
-};
 export default function GiftingVisitingCard() {
+  const toast = useRef(null);
+  const initialValues = {
+    name: "",
+    email: "",
+    phone_no: "",
+    city: "",
+  };
+  const addDigitalVisitingCard = async (data) => {
+    axios
+      .post(
+        "https://richkardz.com/api/landing-pages/gifting-visiting-card-enq",
+        data
+      )
+      .then((response) => {
+        showMessage(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        showMessage(error);
+      });
+  };
+  const onSubmit = async (values) => {
+    let formdata = new FormData();
+    formdata.append("BrandLeads[name]", values.name);
+    formdata.append("BrandLeads[email]", values.email);
+    formdata.append("BrandLeads[phone_no]", values.phone_no);
+    formdata.append("BrandLeads[city]", values.city);
+    const captchaValue = recaptcha.current.getValue();
+    if (!captchaValue) {
+      alert("Please verify the reCAPTCHA!");
+    } else {
+      await addDigitalVisitingCard(formdata);
+    }
+  };
+
   const recaptcha = useRef();
+  const recaptcha2 = useRef();
+
+  const showMessage = (data) => {
+    toast.current.show({
+      severity: data.success ? "success" : "error",
+      summary: data.success ? "Success" : "Error",
+      detail: data.message,
+      life: 5000,
+    });
+  };
 
   return (
     <html lang="en">
@@ -63,7 +102,7 @@ export default function GiftingVisitingCard() {
         />
         <meta property="og:site_name" content="Rich Kardz" />
         <meta property="og:email" content="support@richkardz.com" />
-        <meta property="og:phone_number" content="+919739048320" />
+        <meta property="og:phone_no" content="+919739048320" />
 
         <meta name="twitter:card" content="summary" />
         <meta
@@ -182,13 +221,13 @@ export default function GiftingVisitingCard() {
                           <div className="formgrop field-enquiries-name required">
                             <Field
                               type="text"
-                              name="full_name"
+                              name="name"
                               className="form-control"
                               id="floatingname"
                               placeholder="Full Name"
                             />
                             <ErrorMessage
-                              name="full_name"
+                              name="name"
                               component="div"
                               className="text-danger"
                             />
@@ -213,7 +252,7 @@ export default function GiftingVisitingCard() {
                           <div className="formgrop field-enquiries-phone_no required">
                             <Field
                               type="text"
-                              name="phone_number"
+                              name="phone_no"
                               className="form-control"
                               placeholder="Phone Number"
                             />
@@ -221,7 +260,7 @@ export default function GiftingVisitingCard() {
                               <img src="/media/imageb01d.png?width=31&amp;height=32&amp;zc=0&amp;image=/themes/landing/images/NFC-Logo-Icon.png" />
                             </div>
                             <ErrorMessage
-                              name="phone_number"
+                              name="phone_no"
                               component="div"
                               className="text-danger"
                             />
@@ -643,13 +682,13 @@ export default function GiftingVisitingCard() {
                         <div className="formgrop field-enquiries-name required">
                           <Field
                             type="text"
-                            name="full_name"
+                            name="name"
                             className="form-control"
                             id="floatingname"
                             placeholder="Full Name"
                           />
                           <ErrorMessage
-                            name="full_name"
+                            name="name"
                             component="div"
                             className="text-danger"
                           />
@@ -671,12 +710,12 @@ export default function GiftingVisitingCard() {
                         <div className="formgrop field-enquiries-phone_no required">
                           <Field
                             type="text"
-                            name="phone_number"
+                            name="phone_no"
                             className="form-control"
                             placeholder="Phone Number"
                           />
                           <ErrorMessage
-                            name="phone_number"
+                            name="phone_no"
                             component="div"
                             className="text-danger"
                           />
@@ -698,7 +737,7 @@ export default function GiftingVisitingCard() {
                         <div className="formgrop field-enquiries-city required">
                           <div className="mx-1 form-group field-brandleads-recaptcha">
                             <ReCAPTCHA
-                              ref={recaptcha}
+                              ref={recaptcha2}
                               sitekey={GOOGLE_CAPTCHA_SITE_KEY}
                             />
                             <p className="help-block help-block-error"></p>
