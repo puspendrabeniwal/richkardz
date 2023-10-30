@@ -3,8 +3,9 @@ import * as Yup from "yup";
 import React, { useRef, useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
 import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
+import { Toast } from "primereact/toast";
+import axios from "axios";
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name cannot be blank."),
   email: Yup.string()
@@ -18,13 +19,8 @@ const validationSchema = Yup.object().shape({
     .required("Phone Number cannot be blank."),
 });
 
-const initialValues = {
-  full_name: "",
-  email: "",
-  phone_number: "",
-};
-
 export default function Brands() {
+  const toast = useRef(null);
   useEffect(() => {
     var loadScript = function (src) {
       var tag = document.createElement("script");
@@ -40,7 +36,44 @@ export default function Brands() {
     loadScript("/themes/brand/js/custom.js");
   }, []);
 
+  const initialValues = {
+    full_name: "",
+    email: "",
+    phone_number: "",
+  };
+  const addBrandAPI = async (data) => {
+    axios
+      .post("https://richkardz.com/api/landing-pages/brands-lead", data)
+      .then((response) => {
+        showMessage(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        showMessage(error);
+      });
+  };
+  const onSubmit = async (values) => {
+    let formdata = new FormData();
+    formdata.append("BrandLeads[full_name]", values.full_name);
+    formdata.append("BrandLeads[email]", values.email);
+    formdata.append("BrandLeads[phone_number]", values.phone_number);
+    const captchaValue = recaptcha.current.getValue();
+    if (!captchaValue) {
+      alert("Please verify the reCAPTCHA!");
+    } else {
+      await addBrandAPI(formdata);
+    }
+  };
+
   const recaptcha = useRef();
+  const showMessage = (data) => {
+    toast.current.show({
+      severity: data.success ? "success" : "error",
+      summary: data.success ? "Success" : "Error",
+      detail: data.message,
+      life: 5000,
+    });
+  };
   return (
     <html lang="en">
       <head>
@@ -92,6 +125,7 @@ export default function Brands() {
         <link href="/media/Richkardz-favicon.png" rel="icon" />
         <link rel="canonical" href="https://www.richkardz.com/" />
       </head>
+      <Toast ref={toast} />
       <body className="bodyMain">
         <header className="container headerTop">
           <img
