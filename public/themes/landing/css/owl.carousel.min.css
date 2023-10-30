@@ -28,3 +28,6 @@ img.pro-img {
     border-radius: 10px;
     margin: 10px 10px 10px 10px;
 }
+input.form-control {
+    color: #fff;
+}
