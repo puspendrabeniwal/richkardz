@@ -18,15 +18,18 @@ const validationSchema = Yup.object().shape({
     )
     .required("Phone Number cannot be blank."),
   city: Yup.string().required("City cannot be blank."),
+  recaptchaField: Yup.string().required("reCAPTCHA validation is required."),
 });
 
 export default function DigitalVisitingCard() {
   const toast = useRef(null);
+  const recaptcha = useRef();
   const initialValues = {
     name: "",
     email: "",
     phone_no: "",
     city: "",
+    recaptchaField: "",
   };
   const addDigitalVisitingCard = async (data) => {
     axios
@@ -35,7 +38,7 @@ export default function DigitalVisitingCard() {
         data
       )
       .then((response) => {
-        showMessage(response);
+        showMessage(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -44,21 +47,13 @@ export default function DigitalVisitingCard() {
   };
   const onSubmit = async (values) => {
     let formdata = new FormData();
-    formdata.append("BrandLeads[name]", values.name);
-    formdata.append("BrandLeads[email]", values.email);
-    formdata.append("BrandLeads[phone_no]", values.phone_no);
-    formdata.append("BrandLeads[city]", values.city);
-    const captchaValue = recaptcha.current.getValue();
-    if (!captchaValue) {
-      alert("Please verify the reCAPTCHA!");
-    } else {
-      await addDigitalVisitingCard(formdata);
-    }
+    formdata.append("Enquiries[name]", values.name);
+    formdata.append("Enquiries[email]", values.email);
+    formdata.append("Enquiries[phone_no]", values.phone_no);
+    formdata.append("Enquiries[city]", values.city);
+    await addDigitalVisitingCard(formdata);
+    recaptcha?.current?.reset();
   };
-
-  const recaptcha = useRef();
-  const recaptcha2 = useRef();
-
   const showMessage = (data) => {
     toast.current.show({
       severity: data.success ? "success" : "error",
@@ -189,9 +184,14 @@ export default function DigitalVisitingCard() {
                     enableReinitialize={true}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values, { resetForm, errors }) => {
+                    onSubmit={async (
+                      values,
+                      { resetForm, resetCaptcha, errors }
+                    ) => {
                       await onSubmit(values);
                       resetForm();
+
+                      // resetCaptcha();
                     }}
                   >
                     {({ setFieldValue, values }) => (
@@ -284,8 +284,21 @@ export default function DigitalVisitingCard() {
                           <div className="formgrop field-enquiries-city required">
                             <div className="mx-1 form-group field-brandleads-recaptcha">
                               <ReCAPTCHA
-                                ref={recaptcha}
                                 sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                                ref={recaptcha}
+                                onChange={(reCaptchaValue) => {
+                                  if (reCaptchaValue) {
+                                    setFieldValue(
+                                      "recaptchaField",
+                                      reCaptchaValue
+                                    );
+                                  }
+                                }}
+                              />
+                              <ErrorMessage
+                                name="recaptchaField"
+                                component="div"
+                                className="text-danger"
                               />
                               <p className="help-block help-block-error"></p>
                             </div>
@@ -650,8 +663,10 @@ export default function DigitalVisitingCard() {
                   initialValues={initialValues}
                   validationSchema={validationSchema}
                   onSubmit={async (values, { resetForm, errors }) => {
-                    await onSubmit(values);
-                    resetForm();
+                    if (recaptcha && recaptcha?.current?.getValue()) {
+                      await onSubmit(values);
+                      resetForm();
+                    }
                   }}
                 >
                   {({ setFieldValue, values }) => (
@@ -739,8 +754,21 @@ export default function DigitalVisitingCard() {
                         <div className="formgrop field-enquiries-city required">
                           <div className="mx-1 form-group field-brandleads-recaptcha">
                             <ReCAPTCHA
-                              ref={recaptcha2}
                               sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                              ref={recaptcha}
+                              onChange={(reCaptchaValue) => {
+                                if (reCaptchaValue) {
+                                  setFieldValue(
+                                    "recaptchaField",
+                                    reCaptchaValue
+                                  );
+                                }
+                              }}
+                            />
+                            <ErrorMessage
+                              name="recaptchaField"
+                              component="div"
+                              className="text-danger"
                             />
                             <p className="help-block help-block-error"></p>
                           </div>

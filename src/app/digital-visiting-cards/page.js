@@ -20,16 +20,19 @@ const validationSchema = Yup.object().shape({
     .required("Phone Number cannot be blank."),
   city: Yup.string().required("City cannot be blank."),
   how_many_cards: Yup.string().required("How many cards cannot be blank."),
+  recaptchaField: Yup.string().required("reCAPTCHA validation is required."),
 });
 
 export default function DigitalVisitingCards() {
   const toast = useRef(null);
+  const recaptcha = useRef();
   const initialValues = {
     name: "",
     email: "",
     phone_no: "",
     how_many_cards: "",
     city: "",
+    recaptchaField: "",
   };
   const addDigitalVisitingCard = async (data) => {
     axios
@@ -38,7 +41,7 @@ export default function DigitalVisitingCards() {
         data
       )
       .then((response) => {
-        showMessage(response);
+        showMessage(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -47,27 +50,14 @@ export default function DigitalVisitingCards() {
   };
   const onSubmit = async (values) => {
     let formdata = new FormData();
-    formdata.append("BrandLeads[name]", values.name);
-    formdata.append("BrandLeads[email]", values.email);
-    formdata.append("BrandLeads[phone_no]", values.phone_no);
-    formdata.append("BrandLeads[how_many_cards]", values.how_many_cards);
-    formdata.append("BrandLeads[city]", values.city);
-    const captchaValue = recaptcha.current.getValue();
-    const captchaValue2 = recaptcha2.current.getValue();
-    if (!captchaValue) {
-      alert("Please verify the reCAPTCHA!");
-    } else {
-      await addDigitalVisitingCard(formdata);
-    }
-    if (!captchaValue2) {
-      alert("Please verify the reCAPTCHA!");
-    } else {
-      await addDigitalVisitingCard(formdata);
-    }
+    formdata.append("Enquiries[name]", values.name);
+    formdata.append("Enquiries[email]", values.email);
+    formdata.append("Enquiries[phone_no]", values.phone_no);
+    formdata.append("Enquiries[how_many_cards]", values.how_many_cards);
+    formdata.append("Enquiries[city]", values.city);
+    await addDigitalVisitingCard(formdata);
+    recaptcha?.current?.reset();
   };
-
-  const recaptcha = useRef();
-  const recaptcha2 = useRef();
 
   const showMessage = (data) => {
     toast.current.show({
@@ -313,8 +303,21 @@ export default function DigitalVisitingCards() {
                           <div className="formgrop field-enquiries-city required">
                             <div className="mx-1 form-group field-brandleads-recaptcha">
                               <ReCAPTCHA
-                                ref={recaptcha}
                                 sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                                ref={recaptcha}
+                                onChange={(reCaptchaValue) => {
+                                  if (reCaptchaValue) {
+                                    setFieldValue(
+                                      "recaptchaField",
+                                      reCaptchaValue
+                                    );
+                                  }
+                                }}
+                              />
+                              <ErrorMessage
+                                name="recaptchaField"
+                                component="div"
+                                className="text-danger"
                               />
                               <p className="help-block help-block-error"></p>
                             </div>
@@ -787,8 +790,21 @@ export default function DigitalVisitingCards() {
                         <div className="formgrop field-enquiries-city required">
                           <div className="mx-1 form-group field-brandleads-recaptcha">
                             <ReCAPTCHA
-                              ref={recaptcha2}
                               sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                              ref={recaptcha}
+                              onChange={(reCaptchaValue) => {
+                                if (reCaptchaValue) {
+                                  setFieldValue(
+                                    "recaptchaField",
+                                    reCaptchaValue
+                                  );
+                                }
+                              }}
+                            />
+                            <ErrorMessage
+                              name="recaptchaField"
+                              component="div"
+                              className="text-danger"
                             />
                             <p className="help-block help-block-error"></p>
                           </div>
