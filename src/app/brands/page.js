@@ -1,10 +1,11 @@
 "use client";
 import * as Yup from "yup";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
 import { Toast } from "primereact/toast";
+// import instance from "../admin/axiosInterceptor";
 import axios from "axios";
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name cannot be blank."),
@@ -17,10 +18,13 @@ const validationSchema = Yup.object().shape({
       "Phone Number should contain at least 10 characters."
     )
     .required("Phone Number cannot be blank."),
+  recaptchaField: Yup.string().required("reCAPTCHA validation is required."),
 });
 
 export default function Brands() {
   const toast = useRef(null);
+  const recaptcha = useRef();
+
   useEffect(() => {
     var loadScript = function (src) {
       var tag = document.createElement("script");
@@ -40,6 +44,7 @@ export default function Brands() {
     full_name: "",
     email: "",
     phone_number: "",
+    recaptchaField: "",
   };
   const addBrandAPI = async (data) => {
     axios
@@ -52,20 +57,18 @@ export default function Brands() {
         showMessage(error);
       });
   };
+
   const onSubmit = async (values) => {
+    const tokenValue = recaptcha?.current?.getValue();
     let formdata = new FormData();
     formdata.append("BrandLeads[full_name]", values.full_name);
     formdata.append("BrandLeads[email]", values.email);
     formdata.append("BrandLeads[phone_number]", values.phone_number);
-    const captchaValue = recaptcha.current.getValue();
-    if (!captchaValue) {
-      alert("Please verify the reCAPTCHA!");
-    } else {
-      await addBrandAPI(formdata);
-    }
+    // formdata.append("BrandLeads[utm]", tokenValue);
+    await addBrandAPI(formdata);
+    recaptcha.current.reset();
   };
 
-  const recaptcha = useRef();
   const showMessage = (data) => {
     toast.current.show({
       severity: data.success ? "success" : "error",
@@ -158,7 +161,7 @@ export default function Brands() {
                   enableReinitialize={true}
                   initialValues={initialValues}
                   validationSchema={validationSchema}
-                  onSubmit={async (values, { resetForm, errors }) => {
+                  onSubmit={async (values, { resetForm }) => {
                     await onSubmit(values);
                     resetForm();
                   }}
@@ -183,7 +186,6 @@ export default function Brands() {
                             type="text"
                             name="full_name"
                             className="form-control"
-                            id="floatingname"
                             placeholder="Full Name"
                           />
                           <ErrorMessage
@@ -242,12 +244,23 @@ export default function Brands() {
                         <br />
                         <div className="form-group field-brandleads-recaptcha">
                           <ReCAPTCHA
-                            ref={recaptcha}
                             sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                            ref={recaptcha}
+                            onChange={(reCaptchaValue) => {
+                              if (reCaptchaValue) {
+                                setFieldValue("recaptchaField", reCaptchaValue);
+                              }
+                            }}
+                          />
+                          <ErrorMessage
+                            name="recaptchaField"
+                            component="div"
+                            className="text-danger"
                           />
                           <p className="help-block help-block-error"></p>
                         </div>
                       </div>
+
                       <br />
                       <div>
                         <button type="submit" className="contactBtn btn">

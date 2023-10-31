@@ -4,6 +4,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import ReCAPTCHA from "react-google-recaptcha";
 import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
 import { useRef } from "react";
+import axios from "axios";
+import { Toast } from "primereact/toast";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name cannot be blank."),
   email: Yup.string()
@@ -16,47 +18,43 @@ const validationSchema = Yup.object().shape({
     )
     .required("Phone Number cannot be blank."),
   city: Yup.string().required("City cannot be blank."),
+  recaptchaField: Yup.string().required("reCAPTCHA validation is required."),
 });
 
 export default function GiftingVisitingCard() {
   const toast = useRef(null);
+  const recaptcha = useRef();
   const initialValues = {
     name: "",
     email: "",
     phone_no: "",
     city: "",
+    recaptchaField: "",
   };
-  const addDigitalVisitingCard = async (data) => {
+  const addGiftingVisitingCard = async (data) => {
     axios
       .post(
         "https://richkardz.com/api/landing-pages/gifting-visiting-card-enq",
         data
       )
       .then((response) => {
-        showMessage(response);
+        showMessage(response.data);
       })
       .catch((error) => {
         console.log(error);
         showMessage(error);
       });
   };
+  axios;
   const onSubmit = async (values) => {
     let formdata = new FormData();
     formdata.append("Enquiries[name]", values.name);
     formdata.append("Enquiries[email]", values.email);
     formdata.append("Enquiries[phone_no]", values.phone_no);
     formdata.append("Enquiries[city]", values.city);
-    const captchaValue = recaptcha.current.getValue();
-    if (!captchaValue) {
-      alert("Please verify the reCAPTCHA!");
-    } else {
-      await addDigitalVisitingCard(formdata);
-    }
+    await addGiftingVisitingCard(formdata);
+    recaptcha.current.reset();
   };
-
-  const recaptcha = useRef();
-  const recaptcha2 = useRef();
-
   const showMessage = (data) => {
     toast.current.show({
       severity: data.success ? "success" : "error",
@@ -149,6 +147,8 @@ export default function GiftingVisitingCard() {
           type="text/css"
         />
       </head>
+      <Toast ref={toast} />
+
       <body className="digiload">
         <section className="headerOuter">
           <div className="container">
@@ -187,7 +187,7 @@ export default function GiftingVisitingCard() {
                     enableReinitialize={true}
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values, { resetForm, errors }) => {
+                    onSubmit={async (values, { resetForm }) => {
                       await onSubmit(values);
                       resetForm();
                     }}
@@ -282,8 +282,21 @@ export default function GiftingVisitingCard() {
                           <div className="formgrop field-enquiries-city required">
                             <div className="mx-1 form-group field-brandleads-recaptcha">
                               <ReCAPTCHA
-                                ref={recaptcha}
                                 sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                                ref={recaptcha}
+                                onChange={(reCaptchaValue) => {
+                                  if (reCaptchaValue) {
+                                    setFieldValue(
+                                      "recaptchaField",
+                                      reCaptchaValue
+                                    );
+                                  }
+                                }}
+                              />
+                              <ErrorMessage
+                                name="recaptchaField"
+                                component="div"
+                                className="text-danger"
                               />
                               <p className="help-block help-block-error"></p>
                             </div>
@@ -737,8 +750,21 @@ export default function GiftingVisitingCard() {
                         <div className="formgrop field-enquiries-city required">
                           <div className="mx-1 form-group field-brandleads-recaptcha">
                             <ReCAPTCHA
-                              ref={recaptcha2}
                               sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                              ref={recaptcha}
+                              onChange={(reCaptchaValue) => {
+                                if (reCaptchaValue) {
+                                  setFieldValue(
+                                    "recaptchaField",
+                                    reCaptchaValue
+                                  );
+                                }
+                              }}
+                            />
+                            <ErrorMessage
+                              name="recaptchaField"
+                              component="div"
+                              className="text-danger"
                             />
                             <p className="help-block help-block-error"></p>
                           </div>
