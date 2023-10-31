@@ -45,7 +45,7 @@ export default function Brands() {
     axios
       .post("https://richkardz.com/api/landing-pages/brands-lead", data)
       .then((response) => {
-        showMessage(response);
+        showMessage(response.data);
       })
       .catch((error) => {
         console.log(error);

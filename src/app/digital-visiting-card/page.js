@@ -6,6 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useRef } from "react";
 import axios from "axios";
 import { Toast } from "primereact/toast";
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name cannot be blank."),
   email: Yup.string()
@@ -31,11 +32,11 @@ export default function DigitalVisitingCard() {
   const addDigitalVisitingCard = async (data) => {
     axios
       .post(
-        "https://richkardz.com/api/landing-pages/digital-visiting-card-enq/",
+        "https://richkardz.com/api/landing-pages/digital-visiting-card-enq",
         data
       )
       .then((response) => {
-        showMessage(response);
+        showMessage(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -44,12 +45,13 @@ export default function DigitalVisitingCard() {
   };
   const onSubmit = async (values) => {
     let formdata = new FormData();
-    formdata.append("BrandLeads[name]", values.name);
-    formdata.append("BrandLeads[email]", values.email);
-    formdata.append("BrandLeads[phone_no]", values.phone_no);
-    formdata.append("BrandLeads[city]", values.city);
+    formdata.append("Enquiries[name]", values.name);
+    formdata.append("Enquiries[email]", values.email);
+    formdata.append("Enquiries[phone_no]", values.phone_no);
+    formdata.append("Enquiries[city]", values.city);
     const captchaValue = recaptcha.current.getValue();
-    if (!captchaValue) {
+    const captchaValue2 = recaptcha2.current.getValue();
+    if (!captchaValue && !captchaValue2) {
       alert("Please verify the reCAPTCHA!");
     } else {
       await addDigitalVisitingCard(formdata);

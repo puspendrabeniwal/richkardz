@@ -38,7 +38,7 @@ export default function DigitalVisitingCards() {
         data
       )
       .then((response) => {
-        showMessage(response);
+        showMessage(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -47,23 +47,21 @@ export default function DigitalVisitingCards() {
   };
   const onSubmit = async (values) => {
     let formdata = new FormData();
-    formdata.append("BrandLeads[name]", values.name);
-    formdata.append("BrandLeads[email]", values.email);
-    formdata.append("BrandLeads[phone_no]", values.phone_no);
-    formdata.append("BrandLeads[how_many_cards]", values.how_many_cards);
-    formdata.append("BrandLeads[city]", values.city);
+    formdata.append("Enquiries[name]", values.name);
+    formdata.append("Enquiries[email]", values.email);
+    formdata.append("Enquiries[phone_no]", values.phone_no);
+    formdata.append("Enquiries[how_many_cards]", values.how_many_cards);
+    formdata.append("Enquiries[city]", values.city);
+
     const captchaValue = recaptcha.current.getValue();
     const captchaValue2 = recaptcha2.current.getValue();
-    if (!captchaValue) {
+
+    if (!captchaValue && !captchaValue2) {
       alert("Please verify the reCAPTCHA!");
     } else {
       await addDigitalVisitingCard(formdata);
     }
-    if (!captchaValue2) {
-      alert("Please verify the reCAPTCHA!");
-    } else {
-      await addDigitalVisitingCard(formdata);
-    }
+
   };
 
   const recaptcha = useRef();

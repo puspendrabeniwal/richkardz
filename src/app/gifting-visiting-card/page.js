@@ -42,10 +42,10 @@ export default function GiftingVisitingCard() {
   };
   const onSubmit = async (values) => {
     let formdata = new FormData();
-    formdata.append("BrandLeads[name]", values.name);
-    formdata.append("BrandLeads[email]", values.email);
-    formdata.append("BrandLeads[phone_no]", values.phone_no);
-    formdata.append("BrandLeads[city]", values.city);
+    formdata.append("Enquiries[name]", values.name);
+    formdata.append("Enquiries[email]", values.email);
+    formdata.append("Enquiries[phone_no]", values.phone_no);
+    formdata.append("Enquiries[city]", values.city);
     const captchaValue = recaptcha.current.getValue();
     if (!captchaValue) {
       alert("Please verify the reCAPTCHA!");

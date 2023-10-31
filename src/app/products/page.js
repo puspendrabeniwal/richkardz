@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 import instance from "@/app/admin/axiosInterceptor";
+import axios from "axios";
 export default function Product() {
   
   const searchParams = useSearchParams();
@@ -18,11 +19,16 @@ export default function Product() {
   }, [cardType]);
 
   const getList = () => {
-    instance
-      .post("products", { skip: 0, card_type: cardType, status : 1 })
+    let formdata = new FormData();
+    formdata.append("skip", 0)
+    formdata.append("type", cardType)
+    formdata.append("status", 1)
+    axios
+      .post("https://richkardz.com/api/products", formdata)
       .then((response) => {
-        let data = response.result ? response.result : {};
-        setImageUrl(response.image_url ? response.image_url : "");
+        console.log(response.data, "response.data")
+        let data = (response.data && response.data.result) ? response.data.result : [];
+        setImageUrl("https://richkardz.com");
         setProducts(data);
       })
       .catch((error) => {
@@ -84,8 +90,8 @@ export default function Product() {
             </li>
             <li className="nav-item" role="presentation">
               <button
-                onClick={() => setCardType("Metal Cards")}
-                className={`nav-link ${(cardType === "combo") ? 'active' : ''}`}
+                onClick={() => setCardType("Combo")}
+                className={`nav-link ${(cardType === "Combo") ? 'active' : ''}`}
                 id="combo-tab"
                 data-bs-toggle="tab"
                 data-bs-target="#combo"
@@ -110,17 +116,14 @@ export default function Product() {
             >
               <div className="row">
                 {products.map((row, index) => {
-                  let image =
-                    row.images && row.images.length > 0
-                      ? row.images[0]["name"]
-                      : "";
+                  let image = row.product_image 
                   let imagePath =
                     imageUrl && image
                       ? imageUrl + image
                       : "/front/img/card.png";
                   return (
                     <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                      <Link href={`/products/${row?._id}`}>
+                      <Link href={`/products/${row?.id}`}>
                         <div className="productMainCard">
                           <div className="productMainImage text-center">
                             <img className="img-fluid" src={imagePath} alt="" />
@@ -158,6 +161,7 @@ export default function Product() {
                 })}
               </div>
             </div>
+
             <div
               className="tab-pane fade"
               id="home"
@@ -169,8 +173,8 @@ export default function Product() {
               <div className="row">
                 {products.map((row, index) => {
                   let image =
-                    row.images && row.images.length > 0
-                      ? row.images[0]["name"]
+                    row.product_image 
+                      ? row.product_image
                       : "";
                   let imagePath =
                     imageUrl && image
@@ -178,7 +182,7 @@ export default function Product() {
                       : "/front/img/card.png";
                   return (
                     <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                      <Link href={`/products/${row?._id}`}>
+                      <Link href={`/products/${row?.id}`}>
                         <div className="productMainCard">
                           <div className="productMainImage text-center">
                             <img className="img-fluid" src={imagePath} alt="" />
@@ -227,17 +231,17 @@ export default function Product() {
             >
               <div className="row">
                 {products.map((row, index) => {
-                  let image =
-                    row.images && row.images.length > 0
-                      ? row.images[0]["name"]
-                      : "";
-                  let imagePath =
-                    imageUrl && image
-                      ? imageUrl + image
-                      : "/front/img/card.png";
+                 let image =
+                 row.product_image 
+                   ? row.product_image
+                   : "";
+               let imagePath =
+                 imageUrl && image
+                   ? imageUrl + image
+                   : "/front/img/card.png";
                   return (
                     <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                      <Link href={`/products/${row?._id}`}>
+                      <Link href={`/products/${row?.id}`}>
                         <div className="productMainCard">
                           <div className="productMainImage text-center">
                             <img className="img-fluid" src={imagePath} alt="" />
@@ -285,46 +289,73 @@ export default function Product() {
             >
               <div className="row">
                 {products.map((row, index) => {
-                  let image =
-                    row.images && row.images.length > 0
-                      ? row.images[0]["name"]
-                      : "";
-                  let imagePath =
-                    imageUrl && image
-                      ? imageUrl + image
-                      : "/front/img/card.png";
+                 let image =
+                 row.product_image 
+                   ? row.product_image
+                   : "";
+               let imagePath =
+                 imageUrl && image
+                   ? imageUrl + image
+                   : "/front/img/card.png";
                   return (
                     <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                      <Link href={`/combo-products/printing-details/${row?._id}`}>
-                        <div className="productMainCard">
-                          <div className="productMainImage text-center">
-                            <img className="img-fluid" src={imagePath} alt="" />
+                      <Link href={`/combo-products/printing-details/${row?.id}`}>
+                        <div class="product-wrap">
+                          <div class="product-imageCard">
+                            <div id="carouselExampleControls3" class="carousel slide productCarousel" data-bs-ride="carousel">
+                              <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to={index} class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to={index+1} aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to={index+2} aria-label="Slide 3"></button>
+                              </div>
+                              <div class="carousel-inner">
+                                
+                                <div class="carousel-item active">
+                                  <img onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.href='/combo-products/printing-details?product_id=Mw%3D%3D'" class="img-fluid" src="/media/products/fnrj93tKDY-CckszOaGizRmTwJE26Lm5.png" alt="Purple Shade" data-cf-modified-8ce08585acb10ccfe48dbab1- />
+                                </div>
+                                <div class="carousel-item">
+                                  <img onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.href='/combo-products/printing-details?product_id=Mw%3D%3D'" class="img-fluid" src="/media/products/YE71ntGG4quW3imJD_qR88sQi24skhKj.png" alt="Colorful Curve" data-cf-modified-8ce08585acb10ccfe48dbab1- />
+                                </div>
+                                <div class="carousel-item">
+                                  <img onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.href='/combo-products/printing-details?product_id=Mw%3D%3D'" class="img-fluid" src="/media/products/UY5Z4rCm4sSiwU3ryKysZdOCjsT2Lg6n.png" alt="Clean Pink" data-cf-modified-8ce08585acb10ccfe48dbab1- />
+                                </div>
+                              </div>
+                              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls3" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                              </button>
+                              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls3" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                              </button>
+                            </div>
                           </div>
-                          <div className="productTitle">
-                            <h3>{row?.product_name} Combo</h3>
+
+                          <div class="product-textNew">
+                            <h3>{row.product_name}</h3>
+                            <div class="row">
+                              <div class="col-6">
+                                <p>{row.product_text}</p>
+                              </div>
+                              <div class="col-6 text-end rattingCards">
+                                <span class="rattingSpan"> <span class="rattingText">★ 4.5</span>
+                                  <div class="rattingHover">
+                                    <h4>★ 4.5</h4>
+                                    <h6>1 Rating & Reviews</h6>
+                                  </div>
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="mt-2">
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStarText">(4.6)</span>
-                          </div>
-                          <div className="productPrice">
-                            <h2>₹ {row?.discount}</h2>
-                            <del>₹ {row?.price}</del>
-                            <h5 className="">( 20% OFF )</h5>
+                          <div class="product-priceorbtn">
+                            <div class="product-priceNew">
+                              <h2>₹ 2399</h2>
+                              <h3><s>₹ 3597</s></h3>
+                            </div>
+                            <div class="product-buy-btn">
+                              <button class="defult-btn-all-black product-buy-now" onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.href='/combo-products/printing-details?product_id=Mw%3D%3D'" data-pjax="0" data-cf-modified-8ce08585acb10ccfe48dbab1-> <i class="bi bi-arrow-right"></i> Buy
+                              Now</button>
+                            </div>
                           </div>
                         </div>
                       </Link>
