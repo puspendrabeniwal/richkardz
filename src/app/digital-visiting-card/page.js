@@ -25,6 +25,7 @@ const validationSchema = Yup.object().shape({
 export default function DigitalVisitingCard() {
   const toast = useRef(null);
   const recaptcha = useRef();
+  const recaptcha2 = useRef();
   const initialValues = {
     name: "",
     email: "",
@@ -54,6 +55,7 @@ export default function DigitalVisitingCard() {
     formdata.append("Enquiries[city]", values.city);
     await addDigitalVisitingCard(formdata);
     recaptcha?.current?.reset();
+    recaptcha2?.current?.reset();
   };
   const showMessage = (data) => {
     toast.current.show({
@@ -191,8 +193,6 @@ export default function DigitalVisitingCard() {
                     ) => {
                       await onSubmit(values);
                       resetForm();
-
-                      // resetCaptcha();
                     }}
                   >
                     {({ setFieldValue, values }) => (
@@ -664,10 +664,8 @@ export default function DigitalVisitingCard() {
                   initialValues={initialValues}
                   validationSchema={validationSchema}
                   onSubmit={async (values, { resetForm, errors }) => {
-                    if (recaptcha && recaptcha?.current?.getValue()) {
                       await onSubmit(values);
                       resetForm();
-                    }
                   }}
                 >
                   {({ setFieldValue, values }) => (
@@ -756,7 +754,7 @@ export default function DigitalVisitingCard() {
                           <div className="mx-1 form-group field-brandleads-recaptcha">
                             <ReCAPTCHA
                               sitekey={GOOGLE_CAPTCHA_SITE_KEY}
-                              ref={recaptcha}
+                              ref={recaptcha2}
                               onChange={(reCaptchaValue) => {
                                 if (reCaptchaValue) {
                                   setFieldValue(

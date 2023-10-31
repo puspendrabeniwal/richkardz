@@ -349,8 +349,8 @@ export default function Product() {
                           </div>
                           <div class="product-priceorbtn">
                             <div class="product-priceNew">
-                              <h2>₹ 2399</h2>
-                              <h3><s>₹ 3597</s></h3>
+                              <h2>₹ {row?.discount}</h2>
+                              <h3><s>₹ {row?.price  }</s></h3>
                             </div>
                             <div class="product-buy-btn">
                               <button class="defult-btn-all-black product-buy-now" onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.href='/combo-products/printing-details?product_id=Mw%3D%3D'" data-pjax="0" data-cf-modified-8ce08585acb10ccfe48dbab1-> <i class="bi bi-arrow-right"></i> Buy
