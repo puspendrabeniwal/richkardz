@@ -12,9 +12,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import instance from "../admin/axiosInterceptor";
 import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
+import axios from "axios";
 
 const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("Name cannot be blank."),
+  name: Yup.string().required("Name cannot be blank."),
   email: Yup.string()
     .email("Email is not a valid email address.")
     .required("Email cannot be blank."),
@@ -25,7 +26,8 @@ const validationSchema = Yup.object().shape({
     )
     .required("Phone Number cannot be blank."),
   city: Yup.string().required("City cannot be blank."),
-  message: Yup.string().required("Message cannot be blank."),
+  body: Yup.string().required("Message cannot be blank."),
+  recaptchaField: Yup.string().required("reCAPTCHA validation is required."),
 });
 
 const ContactUs = () => {
@@ -35,19 +37,21 @@ const ContactUs = () => {
   const recaptcha = useRef();
 
   const contactValues = {
-    full_name: "",
+    name: "",
     email: "",
     phone_number: "",
     city: "",
-    message: "",
+    body: "",
+    recaptchaField: "",
   };
 
   const addContactAPI = async (data) => {
     setbuttonLoader(true);
-    instance
-      .post("contactUs", data)
+    axios
+      .post("https://richkardz.com/api/site/contact-us", data)
       .then((response) => {
-        showMessage(response);
+        showMessage(response.data);
+        console.log(response.data,"dsfdsfds")
         setbuttonLoader(false);
       })
       .catch((error) => {
@@ -58,24 +62,21 @@ const ContactUs = () => {
 
   const showMessage = (data) => {
     toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
+      severity: data.success ? "success" : "error",
+      summary: data.success ? "Success" : "Error",
       detail: data.message,
       life: 5000,
     });
   };
 
   const onSubmit = async (values) => {
+  
     let formData = new FormData();
     Object.keys(values).forEach(function (key, index) {
-      formData.append(key, values[key]);
+      formData.append(`ContactForm[${key}]`, values[key]);
     });
-    const captchaValue = recaptcha.current.getValue();
-    if (!captchaValue) {
-      alert("Please verify the reCAPTCHA!");
-    } else {
-      await addContactAPI(formData);
-    }
+    await addContactAPI(formData);
+    recaptcha.current.reset();
   };
 
   const cardLoader = () => {
@@ -131,12 +132,12 @@ const ContactUs = () => {
 
                           <Field
                             type="text"
-                            name="full_name"
+                            name="name"
                             className="form-control"
                             id="floatingname"
                           />
                           <ErrorMessage
-                            name="full_name"
+                            name="name"
                             component="div"
                             className="text-danger"
                           />
@@ -215,7 +216,7 @@ const ContactUs = () => {
                           <div className=" billingForm">
                             <Field
                               as="textarea"
-                              name="message"
+                              name="body"
                               className="form-control"
                               id="floatingCompany"
                               rows="4"
@@ -223,7 +224,7 @@ const ContactUs = () => {
                             />
                           </div>
                           <ErrorMessage
-                            name="message"
+                            name="body"
                             component="div"
                             className="text-danger"
                           />
@@ -233,6 +234,16 @@ const ContactUs = () => {
                         <ReCAPTCHA
                           ref={recaptcha}
                           sitekey={GOOGLE_CAPTCHA_SITE_KEY}
+                          onChange={(reCaptchaValue) => {
+                            if (reCaptchaValue) {
+                              setFieldValue("recaptchaField", reCaptchaValue);
+                            }
+                          }}
+                        />
+                        <ErrorMessage
+                          name="recaptchaField"
+                          component="div"
+                          className="text-danger"
                         />
                       </>
                       <Button

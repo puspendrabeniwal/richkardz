@@ -298,15 +298,15 @@ export default function Product() {
                    ? imageUrl + image
                    : "/front/img/card.png";
                   return (
-                    <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
+                    <div className="col-lg-4 col-md-6 col-xl-3" key={index} id={`product-${index}`}>
                       <Link href={`/combo-products/printing-details/${row?.id}`}>
                         <div class="product-wrap">
                           <div class="product-imageCard">
-                            <div id="carouselExampleControls3" class="carousel slide productCarousel" data-bs-ride="carousel">
+                            <div id={`carouselExampleControls${index}`} class="carousel slide productCarousel" data-bs-ride="carousel">
                               <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to={index} class="active" aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to={index+1} aria-label="Slide 2"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators3" data-bs-slide-to={index+2} aria-label="Slide 3"></button>
+                                <button type="button" data-bs-target={`#carouselExampleIndicators${index}`} data-bs-slide-to={index} class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target={`#carouselExampleIndicators${index}`} data-bs-slide-to={index+1} aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target={`#carouselExampleIndicators${index}`} data-bs-slide-to={index+2} aria-label="Slide 3"></button>
                               </div>
                               <div class="carousel-inner">
                                 
@@ -320,11 +320,11 @@ export default function Product() {
                                   <img onclick="if (!window.__cfRLUnblockHandlers) return false; window.location.href='/combo-products/printing-details?product_id=Mw%3D%3D'" class="img-fluid" src="/media/products/UY5Z4rCm4sSiwU3ryKysZdOCjsT2Lg6n.png" alt="Clean Pink" data-cf-modified-8ce08585acb10ccfe48dbab1- />
                                 </div>
                               </div>
-                              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls3" data-bs-slide="prev">
+                              <button class="carousel-control-prev" type="button" data-bs-target={`#carouselExampleControls${index}`} data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                               </button>
-                              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls3" data-bs-slide="next">
+                              <button class="carousel-control-next" type="button" data-bs-target={`#carouselExampleControls${index}`} data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
                               </button>

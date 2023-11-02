@@ -95,3 +95,54 @@ a{
   cursor:  pointer !important;
 }
 
+
+.productCarousel .carousel-indicators [data-bs-target] {
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+  background-color: #d6d6d6;
+  opacity: 1;
+}
+
+.productCarousel .carousel-indicators .active {
+  background-color: #161616;
+}
+
+.productCarousel .carousel-indicators {
+  margin-bottom: -30px;
+}
+
+.productCarousel .carousel-control-next-icon,
+.productCarousel .carousel-control-prev-icon {
+  height: 17px;
+  width: 10px;
+}
+
+.productCarousel .carousel-control-prev {
+  left: -20px;
+}
+.productCarousel .carousel-control-next{
+  right: -20px;
+}
+.productCarousel .carousel-control-prev-icon {
+  background-image: url(https://richkardz.com/media/newIcon/leftIcon.png);
+}
+
+.productCarousel .carousel-control-next-icon {
+  background-image: url(https://richkardz.com/media/newIcon/rightIcon.png);
+}
+
+.productCarousel img {
+  height: 130px;
+}
+
+.productCarousel .carousel-item {
+  text-align: center;
+}
+
+.product-priceNew h3 {
+  color: #CC9B60;
+  font-size: 18px;
+  font-weight: 600;
+  padding-top: 0px !important;
+}
