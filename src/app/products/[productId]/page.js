@@ -129,14 +129,31 @@ export default function ProductDetail({ params }) {
                     <h4 className="Gilroy-Bold">Card Designs</h4>
                     <div className="d-flex">
                       <div className="cardDesgin active">
-                        <img src="/front/img/card.png" alt="" />
+                        <img
+                          src={
+                            "https://richkardz.com" +
+                            productDetail.product_image
+                          }
+                          alt=""
+                        />
                       </div>
-                      <div className="cardDesgin">
-                        <img src="/front/img/Card02.png" alt="" />
-                      </div>
-                      <div className="cardDesgin">
-                        <img src="/front/img/Card03.png" alt="" />
-                      </div>
+                      {productDetail.related_products &&
+                      Array.isArray(productDetail.related_products) ? (
+                        productDetail.related_products.map((image, index) => (
+                          <Link href={`/products/${image.id}`} key={index}>
+                            <div className="cardDesgin" key={index}>
+                              <img
+                                src={
+                                  "https://richkardz.com" + image.product_image
+                                }
+                                alt=""
+                              />
+                            </div>
+                          </Link>
+                        ))
+                      ) : (
+                        <div></div>
+                      )}
                     </div>
                   </div>
                   <ul className="productpolicy list-unstyled my-4 py-2">
