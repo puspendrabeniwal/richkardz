@@ -2,8 +2,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
-import instance from "@/app/admin/axiosInterceptor";
+import { Skeleton } from "primereact/skeleton";
 import axios from "axios";
 export default function Product() {
   const searchParams = useSearchParams();
@@ -34,6 +33,82 @@ export default function Product() {
         console.log(error);
       });
   };
+
+  if (!products.length) {
+    // Render loading skeleton while data is being fetched
+    return (
+      <>
+        <div className="row">
+          <div className="col-lg-4 col-md-6 col-xl-3">
+            <div className="border-round border-1 surface-border p-4 surface-card">
+              <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+              <Skeleton className="mb-2" width="75%"></Skeleton>
+              <Skeleton width="50%" className="mb-2"></Skeleton>
+              <Skeleton width="90%" className="mb-2"></Skeleton>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 col-xl-3">
+            <div className="border-round border-1 surface-border p-4 surface-card">
+              <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+              <Skeleton className="mb-2" width="75%"></Skeleton>
+              <Skeleton width="50%" className="mb-2"></Skeleton>
+              <Skeleton width="90%" className="mb-2"></Skeleton>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 col-xl-3">
+            <div className="border-round border-1 surface-border p-4 surface-card">
+              <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+              <Skeleton className="mb-2" width="75%"></Skeleton>
+              <Skeleton width="50%" className="mb-2"></Skeleton>
+              <Skeleton width="90%" className="mb-2"></Skeleton>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 col-xl-3">
+            <div className="border-round border-1 surface-border p-4 surface-card">
+              <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+              <Skeleton className="mb-2" width="75%"></Skeleton>
+              <Skeleton width="50%" className="mb-2"></Skeleton>
+              <Skeleton width="90%" className="mb-2"></Skeleton>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-lg-4 col-md-6 col-xl-3">
+            <div className="border-round border-1 surface-border p-4 surface-card">
+              <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+              <Skeleton className="mb-2" width="75%"></Skeleton>
+              <Skeleton width="50%" className="mb-2"></Skeleton>
+              <Skeleton width="90%" className="mb-2"></Skeleton>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 col-xl-3">
+            <div className="border-round border-1 surface-border p-4 surface-card">
+              <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+              <Skeleton className="mb-2" width="75%"></Skeleton>
+              <Skeleton width="50%" className="mb-2"></Skeleton>
+              <Skeleton width="90%" className="mb-2"></Skeleton>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 col-xl-3">
+            <div className="border-round border-1 surface-border p-4 surface-card">
+              <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+              <Skeleton className="mb-2" width="75%"></Skeleton>
+              <Skeleton width="50%" className="mb-2"></Skeleton>
+              <Skeleton width="90%" className="mb-2"></Skeleton>
+            </div>
+          </div>
+          <div className="col-lg-4 col-md-6 col-xl-3">
+            <div className="border-round border-1 surface-border p-4 surface-card">
+              <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+              <Skeleton className="mb-2" width="75%"></Skeleton>
+              <Skeleton width="50%" className="mb-2"></Skeleton>
+              <Skeleton width="90%" className="mb-2"></Skeleton>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
   return (
     <main>
       <section className="py-4 py-md-15 container">
@@ -283,111 +358,111 @@ export default function Product() {
                 let images = row.product_image ? row.product_image : [];
                 return (
                   <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                    <Link href={`/combo-products/printing-details/${row?.product_id}`}>
+                    <Link
+                      href={`/combo-products/printing-details/${row?.product_id}`}
+                    >
                       <div className="productMainCard">
-
-                          <div class="productMainImage">
-                            <div
-                              id={`carouselExampleControls${index}`}
-                              class="carousel slide productCarousel"
-                              data-bs-ride="carousel"
-                            >
-                              <div class="carousel-indicators">
-                                <button
-                                  type="button"
-                                  data-bs-target={`#carouselExampleIndicators${index}`}
-                                  data-bs-slide-to={0}
-                                  class="active"
-                                  aria-current="true"
-                                  aria-label="Slide 1"
-                                ></button>
-                                <button
-                                  type="button"
-                                  data-bs-target={`#carouselExampleIndicators${index}`}
-                                  data-bs-slide-to={1}
-                                  aria-label="Slide 2"
-                                ></button>
-                                <button
-                                  type="button"
-                                  data-bs-target={`#carouselExampleIndicators${index}`}
-                                  data-bs-slide-to={2}
-                                  aria-label="Slide 3"
-                                ></button>
-                              </div>
-                              <div class="carousel-inner">
-                                <>
-                                  {images &&
-                                    Array.isArray(images) &&
-                                    images.length > 0 &&
-                                    images.map((item, index) => (
-                                      <div
-                                        className={`carousel-item ${
-                                          index === 0 ? "active" : ""
-                                        }`}
-                                        key={index}
-                                      >
-                                        <img
-                                          src={"https://richkardz.com" + item}
-                                          alt=""
-                                        />
-                                      </div>
-                                    ))}
-                                </>
-                              </div>
+                        <div class="productMainImage">
+                          <div
+                            id={`carouselExampleControls${index}`}
+                            class="carousel slide productCarousel"
+                            data-bs-ride="carousel"
+                          >
+                            <div class="carousel-indicators">
                               <button
-                                class="carousel-control-prev"
                                 type="button"
-                                data-bs-target={`#carouselExampleControls${index}`}
-                                data-bs-slide="prev"
-                              >
-                                <span
-                                  class="carousel-control-prev-icon"
-                                  aria-hidden="true"
-                                ></span>
-                                <span class="visually-hidden">Previous</span>
-                              </button>
+                                data-bs-target={`#carouselExampleIndicators${index}`}
+                                data-bs-slide-to={0}
+                                class="active"
+                                aria-current="true"
+                                aria-label="Slide 1"
+                              ></button>
                               <button
-                                class="carousel-control-next"
                                 type="button"
-                                data-bs-target={`#carouselExampleControls${index}`}
-                                data-bs-slide="next"
-                              >
-                                <span
-                                  class="carousel-control-next-icon"
-                                  aria-hidden="true"
-                                ></span>
-                                <span class="visually-hidden">Next</span>
-                              </button>
+                                data-bs-target={`#carouselExampleIndicators${index}`}
+                                data-bs-slide-to={1}
+                                aria-label="Slide 2"
+                              ></button>
+                              <button
+                                type="button"
+                                data-bs-target={`#carouselExampleIndicators${index}`}
+                                data-bs-slide-to={2}
+                                aria-label="Slide 3"
+                              ></button>
                             </div>
+                            <div class="carousel-inner">
+                              <>
+                                {images &&
+                                  Array.isArray(images) &&
+                                  images.length > 0 &&
+                                  images.map((item, index) => (
+                                    <div
+                                      className={`carousel-item ${
+                                        index === 0 ? "active" : ""
+                                      }`}
+                                      key={index}
+                                    >
+                                      <img
+                                        src={"https://richkardz.com" + item}
+                                        alt=""
+                                      />
+                                    </div>
+                                  ))}
+                              </>
+                            </div>
+                            <button
+                              class="carousel-control-prev"
+                              type="button"
+                              data-bs-target={`#carouselExampleControls${index}`}
+                              data-bs-slide="prev"
+                            >
+                              <span
+                                class="carousel-control-prev-icon"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button
+                              class="carousel-control-next"
+                              type="button"
+                              data-bs-target={`#carouselExampleControls${index}`}
+                              data-bs-slide="next"
+                            >
+                              <span
+                                class="carousel-control-next-icon"
+                                aria-hidden="true"
+                              ></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
                           </div>
-                          <br />
-                          <div className="productTitle">
-                            <h3>{row?.product_name}</h3>
-                          </div>
-                          <div className="mt-2">
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStarText">{`(${row.rating})`}</span>
-                          </div>
-                          <div className="productPrice">
-                            <h2>₹ {row?.discount}</h2>
-                            <del>₹ {row?.price}</del>
-                            <h5 className="">( 20% OFF )</h5>
-                          </div>
-                        
+                        </div>
+                        <br />
+                        <div className="productTitle">
+                          <h3>{row?.product_name}</h3>
+                        </div>
+                        <div className="mt-2">
+                          <span className="ratingStar">
+                            <i className="fa fa-star"></i>
+                          </span>
+                          <span className="ratingStar">
+                            <i className="fa fa-star"></i>
+                          </span>
+                          <span className="ratingStar">
+                            <i className="fa fa-star"></i>
+                          </span>
+                          <span className="ratingStar">
+                            <i className="fa fa-star"></i>
+                          </span>
+                          <span className="ratingStar">
+                            <i className="fa fa-star"></i>
+                          </span>
+                          <span className="ratingStarText">{`(${row.rating})`}</span>
+                        </div>
+                        <div className="productPrice">
+                          <h2>₹ {row?.discount}</h2>
+                          <del>₹ {row?.price}</del>
+                          <h5 className="">( 20% OFF )</h5>
+                        </div>
                       </div>
                     </Link>
                   </div>

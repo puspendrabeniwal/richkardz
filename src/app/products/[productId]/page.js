@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 export default function ProductDetail({ params }) {
   const [productDetail, setProductDetail] = useState([]);
+  const [remainingTime, setRemainingTime] = useState(3 * 60 * 60); // 3 hours in seconds
+  const [isExpired, setIsExpired] = useState(false);
   useEffect(() => {
     getProductDetail();
   }, []);
@@ -29,6 +31,36 @@ export default function ProductDetail({ params }) {
     }
   }
   const starString = convertRatingToStars(productDetail.rating);
+
+  function updateTimerDisplay(remainingTime) {
+    const hours = Math.floor(remainingTime / 3600);
+    const minutes = Math.floor((remainingTime % 3600) / 60);
+    // const seconds = remainingTime % 60;
+    console.log(`Time left: ${hours} hours, ${minutes} minutes`);
+  }
+
+  // Function to be executed when the timer expires
+  function timerExpired() {
+    console.log("Timer has expired! 3 hours have passed.");
+    setIsExpired(true);
+  }
+  useEffect(() => {
+    if (remainingTime > 0) {
+      const timerInterval = setInterval(() => {
+        setRemainingTime((prevTime) => prevTime - 1);
+        updateTimerDisplay(remainingTime);
+
+        if (remainingTime <= 0) {
+          clearInterval(timerInterval); // Stop the timer
+          timerExpired(); // Execute the action when the timer expires
+        }
+      }, 1000);
+
+      return () => {
+        clearInterval(timerInterval); // Cleanup the interval when the component unmounts
+      };
+    }
+  }, [remainingTime]);
 
   return (
     <main>
@@ -77,7 +109,13 @@ export default function ProductDetail({ params }) {
                     {/* {productDetail?.images &&
                       productDetail?.images.map((row, index) => {
                         return ( */}
-                    <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 3" data-swiper-slide-index="0" style={{width: "93.75px", "marginRight": "10px"}}>
+                    <div
+                      class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active"
+                      role="group"
+                      aria-label="1 / 3"
+                      data-swiper-slide-index="0"
+                      style={{ width: "93.75px", marginRight: "10px" }}
+                    >
                       <div className="productSmalSlider">
                         <img
                           src={
@@ -86,7 +124,6 @@ export default function ProductDetail({ params }) {
                           }
                           alt=""
                         />
-                        
                       </div>
                     </div>
                     {/* );
@@ -141,7 +178,10 @@ export default function ProductDetail({ params }) {
                       {productDetail.related_products &&
                       Array.isArray(productDetail.related_products) ? (
                         productDetail.related_products.map((image, index) => (
-                          <Link href={`/products/${image.product_id}`} key={index}>
+                          <Link
+                            href={`/products/${image.product_id}`}
+                            key={index}
+                          >
                             <div className="cardDesgin" key={index}>
                               <img
                                 src={
@@ -208,7 +248,22 @@ export default function ProductDetail({ params }) {
                   FREE delivery <b className="Gilroy-Bold"> Tuesday, 30 May.</b>
                 </li>
                 <li className="fontSize14">
-                  Order within <b className="Gilroy-Bold"> 21 hrs 24 mins.</b>
+                  {isExpired ? (
+                    <div>Timer has expired! 3 hours have passed.</div>
+                  ) : (
+                    <div>
+                      <div>
+                        Order within{" "}
+                        <b className="Gilroy-Bold">
+                          {Math.floor(remainingTime / 3600)} hours,{" "}
+                          {Math.floor((remainingTime % 3600) / 60)} minutes
+                          {/* {remainingTime % 60} seconds */}
+                        </b>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Order within <b className="Gilroy-Bold"> 21 hrs 24 mins.</b> */}
                 </li>
               </ul>
               <h5 className="text-orange Gilroy-Bold">In stock</h5>
