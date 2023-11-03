@@ -8,6 +8,7 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 const validationSchema = Yup.object().shape({
   address_1: Yup.string().required("Address is required"),
@@ -23,37 +24,22 @@ export default function DeliveryAddress({ params }) {
   const searchParams = useSearchParams();
   const toast = useRef(null);
   useEffect(() => {
-    getProductDetail();
-    getAddressDetails();
+    getProductDetail()
   }, []);
+
+
   const getProductDetail = () => {
-    instance
-      .post(`product/view/${params.productId}`, {})
+    axios
+      .get(`https://richkardz.com/api/products/checkout-view?product_id=${params.productId}&&print_id=${searchParams.get("print_id")}`)
       .then((response) => {
-        let data = response.result ? response.result : {};
-        let basePrice = data?.discount ? parseInt(data?.discount) : 0;
-        let gstPercentage = data?.discount
-          ? parseInt((basePrice * GST_PERCENTAGE) / 100)
-          : 0;
-        data["gst_value"] = gstPercentage;
-        data["grand_total"] = gstPercentage + basePrice;
+        let data = response.data.result ? response.data.result : {};
         setProductDetail(data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  const getAddressDetails = () => {
-    instance
-      .post(`order/${searchParams.get("order_id")}`)
-      .then((response) => {
-        let data = response.result ? response.result : {};
-        setCardDetail(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+
 
   const deliveryAddressValue = {
     type: "delivery_adderess",
@@ -119,7 +105,7 @@ export default function DeliveryAddress({ params }) {
                           router.push(
                             `/card-detail/${
                               params.productId
-                            }?order_id=${searchParams.get("order_id")}`
+                            }?print_id=${searchParams.get("print_id")}`
                           );
                         }}
                       >
@@ -137,20 +123,20 @@ export default function DeliveryAddress({ params }) {
                         <div className="col-lg-12">
                           <div className="row mx-0">
                             <div className="col-6 col-lg-6 richKarzsDetails border-end">
-                              <label for="">Full Name</label>
-                              <h6>{cardDetail?.full_name}</h6>
+                              <label htmlFor="">Full Name</label>
+                              <h6>{productDetail?.printing_data?.full_name}</h6>
                             </div>
                             <div className="col-6 col-lg-6 richKarzsDetails ps-md-5 ps-3">
-                              <label for="">Email</label>
-                              <h6>{cardDetail?.email}</h6>
+                              <label htmlFor="">Email</label>
+                              <h6>{productDetail?.printing_data?.email}</h6>
                             </div>
                             <div className="col-6 col-lg-6 richKarzsDetails border-top border-end">
-                              <label for="">Phone Number</label>
-                              <h6>{cardDetail?.phone_number}</h6>
+                              <label htmlFor="">Phone Number</label>
+                              <h6>{productDetail?.printing_data?.phone_number}</h6>
                             </div>
                             <div className="col-6 col-lg-6 richKarzsDetails border-top ps-md-5 ps-3">
-                              <label for="">Designation</label>
-                              <h6>{cardDetail?.designation}</h6>
+                              <label htmlFor="">Designation</label>
+                              <h6>{productDetail?.printing_data?.designation}</h6>
                             </div>
                           </div>
                         </div>
@@ -323,7 +309,7 @@ export default function DeliveryAddress({ params }) {
                                 />
                               </div>
                               <div className="col-md-6 customFrom mb-3">
-                                <label for="">
+                                <label htmlFor="">
                                   City<span className="text-danger">*</span>
                                 </label>
                                 <div className=" billingForm">
@@ -418,7 +404,7 @@ export default function DeliveryAddress({ params }) {
                 <h3 className="mb-2">Order Summary</h3>
                 <ul className="list-unstyled">
                   <li>
-                    Base Total <span> ₹ {productDetail?.price}</span>
+                    Base Total <span> ₹ {productDetail?.printing_data?.base_total}</span>
                   </li>
                   <li>
                     Delivery Charges <span> Free</span>
@@ -429,7 +415,7 @@ export default function DeliveryAddress({ params }) {
                 </ul>
                 <div className="mt-4 d-flex justify-content-between align-items-center pt-3 border-top">
                   <h3>Grand Total</h3>
-                  <h2>₹ {productDetail?.grand_total}</h2>
+                  <h2>₹ {productDetail?.printing_data?.grand_total}</h2>
                 </div>
               </div>
             </div>

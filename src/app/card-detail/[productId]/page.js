@@ -9,6 +9,7 @@ import { GST_PERCENTAGE } from "@/app/global_constant.js";
 import { useRouter } from "next/navigation";
 import { Toast } from "primereact/toast";
 import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
@@ -39,22 +40,24 @@ export default function CardtDetail({ params }){
     email: (cardDetailsData.email) ? cardDetailsData.email : "",
     phone_number: (cardDetailsData.phone_number) ? cardDetailsData.phone_number : "",
     designation: (cardDetailsData.designation) ? cardDetailsData.designation : "",
-    company_name: (cardDetailsData.company_name) ? cardDetailsData.company_name : "",
+    company_name: (cardDetailsData.website_link) ? cardDetailsData.website_link : "",
     company_logo: {},
     amount: productDetail?.grand_total,
   };
 
   useEffect(() => {
     getProductDetail();
-    if(searchParams.get("order_id")) getCardDetails();
+    if(searchParams.get("print_id")) getCardDetails();
   }, []);
 
 
   const getProductDetail = () => {
-    instance
-      .post(`product/view/${params.productId}`, {})
+    axios
+      .get(
+        `https://richkardz.com/api/products/view?product_id=${params.productId}`
+      )
       .then((response) => {
-        let data = response.result ? response.result : {};
+        let data = response.data.result ? response.data.result : {};
         let basePrice = data?.discount ? parseInt(data?.discount) : 0;
         let gstPercentage = data?.discount
           ? parseInt((basePrice * GST_PERCENTAGE) / 100)
@@ -68,38 +71,41 @@ export default function CardtDetail({ params }){
       });
   };
   const getCardDetails = () => {
-    instance
-      .post(`order/${searchParams.get("order_id")}`)
+    axios
+      .get(`https://richkardz.com/api/products/checkout-view?product_id=${params.productId}&&print_id=${searchParams.get("print_id")}`)
       .then((response) => {
-        let data = response.result ? response.result : {};
-        setCardDetailsData(data);
+        let data = response.data.result ? response.data.result : {};
+        setCardDetailsData(data?.printing_data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
   const onSubmitCardDetail = async (values) => {
-    await addCardDetail(values);
+    let formdata = new FormData();
+    formdata.append("CardPrintingData[full_name]", values.full_name)
+    formdata.append("CardPrintingData[email]", values.email)
+    formdata.append("CardPrintingData[phone_number]", values.phone_number)
+    formdata.append("CardPrintingData[designation]", values.designation)
+    formdata.append("CardPrintingData[website_link]", values.company_name)
+    formdata.append("CardPrintingData[amount]", productDetail.amount)
+    await addCardDetail(formdata);
   };
 
   const addCardDetail = async (data) => {
-    instance
-      .post("save_order", data)
+    axios
+      .post(`https://richkardz.com/api/products/card-detail?product_id=${params.productId}`, data)
       .then((response) => {
         let orderId =
-          response.result && response.result.order_id
-            ? response.result.order_id
+          response.data.data && response.data.data.print_id
+            ? response.data.data.print_id
             : "";
-            let new_user_id =
-          response.result && response.result.new_user_id
-            ? response.result.new_user_id
-            : "";
-        if (response.status === true) {
+        if (response.data.success === true) {
           router.push(
-            `/checkout/${params.productId}?order_id=${orderId}&&new_user_id=${new_user_id}`
+            `/checkout/${params.productId}?print_id=${orderId}`
           );
         }
-        showMessage(response);
+        showMessage(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -132,8 +138,8 @@ export default function CardtDetail({ params }){
   };
   const showMessage = (data) => {
     toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
+      severity: data.success ? "success" : "error",
+      summary: data.success ? "Success" : "Error",
       detail: data.message,
       life: 3000,
     });

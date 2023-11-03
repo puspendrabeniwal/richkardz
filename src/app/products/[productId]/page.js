@@ -77,7 +77,7 @@ export default function ProductDetail({ params }) {
                     {/* {productDetail?.images &&
                       productDetail?.images.map((row, index) => {
                         return ( */}
-                    <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 3" data-swiper-slide-index="0" style={{width: "93.75px", "marginRight": "10px"}}>
+                    <div className="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 3" data-swiper-slide-index="0" style={{width: "93.75px", "marginRight": "10px"}}>
                       <div className="productSmalSlider">
                         <img
                           src={

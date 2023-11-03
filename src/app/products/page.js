@@ -226,7 +226,7 @@ export default function Product() {
             data-aos-delay="100"
           >
             <div className="row">
-              {products.map((row, index) => {
+              {(products.length > 0) ? products.map((row, index) => {
                 let image = row.product_image ? row.product_image : "";
                 let imagePath =
                   imageUrl && image ? imageUrl + image : "/front/img/card.png";
@@ -267,7 +267,11 @@ export default function Product() {
                     </Link>
                   </div>
                 );
-              })}
+              })
+              : <div className="col-lg-12 col-md-12 col-xl-12 text-center">
+              <img src="/front/img/no_product.png" alt="no product found"/>
+            </div>
+              }
             </div>
           </div>
           <div
@@ -279,7 +283,7 @@ export default function Product() {
             data-aos-delay="100"
           >
             <div className="row">
-              {products.map((row, index) => {
+              {(products.length > 0) ? products.map((row, index) => {
                 let images = row.product_image ? row.product_image : [];
                 return (
                   <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
@@ -392,7 +396,11 @@ export default function Product() {
                     </Link>
                   </div>
                 );
-              })}
+              })
+              : <div className="col-lg-12 col-md-12 col-xl-12 text-center">
+                <img src="/front/img/no_product.png" alt="No product found"/>
+              </div>
+            } 
             </div>
           </div>
         </div>
