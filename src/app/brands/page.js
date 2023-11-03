@@ -257,7 +257,6 @@ export default function Brands() {
                             component="div"
                             className="text-danger"
                           />
-                          <p className="help-block help-block-error"></p>
                         </div>
                       </div>
 

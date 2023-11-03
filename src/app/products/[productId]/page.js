@@ -29,7 +29,7 @@ export default function ProductDetail({ params }) {
     }
   }
   const starString = convertRatingToStars(productDetail.rating);
-  console.log("product detail", productDetail);
+
   return (
     <main>
       <section className="py-4 py-md-5 container">
@@ -77,7 +77,7 @@ export default function ProductDetail({ params }) {
                     {/* {productDetail?.images &&
                       productDetail?.images.map((row, index) => {
                         return ( */}
-                    <div className="swiper-slide">
+                    <div class="swiper-slide swiper-slide-visible swiper-slide-active swiper-slide-thumb-active" role="group" aria-label="1 / 3" data-swiper-slide-index="0" style={{width: "93.75px", "marginRight": "10px"}}>
                       <div className="productSmalSlider">
                         <img
                           src={
@@ -86,6 +86,7 @@ export default function ProductDetail({ params }) {
                           }
                           alt=""
                         />
+                        
                       </div>
                     </div>
                     {/* );
@@ -129,14 +130,31 @@ export default function ProductDetail({ params }) {
                     <h4 className="Gilroy-Bold">Card Designs</h4>
                     <div className="d-flex">
                       <div className="cardDesgin active">
-                        <img src="/front/img/card.png" alt="" />
+                        <img
+                          src={
+                            "https://richkardz.com" +
+                            productDetail.product_image
+                          }
+                          alt=""
+                        />
                       </div>
-                      <div className="cardDesgin">
-                        <img src="/front/img/Card02.png" alt="" />
-                      </div>
-                      <div className="cardDesgin">
-                        <img src="/front/img/Card03.png" alt="" />
-                      </div>
+                      {productDetail.related_products &&
+                      Array.isArray(productDetail.related_products) ? (
+                        productDetail.related_products.map((image, index) => (
+                          <Link href={`/products/${image.product_id}`} key={index}>
+                            <div className="cardDesgin" key={index}>
+                              <img
+                                src={
+                                  "https://richkardz.com" + image.product_image
+                                }
+                                alt=""
+                              />
+                            </div>
+                          </Link>
+                        ))
+                      ) : (
+                        <div></div>
+                      )}
                     </div>
                   </div>
                   <ul className="productpolicy list-unstyled my-4 py-2">
