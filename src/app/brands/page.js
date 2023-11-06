@@ -1,12 +1,13 @@
 "use client";
 import * as Yup from "yup";
-import React, { useRef, useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
 import { Toast } from "primereact/toast";
-// import instance from "../admin/axiosInterceptor";
-import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
+import React, { useRef, useEffect } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import instance from "@app/axiosInterceptor";
+import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
+
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name cannot be blank."),
   email: Yup.string()
@@ -46,11 +47,12 @@ export default function Brands() {
     phone_number: "",
     recaptchaField: "",
   };
-  const addBrandAPI = async (data) => {
-    axios
-      .post("https://richkardz.com/api/landing-pages/brands-lead", data)
+
+  const submitBrandLead = async (data) => {
+    instance
+      .post("landing-pages/brands-lead", data)
       .then((response) => {
-        showMessage(response.data);
+        showMessage(response);
       })
       .catch((error) => {
         console.log(error);
@@ -59,13 +61,11 @@ export default function Brands() {
   };
 
   const onSubmit = async (values) => {
-    const tokenValue = recaptcha?.current?.getValue();
     let formdata = new FormData();
     formdata.append("BrandLeads[full_name]", values.full_name);
     formdata.append("BrandLeads[email]", values.email);
     formdata.append("BrandLeads[phone_number]", values.phone_number);
-    // formdata.append("BrandLeads[utm]", tokenValue);
-    await addBrandAPI(formdata);
+    await submitBrandLead(formdata);
     recaptcha.current.reset();
   };
 

@@ -4,12 +4,11 @@ import { Button } from "primereact/button";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-import instance from "@/app/admin/axiosInterceptor";
+import instance from "@/app/axiosInterceptor";
 import { GST_PERCENTAGE } from "@/app/global_constant.js";
 import { useRouter } from "next/navigation";
 import { Toast } from "primereact/toast";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
 
 const validationSchema = Yup.object().shape({
   full_name: Yup.string().required("Name is required"),
@@ -52,9 +51,9 @@ export default function CardtDetail({ params }){
 
 
   const getProductDetail = () => {
-    axios
+    instance
       .get(
-        `https://richkardz.com/api/products/view?product_id=${params.productId}`
+        `products/view?product_id=${params.productId}`
       )
       .then((response) => {
         let data = response.data.result ? response.data.result : {};
@@ -70,9 +69,10 @@ export default function CardtDetail({ params }){
         console.log(error);
       });
   };
+
   const getCardDetails = () => {
-    axios
-      .get(`https://richkardz.com/api/products/checkout-view?product_id=${params.productId}&&print_id=${searchParams.get("print_id")}`)
+    instance
+      .get(`products/checkout-view?product_id=${params.productId}&&print_id=${searchParams.get("print_id")}`)
       .then((response) => {
         let data = response.data.result ? response.data.result : {};
         setCardDetailsData(data?.printing_data);
@@ -81,6 +81,7 @@ export default function CardtDetail({ params }){
         console.log(error);
       });
   };
+
   const onSubmitCardDetail = async (values) => {
     let formdata = new FormData();
     formdata.append("CardPrintingData[full_name]", values.full_name)
@@ -88,24 +89,23 @@ export default function CardtDetail({ params }){
     formdata.append("CardPrintingData[phone_number]", values.phone_number)
     formdata.append("CardPrintingData[designation]", values.designation)
     formdata.append("CardPrintingData[website_link]", values.company_name)
-    formdata.append("CardPrintingData[amount]", productDetail.amount)
     await addCardDetail(formdata);
   };
 
   const addCardDetail = async (data) => {
-    axios
-      .post(`https://richkardz.com/api/products/card-detail?product_id=${params.productId}`, data)
+    instance
+      .post(`products/card-detail?product_id=${params.productId}`, data)
       .then((response) => {
         let orderId =
-          response.data.data && response.data.data.print_id
-            ? response.data.data.print_id
+          response.data && response.data.print_id
+            ? response.data.print_id
             : "";
-        if (response.data.success === true) {
+        if (response.success === true) {
           router.push(
             `/checkout/${params.productId}?print_id=${orderId}`
           );
         }
-        showMessage(response.data);
+        showMessage(response);
       })
       .catch((error) => {
         console.log(error);

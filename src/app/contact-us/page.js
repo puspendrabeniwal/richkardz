@@ -10,9 +10,8 @@ import React, { useRef, useState } from "react";
 import { ThreeCircles } from "react-loader-spinner";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-import instance from "../admin/axiosInterceptor";
+import instance from "../axiosInterceptor";
 import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
-import axios from "axios";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name cannot be blank."),
@@ -47,11 +46,10 @@ const ContactUs = () => {
 
   const addContactAPI = async (data) => {
     setbuttonLoader(true);
-    axios
-      .post("https://richkardz.com/api/site/contact-us", data)
+    instance
+      .post("site/contact-us", data)
       .then((response) => {
-        showMessage(response.data);
-        console.log(response.data,"dsfdsfds")
+        showMessage(response);
         setbuttonLoader(false);
       })
       .catch((error) => {

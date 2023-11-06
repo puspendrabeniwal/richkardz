@@ -1,11 +1,12 @@
 "use client";
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import ReCAPTCHA from "react-google-recaptcha";
-import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
 import { useRef } from "react";
-import axios from "axios";
 import { Toast } from "primereact/toast";
+import ReCAPTCHA from "react-google-recaptcha";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import instance from "@app/axiosInterceptor";
+import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name cannot be blank."),
@@ -36,13 +37,13 @@ export default function DigitalVisitingCards() {
     recaptchaField: "",
   };
   const addDigitalVisitingCard = async (data) => {
-    axios
+    instance
       .post(
-        "https://richkardz.com/api/landing-pages/digital-visiting-cards-enq",
+        "landing-pages/digital-visiting-cards-enq",
         data
       )
       .then((response) => {
-        showMessage(response.data);
+        showMessage(response);
       })
       .catch((error) => {
         console.log(error);

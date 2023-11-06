@@ -1,11 +1,13 @@
 "use client";
 import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import ReCAPTCHA from "react-google-recaptcha";
-import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
 import { useRef } from "react";
-import axios from "axios";
 import { Toast } from "primereact/toast";
+import ReCAPTCHA from "react-google-recaptcha";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import instance from "@app/axiosInterceptor";
+import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name cannot be blank."),
   email: Yup.string()
@@ -32,21 +34,18 @@ export default function GiftingVisitingCard() {
     city: "",
     recaptchaField: "",
   };
+  
   const addGiftingVisitingCard = async (data) => {
-    axios
-      .post(
-        "https://richkardz.com/api/landing-pages/gifting-visiting-card-enq",
-        data
-      )
+    instance.post("landing-pages/gifting-visiting-card-enq",data)
       .then((response) => {
-        showMessage(response.data);
+        showMessage(response);
       })
       .catch((error) => {
         console.log(error);
         showMessage(error);
       });
   };
-  axios;
+
   const onSubmit = async (values) => {
     let formdata = new FormData();
     formdata.append("Enquiries[name]", values.name);
@@ -57,6 +56,7 @@ export default function GiftingVisitingCard() {
     recaptcha.current.reset();
     recaptcha2.current.reset();
   };
+
   const showMessage = (data) => {
     toast.current.show({
       severity: data.success ? "success" : "error",

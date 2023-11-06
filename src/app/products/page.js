@@ -2,19 +2,21 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Skeleton } from "primereact/skeleton";
 
-import instance from "@/app/admin/axiosInterceptor";
-import axios from "axios";
+import instance from "@/app/axiosInterceptor";
 export default function Product() {
   const searchParams = useSearchParams();
   const typeOfCard = searchParams.get("type");
 
+  const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [cardType, setCardType] = useState(typeOfCard ? typeOfCard : "All");
   const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     getList();
+    setLoading(false);
   }, [cardType]);
 
   const getList = () => {
@@ -22,18 +24,22 @@ export default function Product() {
     formdata.append("skip", 0);
     formdata.append("type", cardType);
     formdata.append("status", 1);
-    axios
-      .post("https://richkardz.com/api/products", formdata)
+    instance
+      .post("products", formdata)
       .then((response) => {
         let data =
-          response.data && response.data.result ? response.data.result : [];
+          response && response.result ? response.result : [];
         setImageUrl("https://richkardz.com");
         setProducts(data);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   };
+
+
   return (
     <main>
       <section className="py-4 py-md-15 container">
@@ -107,303 +113,345 @@ export default function Product() {
             </button>
           </li>
         </ul>
-
+        {loading ? 
+            
+            <div className="row">
+            <div className="col-lg-4 col-md-6 col-xl-3">
+              <div className="border-round border-1 surface-border p-4 surface-card">
+                <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+                <Skeleton className="mb-2" width="75%"></Skeleton>
+                <Skeleton width="50%" className="mb-2"></Skeleton>
+                <Skeleton width="90%" className="mb-2"></Skeleton>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 col-xl-3">
+              <div className="border-round border-1 surface-border p-4 surface-card">
+                <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+                <Skeleton className="mb-2" width="75%"></Skeleton>
+                <Skeleton width="50%" className="mb-2"></Skeleton>
+                <Skeleton width="90%" className="mb-2"></Skeleton>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 col-xl-3">
+              <div className="border-round border-1 surface-border p-4 surface-card">
+                <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+                <Skeleton className="mb-2" width="75%"></Skeleton>
+                <Skeleton width="50%" className="mb-2"></Skeleton>
+                <Skeleton width="90%" className="mb-2"></Skeleton>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 col-xl-3">
+              <div className="border-round border-1 surface-border p-4 surface-card">
+                <Skeleton className="mb-2" width="100%" height="150px"></Skeleton>
+                <Skeleton className="mb-2" width="75%"></Skeleton>
+                <Skeleton width="50%" className="mb-2"></Skeleton>
+                <Skeleton width="90%" className="mb-2"></Skeleton>
+              </div>
+            </div>
+          </div> :
         <div className="tab-content mt-4" id="myTabContent">
           <div
-            className="tab-pane fade show active"
-            id="all"
-            role="tabpanel"
-            aria-labelledby="all-tab"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <div className="row">
-              {products.map((row, index) => {
-                let image = row.product_image;
-                let imagePath =
-                  imageUrl && image ? imageUrl + image : "/front/img/card.png";
-                return (
-                  <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                    <Link href={`/products/${row?.product_id}`}>
-                      <div className="productMainCard">
-                        <div className="productMainImage text-center">
-                          <img className="img-fluid" src={imagePath} alt="" />
-                        </div>
-                        <div className="productTitle">
-                          <h3>{row?.product_name}</h3>
-                        </div>
-                        <div className="mt-2">
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStarText">{`(${row.rating})`}</span>
-                        </div>
-                        <div className="productPrice">
-                          <h2>₹ {row?.discount}</h2>
-                          <del>₹ {row?.price}</del>
-                          <h5 className="">( 20% OFF )</h5>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+           className="tab-pane fade show active"
+           id="all"
+           role="tabpanel"
+           aria-labelledby="all-tab"
+           data-aos="fade-up"
+           data-aos-delay="100"
+         >
+           <div className="row">
+             {products.map((row, index) => {
+               let image = row.product_image;
+               let imagePath =
+                 imageUrl && image ? imageUrl + image : "/front/img/card.png";
+               return (
+                 <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
+                   <Link href={`/products/${row?.product_id}`}>
+                     <div className="productMainCard">
+                       <div className="productMainImage text-center">
+                         <img className="img-fluid" src={imagePath} alt="" />
+                       </div>
+                       <div className="productTitle">
+                         <h3>{row?.product_name}</h3>
+                       </div>
+                       <div className="mt-2">
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStarText">{`(${row.rating})`}</span>
+                       </div>
+                       <div className="productPrice">
+                         <h2>₹ {row?.discount}</h2>
+                         <del>₹ {row?.price}</del>
+                         <h5 className="">( 20% OFF )</h5>
+                       </div>
+                     </div>
+                   </Link>
+                 </div>
+               );
+             })}
+           </div>
+         </div>
 
-          <div
-            className="tab-pane fade"
-            id="home"
-            role="tabpanel"
-            aria-labelledby="home-tab"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <div className="row">
-              {products.map((row, index) => {
-                let image = row.product_image ? row.product_image : "";
-                let imagePath =
-                  imageUrl && image ? imageUrl + image : "/front/img/card.png";
-                return (
-                  <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                    <Link href={`/products/${row?.product_id}`}>
-                      <div className="productMainCard">
-                        <div className="productMainImage text-center">
-                          <img className="img-fluid" src={imagePath} alt="" />
-                        </div>
-                        <div className="productTitle">
-                          <h3>{row?.product_name}</h3>
-                        </div>
-                        <div className="mt-2">
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStar">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStarText">{`(${row.rating})`}</span>
-                        </div>
-                        <div className="productPrice">
-                          <h2>₹ {row?.discount}</h2>
-                          <del>₹ {row?.price}</del>
-                          <h5 className="">( 20% OFF )</h5>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+         <div
+           className="tab-pane fade"
+           id="home"
+           role="tabpanel"
+           aria-labelledby="home-tab"
+           data-aos="fade-up"
+           data-aos-delay="100"
+         >
+           <div className="row">
+             {products.map((row, index) => {
+               let image = row.product_image ? row.product_image : "";
+               let imagePath =
+                 imageUrl && image ? imageUrl + image : "/front/img/card.png";
+               return (
+                 <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
+                   <Link href={`/products/${row?.product_id}`}>
+                     <div className="productMainCard">
+                       <div className="productMainImage text-center">
+                         <img className="img-fluid" src={imagePath} alt="" />
+                       </div>
+                       <div className="productTitle">
+                         <h3>{row?.product_name}</h3>
+                       </div>
+                       <div className="mt-2">
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStar">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStarText">{`(${row.rating})`}</span>
+                       </div>
+                       <div className="productPrice">
+                         <h2>₹ {row?.discount}</h2>
+                         <del>₹ {row?.price}</del>
+                         <h5 className="">( 20% OFF )</h5>
+                       </div>
+                     </div>
+                   </Link>
+                 </div>
+               );
+             })}
+           </div>
+         </div>
 
-          <div
-            className="tab-pane fade"
-            id="profile"
-            role="tabpanel"
-            aria-labelledby="profile-tab"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <div className="row">
-              {(products.length > 0) ? products.map((row, index) => {
-                let image = row.product_image ? row.product_image : "";
-                let imagePath =
-                  imageUrl && image ? imageUrl + image : "/front/img/card.png";
-                return (
-                  <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                    <Link href={`/products/${row?.product_id}`}>
-                      <div className="productMainCard">
-                        <div className="productMainImage text-center">
-                          <img className="img-fluid" src={imagePath} alt="" />
-                        </div>
-                        <div className="productTitle">
-                          <h3>{row?.product_name}</h3>
-                        </div>
-                        <div className="mt-2">
-                          <span className="">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="">
-                            <i className="fa fa-star"></i>
-                          </span>
-                          <span className="ratingStarText">{`(${row.rating})`}</span>
-                        </div>
-                        <div className="productPrice">
-                          <h2>₹ {row?.discount}</h2>
-                          <del>₹ {row?.price}</del>
-                          <h5 className="">( 20% OFF )</h5>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })
-              : <div className="col-lg-12 col-md-12 col-xl-12 text-center">
-              <img src="/front/img/no_product.png" alt="no product found"/>
-            </div>
-              }
-            </div>
-          </div>
-          <div
-            className="tab-pane fade"
-            id="combo"
-            role="tabpanel"
-            aria-labelledby="combo-tab"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <div className="row">
-              {(products.length > 0) ? products.map((row, index) => {
-                let images = row.product_image ? row.product_image : [];
-                return (
-                  <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                    <Link href={`/combo-products/printing-details/${row?.product_id}`}>
-                      <div className="productMainCard">
+         <div
+           className="tab-pane fade"
+           id="profile"
+           role="tabpanel"
+           aria-labelledby="profile-tab"
+           data-aos="fade-up"
+           data-aos-delay="100"
+         >
+           <div className="row">
+             {(products.length > 0) ? products.map((row, index) => {
+               let image = row.product_image ? row.product_image : "";
+               let imagePath =
+                 imageUrl && image ? imageUrl + image : "/front/img/card.png";
+               return (
+                 <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
+                   <Link href={`/products/${row?.product_id}`}>
+                     <div className="productMainCard">
+                       <div className="productMainImage text-center">
+                         <img className="img-fluid" src={imagePath} alt="" />
+                       </div>
+                       <div className="productTitle">
+                         <h3>{row?.product_name}</h3>
+                       </div>
+                       <div className="mt-2">
+                         <span className="">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="">
+                           <i className="fa fa-star"></i>
+                         </span>
+                         <span className="ratingStarText">{`(${row.rating})`}</span>
+                       </div>
+                       <div className="productPrice">
+                         <h2>₹ {row?.discount}</h2>
+                         <del>₹ {row?.price}</del>
+                         <h5 className="">( 20% OFF )</h5>
+                       </div>
+                     </div>
+                   </Link>
+                 </div>
+               );
+             })
+             : <div className="col-lg-12 col-md-12 col-xl-12 text-center">
+             <img src="/front/img/no_product.png" alt="no product found"/>
+           </div>
+             }
+           </div>
+         </div>
+         
+         <div
+           className="tab-pane fade"
+           id="combo"
+           role="tabpanel"
+           aria-labelledby="combo-tab"
+           data-aos="fade-up"
+           data-aos-delay="100"
+         >
+           <div className="row">
+             {(products.length > 0) ? products.map((row, index) => {
+               let images = row.product_image ? row.product_image : [];
+               return (
+                 <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
+                   <Link
+                     href={`/combo-products/printing-details/${row?.product_id}`}
+                   >
+                     <div className="productMainCard">
+                         <div className="productMainImage">
+                           <div
+                             id={`carouselExampleControls${index}`}
+                             className="carousel slide productCarousel"
+                             data-bs-ride="carousel"
+                           >
+                             <div className="carousel-indicators">
+                               <button
+                                 type="button"
+                                 data-bs-target={`#carouselExampleIndicators${index}`}
+                                 data-bs-slide-to={0}
+                                 className="active"
+                                 aria-current="true"
+                                 aria-label="Slide 1"
+                               ></button>
+                               <button
+                                 type="button"
+                                 data-bs-target={`#carouselExampleIndicators${index}`}
+                                 data-bs-slide-to={1}
+                                 aria-label="Slide 2"
+                               ></button>
+                               <button
+                                 type="button"
+                                 data-bs-target={`#carouselExampleIndicators${index}`}
+                                 data-bs-slide-to={2}
+                                 aria-label="Slide 3"
+                               ></button>
+                             </div>
+                             <div className="carousel-inner">
+                               <>
+                                 {images &&
+                                   Array.isArray(images) &&
+                                   images.length > 0 &&
+                                   images.map((item, index) => (
+                                     <div
+                                       className={`carousel-item ${
+                                         index === 0 ? "active" : ""
+                                       }`}
+                                       key={index}
+                                     >
+                                       <img
+                                         src={"https://richkardz.com" + item}
+                                         alt=""
+                                       />
+                                     </div>
+                                   ))}
+                               </>
+                             </div>
+                             <button
+                               className="carousel-control-prev"
+                               type="button"
+                               data-bs-target={`#carouselExampleControls${index}`}
+                               data-bs-slide="prev"
+                             >
+                               <span
+                                 className="carousel-control-prev-icon"
+                                 aria-hidden="true"
+                               ></span>
+                               <span className="visually-hidden">Previous</span>
+                             </button>
+                             <button
+                               className="carousel-control-next"
+                               type="button"
+                               data-bs-target={`#carouselExampleControls${index}`}
+                               data-bs-slide="next"
+                             >
+                               <span
+                                 className="carousel-control-next-icon"
+                                 aria-hidden="true"
+                               ></span>
+                               <span className="visually-hidden">Next</span>
+                             </button>
+                           </div>
+                         </div>
+                         <br />
+                         <div className="productTitle">
+                           <h3>{row?.product_name}</h3>
+                         </div>
+                         <div className="mt-2">
+                           <span className="ratingStar">
+                             <i className="fa fa-star"></i>
+                           </span>
+                           <span className="ratingStar">
+                             <i className="fa fa-star"></i>
+                           </span>
+                           <span className="ratingStar">
+                             <i className="fa fa-star"></i>
+                           </span>
+                           <span className="ratingStar">
+                             <i className="fa fa-star"></i>
+                           </span>
+                           <span className="ratingStar">
+                             <i className="fa fa-star"></i>
+                           </span>
+                           <span className="ratingStarText">{`(${row.rating})`}</span>
+                         </div>
+                         <div className="productPrice">
+                           <h2>₹ {row?.discount}</h2>
+                           <del>₹ {row?.price}</del>
+                           <h5 className="">( 20% OFF )</h5>
+                         </div>
+                     </div>
+                   </Link>
+                 </div>
+               );
+             })
+             : <div className="col-lg-12 col-md-12 col-xl-12 text-center">
+               <img src="/front/img/no_product.png" alt="No product found"/>
+             </div>
+           } 
+           </div>
+         </div>
+           
+         
+      
 
-                          <div class="productMainImage">
-                            <div
-                              id={`carouselExampleControls${index}`}
-                              class="carousel slide productCarousel"
-                              data-bs-ride="carousel"
-                            >
-                              <div class="carousel-indicators">
-                                <button
-                                  type="button"
-                                  data-bs-target={`#carouselExampleIndicators${index}`}
-                                  data-bs-slide-to={0}
-                                  class="active"
-                                  aria-current="true"
-                                  aria-label="Slide 1"
-                                ></button>
-                                <button
-                                  type="button"
-                                  data-bs-target={`#carouselExampleIndicators${index}`}
-                                  data-bs-slide-to={1}
-                                  aria-label="Slide 2"
-                                ></button>
-                                <button
-                                  type="button"
-                                  data-bs-target={`#carouselExampleIndicators${index}`}
-                                  data-bs-slide-to={2}
-                                  aria-label="Slide 3"
-                                ></button>
-                              </div>
-                              <div class="carousel-inner">
-                                <>
-                                  {images &&
-                                    Array.isArray(images) &&
-                                    images.length > 0 &&
-                                    images.map((item, index) => (
-                                      <div
-                                        className={`carousel-item ${
-                                          index === 0 ? "active" : ""
-                                        }`}
-                                        key={index}
-                                      >
-                                        <img
-                                          src={"https://richkardz.com" + item}
-                                          alt=""
-                                        />
-                                      </div>
-                                    ))}
-                                </>
-                              </div>
-                              <button
-                                class="carousel-control-prev"
-                                type="button"
-                                data-bs-target={`#carouselExampleControls${index}`}
-                                data-bs-slide="prev"
-                              >
-                                <span
-                                  class="carousel-control-prev-icon"
-                                  aria-hidden="true"
-                                ></span>
-                                <span class="visually-hidden">Previous</span>
-                              </button>
-                              <button
-                                class="carousel-control-next"
-                                type="button"
-                                data-bs-target={`#carouselExampleControls${index}`}
-                                data-bs-slide="next"
-                              >
-                                <span
-                                  class="carousel-control-next-icon"
-                                  aria-hidden="true"
-                                ></span>
-                                <span class="visually-hidden">Next</span>
-                              </button>
-                            </div>
-                          </div>
-                          <br />
-                          <div className="productTitle">
-                            <h3>{row?.product_name}</h3>
-                          </div>
-                          <div className="mt-2">
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStar">
-                              <i className="fa fa-star"></i>
-                            </span>
-                            <span className="ratingStarText">{`(${row.rating})`}</span>
-                          </div>
-                          <div className="productPrice">
-                            <h2>₹ {row?.discount}</h2>
-                            <del>₹ {row?.price}</del>
-                            <h5 className="">( 20% OFF )</h5>
-                          </div>
-                        
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })
-              : <div className="col-lg-12 col-md-12 col-xl-12 text-center">
-                <img src="/front/img/no_product.png" alt="No product found"/>
-              </div>
-            } 
-            </div>
-          </div>
         </div>
+         }
+
       </section>
       <section className=" container pb-md-5 pb-3">
         <div className="row align-items-center">

@@ -2,15 +2,17 @@
 import * as Yup from "yup";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import instance from "@/app/admin/axiosInterceptor";
+import instance from "@/app/axiosInterceptor";
 import { GST_PERCENTAGE } from "@/app/global_constant";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
 
 const validationSchema = Yup.object().shape({
+  full_name: Yup.string().required("Name is required"),
+  email: Yup.string().required("Email is required"),
+  phone_number: Yup.string().required("Phone is required"),
   address_1: Yup.string().required("Address is required"),
   state: Yup.string().required("State is required"),
   city: Yup.string().required("City is required"),
@@ -29,10 +31,10 @@ export default function DeliveryAddress({ params }) {
 
 
   const getProductDetail = () => {
-    axios
-      .get(`https://richkardz.com/api/products/checkout-view?product_id=${params.productId}&&print_id=${searchParams.get("print_id")}`)
+    instance
+      .get(`products/checkout-view?product_id=${params.productId}&&print_id=${searchParams.get("print_id")}`)
       .then((response) => {
-        let data = response.data.result ? response.data.result : {};
+        let data = response.result ? response.result : {};
         setProductDetail(data);
       })
       .catch((error) => {
@@ -42,15 +44,10 @@ export default function DeliveryAddress({ params }) {
 
 
   const deliveryAddressValue = {
-    type: "delivery_adderess",
     product_id: params.productId,
-    full_name: cardDetail.full_name ? cardDetail.full_name : "",
-    email: cardDetail.email ? cardDetail.email : "",
-    phone_number: cardDetail.phone_number ? cardDetail.phone_number : "",
-    designation: "",
-    company_name: "",
-    company_logo: {},
-    amount: productDetail?.grand_total,
+    full_name: productDetail?.printing_data?.full_name ? productDetail?.printing_data?.full_name : "",
+    email: productDetail?.printing_data?.email ? productDetail?.printing_data?.email : "",
+    phone_number: productDetail?.printing_data?.phone_number ? productDetail?.printing_data?.phone_number : "",
     city: "",
     state: "",
     address_1: "",
@@ -59,14 +56,24 @@ export default function DeliveryAddress({ params }) {
   };
   
   const onSubmit = async (values) => {
-    await addCardDetail(values);
+    let formdata = new FormData();
+    formdata.append("CardPrintingData[shipping_first_name]", values.first_name)
+    formdata.append("CardPrintingData[shipping_last_name]", values.first_name)
+    formdata.append("CardPrintingData[shipping_email]", productDetail?.printing_data?.email)
+    formdata.append("CardPrintingData[shipping_phone_number]", values.phone_number)
+    formdata.append("CardPrintingData[address_1]", values.address_1)
+    formdata.append("CardPrintingData[address_2]", values.address_2)
+    formdata.append("CardPrintingData[state]", values.state)
+    formdata.append("CardPrintingData[zipcode]", values.zipcode)
+    formdata.append("CardPrintingData[city]", values.city)
+    await addCardDetail(formdata);
   };
   const addCardDetail = async (data) => {
     instance
-      .post("save_order", data)
+      .post(`products/check-out?product_id=${params.productId}&&print_id=${searchParams.get("print_id")}`, data)
       .then((response) => {
-        if (response.status === true) {
-          window.location.replace(response.result.longurl);
+        if (response.success === true) {
+          window.location.replace(response?.data?.pay_link);
         }
         showMessage(response);
       })
@@ -77,8 +84,8 @@ export default function DeliveryAddress({ params }) {
 
   const showMessage = (data) => {
     toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
+      severity: data.success ? "success" : "error",
+      summary: data.success ? "Success" : "Error",
       detail: data.message,
       life: 3000,
     });
@@ -191,6 +198,11 @@ export default function DeliveryAddress({ params }) {
                                   className="form-control"
                                   id="floatingname"
                                 />
+                                <ErrorMessage
+                                  name="full_name"
+                                  component="div"
+                                  className="text-danger"
+                                />
                               </div>
                               <div className="col-md-6 customFrom mb-3">
                                 <label
@@ -206,6 +218,11 @@ export default function DeliveryAddress({ params }) {
                                     className="form-control"
                                     id="floatingNumber"
                                   />
+                                  <ErrorMessage
+                                    name="phone_number"
+                                    component="div"
+                                    className="text-danger"
+                                  />
                                 </div>
                               </div>
                               <div className="col-md-6 customFrom mb-3">
@@ -213,7 +230,7 @@ export default function DeliveryAddress({ params }) {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingaddress"
                                 >
-                                  Enter you address
+                                  Address
                                   <span className="text-danger">*</span>
                                 </label>
                                 <div className=" billingForm">
@@ -256,7 +273,7 @@ export default function DeliveryAddress({ params }) {
                                   className="col-form-label required fw-semibold fs-6"
                                   htmlFor="floatingstate"
                                 >
-                                  Select State
+                                  Select State <span className="text-danger">*</span>
                                 </label>
                                 <Field
                                   as="select"
