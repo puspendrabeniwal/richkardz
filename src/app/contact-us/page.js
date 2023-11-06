@@ -10,8 +10,8 @@ import React, { useRef, useState } from "react";
 import { ThreeCircles } from "react-loader-spinner";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-import instance from "../axiosInterceptor";
-import { GOOGLE_CAPTCHA_SITE_KEY } from "../global_constant";
+import instance from "@/app/axiosInterceptor";
+import { GOOGLE_CAPTCHA_SITE_KEY } from "@/app/global_constant";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name cannot be blank."),

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import instance from "@/app/admin/axiosInterceptor";
+import instance from "@/app/axiosInterceptor";
 import { Toast } from "primereact/toast";
 import { useSearchParams } from "next/navigation";
 

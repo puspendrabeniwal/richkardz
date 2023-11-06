@@ -1,13 +1,14 @@
 "use client";
 
 import * as Yup from "yup";
+import Link from "next/link";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
-import instance from "../user/axiosInterceptor";
-import Link from "next/link";
+import instance from "@/app/axiosInterceptor";
+
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()

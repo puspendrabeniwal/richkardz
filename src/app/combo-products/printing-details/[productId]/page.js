@@ -2,7 +2,7 @@
 import * as Yup from "yup";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import instance from "@/app/admin/axiosInterceptor";
+import instance from "@/app/axiosInterceptor";
 import { GST_PERCENTAGE } from "@/app/global_constant";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
