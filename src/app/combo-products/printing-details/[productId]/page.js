@@ -3,18 +3,13 @@ import * as Yup from "yup";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "@/app/axiosInterceptor";
-import { GST_PERCENTAGE } from "@/app/global_constant";
+import { COMBO_PRODUCTS_FIELDS_NAME } from "@/app/global_constant";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
-const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("This field is required"),
-  email: Yup.string().required("This field is required"),
-  phone_number: Yup.string().required("This field is required"),
-  designation: Yup.string().required("This field is required"),
-});
 
 export default function DeliveryAddress({ params }) {
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -40,24 +35,15 @@ export default function DeliveryAddress({ params }) {
       });
   };
 
-
-  const initialValues = {
-    full_name: cardDetail.full_name ? cardDetail.full_name : "",
-    email: cardDetail.email ? cardDetail.email : "",
-    phone_number: cardDetail.phone_number ? cardDetail.phone_number : "",
-    designation: "",
-    company_name: "",
-  };
-  
-  const onSubmit = async (values) => {
-    await addCardDetail(values);
-  };
-  const addCardDetail = async (data) => {
+  let formData = new FormData();
+  const onSubmit = (values, {resetForm}) => {
     instance
-      .post("save_order", data)
+      .post(`products/combo-printing-details?product_id=${params.productId}`, values)
       .then((response) => {
-        if (response.status === true) {
-          window.location.replace(response.result.longurl);
+        console.log(response)
+        if (response.success === true) {
+          resetForm();
+          // window.location.replace(response.result.pay_link);
         }
         showMessage(response);
       })
@@ -66,10 +52,11 @@ export default function DeliveryAddress({ params }) {
       });
   };
 
+
   const showMessage = (data) => {
     toast.current.show({
-      severity: data.status ? "success" : "error",
-      summary: data.status ? "Success" : "Error",
+      severity: data.success ? "success" : "error",
+      summary: data.success ? "Success" : "Error",
       detail: data.message,
       life: 3000,
     });
@@ -87,7 +74,7 @@ export default function DeliveryAddress({ params }) {
         <div className="accordion collap_seCard" id="accordionExample">
           {
             Array.isArray(productDetail?.combo_products) && productDetail?.combo_products.map((row, index)=>{
-              return <div className="accordion-item">
+              return <div className="accordion-item" key={index}>
                 <div className="accordion-header" id={`heading${index}`}>
                   <button className="accordion-button" type="button" data-bs-toggle="collapse"
                       data-bs-target={`#collapse${index}`} aria-expanded="true" aria-controls={`collapse${index}`}>
@@ -129,13 +116,40 @@ export default function DeliveryAddress({ params }) {
                           <div className="col-lg-6">
                             <Formik
                               enableReinitialize={true}
-                              initialValues={initialValues}
-                              validationSchema={validationSchema}
-                              onSubmit={async (values) => await onSubmit(values)}
+                              initialValues={{"ComboCardPrintingData":{
+                               [COMBO_PRODUCTS_FIELDS_NAME[index]+"_full_name"]:  "",
+                               [COMBO_PRODUCTS_FIELDS_NAME[index]+"_email"]: "",
+                               [COMBO_PRODUCTS_FIELDS_NAME[index]+"_phone_number"]: "",
+                               [COMBO_PRODUCTS_FIELDS_NAME[index]+"_designation"]: "",
+                               [COMBO_PRODUCTS_FIELDS_NAME[index]+"_company_name"]: "",
+                              }}}
+                              validationSchema={Yup.object().shape({
+                                "ComboCardPrintingData":Yup.object().shape({
+                                  [COMBO_PRODUCTS_FIELDS_NAME[index]+"_full_name"]: Yup.string().required("This field is required"),
+                                  [COMBO_PRODUCTS_FIELDS_NAME[index]+"_email"]: Yup.string().required("This field is required"),
+                                  [COMBO_PRODUCTS_FIELDS_NAME[index]+"_phone_number"]: Yup.string().required("This field is required"),
+                                  [COMBO_PRODUCTS_FIELDS_NAME[index]+"_designation"]: Yup.string().required("This field is required"),
+                                })
+                              })}
+                              onSubmit={async (values, { resetForm, errors }) =>{
+                                formData.append("ComboCardPrintingData["+COMBO_PRODUCTS_FIELDS_NAME[index]+"_id]", row?.product_id);
+                                formData.append("ComboCardPrintingData["+COMBO_PRODUCTS_FIELDS_NAME[index]+"_full_name]", values.ComboCardPrintingData[COMBO_PRODUCTS_FIELDS_NAME[index]+"_full_name"]);
+                                formData.append("ComboCardPrintingData["+COMBO_PRODUCTS_FIELDS_NAME[index]+"_email]", values.ComboCardPrintingData[COMBO_PRODUCTS_FIELDS_NAME[index]+"_email"]);
+                                formData.append("ComboCardPrintingData["+COMBO_PRODUCTS_FIELDS_NAME[index]+"_phone_number]", values.ComboCardPrintingData[COMBO_PRODUCTS_FIELDS_NAME[index]+"_phone_number"]);
+                                formData.append("ComboCardPrintingData["+COMBO_PRODUCTS_FIELDS_NAME[index]+"_designation]", values.ComboCardPrintingData[COMBO_PRODUCTS_FIELDS_NAME[index]+"_designation"]);
+                                formData.append("ComboCardPrintingData["+COMBO_PRODUCTS_FIELDS_NAME[index]+"_company_name]", values.ComboCardPrintingData[COMBO_PRODUCTS_FIELDS_NAME[index]+"_company_name"]);
+                                (index === productDetail?.combo_products.length-1) ? 
+                                  await onSubmit(formData, { resetForm, errors })
+                                  
+                                :""
+   
+                              }}
                             >
                               {({ setFieldValue, values }) => (
                                 <Form className="form-design">
+                                  
                                   <div className="row">
+                                    
                                     <div className="col-md-6 customFrom mb-3">
                                       <label
                                         className="col-form-label required fw-semibold fs-6"
@@ -146,12 +160,12 @@ export default function DeliveryAddress({ params }) {
       
                                       <Field
                                         type="text"
-                                        name="full_name"
+                                        name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_full_name`}
                                         className="form-control"
                                         id="floatingName"
                                       />
                                       <ErrorMessage
-                                        name="full_name"
+                                        name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_full_name`}
                                         component="div"
                                         className="text-danger"
                                       />
@@ -166,12 +180,12 @@ export default function DeliveryAddress({ params }) {
                                       <div className=" billingForm">
                                         <Field
                                           type="number"
-                                          name="phone_number"
+                                          name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_phone_number`}
                                           className="form-control"
                                           id="floatingNumber"
                                         />
                                         <ErrorMessage
-                                        name="phone_number"
+                                        name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_phone_number`}
                                         component="div"
                                         className="text-danger"
                                       />
@@ -187,31 +201,29 @@ export default function DeliveryAddress({ params }) {
       
                                       <Field
                                         type="text"
-                                        name="email"
+                                        name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_email`}
                                         className="form-control"
                                         id="floatingEmail"
                                       />
                                       <ErrorMessage
-                                        name="email"
+                                        name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_email`}
                                         component="div"
                                         className="text-danger"
                                       />
                                     </div>
-      
-      
                                     <div className="col-md-6 customFrom mb-3">
                                       <label htmlFor="designation" className="col-form-label required fw-semibold fs-6">
                                         Designation<span className="text-danger">*</span>
                                       </label>
                                         <Field
                                           type="text"
-                                          name="designation"
+                                          name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_designation`}
                                           className="form-control"
                                           id="designation"
                                         />
       
                                       <ErrorMessage
-                                        name="designation"
+                                        name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_designation`}
                                         component="div"
                                         className="text-danger"
                                       />
@@ -226,7 +238,7 @@ export default function DeliveryAddress({ params }) {
       
                                       <Field
                                         type="text"
-                                        name="company"
+                                        name={`ComboCardPrintingData.${COMBO_PRODUCTS_FIELDS_NAME[index]}_company_name`}
                                         className="form-control"
                                         id="floatingCompany"
                                       />
@@ -255,7 +267,7 @@ export default function DeliveryAddress({ params }) {
             })
             
           }
-                        <br />
+          <br />
         </div>
       </section>
     </main>
