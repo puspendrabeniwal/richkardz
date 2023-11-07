@@ -2,7 +2,7 @@
 import * as Yup from "yup";
 import { Toast } from "primereact/toast";
 import ReCAPTCHA from "react-google-recaptcha";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import instance from "@/app/axiosInterceptor";
@@ -25,6 +25,7 @@ const validationSchema = Yup.object().shape({
 export default function Brands() {
   const toast = useRef(null);
   const recaptcha = useRef();
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     var loadScript = function (src) {
@@ -53,14 +54,17 @@ export default function Brands() {
       .post("landing-pages/brands-lead", data)
       .then((response) => {
         showMessage(response);
+        setButtonDisabled(false);
       })
       .catch((error) => {
         console.log(error);
         showMessage(error);
+        setButtonDisabled(false);
       });
   };
 
   const onSubmit = async (values) => {
+    setButtonDisabled(true)
     let formdata = new FormData();
     formdata.append("BrandLeads[full_name]", values.full_name);
     formdata.append("BrandLeads[email]", values.email);
@@ -80,8 +84,8 @@ export default function Brands() {
   return (
     <html lang="en">
       <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta charSet="utf-8" />
+        <meta httpEquiv="content-type" content="text/html;charSet=UTF-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <meta name="csrf-param" content="_csrf" />
         <meta
@@ -134,7 +138,7 @@ export default function Brands() {
           <img
             className="logoTop"
             src="themes/brand/img/richkardsLogo.png"
-            alt
+            alt="logo"
           />
         </header>
         <section className="container mainSection mt-0">
@@ -197,7 +201,7 @@ export default function Brands() {
                         <img
                           className="inputREIDicon"
                           src="/themes/brand/img/qrCodeWhite.png"
-                          alt
+                          alt="qrwhite"
                         />
                       </div>
                       <div className="position-relative inputREID">
@@ -217,7 +221,7 @@ export default function Brands() {
                         <img
                           className="inputREIDicon"
                           src="/themes/brand/img/qrCodeWhite.png"
-                          alt
+                          alt="qrwhite"
                         />
                       </div>
                       <div className="position-relative inputREID">
@@ -237,7 +241,7 @@ export default function Brands() {
                         <img
                           className="inputREIDicon"
                           src="/themes/brand/img/rkInputIcon.png"
-                          alt
+                          alt="email"
                         />
                       </div>
                       <div className="position-relative inputREID">
@@ -262,8 +266,12 @@ export default function Brands() {
 
                       <br />
                       <div>
-                        <button type="submit" className="contactBtn btn">
-                          Submit
+                        <button 
+                          type="submit" 
+                          className="contactBtn btn"
+                          disabled={isButtonDisabled}
+                        >
+                          {isButtonDisabled ? "Submiting.." : "Submit"}
                         </button>
                       </div>
                     </Form>
@@ -277,7 +285,7 @@ export default function Brands() {
           <div className="row">
             <div className="col-lg-5">
               <div className="appAdd position-relative">
-                <img src="themes/brand/img/appAddImg.png" alt />
+                <img src="themes/brand/img/appAddImg.png" alt="add" />
               </div>
             </div>
             <div className="col-lg-7 ps-lg-5 mt-5 mt-lg-0">
@@ -289,7 +297,7 @@ export default function Brands() {
                 <div className="col-lg-6 mt-4 col-md-6">
                   <div className="row align-items-center">
                     <div className="standCard">
-                      <img src="themes/brand/img/rfid_nfc.png" alt />
+                      <img src="themes/brand/img/rfid_nfc.png" alt="stand card" />
                     </div>
                     <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                       <h6 className="standMidumTtle">RFID + NFC</h6>
@@ -299,7 +307,7 @@ export default function Brands() {
                 <div className="col-lg-6 mt-4 col-md-6">
                   <div className="row align-items-center">
                     <div className="standCard">
-                      <img src="themes/brand/img/OneTap_Network.png" alt />
+                      <img src="themes/brand/img/OneTap_Network.png" alt="stand card" />
                     </div>
                     <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                       <h6 className="standMidumTtle">One Tap Network </h6>
@@ -309,7 +317,7 @@ export default function Brands() {
                 <div className="col-lg-6 mt-4 col-md-6">
                   <div className="row align-items-center">
                     <div className="standCard">
-                      <img src="themes/brand/img/QR_Code.png" alt />
+                      <img src="themes/brand/img/QR_Code.png" alt="qr card" />
                     </div>
                     <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                       <h6 className="standMidumTtle">QR Code</h6>
@@ -321,7 +329,7 @@ export default function Brands() {
                     <div className="standCard">
                       <img
                         src="themes/brand/img/DetailedBusinessCard.png"
-                        alt
+                        alt="business card"
                       />
                     </div>
                     <div className="col-8 col-lg-7 ps-0 col-xxl-8">
@@ -332,7 +340,7 @@ export default function Brands() {
                 <div className="col-lg-6 mt-4 col-md-6">
                   <div className="row align-items-center">
                     <div className="standCard">
-                      <img src="themes/brand/img/PocketFriendly.png" alt />
+                      <img src="themes/brand/img/PocketFriendly.png" alt="stand card" />
                     </div>
                     <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                       <h6 className="standMidumTtle">Pocket Friendly</h6>
@@ -358,7 +366,7 @@ export default function Brands() {
                     </p>
                   </div>
                   <div className="col-lg-7">
-                    <img src="themes/brand/img/OurProductSlider.png" alt />
+                    <img src="themes/brand/img/OurProductSlider.png" alt="product slider" />
                   </div>
                 </div>
               </div>
@@ -374,7 +382,7 @@ export default function Brands() {
                     </p>
                   </div>
                   <div className="col-lg-7">
-                    <img src="themes/brand/img/OurProductSlider.png" alt />
+                    <img src="themes/brand/img/OurProductSlider.png" alt="slider" />
                   </div>
                 </div>
               </div>
@@ -390,17 +398,17 @@ export default function Brands() {
                     </p>
                   </div>
                   <div className="col-lg-7">
-                    <img src="themes/brand/img/OurProductSlider.png" alt />
+                    <img src="themes/brand/img/OurProductSlider.png" alt="product slider" />
                   </div>
                 </div>
               </div>
             </div>
             <div className="d-flex ourProductNavigation">
               <div className="swiper-button-prev">
-                <img src="themes/brand/img/arrowRight.png" alt />
+                <img src="themes/brand/img/arrowRight.png" alt="prev" />
               </div>
               <div className="swiper-button-next">
-                <img src="themes/brand/img/arrowLeft.png" alt />
+                <img src="themes/brand/img/arrowLeft.png" alt="next" />
               </div>
             </div>
           </div>
@@ -419,7 +427,7 @@ export default function Brands() {
               <div className="FeaturesCard">
                 <div className="row align-items-center">
                   <div className="FeaturesCardIcon">
-                    <img src="themes/brand/img/RFID_Cards.png" alt />
+                    <img src="themes/brand/img/RFID_Cards.png" alt="future card icon" />
                   </div>
                   <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                     <h5 className="FeaturesCardTitle">RFID Cards</h5>
@@ -434,7 +442,7 @@ export default function Brands() {
               <div className="FeaturesCard">
                 <div className="row align-items-center">
                   <div className="FeaturesCardIcon">
-                    <img src="themes/brand/img/NFC-Cards.png" alt />
+                    <img src="themes/brand/img/NFC-Cards.png" alt="NFC card" />
                   </div>
                   <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                     <h5 className="FeaturesCardTitle">NFC Cards</h5>
@@ -449,7 +457,7 @@ export default function Brands() {
               <div className="FeaturesCard">
                 <div className="row align-items-center">
                   <div className="FeaturesCardIcon">
-                    <img src="themes/brand/img/QR-Code.png" alt />
+                    <img src="themes/brand/img/QR-Code.png" alt="qr code" />
                   </div>
                   <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                     <h5 className="FeaturesCardTitle">QR Code</h5>
@@ -464,7 +472,7 @@ export default function Brands() {
               <div className="FeaturesCard">
                 <div className="row align-items-center">
                   <div className="FeaturesCardIcon">
-                    <img src="themes/brand/img/Eco-Friendly.png" alt />
+                    <img src="themes/brand/img/Eco-Friendly.png" alt="Feature card" />
                   </div>
                   <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                     <h5 className="FeaturesCardTitle">Eco-Friendly</h5>
@@ -480,7 +488,7 @@ export default function Brands() {
               <div className="FeaturesCard">
                 <div className="row align-items-center">
                   <div className="FeaturesCardIcon">
-                    <img src="themes/brand/img/Leave.png" alt />
+                    <img src="themes/brand/img/Leave.png" alt="Feature card" />
                   </div>
                   <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                     <h5 className="FeaturesCardTitle">Leave an Impression</h5>
@@ -495,7 +503,7 @@ export default function Brands() {
               <div className="FeaturesCard">
                 <div className="row align-items-center">
                   <div className="FeaturesCardIcon">
-                    <img src="themes/brand/img/TwoinOne.png" alt />
+                    <img src="themes/brand/img/TwoinOne.png" alt="image" />
                   </div>
                   <div className="col-8 col-lg-7 ps-0 col-xxl-8">
                     <h5 className="FeaturesCardTitle">Two in One</h5>
@@ -511,7 +519,7 @@ export default function Brands() {
         <section className="container mainSection">
           <div className="row">
             <div className="col-lg-6 ps-lg-5 order-lg-last">
-              <img src="themes/brand/img/NetworkingTree.png" alt />
+              <img src="themes/brand/img/NetworkingTree.png" alt="image" />
             </div>
             <div className="col-lg-6  mt-4 mt-lg-0 ">
               <h1 className="customHeading">
@@ -536,7 +544,7 @@ export default function Brands() {
         <section className="container mainSection">
           <div className="row">
             <div className="col-lg-6">
-              <img src="themes/brand/img/whyRich.png" alt />
+              <img src="themes/brand/img/whyRich.png" alt="image" />
             </div>
             <div className="col-lg-6 ps-lg-5 mt-4 mt-lg-0">
               <h1 className="customHeading">
@@ -571,7 +579,7 @@ export default function Brands() {
             <div className="col-xl-11 col-lg-11 col-md-12 m-auto">
               <img
                 src="themes/brand/img/OurCard.png"
-                alt
+                alt="image"
                 className="ourCardImg"
               />
               <h1 className="ourCardTitile">
@@ -598,7 +606,7 @@ export default function Brands() {
               <img
                 className="logoTop"
                 src="themes/brand/img/richkardsLogo.png"
-                alt
+                alt="image"
               />
             </div>
             <div className="col-lg-4 col-md-6 text-center text-md-end text-lg-center  mt-4 mt-lg-0">

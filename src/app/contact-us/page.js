@@ -30,7 +30,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const ContactUs = () => {
-  const [buttonLoader, setbuttonLoader] = useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+
   const toast = useRef(null);
   const router = useRouter();
   const recaptcha = useRef();
@@ -45,16 +46,15 @@ const ContactUs = () => {
   };
 
   const addContactAPI = async (data) => {
-    setbuttonLoader(true);
     instance
       .post("site/contact-us", data)
       .then((response) => {
         showMessage(response);
-        setbuttonLoader(false);
+        setButtonDisabled(false);
       })
       .catch((error) => {
         console.log(error);
-        setbuttonLoader(false);
+        setButtonDisabled(false);
       });
   };
 
@@ -68,7 +68,7 @@ const ContactUs = () => {
   };
 
   const onSubmit = async (values) => {
-  
+    setButtonDisabled(true);
     let formData = new FormData();
     Object.keys(values).forEach(function (key, index) {
       formData.append(`ContactForm[${key}]`, values[key]);
@@ -77,24 +77,7 @@ const ContactUs = () => {
     recaptcha.current.reset();
   };
 
-  const cardLoader = () => {
-    return (
-      <span>
-        <ThreeCircles
-          height="20"
-          width="25"
-          color="snow"
-          wrapperStyle={{}}
-          wrapperClass=""
-          visible={true}
-          ariaLabel="three-circles-rotating"
-          outerCircleColor=""
-          innerCircleColor=""
-          middleCircleColor=""
-        />
-      </span>
-    );
-  };
+
   return (
     <main>
       <Toast ref={toast} />
@@ -250,9 +233,8 @@ const ContactUs = () => {
                         data-kt-menu-placement="bottom-end"
                         icon="pi pi-save"
                         type="submit"
-                        // label="Send"
-                        label={buttonLoader === true ? cardLoader() : "Send"}
-                        disabled={buttonLoader === true ? true : false}
+                        disabled={isButtonDisabled}
+                        label={isButtonDisabled ? "Sending.." : "Send"}
                       />
                     </Form>
                   )}
