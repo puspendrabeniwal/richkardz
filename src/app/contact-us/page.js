@@ -11,21 +11,16 @@ import { ThreeCircles } from "react-loader-spinner";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import instance from "@/app/axiosInterceptor";
-import { GOOGLE_CAPTCHA_SITE_KEY } from "@/app/global_constant";
+import { GOOGLE_CAPTCHA_SITE_KEY, phoneSchema } from "@/app/global_constant";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Name cannot be blank."),
+  name: Yup.string().required("Name can't be blank."),
   email: Yup.string()
     .email("Email is not a valid email address.")
-    .required("Email cannot be blank."),
-  phone_number: Yup.string()
-    .matches(
-      /^(\+\d{1,2}\s?)?(\()?\d{3}(\))?[-.\s]?\d{3}[-.\s]?\d{4}$/,
-      "Phone Number should contain at most 10 characters."
-    )
-    .required("Phone Number cannot be blank."),
-  city: Yup.string().required("City cannot be blank."),
-  body: Yup.string().required("Message cannot be blank."),
+    .required("Email can't be blank."),
+  phone_number: phoneSchema,
+  city: Yup.string().required("City can't be blank."),
+  body: Yup.string().required("Message can't be blank."),
   recaptchaField: Yup.string().required("reCAPTCHA validation is required."),
 });
 

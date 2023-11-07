@@ -3,20 +3,24 @@ import * as Yup from "yup";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "@/app/axiosInterceptor";
-import { GST_PERCENTAGE } from "@/app/global_constant";
+import { GST_PERCENTAGE, phoneSchema } from "@/app/global_constant";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
 const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("Name is required"),
-  email: Yup.string().required("Email is required"),
-  phone_number: Yup.string().required("Phone is required"),
-  address_1: Yup.string().required("Address is required"),
-  state: Yup.string().required("State is required"),
-  city: Yup.string().required("City is required"),
-  zipcode: Yup.string().required("Pincode is required"),
+  full_name: Yup.string().required("Name can't be blank."),
+  email: Yup.string()
+    .email("Email is not a valid email address.")
+    .required("Email can't be blank."),
+  phone_number: phoneSchema,
+  address_1: Yup.string().required("Address can't be blank."),
+  state: Yup.string().required("State can't be blank."),
+  city: Yup.string().required("City can't be blank."),
+  zipcode: Yup.string()
+    .matches(/^\d{6}$/, "PIN code must be a 6 digit number")
+    .required("PIN code can't be blank."),
 });
 
 export default function DeliveryAddress({ params }) {

@@ -5,24 +5,28 @@ import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import instance from "@/app/axiosInterceptor";
-import { GST_PERCENTAGE } from "@/app/global_constant.js";
+import { GST_PERCENTAGE, phoneSchema } from "@/app/global_constant.js";
 import { useRouter } from "next/navigation";
 import { Toast } from "primereact/toast";
 import { useSearchParams } from "next/navigation";
 
 const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("Name is required"),
-  email: Yup.string().required("Email is required"),
-  phone_number: Yup.string().required("Phone number is required"),
-  designation: Yup.string().required("Designation is required"),
+  full_name: Yup.string().required("Name can't be blank."),
+  email: Yup.string()
+    .email("Email is not a valid email address.")
+    .required("Email can't be blank."),
+  phone_number: phoneSchema,
+  designation: Yup.string().required("Designation can't be blank."),
 });
 
 const queryValidationSchema = Yup.object().shape({
-  first_name: Yup.string().required("First Name is required"),
-  last_name: Yup.string().required("Last Name is required"),
-  email: Yup.string().required("Email is required"),
-  phone_number: Yup.string().required("Phone number is required"),
-  query_msg: Yup.string().required("Query is required"),
+  first_name: Yup.string().required("First Name can't be blank."),
+  last_name: Yup.string().required("Last Name can't be blank."),
+  email: Yup.string()
+    .email("Email is not a valid email address.")
+    .required("Email can't be blank."),
+  phone_number: phoneSchema,
+  query_msg: Yup.string().required("Query can't be blank."),
 });
 
 export default function CardtDetail({ params }){

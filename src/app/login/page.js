@@ -18,8 +18,8 @@ const validationSchema = Yup.object().shape({
 });
 const queryValidationSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Invalid email address.")
-    .required("Email cannot be blank."),
+    .email("Email is not a valid email address.")
+    .required("Email can't be blank."),
 });
 const LoginUser = () => {
   const toast = useRef(null);
