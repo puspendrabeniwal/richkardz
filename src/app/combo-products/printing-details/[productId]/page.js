@@ -3,20 +3,11 @@ import * as Yup from "yup";
 import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import instance from "@/app/axiosInterceptor";
-import { GST_PERCENTAGE, phoneSchema } from "@/app/global_constant";
+import { COMBO_PRODUCTS_FIELDS_NAME , phoneSchema } from "@/app/global_constant";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-import axios from "axios";
-const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("Name can't be blank."),
-  email: Yup.string()
-    .email("Email is not a valid email address.")
-    .required("Email can't be blank."),
-  phone_number: phoneSchema,
-  designation: Yup.string().required("Designation can't be blank."),
-});
 
 export default function DeliveryAddress({ params }) {
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -25,6 +16,7 @@ export default function DeliveryAddress({ params }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const toast = useRef(null);
+  const [formData, setFormData] = useState(new FormData());
   const [currentAccordionIndex, setCurrentAccordionIndex] = useState(0);
   useEffect(() => {
     getProductDetail();
@@ -42,7 +34,7 @@ export default function DeliveryAddress({ params }) {
       });
   };
 
-  let formData = new FormData();
+  // let formData = new FormData();
   const onSubmit = (values, { resetForm }) => {
     instance
       .post(
@@ -50,11 +42,7 @@ export default function DeliveryAddress({ params }) {
         values
       )
       .then((response) => {
-        console.log(response);
-        if (response.success === true) {
-          resetForm();
-          // window.location.replace(response.result.pay_link);
-        }
+        if (response.success === true) router.push(`/combo-products/check-out?print_id=${response.data.print_id}&product_id=${response.data.product_id}`)
         showMessage(response);
       })
       .catch((error) => {
@@ -62,9 +50,9 @@ export default function DeliveryAddress({ params }) {
       });
   };
 
-  const openNextAccordion = () => {
-    if (currentAccordionIndex < productDetail?.combo_products.length - 1) {
-      setCurrentAccordionIndex(currentAccordionIndex + 1);
+  const openNextAccordion = (index) => {
+    if (currentAccordionIndex <= productDetail?.combo_products.length - 1) {
+      setCurrentAccordionIndex(index);
     }
   };
   const showMessage = (data) => {
@@ -179,7 +167,7 @@ export default function DeliveryAddress({ params }) {
                               }),
                             })}
                             onSubmit={async (values, { resetForm, errors }) => {
-                              openNextAccordion();
+                              
                               formData.append(
                                 "ComboCardPrintingData[" +
                                   COMBO_PRODUCTS_FIELDS_NAME[index] +
@@ -236,6 +224,8 @@ export default function DeliveryAddress({ params }) {
                                     errors,
                                   })
                                 : "";
+                                setCardDetail(formData)
+                                openNextAccordion(index+1)
                             }}
                           >
                             {({ setFieldValue, values }) => (
@@ -353,12 +343,13 @@ export default function DeliveryAddress({ params }) {
                                     label={
                                       isButtonDisabled
                                         ? "Submitting.."
-                                        : currentAccordionIndex ===
+                                        : (index ===
                                           productDetail?.combo_products.length -
-                                            1
+                                            1)
                                         ? "Checkout"
                                         : "Next"
                                     }
+                                    onClick={() => setCurrentAccordionIndex(index)}
                                   />
                                 </div>
                               </Form>

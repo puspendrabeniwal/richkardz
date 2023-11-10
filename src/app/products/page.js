@@ -165,7 +165,7 @@ export default function Product() {
                  imageUrl && image ? imageUrl + image : "/front/img/card.png";
                return (
                  <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                   <Link href={`/products/${row?.product_id}`}>
+                   <Link href={`/products/view/${row?.product_id}`}>
                      <div className="productMainCard">
                        <div className="productMainImage text-center">
                          <img className="img-fluid" src={imagePath} alt="" />
@@ -219,7 +219,7 @@ export default function Product() {
                  imageUrl && image ? imageUrl + image : "/front/img/card.png";
                return (
                  <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                   <Link href={`/products/${row?.product_id}`}>
+                   <Link href={`/products/view/${row?.product_id}`}>
                      <div className="productMainCard">
                        <div className="productMainImage text-center">
                          <img className="img-fluid" src={imagePath} alt="" />
@@ -273,7 +273,7 @@ export default function Product() {
                  imageUrl && image ? imageUrl + image : "/front/img/card.png";
                return (
                  <div className="col-lg-4 col-md-6 col-xl-3" key={index}>
-                   <Link href={`/products/${row?.product_id}`}>
+                   <Link href={`/products/view/${row?.product_id}`}>
                      <div className="productMainCard">
                        <div className="productMainImage text-center">
                          <img className="img-fluid" src={imagePath} alt="" />
@@ -314,8 +314,7 @@ export default function Product() {
            </div>
              }
            </div>
-         </div>
-         
+         </div>  
          <div
            className="tab-pane fade"
            id="combo"
@@ -445,10 +444,6 @@ export default function Product() {
            } 
            </div>
          </div>
-           
-         
-      
-
         </div>
          }
 

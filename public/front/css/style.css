@@ -657,7 +657,7 @@ border-bottom-style: solid;
     .modenComboMain {
         padding-top: 50px;
     }
-}
+}   
 
 @media (max-width: 777px) {
     .modenComboMain {
@@ -686,3 +686,27 @@ border-bottom-style: solid;
         padding: 20px;
     }
 }
+
+.inside-the-shopping-bag {
+    background: #161616;
+    padding: 30px 50px;
+    border-radius: 32px;
+    color: #fff !important;
+}
+
+.proceed-to-pay {
+    border: #fff !important;
+    font-size: 18px !important;
+    border-radius: 30px !important;
+    font-weight: 400 !important;
+    padding: 15px 30px !important;
+    margin-bottom: 20px !important;
+    color: #000 !important;
+    background-color: #fff !important;
+}
+
+.proceed-to-pay img {
+  margin-right: 20px !important;
+}
+
+

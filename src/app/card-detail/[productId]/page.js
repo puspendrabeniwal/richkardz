@@ -60,7 +60,7 @@ export default function CardtDetail({ params }){
         `products/view?product_id=${params.productId}`
       )
       .then((response) => {
-        let data = response.data.result ? response.data.result : {};
+        let data = response.result ? response.result : {};
         let basePrice = data?.discount ? parseInt(data?.discount) : 0;
         let gstPercentage = data?.discount
           ? parseInt((basePrice * GST_PERCENTAGE) / 100)
@@ -78,7 +78,7 @@ export default function CardtDetail({ params }){
     instance
       .get(`products/checkout-view?product_id=${params.productId}&&print_id=${searchParams.get("print_id")}`)
       .then((response) => {
-        let data = response.data.result ? response.data.result : {};
+        let data = response.result ? response.result : {};
         setCardDetailsData(data?.printing_data);
       })
       .catch((error) => {
