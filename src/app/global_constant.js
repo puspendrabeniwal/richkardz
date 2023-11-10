@@ -24,5 +24,5 @@ export const phoneSchema = yup
   )
   .required("Phone Number can't be blank.");
 
-  export const API_URL = "https://richkardz.com"
-  export const API_IMG_URL = "https://richkardz.com"
+  export const API_URL = "https://stage.richkardz.com/api/"
+  export const API_IMG_URL = "https://stage.richkardz.com"

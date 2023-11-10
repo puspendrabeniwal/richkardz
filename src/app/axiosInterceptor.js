@@ -1,8 +1,9 @@
 import axios from "axios";
+import { API_URL } from "./global_constant";
 
 // Create an instance of Axios with default configuration
 const instance = axios.create({
-  baseURL: "https://richkardz.com/api/",
+  baseURL: API_URL,
 });
 
 // Add a request interceptor

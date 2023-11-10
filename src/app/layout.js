@@ -16,6 +16,7 @@ export default function RootLayout({ children }) {
     (useParamsss.includes("admin") || 
     useParamsss.includes("user") || 
     useParamsss.includes("brands") || 
+    useParamsss.includes("reset-password") || 
     useParamsss.includes("gifting-visiting-card") || 
     useParamsss.includes("digital-visiting-cards") || 
     useParamsss.includes("digital-visiting-card")
