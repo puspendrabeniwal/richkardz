@@ -3,25 +3,52 @@ import * as Yup from "yup";
 import { useRef } from "react";
 import { Toast } from "primereact/toast";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-
+import { useRouter, useSearchParams } from "next/navigation";
 import instance from "@/app/axiosInterceptor";
 
 const validationSchema = Yup.object().shape({
-
+  // newpassword: Yup.string().required("Password is required"),
+  // confirmpassword: Yup.string().required("Password is required"),
+  newpassword: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters long")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+    ),
+  confirmpassword: Yup.string()
+    .required("Password is required")
+    .oneOf([Yup.ref("newpassword"), null], "Passwords must match"),
 });
 
 export default function ResetPassword() {
+  const searchParams = useSearchParams();
   const toast = useRef(null);
+  const router = useRouter();
   const initialValues = {
     newpassword: "",
-    confirmpassword: ""
+    confirmpassword: "",
   };
 
   const onSubmit = async (values) => {
     let formdata = new FormData();
     formdata.append("Users[newpassword]", values.newpassword);
     formdata.append("Users[confirmpassword]", values.confirmpassword);
-   
+    await resetPassword(formdata);
+  };
+  const resetPassword = async () => {
+    instance
+      .post(`login/reset-password?auth_key=${searchParams.get("auth_key")}`)
+      .then((response) => {
+        showMessage(response);
+        if (response.success === true) {
+          router.push(`login`);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        showMessage(error);
+      });
   };
   const showMessage = (data) => {
     toast.current.show({
@@ -133,9 +160,7 @@ export default function ResetPassword() {
               <div className="row">
                 <div className="col-md-4 col-12">
                   <h3>Reset Password</h3>
-                  <p>
-                    You can reset your Password here.
-                  </p>
+                  <p>You can reset your Password here.</p>
                 </div>
                 {/* <div className="col-md-4 col-12 divgp">
                   <img
@@ -159,10 +184,8 @@ export default function ResetPassword() {
                   >
                     {({ setFieldValue, values }) => (
                       <Form>
-                        
                         <div className="formDiv">
-
-                        <div className="formgrop field-enquiries-newpassword required">
+                          <div className="formgrop field-enquiries-newpassword required">
                             <Field
                               type="password"
                               name="newpassword"
@@ -217,9 +240,7 @@ export default function ResetPassword() {
                   <p>Copyright © 2023 richkardz.com. All rights reserved.</p>
                 </div>
               </div>
-              <div className="col-md-4 col-12 pb-3">
-
-              </div>
+              <div className="col-md-4 col-12 pb-3"></div>
             </div>
           </div>
         </section>
