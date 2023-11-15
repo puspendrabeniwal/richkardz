@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { Skeleton } from "primereact/skeleton";
 
 import instance from "@/app/axiosInterceptor";
+import { API_IMG_URL } from "@/app/global_constant";
+
 export default function Product() {
   const searchParams = useSearchParams();
   const typeOfCard = searchParams.get("type");
@@ -20,6 +22,7 @@ export default function Product() {
   }, [cardType]);
 
   const getList = () => {
+    setProducts([])
     let formdata = new FormData();
     formdata.append("skip", 0);
     formdata.append("type", cardType);
@@ -29,7 +32,7 @@ export default function Product() {
       .then((response) => {
         let data =
           response && response.result ? response.result : [];
-        setImageUrl("https://richkardz.com");
+        setImageUrl(API_IMG_URL);
         setProducts(data);
         setLoading(false);
       })
@@ -366,6 +369,7 @@ export default function Product() {
                                    Array.isArray(images) &&
                                    images.length > 0 &&
                                    images.map((item, index) => (
+                                  
                                      <div
                                        className={`carousel-item ${
                                          index === 0 ? "active" : ""
@@ -373,8 +377,8 @@ export default function Product() {
                                        key={index}
                                      >
                                        <img
-                                         src={"https://richkardz.com" + item}
-                                         alt=""
+                                         src={API_IMG_URL + item.product_image}
+                                         alt="Product Image"
                                        />
                                      </div>
                                    ))}

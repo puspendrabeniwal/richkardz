@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import Link from "next/link";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 import instance from "@/app/axiosInterceptor";
@@ -21,6 +21,7 @@ const queryValidationSchema = Yup.object().shape({
     .required("Email can't be blank."),
 });
 const LoginUser = () => {
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
   const toast = useRef(null);
   let user;
   const loginValues = {
@@ -35,13 +36,17 @@ const LoginUser = () => {
   }, []);
 
   async function onSubmit(values) {
-    values["role_id"] = 2;
+    setButtonDisabled(true);
+    let formdata = new FormData();
+    formdata.append("LoginForm[role_id]", 2)
+    formdata.append("LoginForm[username]", values.username)
+    formdata.append("LoginForm[password]", values.password)
+
     try {
-      const response = await instance.post(`auth`, values);
-      let user = response.result ? response.result : {};
-      let token = response.token ? response.token : "";
-      if (token && Object.keys(user).length > 0) {
-        localStorage.setItem("loginDetail", JSON.stringify(user));
+      const response = await instance.post(`login/index`, formdata);
+      let result = response.result ? response.result : {};
+      if (Object.keys(result.user).length > 0) {
+        localStorage.setItem("loginDetail", JSON.stringify(result.user));
         window.location.replace("/user/dashboard");
       }
       showMessage(response);
@@ -263,8 +268,9 @@ const LoginUser = () => {
                   data-kt-menu-trigger="click"
                   data-kt-menu-placement="bottom-center"
                   type="submit"
+                  disabled={isButtonDisabled}
                   designContactDefaultValues
-                  label="Login"
+                  label={isButtonDisabled ? "Sending.." : "Login"}
                 />
               </Form>
             )}
